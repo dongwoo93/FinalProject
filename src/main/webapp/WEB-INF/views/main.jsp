@@ -92,7 +92,7 @@ input[type="submit"].login{
    -moz-background-clip: padding;
    -webkit-background-clip: padding-box;
    background-clip: padding-box;
-   background-color: #55b1df;
+   background-color: #80DEEA;
    border:1px solid #55b1df;
    border:none;
    color: #fff;
@@ -155,21 +155,11 @@ $(document).ready(function(){
       </div>
       
       <div class="form-item">
-      <p class="pull-left"><a href="#"><small>Register</small></a></p>
+      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
       <input type="submit" class="login pull-right" value="Log In">
       <div class="clear-fix"></div>
       </div> 
    </div>
-   
-   
-
-        <div class="col-md-12 mt-3">
-          <p class="text-right text-light">약관 </p>
-            <p class="text-right text-light">채용</p>
-              <p class="text-right text-light">지원</p>
-        </div>
-
-   
    
 </div>
 
