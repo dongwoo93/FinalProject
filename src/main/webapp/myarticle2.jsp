@@ -13,32 +13,17 @@
 <head>
  
 <style>
-	@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
-	@import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
 
-	/* Base Styles */
-	:root {
-		/* Base font size */
-		font-size: 10px;
-	}
-	
-	*,
-	*::before,
-	*::after {
-		box-sizing: border-box;
-	}
 	
 	body{
- 		 border : 1px solid black; 
-		 height:auto;
-		 font-family: "Open Sans", Arial, sans-serif;
-		 min-height: 100vh;
-		 padding-bottom: 3rem; 
+	 border : 1px solid black;
+	 height:auto;
 	 
-	 } 
-
+	 
+	}
     #allwrapper{
       height:auto;
+      border : 1px solid black;
    }
     
     #navbar{
@@ -58,9 +43,8 @@
     }
     
     #search{
-        height: 30px;
+        height: 25px;
         border: 0.6px solid #ccc;
-        width : 300px;
     }
     
     #instagramicon {
@@ -70,7 +54,7 @@
     }
     
     .nav-icon{
-        font-size: 30px;
+        font-size: 22px;
         color: white;
     }
     
@@ -117,7 +101,15 @@
         height: 100%;
     }
     
+  	#a{
+  	 height : auto;	
+  	}
 
+
+
+
+
+	
 </style>
 </head>
 
@@ -156,19 +148,77 @@
             </div>
           </nav>
       </div>
+   
+   
+   <div id="a">
+    	하핫
+   </div>
+    
+    
     <div id="allwrapper">
+   		
+
+  
       <div id="centerwrapper">
+      
+ 
         <div class="container" id="contents">
-            Layout
+        
+
+    <div class="container-fluid p-1">
+      <div class="row ">
+        <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_bird.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_farm.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_nose.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+           <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+           <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+          
+      </div>
+    </div>
+  
+            
         </div>
       </div>
-
+</div>
+ 
       <div class="pt-4 pb-3  " id="footer">
            <div class="container">
               <div class="row" >
                 <div class="col-md-10">
-                  <p class="lead">SocialWired 정보지원홍보 센터API채용 정보개인정보처리방침약관디렉터리프로필해시태그언어
-</p>
+                  <p class="lead">SocialWired 정보지원홍보 센터API채용 정보개인정보처리방침약관디렉터리프로필해시태그언어</p>
                 </div>
 
                 <div class="col-4 col-md-2 align-self-center">
@@ -177,8 +227,7 @@
               </div>
           </div>
       </div>
-  </div>
- 
+  
 </body>
 
 </html>
