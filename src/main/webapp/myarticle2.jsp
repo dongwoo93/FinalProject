@@ -13,6 +13,14 @@
 <head>
  
 <style>
+
+	
+	body{
+	 border : 1px solid black;
+	 height:auto;
+	 
+	 
+	}
     #allwrapper{
       height:auto;
       border : 1px solid black;
@@ -93,7 +101,15 @@
         height: 100%;
     }
     
+  	#a{
+  	 height : auto;	
+  	}
 
+
+
+
+
+	
 </style>
 </head>
 
@@ -132,28 +148,67 @@
             </div>
           </nav>
       </div>
+   
+   
+   <div id="a">
+    	하핫
+   </div>
+    
+    
     <div id="allwrapper">
+   		
+
+  
       <div id="centerwrapper">
+      
+ 
         <div class="container" id="contents">
         
-    <div class="" >
-    <div class="container-fluid">
-      <div class="row">
-        <div class="p-0 col-md-4 col-6">
+
+    <div class="container-fluid p-1">
+      <div class="row ">
+        <div class="p-0 col-md-4 col-6 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0">
+        <div class="col-md-4 col-6 p-0 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_bird.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0">
+        <div class="col-md-4 col-6 p-0 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_farm.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0">
+        <div class="col-md-4 col-6 p-0 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0">
+        <div class="col-md-4 col-6 p-0 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_nose.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0">
+        <div class="col-md-4 col-6 p-0 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+        <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="col-md-4 col-6 p-0 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
+           <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+           <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+           <div class="p-0 col-md-4 col-6 p-1">
+          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+          
       </div>
     </div>
-  </div>
+  
             
         </div>
       </div>

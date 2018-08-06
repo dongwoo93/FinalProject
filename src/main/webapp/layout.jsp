@@ -13,6 +13,30 @@
 <head>
  
 <style>
+	@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
+	@import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
+
+	/* Base Styles */
+	:root {
+		/* Base font size */
+		font-size: 10px;
+	}
+	
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+	
+	body{
+ 		 border : 1px solid black; 
+		 height:auto;
+		 font-family: "Open Sans", Arial, sans-serif;
+		 min-height: 100vh;
+		 padding-bottom: 3rem; 
+	 
+	 } 
+
     #allwrapper{
       height:auto;
    }
@@ -34,8 +58,9 @@
     }
     
     #search{
-        height: 25px;
+        height: 30px;
         border: 0.6px solid #ccc;
+        width : 300px;
     }
     
     #instagramicon {
@@ -45,7 +70,7 @@
     }
     
     .nav-icon{
-        font-size: 22px;
+        font-size: 30px;
         color: white;
     }
     
@@ -134,7 +159,7 @@
     <div id="allwrapper">
       <div id="centerwrapper">
         <div class="container" id="contents">
-            
+            Layout
         </div>
       </div>
 
