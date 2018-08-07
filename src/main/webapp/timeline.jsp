@@ -220,7 +220,6 @@
 
 <body>
 
-<a href="feed.bo">피드로가기</a>
  
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
