@@ -40,9 +40,9 @@
 
    <!-- html 경로 설정 -->
    <mvc:default-servlet-handler/>
-   <mvc:annotation-driven/>
-   <aop:aspectj-autoproxy/>
-   <context:component-scan base-package="kh.spring"></context:component-scan>
+   <mvc:annotation-driven/> 
+   <aop:aspectj-autoproxy/> 
+   <context:component-scan base-package="kh.sns"></context:component-scan>
    
    
    
