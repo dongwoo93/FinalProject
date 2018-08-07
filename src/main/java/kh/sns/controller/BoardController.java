@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
 
 @Controller
@@ -27,7 +28,7 @@ public class BoardController {
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
-			System.out.println("여기는 feed.bo");
+			System.out.println("�뿬湲곕뒗 feed.bo");
 			e.printStackTrace();
 		}
 		
@@ -52,7 +53,7 @@ public class BoardController {
 	public ModelAndView search(HttpSession session, String search){
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
-		List<BoardDTO> result = boardService.search(search);
+		List<Board_TagsDTO> result = boardService.search("search");
 		System.out.println(result.size());
 		mav.addObject("result", result);	
 		mav.setViewName("search.jsp");

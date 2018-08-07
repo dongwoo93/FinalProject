@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 
@@ -19,14 +20,15 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		return dao.getFeed(id);
 	}
-
+	
+	@Override
 	public List<BoardDTO> getBoard(String id) {
 		return this.dao.getBoard(id);
 	}
 
 
 	@Override
-	public List<BoardDTO> search(String keyword) {
+	public List<Board_TagsDTO> search(String keyword) {
 		return this.dao.search(keyword);
 	}
 	

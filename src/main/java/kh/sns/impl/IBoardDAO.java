@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 
 @Repository
@@ -38,21 +39,18 @@ public class IBoardDAO implements BoardDAO  {
 	}
 
 	@Override
-	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where contents like '%'||?||'%'";
-		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
+	public List<Board_TagsDTO> search(String keyword) {
+		String sql = "select * from board_tags where tags like '%'||?||'%'";
+		return template.query(sql, new Object[] {keyword}, new RowMapper<Board_TagsDTO>() {
 
 			@Override
-			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				BoardDTO tmp = new BoardDTO();
+			public Board_TagsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_TagsDTO tmp = new Board_TagsDTO();
 				tmp.setBoard_seq(rs.getInt(1));
-				tmp.setContents(rs.getString(2));
-				tmp.setId(rs.getString(3));
-				tmp.setWritedate(rs.getString(4));
-				tmp.setRead_count(rs.getString(5));
-				tmp.setIs_allow_comments(rs.getString(6));
+				tmp.setTags(rs.getString(2));
 				return tmp;
 			}
+
 		});
 	}
 
