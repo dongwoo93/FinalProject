@@ -287,7 +287,7 @@ $(document).ready(function() {
                     <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#"><i class="far fa-compass nav-icon"></i></a>
