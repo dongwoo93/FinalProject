@@ -149,6 +149,7 @@ public class BoardController {
 		
 		
 		ModelAndView mav = new ModelAndView();
+		mav.setViewName("feed.bo");
 		return mav;
 	}
 
