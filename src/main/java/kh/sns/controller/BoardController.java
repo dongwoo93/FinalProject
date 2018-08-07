@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,17 +57,17 @@ public class BoardController {
 				String originalName = mf.getOriginalFilename(); 
 				
 				// 시스템 파일명(임시)
+				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
 				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
-				String saveFileName = (int)(Math.random() * 100000) + ext;
+				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
 				
 				// 설정한 path에 파일저장(임시)
 				File serverFile = new File("d://temp" + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
-				//fileList.add();
+				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));
 				
-				// 테스트용
-				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), new Board_MediaDTO(0, 0, "p", originalName, saveFileName));
+				
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -78,6 +78,13 @@ public class BoardController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		// 테스트용
+		try {
+			boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		

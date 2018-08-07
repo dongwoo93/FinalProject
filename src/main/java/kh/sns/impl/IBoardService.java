@@ -1,5 +1,7 @@
 package kh.sns.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,14 +15,24 @@ import kh.sns.interfaces.BoardService;
 public class IBoardService implements BoardService {
 	
 	@Autowired
-	BoardDAO bdao;
+	BoardDAO bdao;	
 	
-	@Override
+	@Override	
 	// @Transactional("txManager")
-	public int insertNewArticle(BoardDTO boardContent, Board_MediaDTO boardMedia) throws Exception {
+	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception {
 		
 		int contentResult = bdao.insertNewBoardContent(boardContent);
-		int mediaResult = bdao.insertNewMedia(boardMedia);
+		int mediaResult = 1;
+		
+		if(contentResult == 1) {
+			int boardCurrVal = bdao.selectBoardSeqRecentCurrVal();
+			System.out.println("boardCurrVal" + boardCurrVal);
+			
+			for(Board_MediaDTO media : boardMediaList) {
+				media.setBoard_seq(boardCurrVal);
+				mediaResult *= bdao.insertNewMedia(media);
+			}	
+		} 		
 		
 		return contentResult * mediaResult;
 	}

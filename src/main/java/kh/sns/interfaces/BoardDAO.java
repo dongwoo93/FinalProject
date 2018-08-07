@@ -8,5 +8,7 @@ public interface BoardDAO {
 	public int insertNewBoardContent(BoardDTO article) throws Exception;
 	
 	public int insertNewMedia(Board_MediaDTO media) throws Exception;
+	
+	public int selectBoardSeqRecentCurrVal() throws Exception;
 
 }

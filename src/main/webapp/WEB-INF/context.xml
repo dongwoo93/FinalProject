@@ -69,7 +69,7 @@
 	         <property name="defaultEncoding" value="utf-8" />
 	</bean>   
    
-   <tx:annotation-driven/>
+ 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
    
    
    <aop:aspectj-autoproxy/>

@@ -1,5 +1,7 @@
 package kh.sns.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -34,8 +36,19 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
 		
-		String sql = "insert into board_media values(board_media_seq.nextval, 2, ?, ?, ?)";
-		return template.update(sql, media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name());
+		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?)";
+		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name());
+	}
+	
+	public int selectBoardSeqRecentCurrVal() throws Exception {
+		
+		String sql = "select board_seq.currval from dual";
+		
+		List<Integer> list = template.query(sql, (rs, rowNum) -> {
+			return rs.getInt(1);	
+		});
+		
+		return list.get(0);
 	}
 
 }
