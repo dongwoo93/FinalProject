@@ -59,7 +59,7 @@
         max-width: 1000px;
     }
     
-    #search{
+    #searchform{
         height: 30px;
         border: 0.6px solid #ccc;
         width : 300px;
