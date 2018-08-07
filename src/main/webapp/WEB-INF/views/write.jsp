@@ -309,6 +309,7 @@
         </nav>
     </div>
     <div id="allwrapper">
+    <form action='' method=post enctype="multipart/form-data">
         <div id="centerwrapper" class="pt-3">
             <div class="container" id="contents">
                 <div class="row">
@@ -412,6 +413,7 @@
                 </div>
             </div>
         </div>
+        </form>
 
         <div class="pt-4 pb-3" id="footer">
             <div class="container">
