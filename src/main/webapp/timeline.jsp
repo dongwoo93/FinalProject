@@ -142,12 +142,14 @@
     }
 
     .icon {
-      font-size: 25px;
+      font-size:20px;  
       color: black;
+      border:0.5px;     
+       
     }
 
     .dot {
-      font-size: 10px;
+      font-size: 7px;
       color: lightgray;
     }
 
@@ -186,12 +188,12 @@
     }
     
     #board {
-      width: 65%;
+      width: 62%;
     }
 
-    #side {
+    #side {  
        
-      width: 35%;
+      width: 38%;
     }
 
     #row {
@@ -200,13 +202,25 @@
 
     .col {
       border: 1px solid black;
+    }  
+    
+    .idtxt {   
+    font-weight:600;      
+    }
+      
+    .boardimg {  
+    max-height:600px;
     }
     
+ 
+}
 
 </style>
 </head>
 
 <body>
+
+<a href="feed.bo">피드로가기</a>
  
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
@@ -245,18 +259,25 @@
       <div id="centerwrapper">
           <div class="container" id="contents">
         <div id="board">
-        <c:forEach var="i" begin="1" end="10" step="1">
+        <c:forEach var="tmp" items="${result}">
           <div class="py-2 my-5 " id="peed">   
-            <div class="profile-image"> 	
-              <img class="mx-3" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=40&amp;h=40&amp;fit=crop&amp;crop=faces">
-              <h3>hyong07</h3> 
-            </div>   
+            <div class="profile-image"> 	 
+              <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+              <h5 class="mt-1 idtxt">${tmp.id}</h5> 
+            </div>    
             <div class="mt-2" id="boardimg">
-              <img src="woony.jpg" width="100%" height="450"> </div>
+      
+      <script>
+      var num = Math.floor((Math.random() * 4) + 1);
+      var img = num+".PNG"; 
+      $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
+      </script> 
+             </div>
             <div id="cont">
               <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                 <div class="container">
                   <a class="navbar-brand" href="#">
+               			 
                     <i class="far fa-heart icon mr-1"></i>
                     <i class="far fa-comment icon"></i>
                   </a>
@@ -269,10 +290,22 @@
                     <i class="far fa-bookmark icon"></i> 
                   </a> 
                 </div>
-              </nav>
-              <div id="contcenter" class="mt-2 mx-3 pb-2">
-                <h3 class="m-1 "> 집가는 길에 학원친구랑 급 맥주한잔😆🍺 안주는 버스정류장 근처에 있던 산낙지맛집ㅎㅎㅎ
-                  <br> #불광역 #목포세발낙지 #낙지탕탕이 #맛있는녀석들 #급_음주 #깔끔하게 #한시간컷🐙 </h3>  
+              </nav>  
+              <div id="contcenter" class="mt-2 mx-3 pb-2"> 
+            	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id}
+				<script>  
+				var regex = /(#[^#\s,;]+)/gi  ;             
+		    	 var txt = "${tmp.contents}";     
+		    	var plus = "";    
+		    	  if(txt.length > 48) {
+		    		  plus = "<a href=''>더보기</a>";
+		    	  }
+		    	  var newtxt = txt.replace(regex, "<a href=''>"+"$1"+"</a>");        
+		    	  $("#con:last-child").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);	      
+			
+		    	  
+		    	  </script>    
+				
               </div>   
               <div class="py-2">     	
                 <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
@@ -282,7 +315,7 @@
           </div>
           </c:forEach>
         </div>
-        <div class="col-md-6 align-self-center" id="side">dfdfdf
+        <div class="col-md-6 align-self-center" id="side">
           <br> </div>
       </div>
       </div>

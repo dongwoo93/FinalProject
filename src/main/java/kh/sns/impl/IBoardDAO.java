@@ -20,7 +20,7 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		String sql = "select * from board where id=?";
+		String sql = "select * from board where id=? order by board_seq desc";
 		return template.query(sql, new String[] {id}, new RowMapper<BoardDTO>() {
 
 			@Override
