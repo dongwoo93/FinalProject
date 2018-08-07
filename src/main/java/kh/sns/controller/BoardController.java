@@ -46,6 +46,17 @@ public class BoardController {
 		return mav;
 	}
 	
+	@RequestMapping("/search.bo")
+	public ModelAndView search(HttpSession session, String search){
+		ModelAndView mav = new ModelAndView();
+		System.out.println(search);
+		List<BoardDTO> result = boardService.search(search);
+		System.out.println(result.size());
+		mav.addObject("result", result);	
+		mav.setViewName("search.jsp");
+		return mav;
+	}
+	
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(){
 		ModelAndView mav = new ModelAndView();
