@@ -247,7 +247,7 @@
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>

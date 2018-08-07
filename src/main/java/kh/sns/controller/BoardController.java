@@ -22,7 +22,7 @@ public class BoardController {
 	public ModelAndView toFeed() {
 		
 		
-		List<BoardDTO> list = new ArrayList();
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		String id="hyong07";
 		try {
 			list = boardService.getFeed(id);
@@ -37,8 +37,6 @@ public class BoardController {
 		
 		return mav;
 	}
-	
-
 	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session){
@@ -58,6 +56,14 @@ public class BoardController {
 		System.out.println(result.size());
 		mav.addObject("result", result);	
 		mav.setViewName("search.jsp");
+		return mav;
+	}
+	
+	@RequestMapping("/mypage.bo")
+	public ModelAndView toMypage(){
+		ModelAndView mav = new ModelAndView();
+		
+		
 		return mav;
 	}
 	
