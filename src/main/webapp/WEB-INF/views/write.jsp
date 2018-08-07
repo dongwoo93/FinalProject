@@ -309,6 +309,7 @@
         </nav>
     </div>
     <div id="allwrapper">
+    <form action='writeProc.test' method=post enctype="multipart/form-data"> <!-- form 시작 -->
         <div id="centerwrapper" class="pt-3">
             <div class="container" id="contents">
                 <div class="row">
@@ -398,7 +399,7 @@
                     <div class="col-md-5" id="writeform">
                         <div class="card">
                             <div class="card-body">
-                                <textarea id="writetextarea" class="form-control p-0" placeholder="Contents..."></textarea>
+                                <textarea id="writetextarea" class="form-control p-0" placeholder="Contents..." name=contents></textarea>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><a>위치 태그하기</a></li>
@@ -412,6 +413,7 @@
                 </div>
             </div>
         </div>
+        </form>	<!-- form 끝 -->
 
         <div class="pt-4 pb-3" id="footer">
             <div class="container">
