@@ -155,7 +155,7 @@
           </nav>
       </div>
   <div class="py-5">
-    <div class="container">
+    <div class="container mywrap">
       <div class="row">
         <div class="col-4">
           <ul class="nav nav-pills flex-column">
@@ -182,48 +182,48 @@
         <div class="col-8">
           <div class="tab-content">
             <div class="tab-pane fade show active" id="tabone" role="tabpanel">
-              <div class="form-group row">
+            <img src="resources/images/profile_image.jpg" class="rounded-circle" alt="Cinque Terre" width="50">
+              <div class="form-group row in">
   <label for="example-text-input" class="col-2 col-form-label">이름</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="Artisanal kale" id="example-text-input">
+    <input class="form-control edit" type="text" value="" id="example-text-input">
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row in">
   <label for="example-search-input" class="col-2 col-form-label">사용자 이름</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="How do I shoot web" id="example-search-input">
+    <input class="form-control edit" type="text" value="" id="example-search-input">
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row in">
   <label for="example-email-input" class="col-2 col-form-label">웹 사이트</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="bootstrap@example.com" id="example-email-input">
+    <input class="form-control edit" type="text" value="" id="example-email-input">
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row in">
   <label for="example-url-input" class="col-2 col-form-label">이메일</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="https://getbootstrap.com" id="example-url-input">
+    <input class="form-control edit" type="text" value="" id="example-url-input">
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row in">
   <label for="example-tel-input" class="col-2 col-form-label">전화번호</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="1-(555)-555-5555" id="example-tel-input">
+    <input class="form-control edit" type="text" value="" id="example-tel-input">
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row in">
   <label for="example-password-input" class="col-2 col-form-label">성별</label>
-  <div class="col-10">
+  <div class="col-10 in">
     <select class="custom-select edit">
-  <option selected>Open this select menu</option>
+  <option selected value="n">선택안함</option>
   <option value="m">남성</option>
   <option value="f">여성</option>
-  <option value="none">선택안함</option>
 </select>
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row in">
   <label for="example-color-input" class="col-2 col-form-label">Color</label>
   <div class="col-10">
     <input class="form-control edit" type="color" value="#563d7c" id="example-color-input">
@@ -251,6 +251,6 @@
     </div>
   </div>
 </body>
-<link rel="stylesheet" type="text/css" href="css/settings.css">
+<link rel="stylesheet" type="text/css" href="resources/css/settings.css">
 
 </html>

@@ -156,5 +156,12 @@ html,body {
 
 .edit {
 	font-size: 12px;
-	height: 100%;
+}
+
+.in {
+	padding-top: 20px;
+}
+
+.mywrap {
+	border: 2px solid #ccc;
 }
