@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class BoardController {
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
-			System.out.println("여기는 feed.bo");
+			System.out.println("�뿬湲곕뒗 feed.bo");
 			e.printStackTrace();
 		}
 		
@@ -73,7 +73,7 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println("@@writeProc.test 접속되었습니다.");
+		System.out.println("@@writeProc.test �젒�냽�릺�뿀�뒿�땲�떎.");
 		System.out.println(contents);
 	
 		
@@ -88,14 +88,21 @@ public class BoardController {
 				
 				String originalName = mf.getOriginalFilename(); 
 				
-				// 시스템 파일명(임시)
+				// �떆�뒪�뀥 �뙆�씪紐�(�엫�떆)
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
-				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
+				String ext = originalName.substring(originalName.lastIndexOf('.')); // �솗�옣�옄
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
+				String realPath = request.getSession().getServletContext().getRealPath("/image/");
+                   
+                File f = new File(realPath);
+                if(!f.exists()){
+                   f.mkdir();
+                }
+          
 				
-				// 설정한 path에 파일저장(임시)
-				File serverFile = new File("d://temp" + File.separator + saveFileName); 
-				mf.transferTo(serverFile);	// HDD에 전송
+				// �꽕�젙�븳 path�뿉 �뙆�씪���옣(�엫�떆)
+				File serverFile = new File(realPath + File.separator + saveFileName); 
+				mf.transferTo(serverFile);	// HDD�뿉 �쟾�넚
 				
 				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));
 				
@@ -112,7 +119,7 @@ public class BoardController {
 			}
 		}
 		
-		// 테스트용
+		// �뀒�뒪�듃�슜
 		try {
 			boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
 		} catch (Exception e) {

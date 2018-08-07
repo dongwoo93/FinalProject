@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
@@ -39,10 +38,10 @@ public class IBoardService implements BoardService {
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		return dao.getFeed(id);
+		return bdao.getFeed(id);
 	}
 
 	public List<BoardDTO> getBoard(String id) {
-		return this.dao.getBoard(id);
+		return this.bdao.getBoard(id);
 	}
 }
