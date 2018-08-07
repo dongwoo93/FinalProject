@@ -33,23 +33,22 @@ public class IBoardService implements BoardService {
 	}
 	
 	
-	@Autowired
-	BoardDAO bdao;	
+		
 	
 	@Override	
 	// @Transactional("txManager")
 	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception {
 		
-		int contentResult = bdao.insertNewBoardContent(boardContent);
+		int contentResult = dao.insertNewBoardContent(boardContent);
 		int mediaResult = 1;
 		
 		if(contentResult == 1) {
-			int boardCurrVal = bdao.selectBoardSeqRecentCurrVal();
+			int boardCurrVal = dao.selectBoardSeqRecentCurrVal();
 			System.out.println("boardCurrVal" + boardCurrVal);
 			
 			for(Board_MediaDTO media : boardMediaList) {
 				media.setBoard_seq(boardCurrVal);
-				mediaResult *= bdao.insertNewMedia(media);
+				mediaResult *= dao.insertNewMedia(media);
 			}	
 		} 		
 		
