@@ -57,9 +57,9 @@
 <!--       <property name="suffix" value=".jsp"></property> -->
 <!--    </bean> -->
    
+   <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
    
-   
-   <tx:annotation-driven/>
+
    
    
    <aop:aspectj-autoproxy/>
