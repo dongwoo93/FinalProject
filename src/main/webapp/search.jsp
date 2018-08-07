@@ -176,13 +176,16 @@
     <div id="allwrapper">
       <div id="centerwrapper">
         <div class="container" id="contents">
+          <!-- choose문 시작하는 지점 -->
+          <c:choose>
+          	<c:when test="">
            <!-- 검색 ui 시작하는 부분 -->
              <div class="row">
              	 <c:forEach var="i" begin="1" end="10" step="1">	
 			           <div id="bigbox" class="col-lg-4 col-sm-6 portfolio-item" >
 			             <div class="card h-150">
 			             	<h4 class="card-title">
-			             	 <img src='${path[status.index]}' width="30" class="rounded-circle">
+			             	 <img src="https://scontent-icn1-1.cdninstagram.com/vp/7c370096e65b401d7c23388739c4f142/5C09D614/t51.2885-19/s150x150/37329457_1608380405938260_7561205846328213504_n.jpg" width="30" class="rounded-circle">
 				             	 <a>아이디</a>
 				                 <a href="#">팔로우</a>
 			                </h4>
@@ -197,7 +200,14 @@
 			           </div>
 	            </c:forEach>
 	          </div>
-           <!-- 검색 ui 끝나는 부분 -->
+             <!-- 검색 ui 끝나는 부분 -->
+           	</c:when>
+           	<!-- if 문 끝나는 지점  -->
+           		<c:otherwise>
+           		</c:otherwise>
+           			<!-- else 문 끝나는 지점  -->
+           </c:choose>
+           <!-- choose문 끝나는 지점 -->
         </div>
       </div>
 
