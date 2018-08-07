@@ -85,7 +85,7 @@ public class BoardController {
 	public ModelAndView writeBoard() {
 		System.out.println("@@WRITE BOARD");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("write");
+		mav.setViewName("write.jsp");
 		return mav;
 	}
 
