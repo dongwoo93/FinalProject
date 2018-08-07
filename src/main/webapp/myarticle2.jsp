@@ -16,14 +16,14 @@
 
 	
 	body{
-	 border : 1px solid black;
+/* 	 border : 1px solid black; */
 	 height:auto;
 	 
 	 
 	}
     #allwrapper{
       height:auto;
-      border : 1px solid black;
+/*       border : 1px solid black; */
    }
     
     #navbar{
@@ -107,9 +107,6 @@
 
 
 
-
-
-	
 </style>
 </head>
 
@@ -151,7 +148,7 @@
    
    
    <div id="a">
-    	하핫
+    	
    </div>
     
     
@@ -169,42 +166,42 @@
       <div class="row ">
         <div class="p-0 col-md-4 col-6 p-1">
           <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_bird.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_farm.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_nose.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-        <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-           <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-           <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-           <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-           <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-           <div class="col-md-4 col-6 p-0 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div>
-           <div class="p-0 col-md-4 col-6 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
-           <div class="p-0 col-md-4 col-6 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
-           <div class="p-0 col-md-4 col-6 p-1">
-          <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div>
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_bird.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_farm.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_nose.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--         <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--            <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--            <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--            <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--            <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--            <div class="col-md-4 col-6 p-0 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_feet.jpg" class="img-fluid"> </div> -->
+<!--            <div class="p-0 col-md-4 col-6 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div> -->
+<!--            <div class="p-0 col-md-4 col-6 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div> -->
+<!--            <div class="p-0 col-md-4 col-6 p-1"> -->
+<!--           <img src="https://pingendo.github.io/templates/sections/assets/gallery_dogs.jpg" class="img-fluid"> </div> -->
           
       </div>
     </div>

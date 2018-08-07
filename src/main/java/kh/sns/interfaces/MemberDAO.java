@@ -1,5 +1,11 @@
 package kh.sns.interfaces;
 
-public interface MemberDAO {
+import java.util.List;
 
+import kh.sns.dto.MemberDTO;
+
+public interface MemberDAO {
+	public int loginMem(MemberDTO dto);
+
+//	boolean isIdExist(String id);
 }
