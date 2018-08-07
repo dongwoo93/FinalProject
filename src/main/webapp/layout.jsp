@@ -118,7 +118,12 @@
     }
     
 
+
+
 </style>
+
+
+		
 </head>
 
 <body>
@@ -159,7 +164,14 @@
     <div id="allwrapper">
       <div id="centerwrapper">
         <div class="container" id="contents">
-            Layout
+           
+
+
+
+
+
+
+
         </div>
       </div>
 
