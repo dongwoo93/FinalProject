@@ -109,6 +109,9 @@ h1{
 </style>
 
 <script>
+if(${sessionScope.loginId != null}) {
+	$(location).attr("href", "feed.bo");
+}
 $(document).ready(function(){
    var formInputs = $('input[type="id"],input[type="password"]');
    formInputs.focus(function() {
@@ -146,18 +149,7 @@ $(document).ready(function(){
 		<!-- </div> -->
 
 
-		<c:choose>
-		<c:when test="${loginId != null}">
-			<div class="logo">
-				<h1 class="text-center head text-light display-4">SocialWired</h1>
-					<p class="text-light"><%=session.getAttribute("loginId") + " 님 환영합니다."%></p>
-			</div>
-	
-			  <br>
-	         <p class><a href="board.bo" ><small>Forgot Password ?</small></a></p>   
-		
-		</c:when>
-		<c:otherwise>
+
 		<div class="logo">
 		<h1 class="text-center head text-light display-4">SocialWired</h1>
 		<p class="text-light">We ♥ new friends</p>
@@ -184,8 +176,6 @@ $(document).ready(function(){
 	      </form>
 	   	</div>
 	</div>
-	</c:otherwise>
-</c:choose>
 
  
 </body>

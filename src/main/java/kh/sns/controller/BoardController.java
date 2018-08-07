@@ -20,7 +20,9 @@ public class BoardController {
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed() {
-		List<BoardDTO> list = new ArrayList();
+		
+		
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		String id="hyong07";
 		try {
 			list = boardService.getFeed(id);
@@ -34,8 +36,6 @@ public class BoardController {
 		return mav;
 	}
 	
-
-	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session){
 		ModelAndView mav = new ModelAndView();
@@ -43,6 +43,14 @@ public class BoardController {
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
 		mav.setViewName("myarticle.jsp");
+		return mav;
+	}
+	
+	@RequestMapping("/mypage.bo")
+	public ModelAndView toMypage(){
+		ModelAndView mav = new ModelAndView();
+		
+		
 		return mav;
 	}
 	
