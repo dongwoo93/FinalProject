@@ -124,8 +124,15 @@
     }
     
     #icon{
-    	float: right;
+    	float: left;
     	font-size: 20px;
+    	margin-right: 5px;
+    }
+    
+    #book{
+    	float:right;
+    	font-size: 20px;
+    	margin-right: 5px;
     }
 
 </style>
@@ -175,7 +182,7 @@
 			           <div id="bigbox" class="col-lg-4 col-sm-6 portfolio-item" >
 			             <div class="card h-150">
 			             	<h4 class="card-title">
-			             	 <img src="https://scontent-icn1-1.cdninstagram.com/vp/7c370096e65b401d7c23388739c4f142/5C09D614/t51.2885-19/s150x150/37329457_1608380405938260_7561205846328213504_n.jpg" width="30" class="rounded-circle">
+			             	 <img src='${path[status.index]}' width="30" class="rounded-circle">
 				             	 <a>아이디</a>
 				                 <a href="#">팔로우</a>
 			                </h4>
@@ -183,7 +190,8 @@
 				                 <img class="card-img-top" src='루이.jpg' alt="Card image cap"> </a>
 				               <div class="card-body">
 				                <i id="icon" class="far fa-heart"></i>
-				                <i id="icon" class="far fa-bookmark"></i>
+				                <i id="book" class="far fa-bookmark"></i>
+				                <i id="icon" class="far fa-comment"></i>
 			              	   </div>
 			             </div>
 			           </div>
