@@ -267,9 +267,9 @@
             </div>    
             <div class="mt-2" id="boardimg">
       
-      <script>
+      <script>  
       var num = Math.floor((Math.random() * 4) + 1);
-      var img = num+".PNG"; 
+      var img = "timelineimg/"+num+".PNG"; 
       $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
       </script> 
              </div>
