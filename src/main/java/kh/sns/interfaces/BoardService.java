@@ -9,7 +9,5 @@ public interface BoardService {
 	
 	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception;
 	
-	
-	
 
 }
