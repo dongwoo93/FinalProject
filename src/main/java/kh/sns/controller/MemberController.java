@@ -47,7 +47,7 @@ public class MemberController {
 		}
 				
 		mav.addObject("result", result);
-		mav.setViewName("main");
+		mav.setViewName("main.jsp");
 		return mav;
 	}
 	

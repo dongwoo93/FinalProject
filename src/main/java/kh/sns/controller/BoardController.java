@@ -25,7 +25,7 @@ public class BoardController {
 		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
-		mav.setViewName("myarticle1");
+		mav.setViewName("myarticle1.jsp");
 		return mav;
 	}
 	
