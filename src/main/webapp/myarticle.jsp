@@ -18,9 +18,8 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 @import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
 
-	/* Base Styles */
+
 	:root {
-		/* Base font size */
 		font-size: 10px;
 	}
 	
@@ -36,12 +35,12 @@
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
 		 padding-bottom: 3rem; 
-	 
+	 	 
 	 } 
     
     #allwrapper{
-      	height:auto;
-/*      	border : 1px solid black; */
+      	height:auto;    
+/*      border : 1px solid black; */
    	}
     
     #navbar{
@@ -62,7 +61,7 @@
         max-width: 1000px;
     }
     
-    #search{
+    #searchform{
         height: 30px;
         border: 0.6px solid #ccc;
         width : 300px;
@@ -422,19 +421,27 @@
 			}
 		}
 	}
-		
-	
-	
-	
-	
-	
-
-	
-	
 	
 </style>
 
+<script>
+$(document).ready(function() {
+	
+	$('#searchform').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          var text = $("#searchform").val();
+        	if(text == ""){
+        		alert("검색어를 입력해 주세요");
+        	}
+        	else{
+        		$("#go").attr("onsubmit","return true;");
+        	} 
+        }
+    });
+})
 
+</script>
 
 </head>
 
@@ -446,8 +453,8 @@
               <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="#">SocialWired</a></div>
               <div class="collapse navbar-collapse">
-                <form class="form-inline m-0">
-                  <input class="form-control" type="text" placeholder="검색" id="search">
+                <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
                 </form>
               </div>
               <div id="nav-icons">
@@ -457,7 +464,7 @@
                     <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#"><i class="far fa-compass nav-icon"></i></a>
@@ -466,7 +473,7 @@
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>

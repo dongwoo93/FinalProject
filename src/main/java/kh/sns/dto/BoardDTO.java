@@ -71,10 +71,5 @@ public class BoardDTO {
 	public void setIs_allow_comments(String is_allow_comments) {
 		this.is_allow_comments = is_allow_comments;
 	}
-	
-	
-	
-	
-	
 
 }
