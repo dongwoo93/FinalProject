@@ -56,4 +56,23 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 
+	@Override
+	public List<BoardDTO> getFeed(String id) throws Exception {
+		String sql = "select * from board where id=? order by board_seq desc";
+		return template.query(sql, new String[] {id}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				 BoardDTO dto = new  BoardDTO();
+				dto.setBoard_seq(rs.getInt("board_seq"));
+				dto.setContents(rs.getString("contents"));
+				dto.setId(rs.getString("id"));
+				dto.setWritedate(rs.getString("writedate"));
+				dto.setRead_count(rs.getString("read_count"));
+				dto.setIs_allow_comments(rs.getString("is_allow_comments"));
+				return dto;
+			}
+		});
+	}
+
 }
