@@ -131,7 +131,7 @@ $(document).ready(function(){
    $('p.formLabel').click(function(){
        $(this).parent().children('.form-style').focus();
    });
-});
+})
 </script>
 
 
