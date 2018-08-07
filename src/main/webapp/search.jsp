@@ -138,6 +138,8 @@
 </style>
 </head>
 
+
+
 <body>
  
       <div id="topwrapper">
@@ -177,20 +179,20 @@
       <div id="centerwrapper">
         <div class="container" id="contents">
           <!-- choose문 시작하는 지점 -->
-          <c:choose>
-          	<c:when test="">
-           <!-- 검색 ui 시작하는 부분 -->
+          <c:choose> 
+          	<c:when test="${result.size() > 0}">
+
              <div class="row">
-             	 <c:forEach var="i" begin="1" end="10" step="1">	
+             	 <c:forEach var="result" items="${result}">	
 			           <div id="bigbox" class="col-lg-4 col-sm-6 portfolio-item" >
 			             <div class="card h-150">
 			             	<h4 class="card-title">
 			             	 <img src="https://scontent-icn1-1.cdninstagram.com/vp/7c370096e65b401d7c23388739c4f142/5C09D614/t51.2885-19/s150x150/37329457_1608380405938260_7561205846328213504_n.jpg" width="30" class="rounded-circle">
-				             	 <a>아이디</a>
+				             	 <a>${result.id}</a>
 				                 <a href="#">팔로우</a>
 			                </h4>
 				               <a href="#">
-				                 <img class="card-img-top" src='루이.jpg' alt="Card image cap"> </a>
+				                 <img class="card-img-top" src='${system_file_name}' alt="Card image cap"> </a>
 				               <div class="card-body">
 				                <i id="icon" class="far fa-heart"></i>
 				                <i id="book" class="far fa-bookmark"></i>
@@ -200,13 +202,13 @@
 			           </div>
 	            </c:forEach>
 	          </div>
-             <!-- 검색 ui 끝나는 부분 -->
-           	</c:when>
-           	<!-- if 문 끝나는 지점  -->
+			</c:when>
+
            		<c:otherwise>
+           		<h1>검색 결과가 없습니다.</h1>
            		</c:otherwise>
-           			<!-- else 문 끝나는 지점  -->
-           </c:choose>
+
+           </c:choose> 
            <!-- choose문 끝나는 지점 -->
         </div>
       </div>

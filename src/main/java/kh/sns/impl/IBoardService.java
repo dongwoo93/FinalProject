@@ -15,9 +15,15 @@ public class IBoardService implements BoardService{
 	@Autowired
 	private BoardDAO dao;
 	
-	
+	@Override
 	public List<BoardDTO> getBoard(String id) {
 		return this.dao.getBoard(id);
+	}
+
+
+	@Override
+	public List<BoardDTO> search(String keyword) {
+		return this.dao.search(keyword);
 	}
 	
 }
