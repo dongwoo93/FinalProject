@@ -21,6 +21,7 @@
 	:root {
 		/* Base font size */
 		font-size: 10px;
+		
 	}
 	
 	*,
@@ -30,17 +31,18 @@
 	}
 	
 	body{
- 		 border : 1px solid black; 
+  		 border : 1px solid black;  
 		 height:auto;
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
 		 padding-bottom: 3rem;  
+		 
 	 
 	 } 
 
     #allwrapper{
       height:auto;
-   }
+   	}
     
     #navbar{
         border-bottom: 1px solid #ccc;
@@ -58,7 +60,7 @@
         max-width: 1000px;
     }
     
-    #search{
+    #searchform{
         height: 30px;
         border: 0.6px solid #ccc;
         width : 300px;
@@ -71,7 +73,7 @@
     }
     
     .nav-icon{
-        font-size: 25px;    	
+        font-size: 30px;    	
         color: white;
     }
     
@@ -85,7 +87,7 @@
     
     @media(max-width: 768px){
         .nav-icon {
-            font-size: 20px;
+            font-size: 30px;
         }
     }
     
@@ -112,14 +114,15 @@
       margin-left: auto;
       margin-right: auto;
       display: -webkit-box;
+    
     }
 
     #centerwrapper {
       height: 100%;
+     
     }
     
-        /*컨테이너
-*/
+        /*컨테이너*/
 
     .profile-image {
       width: calc(33.333% - 1rem);
@@ -205,17 +208,40 @@
     }  
     
     .idtxt {   
-    font-weight:600;      
+    	font-weight:600;      
     }
       
     .boardimg {  
-    max-height:600px;
+    	max-height:600px;
     }
     
+    #con{
+    	font-family: "Open Sans", Arial, sans-serif;
+    }
  
 }
 
 </style>
+
+<script>
+$(document).ready(function() {
+	
+	$('#searchform').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          var text = $("#searchform").val();
+        	if(text == ""){
+        		alert("검색어를 입력해 주세요");
+        	}
+        	else{
+        		$("#go").attr("onsubmit","return true;");
+        	} 
+        }
+    });
+})
+
+</script>
+
 </head>
 
 <body>
@@ -227,8 +253,8 @@
               <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="#">SocialWired</a></div>
               <div class="collapse navbar-collapse">
-                <form class="form-inline m-0">
-                  <input class="form-control" type="text" placeholder="검색" id="search">
+                  <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
                 </form>
               </div>
               <div id="nav-icons">
@@ -238,7 +264,7 @@
                     <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#"><i class="far fa-compass nav-icon"></i></a>
@@ -247,7 +273,7 @@
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>
@@ -262,7 +288,9 @@
           <div class="py-2 my-5 " id="peed">   
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-              <h5 class="mt-1 idtxt">${tmp.id}</h5> 
+<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
+              <br><a class="mt-1 idtxt" href="board.bo">${tmp.id}<br>Dangsan.South Korea</a>
+             
             </div>    
             <div class="mt-2" id="boardimg">
       
@@ -292,18 +320,19 @@
               </nav>  
               <div id="contcenter" class="mt-2 mx-3 pb-2"> 
             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id}
-				<script>  
+<%-- 				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a> --%>
+			<script>  
+				
 				var regex = /(#[^#\s,;]+)/gi  ;             
-		    	 var txt = "${tmp.contents}";     
+		    	var txt = "${tmp.contents}";     
 		    	var plus = "";    
 		    	  if(txt.length > 48) {
 		    		  plus = "<a href=''>더보기</a>";
 		    	  }
 		    	  var newtxt = txt.replace(regex, "<a href=''>"+"$1"+"</a>");        
-		    	  $("#con:last-child").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);	      
-			
-		    	  
-		    	  </script>    
+		    	  $("#con:last-child").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);	        
+		    
+		    </script>    
 				
               </div>   
               <div class="py-2">     	

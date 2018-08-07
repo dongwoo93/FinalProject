@@ -28,7 +28,7 @@ public class MemberController {
 	
 	@RequestMapping("/join.do")
 	public String toInput() throws Exception {
-		return "join";
+		return "join.jsp";
 	}
 	
 	
@@ -42,12 +42,10 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
+			mav.setViewName("feed.bo");
 		}else {
-			
+			mav.setViewName("loginfail.jsp");
 		}
-				
-		mav.addObject("result", result);
-		mav.setViewName("feed.bo");
 		return mav;
 	}
 	
