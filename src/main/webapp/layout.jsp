@@ -70,7 +70,7 @@
     }
     
     .nav-icon{
-        font-size: 25px;    	
+        font-size: 30px;    	
         color: white;
     }
     
@@ -84,7 +84,7 @@
     
     @media(max-width: 768px){
         .nav-icon {
-            font-size: 20px;
+            font-size: 30px;
         }
     }
     

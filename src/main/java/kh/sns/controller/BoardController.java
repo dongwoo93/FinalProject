@@ -20,8 +20,6 @@ public class BoardController {
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed() {
-		
-		
 		List<BoardDTO> list = new ArrayList();
 		String id="hyong07";
 		try {
@@ -29,12 +27,10 @@ public class BoardController {
 		}catch(Exception e) {
 			System.out.println("여기는 feed.bo");
 			e.printStackTrace();
-		}
-		
+		}	
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
-		mav.setViewName("timeline.jsp");;
-		
+		mav.setViewName("timeline.jsp");;	
 		return mav;
 	}
 	
@@ -46,7 +42,7 @@ public class BoardController {
 		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
-		mav.setViewName("myarticle1.jsp");
+		mav.setViewName("myarticle.jsp");
 		return mav;
 	}
 	

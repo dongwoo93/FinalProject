@@ -28,7 +28,7 @@ public class MemberController {
 	
 	@RequestMapping("/join.do")
 	public String toInput() throws Exception {
-		return "join";
+		return "join.jsp";
 	}
 	
 	
