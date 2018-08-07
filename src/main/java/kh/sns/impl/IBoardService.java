@@ -20,4 +20,7 @@ public class IBoardService implements BoardService {
 		return dao.getFeed(id);
 	}
 
+	public List<BoardDTO> getBoard(String id) {
+		return this.dao.getBoard(id);
+	}
 }

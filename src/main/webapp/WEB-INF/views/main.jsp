@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -109,7 +110,7 @@ h1{
 
 <script>
 $(document).ready(function(){
-   var formInputs = $('input[type="email"],input[type="password"]');
+   var formInputs = $('input[type="id"],input[type="password"]');
    formInputs.focus(function() {
        $(this).parent().children('p.formLabel').addClass('formTop');
        $('div#formWrapper').addClass('darken-bg');
@@ -137,32 +138,55 @@ $(document).ready(function(){
 
 <div id="formWrapper">
 
-<div id="form">
-<div class="logo">
-<h1 class="text-center head text-light display-4">SocialWired</h1>
-<p class="text-light">We ♥ new friends</p>
-</div>
-      <div class="form-item">
-         <p class="formLabel">Email</p>
-         <input type="email" name="email" id="email" class="form-style" autocomplete="off"/>
-      </div>
-      <div class="form-item">
-         <p class="formLabel">Password</p>
-         <input type="password" name="password" id="password" class="form-style" />
-         <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
-         <br>
-         <p class><a href="#" ><small>Forgot Password ?</small></a></p>   
-      </div>
-      
-      <div class="form-item">
-      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
-      <input type="submit" class="login pull-right" value="Log In">
-      <div class="clear-fix"></div>
-      </div> 
-   </div>
-   
-</div>
 
+<div id="form">
+		<!-- <div class="logo"> -->
+		<!-- <h1 class="text-center head text-light display-4">SocialWired</h1> -->
+		<!-- <p class="text-light">We ♥ new friends</p> -->
+		<!-- </div> -->
+
+
+		<c:choose>
+		<c:when test="${loginId != null}">
+			<div class="logo">
+				<h1 class="text-center head text-light display-4">SocialWired</h1>
+					<p class="text-light"><%=session.getAttribute("loginId") + " 님 환영합니다."%></p>
+			</div>
+	
+			  <br>
+	         <p class><a href="board.bo" ><small>Forgot Password ?</small></a></p>   
+		
+		</c:when>
+		<c:otherwise>
+		<div class="logo">
+		<h1 class="text-center head text-light display-4">SocialWired</h1>
+		<p class="text-light">We ♥ new friends</p>
+		</div>
+	
+		<form action="login.do" method="post">
+	      <div class="form-item">
+	         <p class="formLabel">id</p>
+	         <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
+	      </div>
+	      <div class="form-item">
+	         <p class="formLabel">Password</p>
+	         <input type="password" name="pw" id="password" class="form-style" />
+	         <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
+	         <br>
+	         <p class><a href="board.bo" ><small>Forgot Password ?</small></a></p>   
+	      </div>
+	      
+	      <div class="form-item">
+	      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
+	       <p class="pull-left"><a href="file.do"><small>Test</small></a></p>
+	      <input type="submit" class="login pull-right" value="Log In">
+	      <div class="clear-fix"></div>
+	      </div> 
+	      </form>
+	   	</div>
+	</div>
+	</c:otherwise>
+</c:choose>
 
  
 </body>

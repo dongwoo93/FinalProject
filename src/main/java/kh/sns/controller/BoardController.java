@@ -3,6 +3,7 @@ package kh.sns.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,4 +39,15 @@ public class BoardController {
 	}
 	
 
+	
+	@RequestMapping("/board.bo")
+	public ModelAndView getBoard(HttpSession session){
+		ModelAndView mav = new ModelAndView();
+		String id = (String) session.getAttribute("loginId");
+		List<BoardDTO> result = boardService.getBoard(id);
+		mav.addObject("result", result);	
+		mav.setViewName("myarticle1.jsp");
+		return mav;
+	}
+	
 }
