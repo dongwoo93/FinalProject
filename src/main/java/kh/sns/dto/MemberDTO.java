@@ -7,18 +7,20 @@ public class MemberDTO {
 	private String nickname;
 	private String email;
 	private String phone;
+	private String gender;
 	
 	public MemberDTO() {
 		
 	}
 
-	public MemberDTO(String id, String pw, String nickname, String email, String phone) {
+	public MemberDTO(String id, String pw, String nickname, String email, String phone, String gender) {
 		super();
 		this.id = id;
 		this.pw = pw;
 		this.nickname = nickname;
 		this.email = email;
 		this.phone = phone;
+		this.gender = gender;
 	}
 
 	public String getId() {
@@ -59,6 +61,14 @@ public class MemberDTO {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 
