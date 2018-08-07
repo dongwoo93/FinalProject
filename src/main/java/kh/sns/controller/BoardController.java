@@ -46,27 +46,23 @@ public class BoardController {
 	
 		
 		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
-		Iterator<String> iterator = mhsr.getFileNames();
 		
-		String fieldName = "";
-		MultipartFile file = null;
+		List<MultipartFile> mfList = mhsr.getFiles("filename[]");
 		
 		List<Board_MediaDTO> fileList = new ArrayList<Board_MediaDTO>();
 		
-		while(iterator.hasNext()) {
-	
+		for(MultipartFile mf : mfList) {
 			try {
-				fieldName = (String) iterator.next(); // 내용을 가져와서
-				file = mhsr.getFile(fieldName);
-				String originalName = new String(file.getOriginalFilename().getBytes("8859_1"), "UTF-8");
+				
+				String originalName = mf.getOriginalFilename(); 
 				
 				// 시스템 파일명(임시)
 				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
-				String saveFileName = (int)(Math.random() * 10000) + ext;
+				String saveFileName = (int)(Math.random() * 100000) + ext;
 				
 				// 설정한 path에 파일저장(임시)
 				File serverFile = new File("d://temp" + File.separator + saveFileName); 
-				file.transferTo(serverFile);
+				mf.transferTo(serverFile);	// HDD에 전송
 				
 				//fileList.add();
 				
@@ -82,7 +78,8 @@ public class BoardController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}	
+		}
+		
 		
 		for(Board_MediaDTO m : fileList) {
 			System.out.println(m.getOriginal_file_name());
