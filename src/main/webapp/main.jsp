@@ -10,6 +10,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
+<script src="resources/js/main.js"></script>
 <style>
 
 body{
@@ -112,26 +113,6 @@ h1{
 if(${sessionScope.loginId != null}) {
 	$(location).attr("href", "feed.bo");
 }
-$(document).ready(function(){
-   var formInputs = $('input[type="id"],input[type="password"]');
-   formInputs.focus(function() {
-       $(this).parent().children('p.formLabel').addClass('formTop');
-       $('div#formWrapper').addClass('darken-bg');
-       $('div.logo').addClass('logo-active');
-   });
-   
-   formInputs.focusout(function() {
-      if ($.trim($(this).val()).length == 0){
-      $(this).parent().children('p.formLabel').removeClass('formTop');
-      }
-      $('div#formWrapper').removeClass('darken-bg');
-      $('div.logo').removeClass('logo-active');
-   });
-   
-   $('p.formLabel').click(function(){
-       $(this).parent().children('.form-style').focus();
-   });
-})
 </script>
 
 
@@ -170,7 +151,7 @@ $(document).ready(function(){
 	      
 	      <div class="form-item">
 	      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
-	      <input type="submit" class="login pull-right" value="Log In">
+	      <input id="" type="submit" class="login pull-right" value="Log In">
 	      <div class="clear-fix"></div>
 	      </div> 
 	      </form>
