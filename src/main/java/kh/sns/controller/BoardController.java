@@ -77,9 +77,8 @@ public class BoardController {
 	}
 	
 
-	
-	@RequestMapping("/writeProc.test")
-	public ModelAndView writeProcTest(
+	@RequestMapping("/writeProc.bo")
+	public ModelAndView writeProcBoard(
 			HttpServletRequest request,
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
@@ -111,13 +110,16 @@ public class BoardController {
                 }
           
 				
-				// �꽕�젙�븳 path�뿉 �뙆�씪���옣(�엫�떆)
-				File serverFile = new File(realPath + File.separator + saveFileName); 
-				mf.transferTo(serverFile);	// HDD�뿉 �쟾�넚
-				
-				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));
 				
 				
+				// 설정한 path에 파일저장(임시)
+				// D:\Spring\workspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\AttachedMedia				
+				String complexPath = request.getSession().getServletContext().getRealPath("AttachedMedia");
+				
+				File serverFile = new File(complexPath + File.separator + saveFileName); 
+				mf.transferTo(serverFile);	// HDD에 전송
+				
+				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));				
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -130,22 +132,34 @@ public class BoardController {
 			}
 		}
 		
-		// �뀒�뒪�듃�슜
+		// 테스트용 (else는 나중에 삭제)
 		try {
-			boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+			if(request.getSession().getAttribute("loginId") != null) {
+				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
+			} else {
+				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		
 		for(Board_MediaDTO m : fileList) {
 			System.out.println(m.getOriginal_file_name());
 			System.out.println(m.getSystem_file_name());
-		}
-		
+		}		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("feed.bo");
+		return mav;
+	}
+	
+	@RequestMapping("/idunno.test")
+	public ModelAndView writeProcBoard(HttpServletRequest request) {		
+		
+		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+		
+		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
 

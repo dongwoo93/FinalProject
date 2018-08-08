@@ -369,7 +369,7 @@
         </nav>
     </div>
     <div id="allwrapper">
-    <form action='writeProc.test' method=post enctype="multipart/form-data"> <!-- form 시작 -->
+    <form action='writeProc.bo' method=post enctype="multipart/form-data"> <!-- form 시작 -->
         <div id="centerwrapper" class="pt-3">
             <div class="container" id="contents">
                 <div class="row">
