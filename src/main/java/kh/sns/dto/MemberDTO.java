@@ -73,7 +73,7 @@ public class MemberDTO {
 		this.gender = gender;
 	}
 	
-	public String getNam() {
+	public String getName() {
 		return name;
 	}
 	

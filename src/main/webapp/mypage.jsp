@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -206,13 +208,13 @@ $(document).ready(function() {
               <div class="form-group row in">
   <label for="example-text-input" class="col-2 col-form-label">이름</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="" id="example-text-input">
+    <input class="form-control edit" type="text" value="${ member.name }" id="example-text-input" name="name">
   </div>
 </div>
 <div class="form-group row in">
   <label for="example-search-input" class="col-2 col-form-label">사용자 이름</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="" id="example-search-input">
+    <input class="form-control edit" type="text" value="${ member.nickname }" id="example-search-input" name="nickname">
   </div>
 </div>
 <div class="form-group row in">
@@ -224,23 +226,37 @@ $(document).ready(function() {
 <div class="form-group row in">
   <label for="example-url-input" class="col-2 col-form-label">이메일</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="" id="example-url-input">
+    <input class="form-control edit" type="text" value="${ member.email }" id="example-url-input">
   </div>
 </div>
 <div class="form-group row in">
   <label for="example-tel-input" class="col-2 col-form-label">전화번호</label>
   <div class="col-10">
-    <input class="form-control edit" type="text" value="" id="example-tel-input">
+    <input class="form-control edit" type="text" value="${ member.phone }" id="example-tel-input">
   </div>
 </div>
 <div class="form-group row in">
   <label for="example-password-input" class="col-2 col-form-label">성별</label>
   <div class="col-10 in">
-    <select class="custom-select edit">
-  <option selected value="n">선택안함</option>
-  <option value="m">남성</option>
-  <option value="f">여성</option>
-</select>
+  
+  <c:choose>
+  	<c:when test="${ member.gender eq '남' }">
+  		<select class="custom-select edit">
+		  <option value="n">선택안함</option>
+		  <option selected value="m">남성</option>
+		  <option value="f">여성</option>
+		</select>
+  	</c:when>  
+  	<c:when test="${ member.gender eq '여' }">
+  		<select class="custom-select edit">
+		  <option value="n">선택안함</option>
+		  <option value="m">남성</option>
+		  <option selected value="f">여성</option>
+		</select>
+  	</c:when>  	
+  </c:choose>
+  
+    
   </div>
 </div>
 <div class="form-group row in">

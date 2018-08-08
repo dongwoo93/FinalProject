@@ -61,12 +61,12 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
-		System.out.println(memberService.getOneMember(session.getAttribute("loginId").toString()));
+		MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
+		System.out.println();
 		
 		mav.setViewName("mypage.jsp");
-		return mav;
-		
-		
+		mav.addObject("member", member);
+		return mav;		
 		
 	}
 	
