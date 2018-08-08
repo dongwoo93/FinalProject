@@ -20,7 +20,7 @@
 
 
 	:root {
-		font-size: 10px;
+		font-size: 12px;
 	}
 	
 	*,
@@ -75,7 +75,7 @@
     }
     
     .nav-icon{
-        font-size: 30px;
+        font-size: 25px;
         color: white;
     }
     
@@ -480,8 +480,7 @@ $(document).ready(function() {
             </div>
           </nav>
       </div>
-   <br>
-   <br>
+   <br><br><br>
   
     
     
