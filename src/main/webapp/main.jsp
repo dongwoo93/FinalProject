@@ -45,7 +45,7 @@ div#form{
    width:400px;
    height:320px;
    height:auto;
-/*     background-color: #fff;  */
+/*      background-color: #fff;   */
    margin:auto;
    border-radius: 5px;
    padding:20px;
