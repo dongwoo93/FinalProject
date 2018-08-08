@@ -18,10 +18,9 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 @import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
 
-	/* Base Styles */
+
 	:root {
-		/* Base font size */
-		font-size: 10px;
+		font-size: 12px;
 	}
 	
 	*,
@@ -36,12 +35,12 @@
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
 		 padding-bottom: 3rem; 
-	 
+	 	 
 	 } 
     
     #allwrapper{
-      	height:auto;
-/*      	border : 1px solid black; */
+      	height:auto;    
+/*      border : 1px solid black; */
    	}
     
     #navbar{
@@ -62,7 +61,7 @@
         max-width: 1000px;
     }
     
-    #search{
+    #searchform{
         height: 30px;
         border: 0.6px solid #ccc;
         width : 300px;
@@ -76,7 +75,7 @@
     }
     
     .nav-icon{
-        font-size: 30px;
+        font-size: 25px;
         color: white;
     }
     
@@ -229,6 +228,7 @@
 		width: 80%;
 		height: 100%;
 		background-color: rgba(0, 0, 0, 0.3);
+	 
 	}
 	.gallery-item-info {
 		display: none;
@@ -421,19 +421,27 @@
 			}
 		}
 	}
-		
-	
-	
-	
-	
-	
-
-	
-	
 	
 </style>
 
+<script>
+$(document).ready(function() {
+	
+	$('#searchform').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          var text = $("#searchform").val();
+        	if(text == ""){
+        		alert("검색어를 입력해 주세요");
+        	}
+        	else{
+        		$("#go").attr("onsubmit","return true;");
+        	} 
+        }
+    });
+})
 
+</script>
 
 </head>
 
@@ -445,8 +453,8 @@
               <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="#">SocialWired</a></div>
               <div class="collapse navbar-collapse">
-                <form class="form-inline m-0">
-                  <input class="form-control" type="text" placeholder="검색" id="search">
+                <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
                 </form>
               </div>
               <div id="nav-icons">
@@ -456,7 +464,7 @@
                     <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#"><i class="far fa-compass nav-icon"></i></a>
@@ -465,15 +473,14 @@
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>
             </div>
           </nav>
       </div>
-   <br>
-   <br>
+   <br><br><br>
   
     
     
@@ -529,20 +536,52 @@
 
      <div class="gallery">
       <c:if test="${result.size() != 0}">
-         <c:forEach var="tmp" items="${result}" begin="1" end="5" >
+
+		
+		
+		        <c:forEach var="tmp" items="${result}"   >
 		
 			
-				<div class="gallery-item" id="modal">
-					<img src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop" class="gallery-image">
-					<div class="gallery-item-info">
+				<div class="gallery-item">  
+				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">   
+				
+				 
+					<div class="gallery-item-info" id="mo${tmp.board_seq}">    
 						<ul>
 							<li class="gallery-item-likes"><i class="fas fa-heart"></i> 18</li>
 							<li class="gallery-item-comments"><i class="fas fa-comment"></i> 2</li>
 						</ul>
 					</div>
+				
+				
+				<script>
+  
+                       $("#${tmp.board_seq}").click(function() {
+                    	   $("#seq").val(${tmp.board_seq});  
+                          	$("#boardmodal").modal();
+                             
+                    
+                    	   
+                       });
+                        
+                       $("#mo${tmp.board_seq}").click(function() {
+                    	   $("#seq").val(${tmp.board_seq});  
+                          	$("#boardmodal").modal();
+                             
+                    
+                    	   
+                       });
+
+				</script>
+				
 				</div>
 			
+		<!-- 	<script>
+			num++;
+			</script> -->
 		</c:forEach>
+		
+		
       </c:if>
      
 
@@ -568,6 +607,25 @@
               </div>
           </div>
       </div>
+      
+       <div class="modal" id="boardmodal"> 
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Cencel failed</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <input type=text id="seq">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
   
 </body>
 
