@@ -1,9 +1,5 @@
 package kh.sns.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -11,18 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import kh.sns.dto.BoardDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
@@ -115,8 +109,13 @@ public class BoardController {
 				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
 				
+				
+				
 				// 설정한 path에 파일저장(임시)
-				File serverFile = new File("d://temp" + File.separator + saveFileName); 
+				// D:\Spring\workspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\AttachedMedia				
+				String complexPath = request.getSession().getServletContext().getRealPath("AttachedMedia");
+				
+				File serverFile = new File(complexPath + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
 				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));				
@@ -151,6 +150,15 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("feed.bo");
+		return mav;
+	}
+	
+	@RequestMapping("/idunno.test")
+	public ModelAndView writeProcBoard(HttpServletRequest request) {		
+		
+		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+		
+		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
 
