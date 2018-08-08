@@ -20,7 +20,7 @@
 	/* Base Styles */
 	:root {
 		/* Base font size */
-		font-size: 10px;
+		font-size: 12px;
 		
 	}
 	
@@ -31,7 +31,7 @@
 	}
 	
 	body{
-  		 border : 1px solid black;  
+/*   		 border : 1px solid black;   */
 		 height:auto;
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
@@ -73,7 +73,7 @@
     }
     
     .nav-icon{
-        font-size: 30px;    	
+        font-size: 25px;    	
         color: white;
     }
     
@@ -161,21 +161,17 @@
       color: #4FC3F7;
     }
 
-    #contcenter h3 {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 60%;
-      height: 25px;
-    }
+   
 
     #comment {
-      width: 87%;  
+      width: 85%;  
       height: 5%;
       border: none;
-      font-size: 17px;
+      font-size: 13px;
       padding-left: 2%;
       margin-right: 2%;
+      font-family: "Open Sans", Arial, sans-serif;
+      
     }
 
     #contcenter {
@@ -215,8 +211,35 @@
     	max-height:600px;
     }
     
+    #id{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 11px;
+    }
+    
     #con{
     	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 14px;
+    }
+    
+    #myContents{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 13px;
+
+    }
+    
+    #myComment{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 11px;
+    	
+    }
+    
+    .hidden p {
+ 
+    overflow: hidden;    
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width:60%;
+    height: 20px;
     }
  
 }
@@ -281,15 +304,18 @@ $(document).ready(function() {
           </nav>
       </div>
     <div id="allwrapper">
-      <div id="centerwrapper">
+      <div class=""id="centerwrapper">
           <div class="container" id="contents">
         <div id="board">
+        
+        <script>var num = 1;</script>
+        
         <c:forEach var="tmp" items="${result}">
           <div class="py-2 my-5 " id="peed">   
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-              <br><a class="mt-1 idtxt" href="board.bo">${tmp.id}<br>Dangsan.South Korea</a>
+              <br><a class="mt-1 idtxt" id="id" href="board.bo">${tmp.id}<br>Dangsan.South Korea</a>
              
             </div>    
             <div class="mt-2" id="boardimg">
@@ -309,9 +335,9 @@ $(document).ready(function() {
                     <i class="far fa-comment icon"></i>
                   </a>
                   <ul class="navbar-nav">
-                    <i class="fas fa-circle dot1 "></i>
-                    <i class="fas fa-circle dot"></i>
-                    <i class="fas fa-circle dot"></i>
+                    <i class="fas fa-circle dot1 "></i>&nbsp
+                    <i class="fas fa-circle dot"></i>&nbsp
+                    <i class="fas fa-circle dot"></i>&nbsp  
                   </ul>
                   <a class="btn navbar-btn ml-2 text-white ">
                     <i class="far fa-bookmark icon"></i> 
@@ -319,24 +345,79 @@ $(document).ready(function() {
                 </div>
               </nav>  
               <div id="contcenter" class="mt-2 mx-3 pb-2"> 
-            	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id}
-<%-- 				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a> --%>
-			<script>  
+<%--             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id} --%>
+				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
+		
+		    		    	  	   
 				
-				var regex = /(#[^#\s,;]+)/gi  ;             
-		    	var txt = "${tmp.contents}";     
-		    	var plus = "";    
-		    	  if(txt.length > 48) {
-		    		  plus = "<a href=''>더보기</a>";
-		    	  }
-		    	  var newtxt = txt.replace(regex, "<a href=''>"+"$1"+"</a>");        
-		    	  $("#con:last-child").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);	        
-		    
-		    </script>    
+			
+				<div class="hidden" id="hidden${tmp.board_seq}">
 				
+	 		   	<script>
+				//   	
+				   //	$("#${tmp.board_seq}").click(function() { 
+				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
+				  // 	});
+				   	
+// 				   		var x = document.getElementById("hidden${tmp.board_seq}");
+// 					    if (x.style.display === "none") {
+// 					        x.style.display = "block";
+// 					    } else {
+// 					        x.style.display = "none";
+// 					    }    
+   
+					
+		    	
+					/* function myFunction() {   
+					    var x = document.getElementById("hidden${tmp.board_seq}");
+					    if (x.style.display === "none") {
+					        x.style.display = "block";
+					    } else {
+					        x.style.display = "none";
+					    }
+					} */
+					
+			 /* 	
+					var regex = /(#[^#\s,;]+)/gi  ;             
+	 		    	var txt = "${tmp.contents}";     
+			    	
+			    	  var newtxt = txt.replace(regex, "<a href=''>"+"$1"+"</a>");        
+	 		    	  $("#con:last-child").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);	        
+			 */
+
+				 </script>
+				  
+				
+					<p id="myContents${tmp.board_seq}" >${tmp.contents}
+					
+					<script>    
+					var plus = "";    
+					var txt = "${tmp.contents}";       
+			    	  if(txt.length > 48) {                
+			    		  plus = "<p id='${tmp.board_seq}' >&nbsp-더보기</p>";
+	 		    	  }
+			     
+					$("#myContents${tmp.board_seq}:last-child").after("</p>"+plus);   			
+					
+					
+				  	
+				   	$("#${tmp.board_seq}").click(function() { 
+				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
+				   	});
+				   	
+					</script>
+				</div>
+	
+	
+	
+	
+				<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>	
+	
+			
               </div>   
+           
               <div class="py-2">     	
-                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                &nbsp&nbsp&nbsp<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
                 <i class="fas fa-ellipsis-h btn mr-3"></i>      
               </div>
             </div>
@@ -344,10 +425,11 @@ $(document).ready(function() {
           </c:forEach>
         </div>
         <div class="col-md-6 align-self-center" id="side">
-          <br> </div>
+          <br> 
+        </div>
       </div>
       </div>
-
+    
       <div class="pt-4 pb-3  " id="footer">
            <div class="container">
               <div class="row" >

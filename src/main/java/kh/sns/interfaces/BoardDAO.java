@@ -3,8 +3,8 @@ package kh.sns.interfaces;
 import java.util.List;
 
 import kh.sns.dto.BoardDTO;
-
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.FollowInfo;
 
 public interface BoardDAO {
 	
@@ -15,8 +15,15 @@ public interface BoardDAO {
 	
 	public int insertNewBoardContent(BoardDTO article) throws Exception;
 	
-	public int insertNewMedia(Board_MediaDTO media) throws Exception;
+	public int insertNewMedia(Board_MediaDTO media) throws Exception;	
+
+	/* 태그 넣는 기능 */
+	public int[] insertHashTags(BoardDTO article) throws Exception;
 	
 	public int selectBoardSeqRecentCurrVal() throws Exception;
+	
+	public int insertFollowInfo(FollowInfo fi) throws Exception;
+	public int deleteFollowInfo(FollowInfo fi) throws Exception;	// 언팔
+	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception;
 
 }
