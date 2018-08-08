@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	AOS.init();
    var formInputs = $('input[type="id"],input[type="password"]');
    formInputs.focus(function() {
        $(this).parent().children('p.formLabel').addClass('formTop');
@@ -18,25 +19,30 @@ $(document).ready(function(){
        $(this).parent().children('.form-style').focus();
    });
    
-   $("#action").click(function() {
-		
-		var val = $("#text").val();
-		$("#text").val("");
+
 		
 		
-		$.ajax({
-			url:"ajax01.do",
-			type:"get",
-			data:{value:val},
-			success:function(response) {
-				$("#response").text(response);
-			},
-			error:function() {
-				console.log("에러 발생!");
-			},
-			complete:function() {
-				console.log("성공이건 실패건 어찌되었든 ajax 종료");
-			}
-		});
-	})
-})
+		
+	
+   $("#loginform").submit(function(e) {
+
+
+	    var form = $(this);
+
+	    $.ajax({
+	           type: "POST",
+	           url: "login.do",
+	           data: form.serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	               if(data == 1) {
+	            	   $(location).attr("href", "feed.bo");
+	               }else {
+	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
+	               }
+	           }
+	         });
+
+	    e.preventDefault(); // avoid to execute the actual submit of the form.
+	});
+});
