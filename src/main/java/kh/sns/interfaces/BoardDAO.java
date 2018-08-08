@@ -3,8 +3,8 @@ package kh.sns.interfaces;
 import java.util.List;
 
 import kh.sns.dto.BoardDTO;
-
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.FollowInfo;
 
 public interface BoardDAO {
 	
@@ -21,5 +21,8 @@ public interface BoardDAO {
 	public int[] insertHashTags(BoardDTO article) throws Exception;
 	
 	public int selectBoardSeqRecentCurrVal() throws Exception;
+	
+	public int insertFollowInfo(FollowInfo fi) throws Exception;
+	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception;
 
 }
