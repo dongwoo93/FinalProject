@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
@@ -439,6 +439,20 @@ $(document).ready(function() {
         	} 
         }
     });
+	
+	$("#boardmodal").on("shown.bs.modal", function () { 
+		var seq = $("#seq").val();
+
+	    $.ajax({
+	           type: "POST",
+	           url: "boardView.bo",
+	           data: {seq:seq},
+	           success: function(data)
+	           {
+	               $("#seq").val(data.contents);
+	           }
+	         });
+	});
 })
 
 </script>
@@ -542,11 +556,11 @@ $(document).ready(function() {
 		        <c:forEach var="tmp" items="${result}"   >
 		
 			
-				<div class="gallery-item">  
-				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">   
+				<div class="gallery-item" id="${tmp.board_seq}">  
+				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' >   
 				
 				 
-					<div class="gallery-item-info" id="mo${tmp.board_seq}">    
+					<div class="gallery-item-info" >    
 						<ul>
 							<li class="gallery-item-likes"><i class="fas fa-heart"></i> 18</li>
 							<li class="gallery-item-comments"><i class="fas fa-comment"></i> 2</li>
@@ -564,14 +578,7 @@ $(document).ready(function() {
                     	   
                        });
                         
-                       $("#mo${tmp.board_seq}").click(function() {
-                    	   $("#seq").val(${tmp.board_seq});  
-                          	$("#boardmodal").modal();
-                             
                     
-                    	   
-                       });
-
 				</script>
 				
 				</div>
