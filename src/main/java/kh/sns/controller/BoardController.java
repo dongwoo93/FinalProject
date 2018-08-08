@@ -7,15 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
@@ -160,6 +165,14 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		return mav;
+	}
+	
+	@RequestMapping("/boardView.bo")
+	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		BoardDTO result = boardService.getBoardModal(seq);
+		new Gson().toJson(result,response.getWriter());
 	}
 
 }

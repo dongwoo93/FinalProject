@@ -65,6 +65,11 @@ public class IBoardService implements BoardService {
 		
 		return contentResult * mediaResult;
 	}
+
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+		return dao.getBoardModal(seq);
+	}
 	
 	@Override
 	public int insertFollowInfo(FollowInfo fi) throws Exception {

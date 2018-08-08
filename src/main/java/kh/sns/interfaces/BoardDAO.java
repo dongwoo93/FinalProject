@@ -22,6 +22,8 @@ public interface BoardDAO {
 	
 	public int selectBoardSeqRecentCurrVal() throws Exception;
 	
+	public BoardDTO getBoardModal(String seq) throws Exception;
+	
 	public int insertFollowInfo(FollowInfo fi) throws Exception;
 	public int deleteFollowInfo(FollowInfo fi) throws Exception;	// 언팔
 	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception;

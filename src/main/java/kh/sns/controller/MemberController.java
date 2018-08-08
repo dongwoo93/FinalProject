@@ -19,9 +19,6 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	private boolean isMav = false;
-
 
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
