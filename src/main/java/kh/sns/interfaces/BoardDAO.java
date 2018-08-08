@@ -21,5 +21,7 @@ public interface BoardDAO {
 	public int[] insertHashTags(BoardDTO article) throws Exception;
 	
 	public int selectBoardSeqRecentCurrVal() throws Exception;
+	
+	public BoardDTO getBoardModal(String seq) throws Exception;
 
 }

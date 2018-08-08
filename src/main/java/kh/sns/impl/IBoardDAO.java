@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -137,4 +138,36 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+//		BasicDataSource dataSource = new BasicDataSource();
+//		dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+//		dataSource.setUsername("sns");
+//		dataSource.setPassword("sns");
+//		dataSource.setUrl("jdbc:oracle:thin:@14.38.139.185:1521:xe");
+//		dataSource.setMaxActive(10);
+//		dataSource.setMaxIdle(5);
+//		dataSource.setInitialSize(5);
+//		
+//		JdbcTemplate template = new JdbcTemplate(dataSource);
+		String sql = "select * from board where board_seq=?";
+		
+		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		}).get(0);
+	}
+//	public static void main(String[] args) throws Exception{
+//		System.out.println(new IBoardDAO().getBoardModal("153").getContents());
+//	}
 }

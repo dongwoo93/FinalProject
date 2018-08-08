@@ -12,10 +12,8 @@ public interface BoardService {
 	public List<BoardDTO> getFeed(String id) throws Exception ;
 	public List<BoardDTO> getBoard(String id);
 	public List<BoardDTO> search(String keyword);
-	 
-	
-	
 	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception;
+	public BoardDTO getBoardModal(String seq) throws Exception;
 	
 
 }
