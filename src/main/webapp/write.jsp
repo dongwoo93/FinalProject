@@ -13,10 +13,15 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+     <!-- jQuery ui style sheet -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- jQuery ui library -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <style>
         /*    전체적인틀 CSS*/
-
         #allwrapper {
             height: auto;
         }
@@ -151,6 +156,41 @@
             line-height:620px;
         }
         
+        /*위치 모달 css*/
+		    .tagicon{
+		        color: gray;
+		    }
+		/*구글 지도 api*/
+		     #map {
+		        width: 100%;
+		        height: 400px;
+		        border-radius: 8px;
+		        
+		      }
+		    
+		      .pac-controls label {
+		        font-family: Roboto;
+		        font-size: 13px;
+		        font-weight: 300;
+		      }
+		
+		      #pac-input {
+		        font-size: 20px;
+		        font-weight: 500;
+		        width: 600px;
+		        background:rgba(255, 255, 255, 0.7);
+		        border: none;
+		        border-radius: 5px;
+		      }
+		    
+		    .pac-container{
+		        z-index: 1050;
+		    }
+		/*사람태그모달 태그1*/
+		    #span{
+		        position: absolute;
+		    }
+        
         
         
         
@@ -195,81 +235,101 @@
         }
         
 
-        $(document).ready(function() {    
-            
-           
-            
-            $('#fileSelect').change(function() {
-                alert('change')
-                $('#attachDivInner').html('');
-                readImage(this);
-            })
+//         $(document).ready(function() {
+//             $('#fileSelect').change(function() {
+//                 alert('change')
+//                 $('#attachDivInner').html('');
+//                 readImage(this);
+//             })
 
-            var selImages = [];
+//             var selImages = [];
                    
+  
+//             function readImage(input) {
 
-            function readImage(input) {
+//                 var files = input.files;
 
-                var files = input.files;
+//                 console.log(files);
 
-                console.log(files);
+//                 for (i = 0; i < files.length; i++) {
 
-                for (i = 0; i < files.length; i++) {
+//                     console.log(files[i])
 
-                    console.log(files[i])
+//                     if (files[i].size > 1024 * 1024 * 10) {
+//                         alert('10MB 초과');
+//                         continue;
+//                     }
 
-                    if (files[i].size > 1024 * 1024 * 10) {
-                        alert('10MB 초과');
-                        continue;
-                    }
+//                     if (input.files && input.files[i]) {
+//                         var reader = new FileReader();
 
-                    if (input.files && input.files[i]) {
-                        var reader = new FileReader();
-
-                        if (i == 0) {
-                            reader.onload = function(e) {
-                                $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
+//                         if (i == 0) {
+//                             reader.onload = function(e) {
+//                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
                                 
                                 
-                            }
+//                             }
                         
-                        } else {
-                            reader.onload= function(e) {
-                                $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
-                                // alert('Final Max Height :' + maxHeight) 
-//                                if (maxHeight > 620){
-//                                    maxHeight = 620;
-//                                } else if (maxHeight < 400){
-//                                    maxHeight = 400;
-//                                } else {
-//                                    maxHeight = maxHeight
-//                                }
-//                             $('#attachDiv').css('height', maxHeight + 'px');
-//                                maxHeight = 0;
+//                         } else {
+//                             reader.onload= function(e) {
+//                                 $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
+//                                 // alert('Final Max Height :' + maxHeight) 
+// //                                if (maxHeight > 620){
+// //                                    maxHeight = 620;
+// //                                } else if (maxHeight < 400){
+// //                                    maxHeight = 400;
+// //                                } else {
+// //                                    maxHeight = maxHeight
+// //                                }
+// //                             $('#attachDiv').css('height', maxHeight + 'px');
+// //                                maxHeight = 0;
                                 
                                 
   
-                            }                          
-                        }             
+//                             }                          
+//                         }             
                         
                         
                         
-                    }
+//                     }
 
-                    reader.readAsDataURL(input.files[i]);
-                    console.log(reader);     
+//                     reader.readAsDataURL(input.files[i]);
+//                     console.log(reader);     
                    
                               
                     
-                }             
+//                 }             
                 
                     
-                    // $('.imgWidth100').map(function(e){console.log(e)});
+//                     // $('.imgWidth100').map(function(e){console.log(e)});
                 
                
 
-            }
-        })
+//             }
+            
+//             $('img').click(function(e) {
+//                 var offset = $(this).offset();
+//                 var X = (e.pageX - offset.left);
+//                 var Y = (e.pageY - offset.top);
+                
+                
+//                 $("#span").css({
+//                     "top":(Y),
+//                     "left":(X+15)
+//                 }).tooltip('show');
+//             });
+            
+//             $(function () {
+//               $('[data-toggle="tooltip"]').tooltip()
+//             });
+//             $("#span").tooltip({trigger: 'manual'});
+//             $("#friendtag").tooltip({'trigger':'focus'});
+            
+//             ("#searchfriend").autocomplete({source: ${}});
+
+//         })
+    
+    
     </script>
 
 </head>
@@ -402,9 +462,9 @@
                                 <textarea id="writetextarea" class="form-control p-0" placeholder="Contents..." name=contents></textarea>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><a>위치 태그하기</a></li>
-                                <li class="list-group-item"><a>사람 태그하기</a></li>
-                            </ul>
+		                        <li class="list-group-item"><i class="fas fa-map-marker-alt tagicon mr-3"></i><a onclick="placemodal()" style="cursor: pointer;" id="place">위치 태그하기</a></li>
+		                        <li class="list-group-item"><i class="fas fa-users tagicon mr-2 pr-1"></i><a onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
+		                      </ul>
                         </div>
                         <div class="py-3">
                             <button type="submit" id="submitbutton"><i class="fas fa-arrow-right fa-2x"></i></button>
@@ -415,7 +475,11 @@
         </div>
         </form>	<!-- form 끝 -->
 
-        <div class="pt-4 pb-3" id="footer">
+     
+    </div>
+    
+    
+       <div class="pt-4 pb-3" id="footer">
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
@@ -428,7 +492,186 @@
                 </div>
             </div>
         </div>
-    </div>
+        
+        <!--       위치태그하기 Modal부분-->
+      <div id="placeModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-map-marker-alt tagicon mr-2"></i>위치 태그하기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div id="pac-container">
+                    <input id="pac-input" type="text" placeholder="Enter a location">
+                </div>
+                <div id="map"></div>
+              </div>
+              <div class="modal-footer">
+                <p>핀클릭시 장소 태그</p>
+              </div>
+            </div>
+          </div>
+        </div>
+<!--        위치태그하기 Modal 끝-->
+
+<!--       사람태그하기 Modal부분-->
+      <div id="personModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-users tagicon mr-2"></i>사람 태그하기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                      <div class="row">
+                        <div class="col-4">
+                           <input type="text" class="form-control" placeholder="friend" id="searchfriend">
+                          <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                              <a class="nav-link ml-0" href="" data-toggle="pill" data-target="#tabtwo">Tab 2</a>
+                            </li>
+                            <li class="nav-item">
+                              <a href="" class="nav-link ml-0" data-toggle="pill" data-target="#tabthree">Tab 3</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-8" >
+                          <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tabone" role="tabpanel">
+                              <img src="" alt="My Image" >
+                                <span id="span" data-placement="top" title="hyong_star"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                
+              </div>
+              <div class="modal-footer">
+                <p>핀클릭시 장소 태그</p>
+              </div>
+            </div>
+          </div>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
+    async defer></script>
+        </div>
+<!--        사람태그하기 Modal 끝-->
+	
+	<script>
+      var map;
+      var i = 1;
+      function placemodal() {
+          
+          $('#placeModal').modal('show');
+          if(i == 1){
+              if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(function(position) {
+                        var pos = {
+                          lat: position.coords.latitude,
+                          lng: position.coords.longitude
+                        };
+
+                        map.setCenter(pos);
+                  });
+                } else {
+                  alert("현재위치를 표시할 수 없습니다.");
+                }
+          }
+          
+          i++;
+      }
+      
+      function personmodal() {
+          
+          $('#personModal').modal('show');
+          
+      }
+      
+      function initAutocomplete() {
+          map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -33.8688, lng: 151.2195},
+          zoom: 13,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false
+        });
+          
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+          
+        var infowindow = new google.maps.InfoWindow();
+        var infowindowContent = document.getElementById('infowindow-content');
+        infowindow.setContent(infowindowContent);
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+          document.getElementById('pac-input').value = "";
+
+          if (places.length == 0) {
+            alert("해당하는 위치가 없습니다.");
+            return;
+          }
+
+          markers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+            
+          markers = [];
+
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+              
+            var marker = new google.maps.Marker({
+              map: map,
+              title: place.name,
+              position: place.geometry.location
+            });
+
+            markers.push(marker);
+
+            if (place.geometry.viewport) {
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            } 
+            
+             marker.addListener('click', function() {
+                  $("#place").text(place.name);
+                  var pos1 = {
+                    lat: marker.getPosition().lat(),
+                    lng: marker.getPosition().lng()
+                  };
+                  
+                  
+                  map.setCenter(pos1);
+                  $('#placeModal').modal('hide');
+             });
+          });
+         
+          map.fitBounds(bounds);
+        });
+      }
+      
+
+    </script>
+	
+	
+	
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

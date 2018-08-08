@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.interfaces.BoardDAO;
 
 @Repository
@@ -110,5 +111,7 @@ public class IBoardDAO implements BoardDAO  {
 		
 		return list.get(0);
 	}
+	
+	
 
 }

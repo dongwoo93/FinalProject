@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.sns.dto.BoardDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.interfaces.BoardService;
 
 @Service
@@ -30,6 +31,7 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> search(String keyword) {
 		return this.dao.search(keyword);
 	}
+	
 	
 	
 		

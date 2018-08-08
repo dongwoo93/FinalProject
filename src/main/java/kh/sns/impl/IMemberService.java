@@ -24,6 +24,10 @@ public class IMemberService implements MemberService{
 	}
 
 
+	@Override
+	public List<MemberDTO> selectfriendlist(String id) throws Exception{
+		return this.dao.selectfriendlist(id);
+	}
 
 //	@Override
 //	public boolean isIdExist(String id) {

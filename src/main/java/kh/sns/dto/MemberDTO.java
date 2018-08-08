@@ -8,12 +8,17 @@ public class MemberDTO {
 	private String email;
 	private String phone;
 	private String gender;
+	private String name;
+	
+	public String toString() {
+		return this.id +":" + this.pw + " :" + this.nickname + " :" + this.email + " : " + this.phone + " : " + this.gender + " : " +this.name;
+	}
 	
 	public MemberDTO() {
 		
 	}
 
-	public MemberDTO(String id, String pw, String nickname, String email, String phone, String gender) {
+	public MemberDTO(String id, String pw, String nickname, String email, String phone, String gender,String name) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -21,6 +26,7 @@ public class MemberDTO {
 		this.email = email;
 		this.phone = phone;
 		this.gender = gender;
+		this.name = name;
 	}
 
 	public String getId() {
@@ -70,6 +76,15 @@ public class MemberDTO {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 
 	

@@ -1,8 +1,8 @@
 package kh.sns.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +48,31 @@ public class MemberController {
 		}
 		return mav;
 	}
+	
+	
+
+	@RequestMapping("/write.board")
+	public ModelAndView writeBoard(HttpSession session) {
+		System.out.println("@@WRITE BOARD");
+		ModelAndView mav = new ModelAndView();
+		String id = (String)  session.getAttribute("loginId");
+		List<MemberDTO> list = null;
+		List<String> friendlist = new ArrayList<>();
+		
+		try {
+			list = memberService.selectfriendlist(id);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		for(MemberDTO tmp : list) {
+			friendlist.add(tmp.getNickname());
+		}
+		mav.addObject("friendlist", friendlist);
+		mav.setViewName("write.jsp");
+		return null;
+	}
+
 	
 	
 
