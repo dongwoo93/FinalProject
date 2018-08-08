@@ -1,6 +1,7 @@
 package kh.sns.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +23,7 @@ public class HashTagUtil {
 		
 			extractHashTag = specialCharacterReplace(m.group());
 
-			if(extractHashTag != null) {
+			if(extractHashTag != null && !extractHashTag.equals("#")) {
 				list.add(extractHashTag.replace("#", ""));
 				
 			}
@@ -30,6 +31,8 @@ public class HashTagUtil {
 		
 		// 테스트
 		list.forEach(System.out::println);
+		
+		list = new ArrayList<>(new HashSet<String>(list));
 		
 		return list;
 	}

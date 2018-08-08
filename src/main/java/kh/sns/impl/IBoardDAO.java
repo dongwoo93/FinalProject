@@ -123,7 +123,7 @@ public class IBoardDAO implements BoardDAO  {
 		return template.batchUpdate(sql, new BatchPreparedStatementSetter() {			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-
+				
 				ps.setInt(1, article.getBoard_seq());
 				ps.setString(2, hashTagList.get(i));
 				
