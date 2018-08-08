@@ -1,9 +1,5 @@
 package kh.sns.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -11,18 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import kh.sns.dto.BoardDTO;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
@@ -89,8 +88,8 @@ public class BoardController {
 		return mav;
 	}
 
-	@RequestMapping("/writeProc.test")
-	public ModelAndView writeProcTest(
+	@RequestMapping("/writeProc.bo")
+	public ModelAndView writeProcBoard(
 			HttpServletRequest request,
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
@@ -115,13 +114,16 @@ public class BoardController {
 				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
 				
+				
+				
 				// 설정한 path에 파일저장(임시)
-				File serverFile = new File("d://temp" + File.separator + saveFileName); 
+				// D:\Spring\workspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\AttachedMedia				
+				String complexPath = request.getSession().getServletContext().getRealPath("AttachedMedia");
+				
+				File serverFile = new File(complexPath + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
-				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));
-				
-				
+				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));				
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -134,23 +136,43 @@ public class BoardController {
 			}
 		}
 		
-		// 테스트용
+		// 테스트용 (else는 나중에 삭제)
 		try {
-			boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+			if(request.getSession().getAttribute("loginId") != null) {
+				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
+			} else {
+				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		
 		for(Board_MediaDTO m : fileList) {
 			System.out.println(m.getOriginal_file_name());
 			System.out.println(m.getSystem_file_name());
-		}
-		
+		}		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("feed.bo");
 		return mav;
+	}
+	
+	@RequestMapping("/idunno.test")
+	public ModelAndView writeProcBoard(HttpServletRequest request) {		
+		
+		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+		
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	
+	@RequestMapping("/boardView.bo")
+	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		BoardDTO result = boardService.getBoardModal(seq);
+		new Gson().toJson(result,response.getWriter());
 	}
 
 }
