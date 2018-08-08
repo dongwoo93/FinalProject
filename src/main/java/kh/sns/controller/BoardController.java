@@ -7,17 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
 
@@ -36,17 +42,17 @@ public class BoardController {
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
-			System.out.println("여기는 feed.bo");
+			System.out.println("�뿬湲곕뒗 feed.bo");
 			e.printStackTrace();
 		}	
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
-		mav.setViewName("timeline.jsp");;	
+		mav.setViewName("timeline.jsp");	
 		return mav;
 	}
 	
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session){
+	public ModelAndView getBoard(HttpSession session) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
@@ -55,13 +61,24 @@ public class BoardController {
 		return mav;
 	}
 	
+	//search
 	@RequestMapping("/search.bo")
-	public ModelAndView search(HttpSession session, String search){
+	public ModelAndView search(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
-		List<BoardDTO> result = boardService.search(search);
+		List<Board_TagsDTO> result = boardService.search("search");
 		System.out.println(result.size());
 		mav.addObject("result", result);	
+		mav.setViewName("search.jsp");
+		return mav;
+	}
+	
+	//search
+	@RequestMapping("/search.bo")
+	public ModelAndView search2(HttpSession session, String search2) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		List<Board_MediaDTO> media = boardService.search2("search");
+		mav.addObject("media", media);
 		mav.setViewName("search.jsp");
 		return mav;
 	}
@@ -160,6 +177,14 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		return mav;
+	}
+	
+	@RequestMapping("/boardView.bo")
+	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		BoardDTO result = boardService.getBoardModal(seq);
+		new Gson().toJson(result,response.getWriter());
 	}
 
 }
