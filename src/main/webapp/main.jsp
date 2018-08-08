@@ -4,15 +4,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
-<script src="resources/js/main.js"></script>
 <style>
 
 body{
@@ -47,7 +44,7 @@ div#form{
    width:400px;
    height:320px;
    height:auto;
-/*      background-color: #fff;   */
+/*     background-color: #fff;  */
    margin:auto;
    border-radius: 5px;
    padding:20px;
@@ -108,11 +105,6 @@ h1{
    color 
 }
 
-#result {
-text-align: center;
-color: white;
-}
-
 
 </style>
 
@@ -120,6 +112,26 @@ color: white;
 if(${sessionScope.loginId != null}) {
 	$(location).attr("href", "feed.bo");
 }
+$(document).ready(function(){
+   var formInputs = $('input[type="id"],input[type="password"]');
+   formInputs.focus(function() {
+       $(this).parent().children('p.formLabel').addClass('formTop');
+       $('div#formWrapper').addClass('darken-bg');
+       $('div.logo').addClass('logo-active');
+   });
+   
+   formInputs.focusout(function() {
+      if ($.trim($(this).val()).length == 0){
+      $(this).parent().children('p.formLabel').removeClass('formTop');
+      }
+      $('div#formWrapper').removeClass('darken-bg');
+      $('div.logo').removeClass('logo-active');
+   });
+   
+   $('p.formLabel').click(function(){
+       $(this).parent().children('.form-style').focus();
+   });
+});
 </script>
 
 
@@ -143,7 +155,7 @@ if(${sessionScope.loginId != null}) {
 		<p class="text-light">We ♥ new friends</p>
 		</div>
 	
-		<form id="loginform" method="post">
+		<form action="login.do" method="post">
 	      <div class="form-item">
 	         <p class="formLabel">id</p>
 	         <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
@@ -153,14 +165,12 @@ if(${sessionScope.loginId != null}) {
 	         <input type="password" name="pw" id="password" class="form-style" />
 	         <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
 	         <br>
-	         <div id="result"></div>
-	         
+	         <p class><a href="" ><small>Forgot Password ?</small></a></p>   
 	      </div>
 	      
 	      <div class="form-item">
-	      <p class=""><a href="" ><small>Forgot Password ?</small></a></p>   
 	      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
-	      <input id="submit" type="submit" class="login pull-right" value="Log In">
+	      <input type="submit" class="login pull-right" value="Log In">
 	      <div class="clear-fix"></div>
 	      </div> 
 	      </form>
