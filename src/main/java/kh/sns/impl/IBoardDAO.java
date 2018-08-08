@@ -43,7 +43,7 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where contents like '%'||?||'%'";
+		String sql = "select * from board where contents like '%'||?||'%'"; 
 		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
