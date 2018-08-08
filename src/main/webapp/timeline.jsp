@@ -31,7 +31,7 @@
 	}
 	
 	body{
-  		 border : 1px solid black;  
+/*   		 border : 1px solid black;   */
 		 height:auto;
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
