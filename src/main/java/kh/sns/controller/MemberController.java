@@ -3,6 +3,7 @@ package kh.sns.controller;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	private boolean isMav = false;
 
 
 	@RequestMapping("/main.do")
@@ -33,8 +36,9 @@ public class MemberController {
 	
 	
 	@RequestMapping("/login.do")
-	public ModelAndView memberLogin(MemberDTO dto, HttpSession session) {
+	public void memberLogin(MemberDTO dto, HttpSession session, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		response.setCharacterEncoding("UTF-8");
 		System.out.println(dto.getId());
 		System.out.println(dto.getPw());
 		int result = this.memberService.loginMem(dto);
@@ -42,11 +46,13 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
-			mav.setViewName("feed.bo");
 		}else {
-			mav.setViewName("loginfail.jsp");
+			
 		}
-		return mav;
+		response.getWriter().print(result);
+		response.getWriter().flush();
+		response.getWriter().close();
+		
 	}
 	
 	
