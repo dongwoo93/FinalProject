@@ -228,6 +228,7 @@
 		width: 80%;
 		height: 100%;
 		background-color: rgba(0, 0, 0, 0.3);
+	 
 	}
 	.gallery-item-info {
 		display: none;
@@ -535,20 +536,52 @@ $(document).ready(function() {
 
      <div class="gallery">
       <c:if test="${result.size() != 0}">
-         <c:forEach var="tmp" items="${result}" begin="1" end="5" >
+
+		
+		
+		        <c:forEach var="tmp" items="${result}"   >
 		
 			
-				<div class="gallery-item" >
-					<img src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop" class="gallery-image">
-					<div class="gallery-item-info">
+				<div class="gallery-item">  
+				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">   
+				
+				 
+					<div class="gallery-item-info" id="mo${tmp.board_seq}">    
 						<ul>
 							<li class="gallery-item-likes"><i class="fas fa-heart"></i> 18</li>
 							<li class="gallery-item-comments"><i class="fas fa-comment"></i> 2</li>
 						</ul>
 					</div>
+				
+				
+				<script>
+  
+                       $("#"+ ${tmp.board_seq}).click(function() {
+                    	   $("#seq").val(${tmp.board_seq});  
+                          	$("#boardmodal").modal();
+                             
+                    
+                    	   
+                       });
+                        
+                       $("#mo"+ ${tmp.board_seq}).click(function() {
+                    	   $("#seq").val(${tmp.board_seq});  
+                          	$("#boardmodal").modal();
+                             
+                    
+                    	   
+                       });
+
+				</script>
+				
 				</div>
 			
+		<!-- 	<script>
+			num++;
+			</script> -->
 		</c:forEach>
+		
+		
       </c:if>
      
 
@@ -574,6 +607,25 @@ $(document).ready(function() {
               </div>
           </div>
       </div>
+      
+       <div class="modal" id="boardmodal"> 
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Cencel failed</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <input type=text id="seq">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
   
 </body>
 
