@@ -538,7 +538,7 @@ $(document).ready(function() {
          <c:forEach var="tmp" items="${result}" begin="1" end="5" >
 		
 			
-				<div class="gallery-item" id="modal">
+				<div class="gallery-item" >
 					<img src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop" class="gallery-image">
 					<div class="gallery-item-info">
 						<ul>
