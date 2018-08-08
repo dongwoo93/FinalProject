@@ -47,7 +47,7 @@ public class BoardController {
 		}	
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
-		mav.setViewName("timeline.jsp");;	
+		mav.setViewName("timeline.jsp");	
 		return mav;
 	}
 	
