@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
@@ -22,16 +23,20 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		return dao.getFeed(id);
 	}
-
+	
+	@Override
 	public List<BoardDTO> getBoard(String id) {
 		return this.dao.getBoard(id);
 	}
 
 
 	@Override
-	public List<BoardDTO> search(String keyword) {
+	public List<Board_TagsDTO> search(String keyword) {
 		return this.dao.search(keyword);
+		
+		
 	}
+	
 	
 	
 		
@@ -64,6 +69,12 @@ public class IBoardService implements BoardService {
 		} 			
 		
 		return contentResult * mediaResult;
+	}
+
+	@Override
+	public List<Board_MediaDTO> search2(String media) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
