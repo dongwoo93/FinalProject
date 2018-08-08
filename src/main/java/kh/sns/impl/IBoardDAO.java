@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
@@ -95,7 +96,6 @@ public class IBoardDAO implements BoardDAO  {
 	 * 
 	 * 편의상 여기다 일단 만들고 나중에 필요하면 별도 클래스로 분리합니다.
 	 */
-
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
 
@@ -107,11 +107,11 @@ public class IBoardDAO implements BoardDAO  {
 
 		String sql = "select board_seq.currval from dual";
 
-		List<Integer> list = template.query(sql, (rs, rowNum) -> {
+		List<Integer> temp = template.query(sql, (rs, rowNum) -> {
 			return rs.getInt(1);	
 		});
-
-		return list.get(0);
+				
+		return temp.get(0);
 	}
 
 	@Override
@@ -136,6 +136,57 @@ public class IBoardDAO implements BoardDAO  {
 			
 		});
 	}
+	
+	@Override
+	public int insertFollowInfo(FollowInfo fi) throws Exception {
+		String sql = "insert into member_follow values(?, ?, sysdate)";
+		return template.update(sql, fi.getId(), fi.getTargetId());
+	}
+	
+	@Override
+	public int deleteFollowInfo(FollowInfo fi) throws Exception {
+		String sql = "delete from member_follow where id=? and target_id=?";
+		return template.update(sql, fi.getId(), fi.getTargetId());
+	}
+	
+	@Override
+	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
+		
+		String sql = "select * from board where id "
+				+ "in (select target_id from member_follow where id=?) "
+				+ "order by writedate desc";
+		
+		return template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+			BoardDTO article = new BoardDTO();
+			article.setBoard_seq(rs.getInt(1));
+			article.setContents(rs.getString(2));
+			article.setId(rs.getString(3));
+			article.setWritedate(rs.getString(4));
+			article.setRead_count(rs.getString(5));
+			article.setIs_allow_comments(rs.getString(6));
+			return article;
+		});
+	}
+	
+	@Override	// id가 팔로한 사람들의 수
+	public int getFollowingCount(String id) throws Exception {
+		String sql = "select count(*) from member_follow where id=?";
+		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
+			return rs.getInt(1);
+		});
+		return temp.get(0);
+		
+	}
+	
+	@Override	// id를 팔로하는 사람들의 수
+	public int getFollowerCount(String id) throws Exception {
+		String sql = "select count(*) from member_follow where target_id=?";
+		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
+			return rs.getInt(1);
+		});
+		return temp.get(0);
+	}
+	
 
 	@Override
 	public BoardDTO getBoardModal(String seq) throws Exception {

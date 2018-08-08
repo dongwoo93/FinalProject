@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kh.sns.dto.BoardDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardService;
 
 @Service
@@ -60,9 +61,7 @@ public class IBoardService implements BoardService {
 			for(int i : hashTagResult) {
 				System.out.print(i);
 			}
-		} 	
-		
-		
+		} 			
 		
 		return contentResult * mediaResult;
 	}
@@ -71,4 +70,30 @@ public class IBoardService implements BoardService {
 	public BoardDTO getBoardModal(String seq) throws Exception {
 		return dao.getBoardModal(seq);
 	}
+	
+	@Override
+	public int insertFollowInfo(FollowInfo fi) throws Exception {
+		return dao.insertFollowInfo(fi);
+	}
+	
+	@Override
+	public int deleteFollowInfo(FollowInfo fi) throws Exception {
+		return dao.deleteFollowInfo(fi);
+	}
+	
+	@Override
+	public int getFollowingCount(String id) throws Exception {
+		return dao.getFollowingCount(id);
+	}
+	
+	@Override
+	public int getFollowerCount(String id) throws Exception {
+		return dao.getFollowerCount(id);
+	}
+	
+	@Override
+	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
+		return dao.getBoardFromFollowingList(id);
+	}
+	
 }
