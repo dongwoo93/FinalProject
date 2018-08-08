@@ -89,8 +89,8 @@ public class BoardController {
 		return mav;
 	}
 
-	@RequestMapping("/writeProc.test")
-	public ModelAndView writeProcTest(
+	@RequestMapping("/writeProc.bo")
+	public ModelAndView writeProcBoard(
 			HttpServletRequest request,
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
@@ -119,9 +119,7 @@ public class BoardController {
 				File serverFile = new File("d://temp" + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
-				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));
-				
-				
+				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));				
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -134,19 +132,22 @@ public class BoardController {
 			}
 		}
 		
-		// 테스트용
+		// 테스트용 (else는 나중에 삭제)
 		try {
-			boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+			if(request.getSession().getAttribute("loginId") != null) {
+				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
+			} else {
+				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		
 		for(Board_MediaDTO m : fileList) {
 			System.out.println(m.getOriginal_file_name());
 			System.out.println(m.getSystem_file_name());
-		}
-		
+		}		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("feed.bo");
