@@ -144,6 +144,12 @@ public class IBoardDAO implements BoardDAO  {
 	}
 	
 	@Override
+	public int deleteFollowInfo(FollowInfo fi) throws Exception {
+		String sql = "delete from member_follow where id=? and target_id=?";
+		return template.update(sql, fi.getId(), fi.getTargetId());
+	}
+	
+	@Override
 	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
 		
 		String sql = "select * from board where id "
@@ -161,4 +167,6 @@ public class IBoardDAO implements BoardDAO  {
 			return article;
 		});
 	}
+	
+	
 }
