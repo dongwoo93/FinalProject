@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
