@@ -60,6 +60,19 @@ public class IMemberDAO implements MemberDAO {
 		
 	}
 	
+	@Override
+	public int updateOneMemberProfile(MemberDTO member) throws Exception {
+		String sql = "update member set NAME=?, NICKNAME=?, PHONE=?, EMAIL=?, GENDER=? where id=?";
+		return template.update(sql, member.getName(), member.getNickname(), member.getPhone(), member.getEmail(), member.getGender(), member.getId());
+		
+	}
+	
+	@Override
+	public int updateOneMemberPassword(MemberDTO member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	
 //	@Override
 //	public boolean isIdExist(String id) throws Exception{

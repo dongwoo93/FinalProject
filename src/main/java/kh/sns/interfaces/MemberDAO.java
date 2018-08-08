@@ -7,7 +7,9 @@ public interface MemberDAO {
 	
 	public MemberDTO getOneMember(String id) throws Exception;
 	
+	public int updateOneMemberProfile(MemberDTO member) throws Exception;
 	
+	public int updateOneMemberPassword(MemberDTO member) throws Exception;
 
 //	boolean isIdExist(String id);
 }
