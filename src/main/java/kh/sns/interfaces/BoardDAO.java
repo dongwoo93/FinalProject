@@ -15,7 +15,10 @@ public interface BoardDAO {
 	
 	public int insertNewBoardContent(BoardDTO article) throws Exception;
 	
-	public int insertNewMedia(Board_MediaDTO media) throws Exception;
+	public int insertNewMedia(Board_MediaDTO media) throws Exception;	
+
+	/* 태그 넣는 기능 */
+	public int[] insertHashTags(BoardDTO article) throws Exception;
 	
 	public int selectBoardSeqRecentCurrVal() throws Exception;
 
