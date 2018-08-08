@@ -13,10 +13,8 @@ public interface BoardService {
 	public List<BoardDTO> getFeed(String id) throws Exception ;
 	public List<BoardDTO> getBoard(String id);
 	public List<BoardDTO> search(String keyword);
-	 
-	
-	
 	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception;
+	public BoardDTO getBoardModal(String seq) throws Exception;
 	
 	public int insertFollowInfo(FollowInfo fi) throws Exception;
 	public int deleteFollowInfo(FollowInfo fi) throws Exception;	// 언팔
