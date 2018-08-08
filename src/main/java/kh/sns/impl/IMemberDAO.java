@@ -62,8 +62,10 @@ public class IMemberDAO implements MemberDAO {
 	
 	@Override
 	public int updateOneMemberProfile(MemberDTO member) throws Exception {
-		String sql = "update member set NAME=?, NICKNAME=?, PHONE=?, EMAIL=?, GENDER=? where id=?";
-		return template.update(sql, member.getName(), member.getNickname(), member.getPhone(), member.getEmail(), member.getGender(), member.getId());
+		String sql = "update member set NAME=?, NICKNAME=?, PHONE=?, EMAIL=?, GENDER=? "
+				+ "where id=?";
+		return template.update(sql, member.getName(), member.getNickname(), 
+				member.getPhone(), member.getEmail(), member.getGender(), member.getId());
 		
 	}
 	
