@@ -556,7 +556,7 @@ $(document).ready(function() {
 				
 				<script>
   
-                       $("#"+ ${tmp.board_seq}).click(function() {
+                       $("#${tmp.board_seq}").click(function() {
                     	   $("#seq").val(${tmp.board_seq});  
                           	$("#boardmodal").modal();
                              
@@ -564,7 +564,7 @@ $(document).ready(function() {
                     	   
                        });
                         
-                       $("#mo"+ ${tmp.board_seq}).click(function() {
+                       $("#mo${tmp.board_seq}").click(function() {
                     	   $("#seq").val(${tmp.board_seq});  
                           	$("#boardmodal").modal();
                              
