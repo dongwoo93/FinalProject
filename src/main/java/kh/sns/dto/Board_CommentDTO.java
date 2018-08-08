@@ -6,18 +6,20 @@ public class Board_CommentDTO {
 	private int board_seq;
 	private String id;
 	private String comment_contents;
+	private String writedate;
 	
 	public Board_CommentDTO() {
 		
 		
 	}
 
-	public Board_CommentDTO(int comment_seq, int board_seq, String id, String comment_contents) {
+	public Board_CommentDTO(int comment_seq, int board_seq, String id, String comment_contents, String writedate) {
 		super();
 		this.comment_seq = comment_seq;
 		this.board_seq = board_seq;
 		this.id = id;
 		this.comment_contents = comment_contents;
+		this.writedate = writedate;
 	}
 
 	public int getComment_seq() {
@@ -50,6 +52,14 @@ public class Board_CommentDTO {
 
 	public void setComment_contents(String comment_contents) {
 		this.comment_contents = comment_contents;
+	}
+	
+	public String getWritedate() {
+		return writedate;
+	}
+	
+	public void setWritedate(String writedate) {
+		this.writedate = writedate;
 	}
 	
 	
