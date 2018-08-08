@@ -423,27 +423,32 @@
 	}
 	
 	#boardmodal{
-	width:auto;
-		height:auto;
+		width:100%;
+		height:100%;
+		
 	}
 	.modal-dialog{
-		width:auto;
-		height:auto;
+		width:100%;
+		height:100%;
+		
 	}
 	.modal-content{
-		width:auto;
+		width:70%;
 		height:auto;
-	}
-	
-	#picture{
-	
 		float:left;
 	}
 	
-	#board{
-	
-		 display:inline-block;
+	#picture{
+		width:300px;
+		height:auto;
 	}
+	.modal-content1{
+		width:30%;
+		height:auto;
+		display:inline-block;
+	}
+	
+	
 	
 </style>
 
@@ -464,7 +469,7 @@ $(document).ready(function() {
     });
 	
 	$("#boardmodal").on("shown.bs.modal", function () { 
-		var seq = $("#seq").val();
+		var seq = $("#hidden").val();
 
 	    $.ajax({
 	           type: "POST",
@@ -472,11 +477,13 @@ $(document).ready(function() {
 	           data: {seq:seq},
 	           success: function(data)
 	           {
-	               $("#seq").val(data.contents);
+	        	   $("#seq1").text(data.id);
+	               $("#seq").text(data.contents);
+	               
 	           }
 	         });
-	});
-})
+		});
+	})
 
 </script>
 
@@ -598,7 +605,7 @@ $(document).ready(function() {
 					
   
                        $("#${tmp.board_seq}").click(function() {
-                    	   $("#seq").val(${tmp.board_seq});
+                    	   $("#hidden").val(${tmp.board_seq});
                     	   
                           	$("#boardmodal").modal();                	   
                        });
@@ -610,6 +617,7 @@ $(document).ready(function() {
 
 				</script>
 				
+			
 				</div>
 			
 		<!-- <script>
@@ -650,19 +658,22 @@ $(document).ready(function() {
 		    <div class="modal-dialog" role="document">
 		      <div class="modal-content">
 		    
-		
-
 		        	<div class="gallery-item" id="picture">  
 		       		 <img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image'">  
 		        	</div>
-		        	<input type=hidden id="seq">
-		  
+		        	
+		      </div>
+		      
+		      <div class="modal-content1">
+		    
+		        
+		        	<input type="hidden" id="hidden">
+		        	<div class="bg-white" id="seq"></div>
+		        	<div class="bg-white" id="seq1"></div>
+		     
 	
 		      </div>
 		    </div>
-		 
-		  
-		   
 		  </div>
   
 </body>
