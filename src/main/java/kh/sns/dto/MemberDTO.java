@@ -73,13 +73,23 @@ public class MemberDTO {
 		this.gender = gender;
 	}
 	
-	public String getNam() {
+	public String getName() {
 		return name;
 	}
 	
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "MemberDTO [id=" + id + ", pw=" + pw + ", nickname=" + nickname + ", email=" + email + ", phone=" + phone
+				+ ", gender=" + gender + ", name=" + name + "]";
+	}
+	
 	
 
 	
