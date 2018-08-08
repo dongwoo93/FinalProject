@@ -557,20 +557,15 @@ $(document).ready(function() {
 				
 				<script>
   
-                       $("#"+ ${tmp.board_seq}).click(function() {
+                       $("#${tmp.board_seq}").click(function() {
                     	   $("#seq").val(${tmp.board_seq});  
                           	$("#boardmodal").modal();
-                             
-                    
-                    	   
+  
                        });
                         
-                       $("#mo"+ ${tmp.board_seq}).click(function() {
+                       $("#mo${tmp.board_seq}").click(function() {
                     	   $("#seq").val(${tmp.board_seq});  
                           	$("#boardmodal").modal();
-                             
-                    
-                    	   
                        });
 
 				</script>
