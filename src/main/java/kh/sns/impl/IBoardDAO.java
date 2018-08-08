@@ -107,11 +107,11 @@ public class IBoardDAO implements BoardDAO  {
 
 		String sql = "select board_seq.currval from dual";
 
-		List<Integer> list = template.query(sql, (rs, rowNum) -> {
+		List<Integer> temp = template.query(sql, (rs, rowNum) -> {
 			return rs.getInt(1);	
 		});
-
-		return list.get(0);
+				
+		return temp.get(0);
 	}
 
 	@Override
@@ -167,6 +167,27 @@ public class IBoardDAO implements BoardDAO  {
 			return article;
 		});
 	}
+	
+	@Override	// id가 팔로한 사람들의 수
+	public int getFollowingCount(String id) throws Exception {
+		String sql = "select count(*) from member_follow where id=?";
+		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
+			return rs.getInt(1);
+		});
+		return temp.get(0);
+		
+	}
+	
+	@Override	// id를 팔로하는 사람들의 수
+	public int getFollowerCount(String id) throws Exception {
+		String sql = "select count(*) from member_follow where target_id=?";
+		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
+			return rs.getInt(1);
+		});
+		return temp.get(0);
+	}
+	
+
 	
 	
 }
