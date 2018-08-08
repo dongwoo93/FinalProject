@@ -24,6 +24,25 @@ public class IMemberDAO implements MemberDAO {
 		String sql = "select * from member where id=? and pw=?";
 		return template.update(sql, dto.getId(), dto.getPw());
 	}
+
+
+	@Override
+	public int signUp(MemberDTO dto) {
+		// TODO Auto-generated method stub
+		String sql = "insert into member values(?,?,?,?,?,?,?) ";
+		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
+				
+	}
+
+
+	@Override
+	public int isIdExist(String id) {
+		// TODO Auto-generated method stub
+
+		String sql = "SELECT * FROM MEMBER WHERE ID =?";
+		return template.update(sql,new Object[] {id});		
+
+	}
 	
 	
 //	@Override

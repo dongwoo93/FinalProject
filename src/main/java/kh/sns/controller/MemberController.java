@@ -1,8 +1,5 @@
 package kh.sns.controller;
 
-import java.util.List;
-
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -51,7 +48,23 @@ public class MemberController {
 		response.getWriter().close();
 		
 	}
-	
+	@RequestMapping("/sign.do")
+	public ModelAndView signUp(MemberDTO dto) {
+		ModelAndView mav = new ModelAndView();
+		int result = this.memberService.signUp(dto);
+		
+		mav.addObject("result",result);
+		mav.setViewName("join.jsp");
+		return mav;
+	}
+	@RequestMapping("/dupId.do")
+	public void isIdExist(MemberDTO dto, HttpServletResponse response) throws Exception{
+		System.out.println("오냐?");
+//		int result =this.memberService.isIdExist(dto);
+		response.getWriter().print(1);
+		response.getWriter().flush();
+		response.getWriter().close();
+	}
 	
 
 }

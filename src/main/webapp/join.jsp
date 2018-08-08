@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -249,7 +249,7 @@ $("document").ready(function(){
 	
 $("#back").click(function(){
 		
-		$(location).attr('href',"login.jsp");
+		$(location).attr('href',"main.do");
 		
 	});
 	
@@ -299,11 +299,11 @@ $("#sign").click(function(){
 					alert(phone);
 					$("#phone").val("");
 					$("#phone").focus();
-				}else if(phoneConfirm==0){
+				}/* else if(phoneConfirm==0){
 					alert(phone);
 					$("#certification").val("");
 					$("#certification").focus();
-				}else if( gender==null){
+				} */else if( gender==null){
 					alert(gen);
 					$(".gender").focus();
 				}		
@@ -493,23 +493,31 @@ $("#sign").click(function(){
 					
 					if(color == "rgb(76, 175, 80)" || color=="") {
 						console.log("띵동");
-						/*  $.ajax({
-				                url: "joinCheck", // 처리할 페이지(서블릿) 주소
+						 $.ajax({
+				                url: "dupId.do", // 처리할 페이지(서블릿) 주소
 				                type: "get",
-				                data: {keyval: val},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-				                success: function(response) {
+				                data: {id : id},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+				                success: function(data) {
 				                    console.log("AJAX Request 성공");
-				                    var result = $('#response').text(response);                    
+				                   if(data==1){
+				                	   idCheck=1;
+				                	   var start = $("#id");
+				   				
+				                   }else{
+				                	   idCheck=0;
+				                   }
+				                   
 				                },
 				                error: function() {
 				                    console.log("에러 발생");
+				                    idCheck=0;
 				                },
 				                complete: function(){
 				                    console.log("AJAX 종료");
 				                }
-				            }); */
+				            }); 
 				          
-						idCheck=1;
+						
 						console.log(idCheck);
 					} else {
 						console.log("떙");
@@ -608,10 +616,23 @@ $("#sign").click(function(){
 </head>
 
 <body>
-
+<c:choose>
+<c:when test="${result==0}">
+	<script>
+alert("회원가입 실패");
+$(location).attr("href", "join.jsp")
+</script>
+</c:when>  
+<c:when test="${result==1}">
+<script>
+alert("회원가입 성공");
+$(location).attr("href", "main.jsp");
+</script>
+</c:when>
+<c:otherwise>
 	<div class="container">
 		<div class="row">
-			<form class="col s12" id="reg-form" action="" method="post">
+			<form class="col s12" id="reg-form" action="sign.do" method="post">
 				<div class="row">
 					<div class="input-field col s6">
 						<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id" name="id"
@@ -652,7 +673,7 @@ $("#sign").click(function(){
 				</div>
 				<div class="row">
 					<div class="input-field col s12">
-						<input id="nick" onblur="checkNick()"  name="nick" type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" class="validate" required>
+						<input id="nick" onblur="checkNick()"  name="nickname" type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" class="validate" required>
 						<label for="nick">Nickname</label>
 					</div>
 				</div>
@@ -674,11 +695,11 @@ $("#sign").click(function(){
 					<div class="input-field col s12 mx-auto">
 						<div class="gender-male">
 							<input class="with-gap" name="gender" type="radio" id="male"
-								value="1" required /> <label for="male">Male</label>
+								value="남" required /> <label for="male">Male</label>
 						</div>
 						<div class="gender-female">
 							<input class="with-gap" name="gender" type="radio" id="female"
-								value="2" required /> <label for="female">Female</label>
+								value="여" required /> <label for="female">Female</label>
 						</div>
 					</div>
 				</div>
@@ -712,8 +733,8 @@ $("#sign").click(function(){
 			class="ngl btn-floating btn-large waves-effect waves-light red"><i
 			class="material-icons" id="back" >input</i></a>
 	</div>
-
-
+</c:otherwise>
+</c:choose>
 </body>
 
 </html>
