@@ -52,7 +52,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session){
+	public ModelAndView getBoard(HttpSession session) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
@@ -61,13 +61,24 @@ public class BoardController {
 		return mav;
 	}
 	
+	//search
 	@RequestMapping("/search.bo")
-	public ModelAndView search(HttpSession session, String search){
+	public ModelAndView search(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
 		List<Board_TagsDTO> result = boardService.search("search");
 		System.out.println(result.size());
 		mav.addObject("result", result);	
+		mav.setViewName("search.jsp");
+		return mav;
+	}
+	
+	//search
+	@RequestMapping("/search.bo")
+	public ModelAndView search2(HttpSession session, String search2) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		List<Board_MediaDTO> media = boardService.search2("search");
+		mav.addObject("media", media);
 		mav.setViewName("search.jsp");
 		return mav;
 	}

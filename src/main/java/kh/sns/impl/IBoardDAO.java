@@ -41,23 +41,40 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
-
+	
+	// Search 
 	@Override
 	public List<Board_TagsDTO> search(String keyword) {
-		String sql = "select * from board_tags where tags like '%'||?||'%'";
+		String sql = "select sep from board_tags where tags like '%'||?||'%'";
 		return template.query(sql, new Object[] {keyword}, new RowMapper<Board_TagsDTO>() {
 
 			@Override
 			public Board_TagsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Board_TagsDTO tmp = new Board_TagsDTO();
-				tmp.setBoard_seq(rs.getInt(1));
-				tmp.setTags(rs.getString(2));
-				return tmp;
+				Board_TagsDTO tags = new Board_TagsDTO();
+				tags.setBoard_seq(rs.getInt(1));
+				tags.setTags(rs.getString(2));
+				return tags;
 			}
 
 		});
 	}
+	
+	@Override
+	public List<Board_MediaDTO> search2(String media) throws Exception {
+		String sql = "select seq from board_media where system_file_name=?";
+		return template.query(sql, new Object[] {media}, new RowMapper<Board_MediaDTO>() {
 
+			@Override
+			public Board_MediaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_MediaDTO media = new Board_MediaDTO();
+				media.setMedia_seq(rs.getInt(1));
+				media.setMedia_type(rs.getString(2));
+				media.setSystem_file_name(rs.getString(3));
+				return media;
+			}
+		});
+	}
+	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		String sql = "select * from board where id=? order by board_seq desc";

@@ -32,7 +32,10 @@ public class IBoardService implements BoardService {
 	@Override
 	public List<Board_TagsDTO> search(String keyword) {
 		return this.dao.search(keyword);
+		
+		
 	}
+	
 	
 	
 		
@@ -55,5 +58,11 @@ public class IBoardService implements BoardService {
 		} 		
 		
 		return contentResult * mediaResult;
+	}
+
+	@Override
+	public List<Board_MediaDTO> search2(String media) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
