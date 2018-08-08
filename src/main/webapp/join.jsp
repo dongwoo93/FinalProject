@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -15,10 +15,9 @@
 <title>Sign Up Page</title>
 
 <!-- Bootstrap core CSS -->
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -66,19 +65,42 @@
 <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
 <script
 	src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js'></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+	crossorigin="anonymous">
 
 
 <script>
 
-var id = 0 ;
-var	pwCheck = 0 ;
-var email = 0 ;
-var nick = 0 ;
-var gender = 0 ;
+
+window.onload = function() {
+	/* 
+	/* document.getElementById("name").oninput = function() {
+		var text = document.getElementById("name").value;
+		var regex = /[^가-힣]{2,}/;
+		if (regex.test(text)) {
+			var re = text.replace(regex, '');
+			document.getElementById(
+					"name").value = re;
+			console.log(re);
+			
+		}
+	}; */ 
+	
+	
+	
+	
+
+
+};	
+
 
 
 $("document").ready(function(){
+	
+	
+	
 	 $("#phone").on('keydown', function(e){
 	       // 숫자만 입력받기
 	        var trans_num = $(this).val().replace(/-/gi,'');
@@ -108,38 +130,68 @@ $("document").ready(function(){
 	                if(regExp_ctn.test(trans_num))
 	                {
 	                    // 유효성 체크에 성공하면 하이픈을 넣고 값을 바꿔줍니다.
+	                    
 	                    trans_num = trans_num.replace(/^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?([0-9]{3,4})-?([0-9]{4})$/, "$1-$2-$3");                  
 	                    $(this).val(trans_num);
-	                 
+	                    phone = 1;
+                  		 console.log(phone);
 	                }
 	                else
 	                {
 	                    alert("유효하지 않은 전화번호 입니다.");
+	                   
 	                    $(this).val("");
 	                    $(this).focus();
-	               
+	                    phone = 0;
+	                    console.log(phone);
 	        			
 	                }
 	            }
 	            else 
 	            {
 	                alert("유효하지 않은 전화번호 입니다.");
+	               
 	                $(this).val("");
 	                $(this).focus();
-	      
+	                phone = 0;
+                    console.log(phone);
 	            }
 	      }
 	       
 	  }); 
+	 
 
 })
+
+
+ function checkPwd(){
+			var inputed = $("#pw").val();
+			var reinputed = $("#pwCheck").val();
+			if(reinputed =="" && (inputed !=reinputed || inputed==reinputed)){
+				pwCheck=0;
+				
+			}
+			else if(inputed == reinputed){
+				
+				pwCheck =1;
+				console.log(pwcheck);
+			
+			}else if(inputed!=reinputed){
+				pwCheck=0;
+			
+			}
+			if(inputed==""&& reinputed=="" ){
+				pwCheck=0;
+			}	
+		}	
+		
 
 </script>
 <style class="cp-pen-styles">
 body {
 	background: #222;
-	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-		url('https://unsplash.it/1200/800/?random');
+	/* 	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url('https://unsplash.it/1200/800/?random'); */
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
@@ -189,12 +241,22 @@ keyframes showUp { 0% {
 100%
 {
 transoform
-:
- 
-scale
-(1);
 
-  
+
+
+
+:
+
+
+ 
+
+
+scale
+
+
+
+
+(1);
 }
 }
 .row {
@@ -206,10 +268,27 @@ scale
 	top: -20px;
 	right: -20px;
 }
-
-
 </style>
+<script>
 
+						 function check() {
+								setTimeout(
+										function() {
+											var color = $("#id").css("border-bottom-color");
+											alert(color);
+											if(color == "rgb(76, 175, 80)" || color=="") {
+												console.log("띵동");
+												
+												
+												
+											} else {
+												console.log("떙");
+											}
+										},
+										1000);
+								
+					 }
+						</script>
 </head>
 
 <body>
@@ -219,48 +298,57 @@ scale
 			<form class="col s12" id="reg-form" action="" method="post">
 				<div class="row">
 					<div class="input-field col s6">
-						<input id="id" type="text" class="validate" required autofocus>
-						<label for="id">Input Your ID</label>
+						<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id" name="id"
+							onblur="check()" type="text" class="validate" required> <label
+							for="id">ID</label>
+
+
+
 					</div>
 					<div class="input-field col s6">
-						<input id="pw" type="password" class="validate" minlength="6" required>
-						<label for="pw">Input Your PassWord</label>
+						<input pattern="[^가-힣]{2,}" id="name" name="name" type="text"
+							class="validate" required> <label for="pw">Name</label>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="input-field col s6">
+						<input id="pw" name="pw" oninput="checkPwd()" type="password"
+							class="validate" minlength="6" required> <label for="pw">PassWord</label>
+					</div>
+					<div class="input-field col s6">
+						<input id="pwCheck" oninput="checkPwd()" type="password"
+							class="validate" minlength="6" required> <label
+							for="pwCheck">Password Check</label>
+
+
+
+					</div>
+
+
+
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input id="email" name="email" type="email" class="validate"
+							required> <label for="email">Email</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s12">
-						<input id="pwCheck" type="password" class="validate"  minlength="6" required>
-					
-						<label for="pwCheck">Password Check</label>
-						
-					
-							         
-					</div>  	          
-			
-					
-					
-				</div>
-				<div class="row">
-					<div class="input-field col s12">
-						<input id="email" type="email" class="validate" required>
-						<label for="email">Email</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s12">
-						<input id="nick" type="text" class="validate" required> <label
-							for="nick">Nick Name</label>
+						<input id="nick" name="nick" type="text" class="validate" required>
+						<label for="nick">Nickname</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s12 ph">
-						<input id="phone" type="text" class="validate" minlength="6"
-							required> <label for="phone">Input Your Phone
-							Number</label>
+						<input id="phone" name="phone" type="text" class="validate"
+							minlength="6" required> <label for="phone">Input
+							Your Phone Number</label>
 					</div>
 				</div>
-				<div class="row">
-					<div class="input-field col s6">
+				<div class="row ">
+					<div class="input-field col s12 mx-auto">
 						<div class="gender-male">
 							<input class="with-gap" name="gender" type="radio" id="male"
 								value="1" required /> <label for="male">Male</label>
@@ -270,14 +358,23 @@ scale
 								value="2" required /> <label for="female">Female</label>
 						</div>
 					</div>
-
+				</div>
+				<div class="row">
 					<div class="input-field col s6">
 						<button
 							class="btn btn-large btn-register waves-effect waves-light"
-							type="submit" name="action">
+							type="submit" id="sign" name="action">
 							Register <i class="material-icons right">done</i>
 						</button>
 					</div>
+					<div class="input-field col s6">
+						<button
+							class="btn btn-large btn-register waves-effect waves-light"
+							type="button" id="cancel" name="action">
+							Cancel <i class="material-icons right">done</i>
+						</button>
+					</div>
+
 				</div>
 			</form>
 		</div>
