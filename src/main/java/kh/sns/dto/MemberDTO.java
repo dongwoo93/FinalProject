@@ -10,6 +10,8 @@ public class MemberDTO {
 	private String gender;
 	private String name;
 	
+	
+	
 	public MemberDTO() {
 		
 	}
@@ -73,7 +75,7 @@ public class MemberDTO {
 		this.gender = gender;
 	}
 	
-	public String getNam() {
+	public String getName() {
 		return name;
 	}
 	
