@@ -22,6 +22,12 @@ public class IMemberService implements MemberService{
 		return this.dao.loginMem(dto);
 		
 	}
+	
+	@Override
+	public MemberDTO getOneMember(String id) throws Exception {
+		
+		return dao.getOneMember(id);
+	}
 
 
 

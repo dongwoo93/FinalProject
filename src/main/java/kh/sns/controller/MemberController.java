@@ -55,6 +55,21 @@ public class MemberController {
 		
 	}
 	
+	/*======*/
+	@RequestMapping("/profile.member")
+	public ModelAndView editProfile(HttpSession session) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
+		System.out.println(memberService.getOneMember(session.getAttribute("loginId").toString()));
+		
+		mav.setViewName("mypage.jsp");
+		return mav;
+		
+		
+		
+	}
+	
 	
 
 }
