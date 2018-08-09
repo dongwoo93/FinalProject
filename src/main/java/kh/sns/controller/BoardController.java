@@ -14,17 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
 
 @Controller
@@ -74,7 +72,7 @@ public class BoardController {
 	}
 	
 	//search
-	@RequestMapping("/search.bo")
+	@RequestMapping("/search2.bo")
 	public ModelAndView search2(HttpSession session, String search2) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		List<Board_MediaDTO> media = boardService.search2("search");
