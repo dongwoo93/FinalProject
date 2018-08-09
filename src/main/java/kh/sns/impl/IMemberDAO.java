@@ -21,6 +21,42 @@ public class IMemberDAO implements MemberDAO {
 		String sql = "select * from member where id=? and pw=?";
 		return template.update(sql, dto.getId(), dto.getPw());
 	}
+
+
+	@Override
+	public int signUp(MemberDTO dto) {
+		// TODO Auto-generated method stub
+		String sql = "insert into member values(?,?,?,?,?,?,?) ";
+		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
+				
+	}
+
+
+	@Override
+	public int isIdExist(String id) {
+		// TODO Auto-generated method stub
+
+		String sql = "SELECT * FROM MEMBER WHERE ID =?";
+		return template.update(sql,id);
+
+	}
+
+
+	@Override
+	public int isNickExist(String nick) {
+		// TODO Auto-generated method stub
+
+		String sql = "SELECT * FROM MEMBER WHERE nickname =?";
+		return template.update(sql, nick);		
+	}
+
+
+	@Override
+	public int isEmailExist(String email) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM MEMBER WHERE email =?";
+		return template.update(sql, email);		
+	}
 	
 	@Override
 	public MemberDTO getOneMember(String id) throws Exception {
@@ -76,11 +112,4 @@ public class IMemberDAO implements MemberDAO {
 	}
 	
 	
-//	@Override
-//	public boolean isIdExist(String id) throws Exception{
-//		
-//		String sql = "SELECT * FROM MEMBER WHERE ID =?";
-//		return template.update(new Object[] {id});		
-//
-//	}
 }

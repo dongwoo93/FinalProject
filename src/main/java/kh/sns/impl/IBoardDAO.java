@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
@@ -68,7 +67,7 @@ public class IBoardDAO implements BoardDAO  {
 	}
 	
 	@Override
-	public List<Board_MediaDTO> search2(String seq) throws Exception {
+	public List<Board_MediaDTO> search2(int seq) throws Exception {
 		String sql = "select * from board_media where board_seq=?";
 		return template.query(sql, new Object[] {seq}, new RowMapper<Board_MediaDTO>() {
 
@@ -76,8 +75,10 @@ public class IBoardDAO implements BoardDAO  {
 			public Board_MediaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Board_MediaDTO media = new Board_MediaDTO();
 				media.setMedia_seq(rs.getInt(1));
-				media.setMedia_type(rs.getString(2));
-				media.setSystem_file_name(rs.getString(3));
+				media.setBoard_seq(rs.getInt(2));
+				media.setMedia_type(rs.getString(3));
+				media.setOriginal_file_name(rs.getString(4));
+				media.setSystem_file_name(rs.getString(5));
 				return media;
 			}
 		});
