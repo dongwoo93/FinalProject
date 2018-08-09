@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,12 +70,15 @@
 	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
 	crossorigin="anonymous">
 
-
+<script type="text/javascript"
+	src="resources/countdownTimer/js/jQuery.countdownTimer.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="resources/countdownTimer/css/jQuery.countdownTimer.css" />
 <style class="cp-pen-styles">
 body {
 	background: #222;
-	/* 	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-		url('https://unsplash.it/1200/800/?random'); */
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url('https://unsplash.it/1200/800/?random'); 
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
@@ -129,13 +132,19 @@ transoform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -154,53 +163,41 @@ scale
 }
 
 /* rgb(244, 67, 54)  빨갱이 */
-
- .wrap-loading{ /*화면 전체를 어둡게 합니다.*/
-
-    position: fixed;
-
-    left:0;
-
-    right:0;
-
-    top:0;
-
-    bottom:0;
-
-    background: rgba(0,0,0,0.2); /*not in ie */
-
-    filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000', endColorstr='#20000000');    /* ie */
-
-    
-
+.wrap-loading { /*화면 전체를 어둡게 합니다.*/
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.2); /*not in ie */
+	filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000',
+		endColorstr='#20000000'); /* ie */
 }
 
-    .wrap-loading div{ /*로딩 이미지*/
-
-        position: fixed;
-
-        top:50%;
-
-        left:50%;
-
-        margin-left: -21px;
-
-        margin-top: -21px;
-
-    }
-    .display-none{ /*감추기*/
-
-        display:none;
+.wrap-loading div { /*로딩 이미지*/
+	position: fixed;
+	top: 40%;
+	left: 40%;
+	margin-left: -21px;
+	margin-top: -21px;
 }
 
+.display-none { /*감추기*/
+	display: none;
+}
 
+.time {
+	width: 30%;
+	text-align: center;
+	height: 40px;
+}
 </style>
 
 
-				
-				
-						
-						<script>
+
+
+
+<script>
 /* 값 0일 경우 해당 파트는 유효성 검증이 안 된 것 
  * 1은 검증완료 된 것
  
@@ -229,6 +226,11 @@ window.onload = function() {
 			
 		}
 	};
+	
+	
+
+	
+
 };	
 
 
@@ -318,11 +320,11 @@ $("#sign").click(function(){
 					alert(phone);
 					$("#phone").val("");
 					$("#phone").focus();
-				}/* else if(phoneConfirm==0){
+				} else if(phoneConfirm==0){
 					alert(phone);
 					$("#certification").val("");
 					$("#certification").focus();
-				} */else if( gender==null){
+				}else if( gender==null){
 					alert(gen);
 					$(".gender").focus();
 				}		
@@ -439,13 +441,14 @@ $("#sign").click(function(){
 							$("input[name=phone]").attr("readonly",true);
 						var start = $(".confirm");
 						start.after(
-								"<div class='row confirm'><div class='input-field col s6'><input type='text' id='certification' name='certification' class='validate' placeholder='인증번호를 입력하세요'></div></div>");
-							
+								"<div class='row phoneinput'><div class='input-field col s6'><input type='text' id='certification' name='certification' class='validate' placeholder='인증번호를 입력하세요'></div> <div class='input-field time'></div></div>");
+						
+						timeCount();
 							
 						$("#certification").keyup(function(){
 							var insert = $("#certification").val();
 							if(insert==data){
-								$("#certification").css("background-color", "green");
+								$("#certification").css("background-color", "#ccff33");
 								 $("input[name=certification]").attr("readonly",true);
 								
 								phoneConfirm=1;		
@@ -690,6 +693,27 @@ $("#sign").click(function(){
 				500);
 }
  
+ 
+ function timeCount(){
+	
+	$(".time").countdowntimer({
+		 minutes:0,
+		 seconds : 5,
+		 timeUp: timeIsUp,
+		 size:"sm"
+	 });
+	
+	function timeIsUp() {
+        alert("끝났다");
+        $(".phoneinput").remove();
+        $("input[name=phone]").attr("readonly",false);
+        $("#phone").val("");
+        $("#phone").focus();
+    }	
+	$("#currentTime").remove("style");
+ }
+ 
+ 
  function  checkName() {
 		var name = $("#name").val();
 		if(name.length>1){
@@ -706,128 +730,136 @@ $("#sign").click(function(){
 </head>
 
 <body>
-<c:choose>
-<c:when test="${result==0}">
-	<script>
+	<c:choose>
+		<c:when test="${result==0}">
+			<script>
 alert("회원가입 실패");
 $(location).attr("href", "join.jsp")
 </script>
-</c:when>  
-<c:when test="${result==1}">
-<script>
+		</c:when>
+		<c:when test="${result==1}">
+			<script>
 alert("회원가입 성공");
 $(location).attr("href", "main.jsp");
 </script>
-</c:when>
-<c:otherwise>
-	<div class="container">
-		<div class="row">
-			<form class="col s12" id="reg-form" action="sign.do" method="post">
+		</c:when>
+		<c:otherwise>
+			<div class="container">
 				<div class="row">
-					<div class="input-field col s6 id">
-				
-						<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id" name="id"
-							onblur="checkId()" type="text" class="validate" required> <label
-							for="id">ID</label>
+					<form class="col s12" id="reg-form" action="sign.do" method="post">
+						<div class="row">
+							<div class="input-field col s6 id">
 
-							
-
-					</div>
-					
-						
-					<div class="input-field col s6 name">
-						<input id="name" name="name"  type="text" minlength="2" onblur="checkName()"
-							class="validate" required> <label for="name">Name</label>
-					</div>
-				</div>
-				<div class="row">
-
-					<div class="input-field col s6 pw">
-						<input id="pw" name="pw" oninput="checkPwd()" type="password"
-							class="validate" minlength="6" required> <label for="pw">PassWord</label>
-					</div>
-					<div class="input-field col s6 pw2">
-						<input id="pwCheck" oninput="checkPwd()" type="password"
-							class="validate" minlength="6"  required> <label
-							for="pwCheck">Password Check</label>
+								<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id"
+									name="id" onblur="checkId()" type="text" class="validate"
+									required> <label for="id">ID</label>
 
 
 
-					</div>
+							</div>
 
 
-
-				</div>
-				<div class="row">
-					<div class="input-field col s12 email">
-						<input id="email" name="email" type="email" onblur="checkEmail()" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="validate"
-							required> <label for="email">Email</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s12 nick">
-						<input id="nick" onblur="checkNick()"  name="nickname" type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" class="validate" required>
-						<label for="nick">Nickname</label>
-					</div>
-				</div>
-				<div class="row confirm">
-					<div class="input-field col s9 phone">
-						<input id="phone" name="phone" type="text" class="validate"
-							 required> <label for="phone">Input
-							Your Phone Number</label>
-					</div>
-					<div class="input-field col s3 ">
-						<button
-							class="btn btn-large btn-register waves-effect waves-light"
-							type="button" id="confirm" style="height:70%">
-							번호인증 <i class="material-icons right"></i>
-						</button>
-					</div>
-				</div>
-				<div class="row ">
-					<div class="input-field col s12 mx-auto">
-						<div class="gender-male">
-							<input class="with-gap" name="gender" type="radio" id="male"
-								value="남" required /> <label for="male">Male</label>
+							<div class="input-field col s6 name">
+								<input id="name" name="name" type="text" minlength="2"
+									onblur="checkName()" class="validate" required> <label
+									for="name">Name</label>
+							</div>
 						</div>
-						<div class="gender-female">
-							<input class="with-gap" name="gender" type="radio" id="female"
-								value="여" required /> <label for="female">Female</label>
+						<div class="row">
+
+							<div class="input-field col s6 pw">
+								<input id="pw" name="pw" oninput="checkPwd()" type="password"
+									class="validate" minlength="6" required> <label
+									for="pw">PassWord</label>
+							</div>
+							<div class="input-field col s6 pw2">
+								<input id="pwCheck" oninput="checkPwd()" type="password"
+									class="validate" minlength="6" required> <label
+									for="pwCheck">Password Check</label>
+
+
+
+							</div>
+
+
+
 						</div>
-					</div>
+						<div class="row">
+							<div class="input-field col s12 email">
+								<input id="email" name="email" type="email"
+									onblur="checkEmail()"
+									pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+									class="validate" required> <label for="email">Email</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12 nick">
+								<input id="nick" onblur="checkNick()" name="nickname"
+									type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$"
+									class="validate" required> <label for="nick">Nickname</label>
+							</div>
+						</div>
+						<div class="row confirm">
+							<div class="input-field col s9 phone">
+								<input id="phone" name="phone" type="text" class="validate"
+									required> <label for="phone">Input Your Phone
+									Number</label>
+							</div>
+							<div class="input-field col s3 ">
+								<button
+									class="btn btn-large btn-register waves-effect waves-light"
+									type="button" id="confirm" style="height: 70%">
+									번호인증 <i class="material-icons right"></i>
+								</button>
+
+							</div>
+						</div>
+						<p id="currentTime"></p>
+						<div class="row ">
+							<div class="input-field col s12 mx-auto">
+								<div class="gender-male">
+									<input class="with-gap" name="gender" type="radio" id="male"
+										value="남" required /> <label for="male">Male</label>
+								</div>
+								<div class="gender-female">
+									<input class="with-gap" name="gender" type="radio" id="female"
+										value="여" required /> <label for="female">Female</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s6">
+								<button
+									class="btn btn-large btn-register waves-effect waves-light"
+									type="submit" id="sign" name="action" style="height: 90%">
+									Register <i class="material-icons right">done</i>
+								</button>
+							</div>
+							<div class="input-field col s6">
+								<button
+									class="btn btn-large btn-register waves-effect waves-light"
+									type="button" id="cancel" name="action" style="height: 90%">
+									다시쓰기^^7 <i class="material-icons right">done</i>
+								</button>
+							</div>
+
+						</div>
+
+
+
+					</form>
 				</div>
-				<div class="row">
-					<div class="input-field col s6">
-						<button
-							class="btn btn-large btn-register waves-effect waves-light"
-							type="submit" id="sign" name="action" style="height:90%">
-							Register <i class="material-icons right">done</i>
-						</button>
-					</div>
-					<div class="input-field col s6">
-						<button
-							class="btn btn-large btn-register waves-effect waves-light"
-							type="button" id="cancel" name="action" style="height:90%">
-							다시쓰기^^7 <i class="material-icons right">done</i>
-						</button>
-					</div>
-
+				<a title="Login"
+					class="ngl btn-floating btn-large waves-effect waves-light red"><i
+					class="material-icons" id="back">input</i></a>
+			</div>
+			<div class="wrap-loading display-none">
+				<div>
+					<img src="resources/images/loading.gif">
 				</div>
-				  <div class="wrap-loading display-none">
-
-   		<i class="fas fa-sync"></i>
-
-			</div>  
-				
-				
-			</form>
-		</div>
-		<a title="Login"
-			class="ngl btn-floating btn-large waves-effect waves-light red"><i
-			class="material-icons" id="back" >input</i></a>
-	</div>
-</c:otherwise>
-</c:choose>
+			</div>
+		</c:otherwise>
+	</c:choose>
 </body>
 
 </html>
