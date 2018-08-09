@@ -24,5 +24,5 @@ public interface BoardService {
 	
 	//search
 	public List<BoardDTO> search(String keyword) throws Exception;
-	public List<Board_MediaDTO> search2(String seq) throws Exception;
+	public List<Board_MediaDTO> search2(int seq) throws Exception;
 }
