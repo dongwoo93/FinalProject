@@ -186,4 +186,5 @@ public class MemberController {
 		
 		System.out.println("isEmailDuplicated: " + isEmailDuplicated + "(" + result + ")");
 
+	}
 }
