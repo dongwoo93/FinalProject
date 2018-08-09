@@ -114,7 +114,6 @@ public class IBoardDAO implements BoardDAO  {
 	 * (non-Javadoc)
 	 * @see kh.sns.interfaces.BoardDAO#insertNewMedia(kh.sns.dto.Board_MediaDTO)
 	 * 
-	 * 편의상 여기다 일단 만들고 나중에 필요하면 별도 클래스로 분리합니다.
 	 */
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
@@ -135,7 +134,6 @@ public class IBoardDAO implements BoardDAO  {
 	}
 
 	@Override
-	public int[] insertHashTags(BoardDTO article) throws Exception {
 
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
@@ -188,7 +186,6 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
-	@Override	// id가 팔로한 사람들의 수
 	public int getFollowingCount(String id) throws Exception {
 		String sql = "select count(*) from member_follow where id=?";
 		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
@@ -198,7 +195,6 @@ public class IBoardDAO implements BoardDAO  {
 		
 	}
 	
-	@Override	// id를 팔로하는 사람들의 수
 	public int getFollowerCount(String id) throws Exception {
 		String sql = "select count(*) from member_follow where target_id=?";
 		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
