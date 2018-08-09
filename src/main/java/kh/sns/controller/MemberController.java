@@ -3,14 +3,16 @@ package kh.sns.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 import kh.sns.dto.MemberDTO;
 import kh.sns.interfaces.MemberService;
@@ -58,26 +60,36 @@ public class MemberController {
 	
 	
 
-	@RequestMapping("/write.board")
-	public ModelAndView writeBoard(HttpSession session) {
-		System.out.println("@@WRITE BOARD");
+	@RequestMapping("/searchfriend.do")
+	public void searchFriend(HttpServletResponse response,@RequestParam("searchtext") String searchtext,HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		System.out.println("친구검색들어옴");
 		ModelAndView mav = new ModelAndView();
 		String id = (String)  session.getAttribute("loginId");
+		System.out.println("검색어 : " + searchtext);
 		List<MemberDTO> list = null;
 		List<String> friendlist = new ArrayList<>();
 		
 		try {
-			list = memberService.selectfriendlist(id);
+			list = memberService.selectfriendlist(id,searchtext);
+			System.out.println("해당하는거잘찾았냐");
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		for(MemberDTO tmp : list) {
+			System.out.println(tmp.getNickname());
 			friendlist.add(tmp.getNickname());
 		}
-		mav.addObject("friendlist", friendlist);
-		mav.setViewName("write.jsp");
-		return null;
+		
+		try {
+			new Gson().toJson(friendlist, response.getWriter());
+			
+		}catch(Exception e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	

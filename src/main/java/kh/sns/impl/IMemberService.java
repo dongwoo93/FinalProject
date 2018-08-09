@@ -25,8 +25,8 @@ public class IMemberService implements MemberService{
 
 
 	@Override
-	public List<MemberDTO> selectfriendlist(String id) throws Exception{
-		return this.dao.selectfriendlist(id);
+	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception{
+		return this.dao.selectfriendlist(id,searchtext);
 	}
 
 //	@Override

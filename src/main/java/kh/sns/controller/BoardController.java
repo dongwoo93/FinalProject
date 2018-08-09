@@ -162,5 +162,13 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
+	
+	@RequestMapping("/write.board")
+	public ModelAndView writeBoard(HttpSession session) {
+		System.out.println("@@WRITE BOARD");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("write.jsp");
+		return mav;
+	}
 
 }

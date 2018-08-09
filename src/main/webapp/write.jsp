@@ -11,15 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
-
-     <!-- jQuery ui style sheet -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- jQuery ui library -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <style>
         /*    전체적인틀 CSS*/
         #allwrapper {
@@ -187,12 +184,61 @@
 		        z-index: 1050;
 		    }
 		/*사람태그모달 태그1*/
-		    #span{
+		    .span{
 		        position: absolute;
 		    }
-        
-        
-        
+		    
+		    .friendlist{
+		    	height:35px;
+		    	cursor:pointer;
+		    	border-radius:5px;
+		    }
+		    
+		    .friendlist:hover{
+		    	background-color: #80DEEA;
+		    	color:white;
+		    }
+		    
+		    ol, ul {
+			    list-style: outside none none;
+			}
+
+			.tags {
+			    background: none repeat scroll 0 0 #fff;
+			    border: 1px solid #ccc;
+			    display: table;
+			    padding: 0.5em;
+			    width: 100%;
+			}
+			.tags li.tagAdd, .tags li.addedTag {
+			    float: left;
+			    margin-left: 0.25em;
+			    margin-right: 0.25em;
+			}
+			.tags li.addedTag {
+			    background: none repeat scroll 0 0 #019f86;
+			    border-radius: 2px;
+			    color: #fff;
+			    padding: 0.25em;
+			}
+			.tags input, li.addedTag {
+			    border: 1px solid transparent;
+			    border-radius: 2px;
+			    box-shadow: none;
+			    display: block;
+			    padding: 0.5em;
+			}
+			.tags input:hover {
+			    border: 1px solid #000;
+			}
+			span.tagRemove {
+			    cursor: pointer;
+			    display: inline-block;
+			    padding-left: 0.5em;
+			}
+			span.tagRemove:hover {
+			    color: #222222;
+			}
         
     </style>
     <script>
@@ -235,99 +281,128 @@
         }
         
 
-//         $(document).ready(function() {
-//             $('#fileSelect').change(function() {
-//                 alert('change')
-//                 $('#attachDivInner').html('');
-//                 readImage(this);
-//             })
+        $(document).ready(function() {
+        	
+            $('.tagRemove').click(function(event) {
+                event.preventDefault();
+                $(this).parent().remove();
+            });
+            $('ul.tags').click(function() {
+                $('#search-field').focus();
+            });
+            $('#search-field').keypress(function(event) {
+                if (event.which == '13') {
+                    if (($(this).val() != ''))  {
+                            $('<li class="addedTag">' + $(this).val() + '<span class="tagRemove" onclick="$(this).parent().remove();">x</span><input type="hidden" value="' + $(this).val() + '" name="tags[]"></li>').insertBefore('.tags .tagAdd');
+                            $(this).val('');
 
-//             var selImages = [];
+                    } else {
+                        $(this).val('');
+                    }
+                }
+            });
+            
+            $("#searchfriend").keyup(function(){
+            	 var searchtext = $(this).val();
+            	 $("#friendlist *").remove();
+            	 $.ajax({
+                     url: "searchfriend.do", // 처리할 페이지(서블릿) 주소
+                     type: "get",
+                     data: {searchtext: searchtext},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+                     success: function(response) {
+                         console.log("AJAX Request 성공");
+                         console.log(response.length)
+                         for(var i=0;i<response.length;i++){
+                        	 $("#friendlist").append("<li class='nav-item friendlist pl-2' onclick='tag_friend(this)'>"+response[i]+"</li>");
+                         }
+                     },
+                     error: function() {
+                         console.log("에러 발생");
+                     },
+                     complete: function(){
+                         console.log("AJAX 종료");
+                     }
+                 });
+            });
+      
+           	   
+        	
+            $('#fileSelect').change(function() {
+                $('#attachDivInner').html('');
+                readImage(this);
+            })
+
+            var selImages = [];
                    
   
-//             function readImage(input) {
+            function readImage(input) {
 
-//                 var files = input.files;
+                var files = input.files;
 
-//                 console.log(files);
+                console.log(files);
 
-//                 for (i = 0; i < files.length; i++) {
+                for (i = 0; i < files.length; i++) {
 
-//                     console.log(files[i])
+                    console.log(files[i])
 
-//                     if (files[i].size > 1024 * 1024 * 10) {
-//                         alert('10MB 초과');
-//                         continue;
-//                     }
+                    if (files[i].size > 1024 * 1024 * 10) {
+                        alert('10MB 초과');
+                        continue;
+                    }
 
-//                     if (input.files && input.files[i]) {
-//                         var reader = new FileReader();
+                    if (input.files && input.files[i]) {
+                        var reader = new FileReader();
 
-//                         if (i == 0) {
-//                             reader.onload = function(e) {
-//                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
+                        if (i == 0) {
+                            reader.onload = function(e) {
+                                $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
                                 
                                 
-//                             }
+                            }
                         
-//                         } else {
-//                             reader.onload= function(e) {
-//                                 $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
-//                                 // alert('Final Max Height :' + maxHeight) 
-// //                                if (maxHeight > 620){
-// //                                    maxHeight = 620;
-// //                                } else if (maxHeight < 400){
-// //                                    maxHeight = 400;
-// //                                } else {
-// //                                    maxHeight = maxHeight
-// //                                }
-// //                             $('#attachDiv').css('height', maxHeight + 'px');
-// //                                maxHeight = 0;
+                        } else {
+                            reader.onload= function(e) {
+                                $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
+                                // alert('Final Max Height :' + maxHeight) 
+//                                if (maxHeight > 620){
+//                                    maxHeight = 620;
+//                                } else if (maxHeight < 400){
+//                                    maxHeight = 400;
+//                                } else {
+//                                    maxHeight = maxHeight
+//                                }
+//                             $('#attachDiv').css('height', maxHeight + 'px');
+//                                maxHeight = 0;
                                 
                                 
   
-//                             }                          
-//                         }             
+                            }                          
+                        }             
                         
                         
                         
-//                     }
+                    }
 
-//                     reader.readAsDataURL(input.files[i]);
-//                     console.log(reader);     
+                    reader.readAsDataURL(input.files[i]);
+                    console.log(reader);     
                    
                               
                     
-//                 }             
+                }             
                 
                     
-//                     // $('.imgWidth100').map(function(e){console.log(e)});
+                    // $('.imgWidth100').map(function(e){console.log(e)});
                 
                
 
-//             }
+            }
             
-//             $('img').click(function(e) {
-//                 var offset = $(this).offset();
-//                 var X = (e.pageX - offset.left);
-//                 var Y = (e.pageY - offset.top);
-                
-                
-//                 $("#span").css({
-//                     "top":(Y),
-//                     "left":(X+15)
-//                 }).tooltip('show');
-//             });
+           
             
-//             $(function () {
-//               $('[data-toggle="tooltip"]').tooltip()
-//             });
-//             $("#span").tooltip({trigger: 'manual'});
-//             $("#friendtag").tooltip({'trigger':'focus'});
             
-//             ("#searchfriend").autocomplete({source: ${}});
-
-//         })
+        });
+        
+        
     
     
     </script>
@@ -530,21 +605,42 @@
               <div class="modal-body">
                       <div class="row">
                         <div class="col-4">
-                           <input type="text" class="form-control" placeholder="friend" id="searchfriend">
-                          <ul class="nav nav-pills flex-column">
-                            <li class="nav-item">
-                              <a class="nav-link ml-0" href="" data-toggle="pill" data-target="#tabtwo">Tab 2</a>
-                            </li>
-                            <li class="nav-item">
-                              <a href="" class="nav-link ml-0" data-toggle="pill" data-target="#tabthree">Tab 3</a>
-                            </li>
+                           <input type="text" class="form-control mb-2" placeholder="friend" id="searchfriend">
+                          <ul class="nav nav-pills flex-column" id="friendlist">
+	                            <script>
+		                            function tag_friend(e){
+		                            	var text = $(e).text();
+		                            	alert("태그할곳을 클릭해주세요");
+		                            	$("#imagemap").append("<span shape='circle' class='span' data-placement='top' title='"+text+"'></span>");
+		                            }
+		                            
+		                            $('img').click(function(e) {
+		                                var offset = $(this).offset();
+		                                var X = (e.pageX - offset.left);
+		                                var Y = (e.pageY - offset.top);
+		                                
+		                                
+		                                $(".span").css({
+		                                    "top":(Y),
+		                                    "left":(X+15)
+		                                }).tooltip('show');
+		                            });
+		                            
+		                            $(function () {
+		                              $('[data-toggle="tooltip"]').tooltip()
+		                            });
+		                            $(".span").tooltip({trigger: 'manual'});
+		                            $("#friendtag").tooltip({'trigger':'focus'});
+	                            </script>
                           </ul>
                         </div>
                         <div class="col-8" >
                           <div class="tab-content">
-                            <div class="tab-pane fade show active" id="tabone" role="tabpanel">
-                              <img src="" alt="My Image" >
-                                <span id="span" data-placement="top" title="hyong_star"></span>
+                            <div class="tab-pane fade show active" id="imgtag" role="tabpanel">
+                              <img src="/루이.jpg" alt="My Image" style="width:100%; height:500px;" usemap="#imagemap">
+                               <map name="imagemap" id="imagemap">
+                      		   </map>
+                              
                             </div>
                           </div>
                         </div>
@@ -552,7 +648,16 @@
                 
               </div>
               <div class="modal-footer">
-                <p>핀클릭시 장소 태그</p>
+                <ul class="tags">
+			          <li class="addedTag">Web Deisgn<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden" name="tags[]" value="Web Deisgn"></li>
+			    
+			          <li class="addedTag">Web Develop<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden" name="tags[]" value="Web Develop"></li>
+			    
+			          <li class="addedTag">SEO<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden" name="tags[]" value="SEO"></li>
+			          <li class="tagAdd taglist">  
+			              <input type="text" id="search-field">
+				      </li>
+				</ul>
               </div>
             </div>
           </div>
@@ -666,15 +771,12 @@
           map.fitBounds(bounds);
         });
       }
-      
 
     </script>
 	
 	
 	
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
 </body>
 
 </html>
