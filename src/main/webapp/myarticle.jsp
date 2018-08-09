@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
@@ -30,7 +30,7 @@
 	}
 	
 	body{
-/* 		 border : 1px solid black; */
+ 		 border : 1px solid black; 
 		 height:auto;
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
@@ -422,6 +422,34 @@
 		}
 	}
 	
+	#boardmodal{
+		width:100%;
+		height:100%;
+		
+	}
+	.modal-dialog{
+		width:100%;
+		height:100%;
+		
+	}
+	.modal-content{
+		width:70%;
+		height:auto;
+		float:left;
+	}
+	
+	#picture{
+		width:300px;
+		height:auto;
+	}
+	.modal-content1{
+		width:30%;
+		height:auto;
+		display:inline-block;
+	}
+	
+	
+	
 </style>
 
 <script>
@@ -439,7 +467,23 @@ $(document).ready(function() {
         	} 
         }
     });
-})
+	
+	$("#boardmodal").on("shown.bs.modal", function () { 
+		var seq = $("#hidden").val();
+
+	    $.ajax({
+	           type: "POST",
+	           url: "boardView.bo",
+	           data: {seq:seq},
+	           success: function(data)
+	           {
+	        	   $("#seq1").text(data.id);
+	               $("#seq").text(data.contents);
+	               
+	           }
+	         });
+		});
+	})
 
 </script>
 
@@ -490,7 +534,8 @@ $(document).ready(function() {
 	  <div class="container">
 			<div class="profile">
 				<div class="profile-image">
-					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+<!-- 					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"> -->
+					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink">
 				</div>
 	
 				<div class="profile-user-settings">
@@ -539,14 +584,16 @@ $(document).ready(function() {
 
 		
 		
-		        <c:forEach var="tmp" items="${result}"   >
+		        <c:forEach var="tmp" items="${result}">
 		
 			
-				<div class="gallery-item">  
-				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">   
+				<div class="gallery-item" id="${tmp.board_seq}">  
+<%-- 				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">    --%>
+					<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image'">   
 				
 				 
-					<div class="gallery-item-info" id="mo${tmp.board_seq}">    
+<%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
+						<div class="gallery-item-info">        
 						<ul>
 							<li class="gallery-item-likes"><i class="fas fa-heart"></i> 18</li>
 							<li class="gallery-item-comments"><i class="fas fa-comment"></i> 2</li>
@@ -555,36 +602,33 @@ $(document).ready(function() {
 				
 				
 				<script>
+					
   
                        $("#${tmp.board_seq}").click(function() {
-                    	   $("#seq").val(${tmp.board_seq});  
-                          	$("#boardmodal").modal();
-                             
-                    
+                    	   $("#hidden").val(${tmp.board_seq});
                     	   
+                          	$("#boardmodal").modal();                	   
                        });
                         
-                       $("#mo${tmp.board_seq}").click(function() {
-                    	   $("#seq").val(${tmp.board_seq});  
-                          	$("#boardmodal").modal();
-                             
-                    
-                    	   
-                       });
+//                        $("#item${tmp.board_seq}").click(function() {
+//                     	   $("#seq").val(${tmp.board_seq});  
+//                           	$("#boardmodal").modal();                       	   
+//                        });
 
 				</script>
 				
+			
 				</div>
 			
-		<!-- 	<script>
+		<!-- <script>
 			num++;
-			</script> -->
+		</script> -->
 		</c:forEach>
 		
 		
       </c:if>
-     
-
+  
+	
 	</div>			
 	
 <!-- 			<div class="spinner"></div> -->
@@ -594,38 +638,43 @@ $(document).ready(function() {
 
 	</div>
  
-      <div class="pt-4 pb-3  " id="footer">
-           <div class="container">
-              <div class="row" >
-                <div class="col-md-10">
-                  <p class="lead">SocialWired 정보지원홍보 센터 API 채용 정보 개인정보처리방침 약관 디렉터리 프로필 해시 태그 언어</p>
-                </div>
-
-                <div class="col-4 col-md-2 align-self-center">
-                  <p>@2018SocialWired</p>
-                </div>
-              </div>
-          </div>
-      </div>
+	      <div class="pt-4 pb-3  " id="footer">
+	           <div class="container">
+	              <div class="row" >
+	                <div class="col-md-10">
+	                  <p class="lead">SocialWired 정보지원홍보 센터 API 채용 정보 개인정보처리방침 약관 디렉터리 프로필 해시 태그 언어</p>
+	                </div>
+	
+	                <div class="col-4 col-md-2 align-self-center">
+	                  <p>@2018SocialWired</p>
+	                </div>
+	              </div>
+	          </div>
+	      </div>
       
-       <div class="modal" id="boardmodal"> 
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" >Cencel failed</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span>×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-        <input type=text id="seq">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    
+      
+		   <div class="modal fade" id="boardmodal" role="dialog"> 
+		    <div class="modal-dialog" role="document">
+		      <div class="modal-content">
+		    
+		        	<div class="gallery-item" id="picture">  
+		       		 <img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image'">  
+		        	</div>
+		        	
+		      </div>
+		      
+		      <div class="modal-content1">
+		    
+		        
+		        	<input type="hidden" id="hidden">
+		        	<div class="bg-white" id="seq"></div>
+		        	<div class="bg-white" id="seq1"></div>
+		     
+	
+		      </div>
+		    </div>
+		  </div>
   
 </body>
 
