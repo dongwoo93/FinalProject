@@ -13,10 +13,9 @@
 <link rel="stylesheet"
 	href="https://v40.pingendo.com/assets/4.0.0/default/theme.css"
 	type="text/css">
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -132,11 +131,12 @@ body {
 
 <script>
 	$(document).ready(function() {
-
 		$('#searchform').keypress(function(event) {
-			var keycode = (event.keyCode ? event.keyCode : event.which);
+			var keycode = (event.keyCode ? event.keyCode
+					: event.which);
 			if (keycode == '13') {
-				var text = $("#searchform").val();
+				var text = $("#searchform")
+						.val();
 				if (text == "") {
 					alert("검색어를 입력해 주세요");
 				} else {
@@ -144,41 +144,97 @@ body {
 				}
 			}
 		});
-		
-		// 이메일 중복 확인
-		
-		$('#emailField').focusout(function() { 
-			var email = $('#emailField').val();
-			
-			$.ajax({
-				url : "isEmailDuplicated.ajax",
-				type : "get",
-				data : {
-					email : email
-				}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-				success : function(response) {
-					// console.log("AJAX Request 성공: ");
-					console.log(response)
-					if(response.indexOf('true') > -1){
-						$('#duplResultArea').html("<span class='badge badge-pill badge-danger'>❌</span> 이미 존재하는 이메일입니다.");
-						$('#emailField').val("");
-						$('#emailField').focus();
-					} else if ( email != "" ) {
-						$('#duplResultArea').html("<span class='badge badge-pill badge-success'>✔</span> 사용 가능한 이메일입니다.");
-					} else if ( email == "" ) {
-						$('#duplResultArea').text("");
-					}
 
-				},
-				error : function() {
-					console.log("에러 발생");
-				},
-				complete : function() {
-					// console.log("AJAX 종료");
+	// 이메일 중복 확인
+
+	$('#emailField').focusout(function() {
+		var email = $('#emailField').val();
+
+		$.ajax({
+			url : "isEmailDuplicated.ajax",
+			type : "get",
+			data : {
+				email : email
+			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			success : function(
+					response) {
+				// console.log("AJAX Request 성공: ");
+				console.log(response)
+				if (response.indexOf('true') > -1) {
+					$('#duplResultArea').html(
+									"<span class='badge badge-pill badge-danger'>❌</span> 이미 존재하는 이메일입니다.");
+					$('#emailField').val("");
+					$('#emailField').focus();
+				} else if (email != "") {
+					$('#duplResultArea')
+							.html("<span class='badge badge-pill badge-success'>✔</span> 사용 가능한 이메일입니다.");
+				} else if (email == "") {
+					$('#duplResultArea').text("");
 				}
-			})
-		}) // focustout 끝
+
+			},
+			error : function() {
+				console.log("에러 발생");
+			},
+			complete : function() {
+				// console.log("AJAX 종료");
+			}
+		})
+	}) // focustout 끝
+	
+	// 비밀번호 형식 확인
+	
+/* 	$('#inputPassword1').keyup(function() { 
+		
+		var regex = /^[a-zA-Z0-9!@()_-|]{6,20}$/  
+		var pwd = $('#inputPassword1').val();
+		// console.log(pwd);
+		if(pwd == ""){
+			
+		}
+		else if(regex.test(pwd)){
+			// console.log(true)
+			$('#pwdCheckArea').html("<span class='badge badge-pill badge-success'>✔</span> 사용하실 수 있습니다.");
+		} else {
+			// console.log(false)
+			$('#pwdCheckArea').html("<span class='badge badge-pill badge-danger'>❌</span> 사용하실 수 없는 비밀번호입니다.");
+
+		}			
+	}) */
+	
+	// 비밀번호 재입력 확인
+
+	$('#inputAfterPasswordOneMore').keyup(function() { 
+		
+		var pwd1 = $('#inputAfterPassword').val();
+		var pwd2 = $('#inputAfterPasswordOneMore').val();
+
+		if(pwd1 == ""){
+			// 아무것도 안한다.
+		}
+		else if(pwd1==pwd2){
+			$('#pwdRevalArea').html("<span class='badge badge-pill badge-success'>✔</span> 동일한 비밀번호입니다.");
+		} else {
+			console.log(false)
+			$('#pwdRevalArea').html("<span class='badge badge-pill badge-danger'>❌</span> 비밀번호가 다릅니다.");
+
+		}			
 	})
+	
+	// 변경 버튼
+	$('#pwdChangeBtn').click(function(){
+		
+		var pwd1 = $('#inputAfterPassword').val();
+		var pwd2 = $('#inputAfterPasswordOneMore').val();		
+		
+		if(pwd1 != pwd2){
+			alert('비밀번호를 동일하게 입력하세요.')
+		} else {
+			$('#pwdfrm').submit();
+		}
+	})
+	
+})
 </script>
 
 </head>
@@ -247,7 +303,8 @@ body {
 									<label for="example-text-input" class="col-2 col-form-label">이름</label>
 									<div class="col-10">
 										<input class="form-control edit" type="text"
-											value="${ member.name }" id="example-text-input" name="name" required>
+											value="${ member.name }" id="example-text-input" name="name"
+											required>
 									</div>
 								</div>
 								<div class="form-group row in">
@@ -259,26 +316,26 @@ body {
 											name="nickname" required>
 									</div>
 								</div>
-								
+
 								<div class="form-group row in">
-									<label for="example-email-input" class="col-2 col-form-label">웹
-										사이트</label>
+									<label for="example-email-input" class="col-2 col-form-label">웹사이트</label>
 									<div class="col-10">
 										<input class="form-control edit" type="text" value=""
 											id="example-email-input">
 									</div>
 								</div>
-								
-							<!-- 이메일 필드 -->
+
+								<!-- 이메일 필드 -->
 								<div class="form-group row in has-success">
 									<label for="example-url-input" class="col-2 col-form-label">이메일</label>
 									<div class="col-10">
 										<input class="form-control edit" type="email"
-											value="${ member.email }" id="emailField" name="email" required>
+											value="${ member.email }" id="emailField" name="email"
+											required>
 									</div>
-									  <div id='duplResultArea'></div>
+									<div id='duplResultArea'></div>
 								</div>
-								
+
 								<div class="form-group row in">
 									<label for="example-tel-input" class="col-2 col-form-label">전화번호</label>
 									<div class="col-10">
@@ -290,15 +347,16 @@ body {
 									<label for="example-password-input"
 										class="col-2 col-form-label">성별</label>
 									<div class="col-10 in">
-							
-							<!-- 성별따라 바뀌게 -->
-								<select class="custom-select edit" name="gender">
-									<option ${ member.gender ne '남' && member.gender ne '여' ? 'selected' : '' } 
-											value="n">선택안함</option>
-									<option ${ member.gender eq '남' ? 'selected' : ''} value="남">남성</option>
-									<option ${ member.gender eq '여' ? 'selected' : ''} value="여">여성</option>
-								</select>
-										
+
+										<!-- 성별따라 바뀌게 -->
+										<select class="custom-select edit" name="gender">
+											<option
+												${ member.gender ne '남' && member.gender ne '여' ? 'selected' : '' }
+												value="n">선택안함</option>
+											<option ${ member.gender eq '남' ? 'selected' : ''} value="남">남성</option>
+											<option ${ member.gender eq '여' ? 'selected' : ''} value="여">여성</option>
+										</select>
+
 
 									</div>
 								</div>
@@ -311,13 +369,26 @@ body {
 								</div>
 
 								<button type=submit class="btn btn-primary">제출</button>
-								<button type=button class="btn btn-secondary">계정을 일시적으로 비활성화</button>
+								<button type=button class="btn btn-secondary">계정을 일시적으로
+									비활성화</button>
 							</form>
 							<!-- profile form 끝 -->
 						</div>
 						<div class="tab-pane fade" id="tabtwo" role="tabpanel">
-							<p class="">Tab pane two. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<h1>비밀번호 변경</h1>
+							<div class="form-group">
+								<form action='passwordChangeProc.member' method=post id=pwdfrm>
+									<label for="inputBeforePassword">이전 비밀번호</label> 
+									<input type="password" class="form-control" id="inputBeforePassword" placeholder="Password" name=beforePassword>
+									<label for="inputAfterPassword">새 비밀번호</label> 
+									<input type="password" class="form-control" id="inputAfterPassword" placeholder="Password">
+									<label for="inputAfterPasswordOneMore">새 비밀번호 확인</label> 
+									<input type="password" class="form-control" id="inputAfterPasswordOneMore" placeholder="Password" name=pw>
+									<div id=pwdRevalArea></div>
+									<button type="button" class="btn btn-primary" id="pwdChangeBtn">비밀번호 변경</button>
+								</form>
+							</div>
+							
 						</div>
 						<div class="tab-pane fade" id="tabthree" role="tabpanel">
 							<p class="">Tab pane three. Lorem ipsum dolor sit amet,

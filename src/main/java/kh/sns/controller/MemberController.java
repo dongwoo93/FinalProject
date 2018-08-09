@@ -56,13 +56,19 @@ public class MemberController {
 	@RequestMapping("/profile.member")
 	public ModelAndView editProfile(HttpSession session) throws Exception {
 		
-		System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
-		MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
-		System.out.println();
-		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("mypage.jsp");
-		mav.addObject("member", member);
+		
+		if(session.getAttribute("loginId") != null) {
+			System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
+			MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
+			System.out.println();
+			
+			mav.setViewName("mypage.jsp");
+			mav.addObject("member", member);
+		} else {
+			// 작업 추가
+		}		
+		
 		return mav;		
 		
 	}
@@ -101,6 +107,32 @@ public class MemberController {
 		System.out.println("isEmailDuplicated: " + isEmailDuplicated + "(" + result + ")");
 
 		xout.println(isEmailDuplicated);
+	}
+	
+	@RequestMapping("/passwordChangeProc.member")
+	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String id = request.getSession().getAttribute("loginId").toString();
+		String beforePassword = request.getParameter("beforePassword");
+		
+		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
+		if(isBeforePasswordCorrect) {
+			member.setId(request.getSession().getAttribute("loginId").toString());
+			System.out.println(member);
+			
+			int result = memberService.updateOneMemberPassword(member);
+			
+			mav.addObject("result", result);
+		} else {
+			// 이전 패스워드 입력이 틀렸을 때
+			mav.addObject("result", 0);
+			System.out.println("이전 패스워드 입력이 틀림");
+		}
+		mav.setViewName("redirect:profile.member");
+		
+		return mav;		
 	}
 	
 

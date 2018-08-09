@@ -15,5 +15,7 @@ public interface MemberService {
 	
 	
 	
+	
+	
 //	boolean isIdExist(String id);
 }
