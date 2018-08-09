@@ -3,6 +3,7 @@ package kh.sns.controller;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -131,7 +132,6 @@ public class MemberController {
          
   
        }
-	
 	/*======*/
 	@RequestMapping("/profile.member")
 	public ModelAndView editProfile(HttpSession session) throws Exception {
@@ -160,6 +160,7 @@ public class MemberController {
 		mav.setViewName("redirect:profile.member");
 		return mav;		
 	}
+	
 
 
 

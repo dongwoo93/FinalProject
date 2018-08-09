@@ -11,4 +11,12 @@ public interface MemberService {
 	public int isNickExist(String nick);
 	public int isEmailExist(String email);
 	
+	public MemberDTO getOneMember(String id) throws Exception;
+	
+	public int updateOneMemberProfile(MemberDTO member) throws Exception;
+	
+	public int updateOneMemberPassword(MemberDTO member) throws Exception;
+	
+	
+	
 }

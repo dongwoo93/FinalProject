@@ -1,7 +1,5 @@
 package kh.sns.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,22 @@ public class IMemberService implements MemberService{
 	public int loginMem(MemberDTO dto) {
 		return this.dao.loginMem(dto);
 		
+	}
+	
+	@Override
+	public MemberDTO getOneMember(String id) throws Exception {
+		
+		return dao.getOneMember(id);
+	}
+	
+	@Override
+	public int updateOneMemberProfile(MemberDTO member) throws Exception {
+		return dao.updateOneMemberProfile(member);
+	}
+	
+	@Override
+	public int updateOneMemberPassword(MemberDTO member) throws Exception {
+		return dao.updateOneMemberPassword(member);
 	}
 
 
