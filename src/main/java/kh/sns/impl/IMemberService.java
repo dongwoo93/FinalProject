@@ -36,6 +36,11 @@ public class IMemberService implements MemberService{
 	public int updateOneMemberPassword(MemberDTO member) throws Exception {
 		return dao.updateOneMemberPassword(member);
 	}
+	
+	@Override
+	public int checkEmailDuplicated(String email, String currentUserId) throws Exception {
+		return dao.checkEmailDuplicated(email, currentUserId);
+	}
 
 
 

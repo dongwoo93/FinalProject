@@ -75,6 +75,12 @@ public class IMemberDAO implements MemberDAO {
 		return 0;
 	}
 	
+	@Override
+	public int checkEmailDuplicated(String email, String currentUserId) throws Exception {
+		String sql = "select * from member where email = ? and id != ?";
+		return template.update(sql, email, currentUserId);
+	}
+	
 	
 //	@Override
 //	public boolean isIdExist(String id) throws Exception{

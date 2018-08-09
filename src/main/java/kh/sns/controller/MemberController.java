@@ -1,8 +1,7 @@
 package kh.sns.controller;
 
-import java.util.List;
+import java.io.PrintWriter;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -80,6 +79,28 @@ public class MemberController {
 		mav.addObject("result", result);
 		mav.setViewName("redirect:profile.member");
 		return mav;		
+	}
+	
+	@RequestMapping("/isEmailDuplicated.ajax")
+	public void checkEmailDuplicated(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		request.setCharacterEncoding("UTF8");
+		// PrintWriter를 꺼내기 전에 response의 인코딩을 설정
+		response.setCharacterEncoding("UTF8");
+		PrintWriter xout = response.getWriter();   
+		
+		boolean isEmailDuplicated = false;
+		int result = memberService.checkEmailDuplicated(request.getParameter("email"), 
+				request.getSession().getAttribute("loginId").toString());
+		if(result >= 1) {
+			isEmailDuplicated = true;
+		} else {
+			isEmailDuplicated = false;
+		}
+		
+		System.out.println("isEmailDuplicated: " + isEmailDuplicated + "(" + result + ")");
+
+		xout.println(isEmailDuplicated);
 	}
 	
 

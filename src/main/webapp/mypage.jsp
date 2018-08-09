@@ -13,9 +13,10 @@
 <link rel="stylesheet"
 	href="https://v40.pingendo.com/assets/4.0.0/default/theme.css"
 	type="text/css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -143,6 +144,40 @@ body {
 				}
 			}
 		});
+		
+		// 이메일 중복 확인
+		
+		$('#emailField').focusout(function() { 
+			var email = $('#emailField').val();
+			
+			$.ajax({
+				url : "isEmailDuplicated.ajax",
+				type : "get",
+				data : {
+					email : email
+				}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+				success : function(response) {
+					// console.log("AJAX Request 성공: ");
+					console.log(response)
+					if(response.indexOf('true') > -1){
+						$('#duplResultArea').html("<span class='badge badge-pill badge-danger'>❌</span> 이미 존재하는 이메일입니다.");
+						$('#emailField').val("");
+						$('#emailField').focus();
+					} else if ( email != "" ) {
+						$('#duplResultArea').html("<span class='badge badge-pill badge-success'>✔</span> 사용 가능한 이메일입니다.");
+					} else if ( email == "" ) {
+						$('#duplResultArea').text("");
+					}
+
+				},
+				error : function() {
+					console.log("에러 발생");
+				},
+				complete : function() {
+					// console.log("AJAX 종료");
+				}
+			})
+		}) // focustout 끝
 	})
 </script>
 
@@ -234,14 +269,16 @@ body {
 									</div>
 								</div>
 								
-								<!-- 이메일 필드 -->
+							<!-- 이메일 필드 -->
 								<div class="form-group row in has-success">
 									<label for="example-url-input" class="col-2 col-form-label">이메일</label>
 									<div class="col-10">
 										<input class="form-control edit" type="email"
 											value="${ member.email }" id="emailField" name="email" required>
 									</div>
+									  <div id='duplResultArea'></div>
 								</div>
+								
 								<div class="form-group row in">
 									<label for="example-tel-input" class="col-2 col-form-label">전화번호</label>
 									<div class="col-10">
