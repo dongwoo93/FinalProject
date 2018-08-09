@@ -13,10 +13,7 @@ public class MemberDTO {
 	public MemberDTO() {
 		
 	}
-	public String toString() {
-		return this.id + " : " + this.pw + " :  " + this.nickname + " : " + this.email + " : " + this.phone + " : " + this.gender + " : " + this.name;
-		
-	}
+	
 	public MemberDTO(String id, String pw, String nickname, String email, String phone, String gender, String name) {
 		super();
 		this.id = id;

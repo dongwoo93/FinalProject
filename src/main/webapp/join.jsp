@@ -697,8 +697,8 @@ $("#sign").click(function(){
  function timeCount(){
 	
 	$(".time").countdowntimer({
-		 minutes:0,
-		 seconds : 5,
+		 minutes : 3,
+		 seconds : 0,
 		 timeUp: timeIsUp,
 		 size:"sm"
 	 });
