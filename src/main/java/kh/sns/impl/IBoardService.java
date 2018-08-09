@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.MemberDTO;
+import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardService;
 
 @Service
@@ -21,15 +22,18 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		return dao.getFeed(id);
 	}
-
+	
+	@Override
 	public List<BoardDTO> getBoard(String id) {
 		return this.dao.getBoard(id);
 	}
 
-
+	//search
 	@Override
-	public List<BoardDTO> search(String keyword) {
-		return this.dao.search(keyword);
+	public List<BoardDTO> search(String seq) {
+		return this.dao.search(seq);
+		
+		
 	}
 	
 	
@@ -61,10 +65,44 @@ public class IBoardService implements BoardService {
 			for(int i : hashTagResult) {
 				System.out.print(i);
 			}
-		} 	
-		
-		
+		} 			
 		
 		return contentResult * mediaResult;
 	}
+
+	@Override
+	public List<Board_MediaDTO> search2(int seq) throws Exception {
+		return dao.search2(seq);
+	}
+
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+		return dao.getBoardModal(seq);
+	}
+	
+	@Override
+	public int insertFollowInfo(FollowInfo fi) throws Exception {
+		return dao.insertFollowInfo(fi);
+	}
+	
+	@Override
+	public int deleteFollowInfo(FollowInfo fi) throws Exception {
+		return dao.deleteFollowInfo(fi);
+	}
+	
+	@Override
+	public int getFollowingCount(String id) throws Exception {
+		return dao.getFollowingCount(id);
+	}
+	
+	@Override
+	public int getFollowerCount(String id) throws Exception {
+		return dao.getFollowerCount(id);
+	}
+	
+	@Override
+	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
+		return dao.getBoardFromFollowingList(id);
+	}
+	
 }

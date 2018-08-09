@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -183,7 +183,7 @@
           	<c:when test="${result.size() > 0}">
 
              <div class="row">
-             	 <c:forEach var="result" items="${result}">	
+             	 <c:forEach var="result" items="${result}" varStatus="status">	
 			           <div id="bigbox" class="col-lg-4 col-sm-6 portfolio-item" >
 			             <div class="card h-150">
 			             	<h4 class="card-title">
@@ -191,12 +191,13 @@
 				             	 <a>${result.id}</a>
 				                 <a href="#">팔로우</a>
 			                </h4>
-				               <a href="#">
-				                 <img class="card-img-top" src='${system_file_name}' alt="Card image cap"> </a>
+			                <c:forEach var="media" items="${result2[status.index]}">
+				               <a href="#">  <!-- ${system_file_name}  -->
+				                 <img class="card-img-top" src='AttachedMedia/${media.system_file_name}' alt="Card image cap"></a>
+				                 </c:forEach>			                 	
 				               <div class="card-body">
 				                <i id="icon" class="far fa-heart"></i>
 				                <i id="book" class="far fa-bookmark"></i>
-				                <i id="icon" class="far fa-comment"></i>
 			              	   </div>
 			             </div>
 			           </div>

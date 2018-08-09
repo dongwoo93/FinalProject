@@ -44,10 +44,11 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
-
+	
+	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where contents like '%'||?||'%'";
+		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%'))";
 		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
@@ -61,9 +62,28 @@ public class IBoardDAO implements BoardDAO  {
 				tmp.setIs_allow_comments(rs.getString(6));
 				return tmp;
 			}
+
 		});
 	}
+	
+	@Override
+	public List<Board_MediaDTO> search2(int seq) throws Exception {
+		String sql = "select * from board_media where board_seq=?";
+		return template.query(sql, new Object[] {seq}, new RowMapper<Board_MediaDTO>() {
 
+			@Override
+			public Board_MediaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_MediaDTO media = new Board_MediaDTO();
+				media.setMedia_seq(rs.getInt(1));
+				media.setBoard_seq(rs.getInt(2));
+				media.setMedia_type(rs.getString(3));
+				media.setOriginal_file_name(rs.getString(4));
+				media.setSystem_file_name(rs.getString(5));
+				return media;
+			}
+		});
+	}
+	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		String sql = "select * from board where id=? order by board_seq desc";
@@ -107,11 +127,11 @@ public class IBoardDAO implements BoardDAO  {
 
 		String sql = "select board_seq.currval from dual";
 
-		List<Integer> list = template.query(sql, (rs, rowNum) -> {
+		List<Integer> temp = template.query(sql, (rs, rowNum) -> {
 			return rs.getInt(1);	
 		});
-
-		return list.get(0);
+				
+		return temp.get(0);
 	}
 	
 	
@@ -170,5 +190,43 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
+	@Override	// id가 팔로한 사람들의 수
+	public int getFollowingCount(String id) throws Exception {
+		String sql = "select count(*) from member_follow where id=?";
+		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
+			return rs.getInt(1);
+		});
+		return temp.get(0);
+		
+	}
 	
+	@Override	// id를 팔로하는 사람들의 수
+	public int getFollowerCount(String id) throws Exception {
+		String sql = "select count(*) from member_follow where target_id=?";
+		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
+			return rs.getInt(1);
+		});
+		return temp.get(0);
+	}
+	
+
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+		String sql = "select * from board where board_seq=?";
+		
+		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		}).get(0);
+	}
 }
