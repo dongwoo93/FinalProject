@@ -212,7 +212,7 @@ body {
 									<label for="example-text-input" class="col-2 col-form-label">이름</label>
 									<div class="col-10">
 										<input class="form-control edit" type="text"
-											value="${ member.name }" id="example-text-input" name="name">
+											value="${ member.name }" id="example-text-input" name="name" required>
 									</div>
 								</div>
 								<div class="form-group row in">
@@ -221,9 +221,10 @@ body {
 									<div class="col-10">
 										<input class="form-control edit" type="text"
 											value="${ member.nickname }" id="example-search-input"
-											name="nickname">
+											name="nickname" required>
 									</div>
 								</div>
+								
 								<div class="form-group row in">
 									<label for="example-email-input" class="col-2 col-form-label">웹
 										사이트</label>
@@ -232,11 +233,13 @@ body {
 											id="example-email-input">
 									</div>
 								</div>
-								<div class="form-group row in">
+								
+								<!-- 이메일 필드 -->
+								<div class="form-group row in has-success">
 									<label for="example-url-input" class="col-2 col-form-label">이메일</label>
 									<div class="col-10">
-										<input class="form-control edit" type="text"
-											value="${ member.email }" id="example-url-input" name="email">
+										<input class="form-control edit" type="email"
+											value="${ member.email }" id="emailField" name="email" required>
 									</div>
 								</div>
 								<div class="form-group row in">
@@ -250,24 +253,15 @@ body {
 									<label for="example-password-input"
 										class="col-2 col-form-label">성별</label>
 									<div class="col-10 in">
-
-										<!-- 더 간단하게 할 수 있는 방법은? -->
-										<c:choose>
-											<c:when test="${ member.gender eq '남' }">
-												<select class="custom-select edit" name="gender">
-													<option value="n">선택안함</option>
-													<option selected value="남">남성</option>
-													<option value="여">여성</option>
-												</select>
-											</c:when>
-											<c:when test="${ member.gender eq '여' }">
-												<select class="custom-select edit" name="gender">
-													<option value="n">선택안함</option>
-													<option value="남">남성</option>
-													<option selected value="여">여성</option>
-												</select>
-											</c:when>
-										</c:choose>
+							
+							<!-- 성별따라 바뀌게 -->
+								<select class="custom-select edit" name="gender">
+									<option ${ member.gender ne '남' && member.gender ne '여' ? 'selected' : '' } 
+											value="n">선택안함</option>
+									<option ${ member.gender eq '남' ? 'selected' : ''} value="남">남성</option>
+									<option ${ member.gender eq '여' ? 'selected' : ''} value="여">여성</option>
+								</select>
+										
 
 									</div>
 								</div>

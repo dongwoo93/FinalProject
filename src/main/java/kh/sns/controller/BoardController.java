@@ -74,7 +74,7 @@ public class BoardController {
 	}
 	
 	//search
-	@RequestMapping("/search.bo")
+	@RequestMapping("/search2.bo")
 	public ModelAndView search2(HttpSession session, String search2) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		List<Board_MediaDTO> media = boardService.search2("search");
