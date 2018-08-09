@@ -82,8 +82,8 @@ public class MemberController {
 		int result = memberService.updateOneMemberProfile(member);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("result", result);
-		mav.setViewName("redirect:profile.member");
+		mav.addObject("editProfileResult", result);
+		mav.setViewName("redirect:profile.member");	// 리다이렉트? 포워드?
 		return mav;		
 	}
 	
@@ -124,13 +124,13 @@ public class MemberController {
 			
 			int result = memberService.updateOneMemberPassword(member);
 			
-			mav.addObject("result", result);
+			mav.addObject("pwdChangeResult", result);
 		} else {
 			// 이전 패스워드 입력이 틀렸을 때
-			mav.addObject("result", 0);
+			mav.addObject("pwdChangeResult", -1);	
 			System.out.println("이전 패스워드 입력이 틀림");
 		}
-		mav.setViewName("redirect:profile.member");
+		mav.setViewName("redirect:profile.member");	// 리다이렉트? 포워드?
 		
 		return mav;		
 	}

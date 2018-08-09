@@ -143,7 +143,8 @@ body {
 					$("#go").attr("onsubmit", "return true;");
 				}
 			}
-		});
+		});		
+		
 
 	// 이메일 중복 확인
 
@@ -240,6 +241,33 @@ body {
 </head>
 
 <body>
+
+<!-- 맨 처음 로딩될 때 나와야 하는 메시지 -->
+<!-- 포워드로 할 경우 param. 제거 -->
+<c:if test="${ param.pwdChangeResult ne null }">
+	<c:if test="${ param.pwdChangeResult eq 1 }">
+		<script>alert('패스워드가 변경되었습니다.')</script>
+	</c:if>
+	<c:if test="${ param.pwdChangeResult eq -1 }">
+		<script>alert('이전 패스워드가 틀립니다.')</script>
+	</c:if>
+	<c:if test="${ param.pwdChangeResult eq 0 }">
+		<script>alert('서버 오류로 패스워드 변경이 안됨')</script>
+	</c:if>
+</c:if>
+
+<c:if test="${ param.editProfileResult ne null }">
+	<c:choose>
+		<c:when test="${ param.editProfileResult eq 1 }">
+			<script>alert('회원 정보가 변경되었습니다.')</script>
+		</c:when>
+		<c:otherwise>
+			<script>alert('회원 정보 변경에 실패했습니다.')</script>
+		</c:otherwise>
+	</c:choose>
+</c:if>
+
+
 	<div id="topwrapper">
 		<nav class="navbar navbar-expand-md navbar-light" id="navbar">
 			<div class="container" id="navcontainer">
