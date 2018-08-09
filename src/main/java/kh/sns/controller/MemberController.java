@@ -187,4 +187,30 @@ public class MemberController {
 		System.out.println("isEmailDuplicated: " + isEmailDuplicated + "(" + result + ")");
 
 	}
+	
+	@RequestMapping("/passwordChangeProc.member")
+	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String id = request.getSession().getAttribute("loginId").toString();
+		String beforePassword = request.getParameter("beforePassword");
+		
+		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
+		if(isBeforePasswordCorrect) {
+			member.setId(request.getSession().getAttribute("loginId").toString());
+			System.out.println(member);
+			
+			int result = memberService.updateOneMemberPassword(member);
+			
+			mav.addObject("pwdChangeResult", result);
+		} else {
+			// 이전 패스워드 입력이 틀렸을 때
+			mav.addObject("pwdChangeResult", -1);
+			System.out.println("이전 패스워드 입력이 틀림");
+		}
+		mav.setViewName("redirect:profile.member");
+		
+		return mav;		
+	}
 }
