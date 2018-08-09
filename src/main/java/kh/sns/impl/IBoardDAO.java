@@ -114,6 +114,7 @@ public class IBoardDAO implements BoardDAO  {
 	 * (non-Javadoc)
 	 * @see kh.sns.interfaces.BoardDAO#insertNewMedia(kh.sns.dto.Board_MediaDTO)
 	 * 
+	 * �렪�쓽�긽 �뿬湲곕떎 �씪�떒 留뚮뱾怨� �굹以묒뿉 �븘�슂�븯硫� 蹂꾨룄 �겢�옒�뒪濡� 遺꾨━�빀�땲�떎.
 	 */
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
@@ -134,6 +135,7 @@ public class IBoardDAO implements BoardDAO  {
 	}
 
 	@Override
+	public int[] insertHashTags( BoardDTO article) throws Exception {
 
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
@@ -186,6 +188,7 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
+	@Override	// id媛� �뙏濡쒗븳 �궗�엺�뱾�쓽 �닔
 	public int getFollowingCount(String id) throws Exception {
 		String sql = "select count(*) from member_follow where id=?";
 		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
@@ -195,6 +198,7 @@ public class IBoardDAO implements BoardDAO  {
 		
 	}
 	
+	@Override	// id瑜� �뙏濡쒗븯�뒗 �궗�엺�뱾�쓽 �닔
 	public int getFollowerCount(String id) throws Exception {
 		String sql = "select count(*) from member_follow where target_id=?";
 		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
