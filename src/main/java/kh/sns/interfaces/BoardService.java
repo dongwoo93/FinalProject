@@ -21,9 +21,8 @@ public interface BoardService {
 	
 	public int getFollowingCount(String id) throws Exception;
 	public int getFollowerCount(String id) throws Exception;
-
 	
-
-	   public List<Board_TagsDTO> search(String keyword) throws Exception;
-	   public List<Board_MediaDTO> search2(String media)throws Exception;
+	//search
+	public List<BoardDTO> search(String keyword) throws Exception;
+	public List<Board_MediaDTO> search2(String seq) throws Exception;
 }

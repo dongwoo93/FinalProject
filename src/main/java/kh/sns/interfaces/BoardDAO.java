@@ -13,9 +13,7 @@ public interface BoardDAO {
 	public List<BoardDTO> getBoard(String id);
 	/* 태그 넣는 기능 */
 	public int[] insertHashTags(BoardDTO article) throws Exception;
-	
-	public List<Board_TagsDTO> search(String keyword);
-	public List<Board_MediaDTO> search2(String media)throws Exception;
+
 	public int insertNewBoardContent(BoardDTO article) throws Exception;	
 	public int insertNewMedia(Board_MediaDTO media) throws Exception;	
 	public int selectBoardSeqRecentCurrVal() throws Exception;
@@ -29,4 +27,7 @@ public interface BoardDAO {
 	public int getFollowingCount(String id) throws Exception;
 	public int getFollowerCount(String id) throws Exception;
 
+	// search
+	public List<BoardDTO> search(String keyword);
+	public List<Board_MediaDTO> search2(String seq) throws Exception;
 }

@@ -29,10 +29,10 @@ public class IBoardService implements BoardService {
 		return this.dao.getBoard(id);
 	}
 
-
+	//search
 	@Override
-	public List<Board_TagsDTO> search(String keyword) {
-		return this.dao.search(keyword);
+	public List<BoardDTO> search(String seq) {
+		return this.dao.search(seq);
 		
 		
 	}

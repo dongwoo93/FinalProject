@@ -14,16 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
 
@@ -66,18 +63,22 @@ public class BoardController {
 	public ModelAndView search(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
-		List<Board_TagsDTO> result = boardService.search("search");
-		System.out.println(result.size());
+		List<BoardDTO> result = boardService.search(search);
+		List<Board_MediaDTO> result2 = new ArrayList<>();
+		for(int i = 0; i < result.size(); i++) {
+			result2 = boardService.search2(Integer.toString(result.get(i).getBoard_seq()));
+		}
+		System.out.println("사이즈 : " + result.size());
 		mav.addObject("result", result);	
 		mav.setViewName("search.jsp");
 		return mav;
 	}
 	
 	//search
-	@RequestMapping("/search.bo")
+	@RequestMapping("/search2.bo")
 	public ModelAndView search2(HttpSession session, String search2) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		List<Board_MediaDTO> media = boardService.search2("search");
+		List<Board_MediaDTO> media = boardService.search2(search2);
 		mav.addObject("media", media);
 		mav.setViewName("search.jsp");
 		return mav;

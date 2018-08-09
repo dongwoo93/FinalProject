@@ -48,25 +48,29 @@ public class IBoardDAO implements BoardDAO  {
 	
 	// Search 
 	@Override
-	public List<Board_TagsDTO> search(String keyword) {
-		String sql = "select sep from board_tags where tags like '%'||?||'%'";
-		return template.query(sql, new Object[] {keyword}, new RowMapper<Board_TagsDTO>() {
+	public List<BoardDTO> search(String keyword) {
+		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%'))";
+		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
-			public Board_TagsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Board_TagsDTO tags = new Board_TagsDTO();
-				tags.setBoard_seq(rs.getInt(1));
-				tags.setTags(rs.getString(2));
-				return tags;
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
 			}
 
 		});
 	}
 	
 	@Override
-	public List<Board_MediaDTO> search2(String media) throws Exception {
-		String sql = "select seq from board_media where system_file_name=?";
-		return template.query(sql, new Object[] {media}, new RowMapper<Board_MediaDTO>() {
+	public List<Board_MediaDTO> search2(String seq) throws Exception {
+		String sql = "select * from board_media where board_seq=?";
+		return template.query(sql, new Object[] {seq}, new RowMapper<Board_MediaDTO>() {
 
 			@Override
 			public Board_MediaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
