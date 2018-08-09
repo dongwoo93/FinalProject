@@ -39,6 +39,38 @@ public class IMemberService implements MemberService{
 
 
 
+	@Override
+	public int signUp(MemberDTO dto) {
+		// TODO Auto-generated method stub
+		return this.dao.signUp(dto);
+	}
+
+
+
+	@Override
+	public int isIdExist(String id) {
+		// TODO Auto-generated method stub
+		return dao.isIdExist(id);
+	}
+
+
+
+	@Override
+	public int isNickExist(String nick) {
+		// TODO Auto-generated method stub
+		return dao.isNickExist(nick);
+	}
+
+
+
+	@Override
+	public int isEmailExist(String email) {
+		// TODO Auto-generated method stub
+		return dao.isEmailExist(email);
+	}
+
+
+
 //	@Override
 //	public boolean isIdExist(String id) {
 //		
