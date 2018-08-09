@@ -131,6 +131,36 @@ public class MemberController {
          
   
        }
+	
+	/*======*/
+	@RequestMapping("/profile.member")
+	public ModelAndView editProfile(HttpSession session) throws Exception {
+		
+		System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
+		MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
+		System.out.println();
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("mypage.jsp");
+		mav.addObject("member", member);
+		return mav;		
+		
+	}
+	
+	@RequestMapping("/editProfileProc.member")
+	public ModelAndView editProfile(MemberDTO member, HttpServletRequest request) throws Exception {
+		
+		member.setId(request.getSession().getAttribute("loginId").toString());
+		System.out.println(member);
+		
+		int result = memberService.updateOneMemberProfile(member);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result", result);
+		mav.setViewName("redirect:profile.member");
+		return mav;		
+	}
+
 
 
 }
