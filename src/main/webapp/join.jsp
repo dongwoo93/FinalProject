@@ -253,6 +253,25 @@ $("#back").click(function(){
 		
 	});
 	
+$("#id").click(function(){
+	
+	$("#chId").remove();	
+	
+});	
+
+$("#nick").click(function(){
+	
+	$("#chNick").remove();	
+	
+});	
+$("#email").click(function(){
+	
+	$("#chEmail").remove();	
+	
+});	
+
+	
+	
 	/* 
 	회원가입완료 유효성
 	*/
@@ -396,8 +415,8 @@ $("#sign").click(function(){
 				console.log("인증번호 ");
 				
 				
-				/* $.ajax({
-					url:"sms.mem",
+				 $.ajax({
+					url:"sms.do",
 					type:"post",
 					data:{
 						phone : phone
@@ -418,30 +437,36 @@ $("#sign").click(function(){
 						if((!data=="")){
 							alert("인증번호 전송완료");
 							$("input[name=phone]").attr("readonly",true);
-						var start = $("#confirm");
-						start.after("<input type='text' id='certification' name='certification' class='validate' placeholder='인증번호를 입력하세요'>");
+						var start = $(".confirm");
+						start.after(
+								"<div class='row confirm'><div class='input-field col s6'><input type='text' id='certification' name='certification' class='validate' placeholder='인증번호를 입력하세요'></div></div>");
 							
 							
 						$("#certification").keyup(function(){
 							var insert = $("#certification").val();
 							if(insert==data){
-								$("#certification").css("background-color", "#B0F6AC");
+								$("#certification").css("background-color", "green");
 								 $("input[name=certification]").attr("readonly",true);
 								
 								phoneConfirm=1;		
-								else{
-									$("#certification").css("background-color", "#FFCECE");
-									phoneConfirm=0;		
 								
-								}
+							}else{
+								$("#certification").css("background-color", "red");
+								phoneConfirm=0;		
+							
 							}
 								
 							});
 						
+						}else{
+							console.log("응다시 써");
+							$("#certification").remove();
+							$("#phone").val("");
+							$("#phone").focus();
 						}	
 					}	
 					
-				});	 */
+				});	
 			}else{
 				console.log("다시 써");
 				$("#phone").val("");
@@ -454,6 +479,12 @@ $("#sign").click(function(){
 			$(this).focus();
 		}
 	});	 
+	 
+	 
+	 $("#nick").keyup(function(){
+		 $("#chNick").remove();
+	 })
+	 
 });
 
 
@@ -500,11 +531,27 @@ $("#sign").click(function(){
 				                success: function(data) {
 				                    console.log("AJAX Request 성공");
 				                   if(data==1){
-				                	   idCheck=1;
-				                	   var start = $("#id");
-				   				
-				                   }else{
+				                
 				                	   idCheck=0;
+				                	   var start = $(".id");
+				   						start.after('<div class="mt-2" id="chId"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" ></i></div>');
+				                	
+
+
+				                	   alert("이미 사용중인 아이디 입니다");
+				                	   
+				                	   $("#id").val("");
+				                	   $("#id").focus();
+				                	   
+				   						
+				                   }else if(data==0){
+				               
+				                	   idCheck=1;
+		                	   var start = $(".id");
+				   				start.after(
+				   						'<div class="mt-2" id="chId"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" ></i></div>');
+				                	   alert("사용 가능한 아이디 입니다.");
+				                	   
 				                   }
 				                   
 				                },
@@ -525,25 +572,47 @@ $("#sign").click(function(){
 						console.log(idCheck);
 					}
 				},
-				1000);
+				500);
 }
  
  function checkNick() {
 		setTimeout(
 				function() {
 					var color = $("#nick").css("border-bottom-color");
-					var id = $("#nick").val();
-					console.log(color);
-					
+					var nick = $("#nick").val();
+		
 					if(color == "rgb(76, 175, 80)" || color=="") {
 						console.log("띵동");
-						/*  $.ajax({
-				                url: "joinCheck", // 처리할 페이지(서블릿) 주소
+						 $.ajax({
+				                url: "nickCheck.do", // 처리할 페이지(서블릿) 주소
 				                type: "get",
-				                data: {keyval: val},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-				                success: function(response) {
+				                data: {nick: nick},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+				                success: function(data) {
 				                    console.log("AJAX Request 성공");
-				                    var result = $('#response').text(response);                    
+				                 
+				                    if(data==1){
+						                
+					                	   nickCheck=0;
+					                	   var start = $(".nick");
+					   						start.after('<div class="mt-2" id="chNick"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>');
+					                	
+
+
+					                	   alert("이미 사용중인 닉네임 입니다");
+					                	   
+					                	   $("#nick").val("");
+					                	   $("#nick").focus();
+					                	   
+					   						
+					                   }else if(data==0){
+					               
+					                	   nickCheck=1;
+			                	   var start = $(".nick");
+					   				start.after(
+					   						'<div class="mt-2" id="chNick"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" id="chId"></i></div>');
+					                	   alert("사용 가능한 닉네임 입니다.");
+					                	   
+					                   }
 				                },
 				                error: function() {
 				                    console.log("에러 발생");
@@ -551,9 +620,8 @@ $("#sign").click(function(){
 				                complete: function(){
 				                    console.log("AJAX 종료");
 				                }
-				            }); */
-				          
-						nickCheck=1;
+				            }); 
+				       
 						console.log(nickCheck);
 					} else {
 						console.log("떙");
@@ -561,25 +629,47 @@ $("#sign").click(function(){
 						console.log(nickCheck);
 					}
 				},
-				1000);
+				500);
 }
  
  function checkEmail() {
 		setTimeout(
 				function() {
 					var color = $("#email").css("border-bottom-color");
-					var id = $("#email").val();
+					var email = $("#email").val();
 					console.log(color);
 					
 					if(color == "rgb(76, 175, 80)" || color=="") {
 						console.log("띵동");
-						/*  $.ajax({
-				                url: "joinCheck", // 처리할 페이지(서블릿) 주소
+						emailCheck=1;
+						/*   $.ajax({
+				                url: "emailCheck", // 처리할 페이지(서블릿) 주소
 				                type: "get",
-				                data: {keyval: val},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-				                success: function(response) {
+				                data: {email: email},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+				                success: function(data) {
 				                    console.log("AJAX Request 성공");
-				                    var result = $('#response').text(response);                    
+				                    if(data==1){
+						                
+				                    	emailCheck=0;
+					                	   var start = $(".email");
+					   						start.after('<div class="mt-2" id="chEmail"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>');
+					                	
+
+
+					                	   alert("이미 사용중인 이메일 입니다");
+					                	   
+					                	   $("#email").val("");
+					                	   $("#email").focus();
+					                	   
+					   						
+					                   }else if(data==0){
+					               
+					                	   emailCheck=1;
+			                	   var start = $(".email");
+					   				start.after('<div class="mt-2" id="chEmail"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" id="chId"></i></div>');
+					                	   alert("사용 가능한 이메일 입니다.");
+					                	   
+					                   }                 
 				                },
 				                error: function() {
 				                    console.log("에러 발생");
@@ -587,9 +677,9 @@ $("#sign").click(function(){
 				                complete: function(){
 				                    console.log("AJAX 종료");
 				                }
-				            }); */
+				            });  */
 				          
-				            emailCheck=1;
+			
 						console.log(emailCheck);
 					} else {
 						console.log("떙");
@@ -597,7 +687,7 @@ $("#sign").click(function(){
 						console.log(emailCheck);
 					}
 				},
-				1000);
+				500);
 }
  
  function  checkName() {
@@ -634,26 +724,29 @@ $(location).attr("href", "main.jsp");
 		<div class="row">
 			<form class="col s12" id="reg-form" action="sign.do" method="post">
 				<div class="row">
-					<div class="input-field col s6">
+					<div class="input-field col s6 id">
+				
 						<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id" name="id"
 							onblur="checkId()" type="text" class="validate" required> <label
 							for="id">ID</label>
 
-
+							
 
 					</div>
-					<div class="input-field col s6">
+					
+						
+					<div class="input-field col s6 name">
 						<input id="name" name="name"  type="text" minlength="2" onblur="checkName()"
 							class="validate" required> <label for="name">Name</label>
 					</div>
 				</div>
 				<div class="row">
 
-					<div class="input-field col s6">
+					<div class="input-field col s6 pw">
 						<input id="pw" name="pw" oninput="checkPwd()" type="password"
 							class="validate" minlength="6" required> <label for="pw">PassWord</label>
 					</div>
-					<div class="input-field col s6">
+					<div class="input-field col s6 pw2">
 						<input id="pwCheck" oninput="checkPwd()" type="password"
 							class="validate" minlength="6"  required> <label
 							for="pwCheck">Password Check</label>
@@ -666,24 +759,24 @@ $(location).attr("href", "main.jsp");
 
 				</div>
 				<div class="row">
-					<div class="input-field col s12">
+					<div class="input-field col s12 email">
 						<input id="email" name="email" type="email" onblur="checkEmail()" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="validate"
 							required> <label for="email">Email</label>
 					</div>
 				</div>
 				<div class="row">
-					<div class="input-field col s12">
+					<div class="input-field col s12 nick">
 						<input id="nick" onblur="checkNick()"  name="nickname" type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" class="validate" required>
 						<label for="nick">Nickname</label>
 					</div>
 				</div>
-				<div class="row">
-					<div class="input-field col s9 ph">
+				<div class="row confirm">
+					<div class="input-field col s9 phone">
 						<input id="phone" name="phone" type="text" class="validate"
 							 required> <label for="phone">Input
 							Your Phone Number</label>
 					</div>
-					<div class="input-field col s3">
+					<div class="input-field col s3 ">
 						<button
 							class="btn btn-large btn-register waves-effect waves-light"
 							type="button" id="confirm" style="height:70%">

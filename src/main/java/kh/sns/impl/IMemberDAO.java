@@ -40,16 +40,26 @@ public class IMemberDAO implements MemberDAO {
 		// TODO Auto-generated method stub
 
 		String sql = "SELECT * FROM MEMBER WHERE ID =?";
-		return template.update(sql,new Object[] {id});		
+		return template.update(sql,id);
 
 	}
+
+
+	@Override
+	public int isNickExist(String nick) {
+		// TODO Auto-generated method stub
+
+		String sql = "SELECT * FROM MEMBER WHERE nickname =?";
+		return template.update(sql, nick);		
+	}
+
+
+	@Override
+	public int isEmailExist(String email) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM MEMBER WHERE email =?";
+		return template.update(sql, email);		
+	}
 	
-	
-//	@Override
-//	public boolean isIdExist(String id) throws Exception{
-//		
-//		String sql = "SELECT * FROM MEMBER WHERE ID =?";
-//		return template.update(new Object[] {id});		
-//
-//	}
+
 }
