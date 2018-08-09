@@ -29,10 +29,10 @@ public class IBoardService implements BoardService {
 		return this.dao.getBoard(id);
 	}
 
-
+	//search
 	@Override
-	public List<Board_TagsDTO> search(String keyword) {
-		return this.dao.search(keyword);
+	public List<BoardDTO> search(String seq) {
+		return this.dao.search(seq);
 		
 		
 	}
@@ -72,9 +72,8 @@ public class IBoardService implements BoardService {
 	}
 
 	@Override
-	public List<Board_MediaDTO> search2(String media) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Board_MediaDTO> search2(int seq) throws Exception {
+		return dao.search2(seq);
 	}
 
 	@Override
