@@ -107,8 +107,14 @@ public class IMemberDAO implements MemberDAO {
 	
 	@Override
 	public int updateOneMemberPassword(MemberDTO member) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "update member set pw=? where id=?";
+		return template.update(sql, member.getPw(), member.getId());
+	}
+	
+	@Override
+	public int checkEmailDuplicated(String email, String currentUserId) throws Exception {
+		String sql = "select * from member where email = ? and id != ?";
+		return template.update(sql, email, currentUserId);
 	}
 	
 	

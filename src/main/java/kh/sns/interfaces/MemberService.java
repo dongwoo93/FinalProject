@@ -17,6 +17,10 @@ public interface MemberService {
 	
 	public int updateOneMemberPassword(MemberDTO member) throws Exception;
 	
+	public int checkEmailDuplicated(String email, String currentUserId) throws Exception;
+	
+	
+	
 	
 	
 }
