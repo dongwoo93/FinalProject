@@ -14,18 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.MemberService;
 
 @Controller
 public class BoardController {
@@ -66,22 +65,29 @@ public class BoardController {
 	public ModelAndView search(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
-		List<Board_TagsDTO> result = boardService.search("search");
-		System.out.println(result.size());
-		mav.addObject("result", result);	
+		List<BoardDTO> result = boardService.search(search);
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();
+		for(int i = 0; i < result.size(); i++) {
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+		}
+		System.out.println("사이즈 : " + result.size());
+		System.out.println(result2.get(0).get(0).getOriginal_file_name());
+		System.out.println(result2.get(0).get(1).getOriginal_file_name());
+		mav.addObject("result", result);
+		mav.addObject("result2", result2);
 		mav.setViewName("search.jsp");
 		return mav;
 	}
 	
 	//search
-	@RequestMapping("/search2.bo")
-	public ModelAndView search2(HttpSession session, String search2) throws Exception{
-		ModelAndView mav = new ModelAndView();
-		List<Board_MediaDTO> media = boardService.search2("search");
-		mav.addObject("media", media);
-		mav.setViewName("search.jsp");
-		return mav;
-	}
+//	@RequestMapping("/search2.bo")
+//	public ModelAndView search2(HttpSession session, String search2) throws Exception{
+//		ModelAndView mav = new ModelAndView();
+//		List<Board_MediaDTO> media = boardService.search2(search2);
+//		mav.addObject("media", media);
+//		mav.setViewName("search.jsp");
+//		return mav;
+//	}
 	
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(){
@@ -91,14 +97,13 @@ public class BoardController {
 		return mav;
 	}
 	
-	
 	@RequestMapping("/write.board")
-	public ModelAndView writeBoard() {
-		System.out.println("@@WRITE BOARD");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("write.jsp");
-		return mav;
-	}
+	   public ModelAndView writeBoard() {
+	      System.out.println("@@WRITE BOARD");
+	      ModelAndView mav = new ModelAndView();
+	      mav.setViewName("write.jsp");
+	      return mav;
+	   }
 
 	@RequestMapping("/writeProc.bo")
 	public ModelAndView writeProcBoard(
@@ -106,7 +111,6 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println("@@writeProc.test 접속되었습니다.");
 		System.out.println(contents);
 	
 		
@@ -121,10 +125,17 @@ public class BoardController {
 				
 				String originalName = mf.getOriginalFilename(); 
 				
-				// 시스템 파일명(임시)
+				// �떆�뒪�뀥 �뙆�씪紐�(�엫�떆)
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
-				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
+				String ext = originalName.substring(originalName.lastIndexOf('.')); // �솗�옣�옄
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
+				String realPath = request.getSession().getServletContext().getRealPath("/image/");
+                   
+                File f = new File(realPath);
+                if(!f.exists()){
+                   f.mkdir();
+                }
+          
 				
 				
 				

@@ -1,9 +1,12 @@
 package kh.sns.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import kh.sns.dto.MemberDTO;
@@ -20,6 +23,58 @@ public class IMemberDAO implements MemberDAO {
 	public int loginMem(MemberDTO dto) {		
 		String sql = "select * from member where id=? and pw=?";
 		return template.update(sql, dto.getId(), dto.getPw());
+	}
+	@Override
+	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception{
+		String sql = "select nickname from member where id in(select id from member_follow where target_id=? and id in(select target_id from member_follow where id=?)) and nickname like '%'||?||'%'";
+		
+		return template.query(sql, new String[] {id,id,searchtext}, new RowMapper<MemberDTO>() {
+
+			@Override
+			public MemberDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				System.out.println("홀로로로로ㅗ롤" + rs.getString(1));
+				MemberDTO dto = new MemberDTO("","",rs.getString(1),"","","","");   
+				return dto;
+			}
+
+			
+		});
+	}
+
+
+	@Override
+	public int signUp(MemberDTO dto) {
+		// TODO Auto-generated method stub
+		String sql = "insert into member values(?,?,?,?,?,?,?) ";
+		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
+				
+	}
+
+
+	@Override
+	public int isIdExist(String id) {
+		// TODO Auto-generated method stub
+
+		String sql = "SELECT * FROM MEMBER WHERE ID =?";
+		return template.update(sql,id);
+
+	}
+
+
+	@Override
+	public int isNickExist(String nick) {
+		// TODO Auto-generated method stub
+
+		String sql = "SELECT * FROM MEMBER WHERE nickname =?";
+		return template.update(sql, nick);		
+	}
+
+
+	@Override
+	public int isEmailExist(String email) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM MEMBER WHERE email =?";
+		return template.update(sql, email);		
 	}
 	
 	@Override
@@ -71,16 +126,15 @@ public class IMemberDAO implements MemberDAO {
 	
 	@Override
 	public int updateOneMemberPassword(MemberDTO member) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "update member set pw=? where id=?";
+		return template.update(sql, member.getPw(), member.getId());
+	}
+	
+	@Override
+	public int checkEmailDuplicated(String email, String currentUserId) throws Exception {
+		String sql = "select * from member where email = ? and id != ?";
+		return template.update(sql, email, currentUserId);
 	}
 	
 	
-//	@Override
-//	public boolean isIdExist(String id) throws Exception{
-//		
-//		String sql = "SELECT * FROM MEMBER WHERE ID =?";
-//		return template.update(new Object[] {id});		
-//
-//	}
 }
