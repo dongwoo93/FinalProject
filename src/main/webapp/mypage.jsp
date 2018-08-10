@@ -141,6 +141,9 @@ input > strong {
 <script>
 	$(document).ready(function() {		
 		
+		var originalPrivacyTab = $('#privacyTab').html();
+		var newPrivacyTab = $('#tabthree').html();
+		
 		// 탭 내용 외부 연결			
 	    $('.nav-item a').filter("[data-target='#${ param.targetTab }']").tab('show');	
 		
@@ -254,11 +257,25 @@ input > strong {
 	    $('.nav-item a').filter("[data-target='#"+ target[1] + "']").tab('show');
 	})
 	
+	// 코멘트 메뉴
+	$('#editCommentPane').click(function(){
+		alert('editCommentPane')
+		$('#privacyTab').html(newPrivacyTab);
+	});
+			
+	
+/* 	// 원래 코드
+	$("a[id *= 'resetOriginalPrivacyTab']").click(function() {
+		console.log(originalPrivacyTab);
+		$('#privacyTab').html(originalPrivacyTab);
+	}) */
+	
 	// 체크박스
 	$("input[id*='chkAllow']").change(toggleCheckAjax);
 	/* $('#chkAllowEmail').change(toggleCheckAjax);
 	$('#chkAllowSms').change(toggleCheckAjax); */
-			
+	
+
 	function toggleCheckAjax(){		
 		var fieldName = $(this).attr('name');
 		// alert('chkAllowEmail')
@@ -374,7 +391,7 @@ input > strong {
 						<li class="nav-item"><a class="nav-link mp" href="#"
 							data-toggle="pill" data-target="#tabfive">연락처 관리</a></li>
 						<li class="nav-item"><a class="nav-link mp" href="#"
-							data-toggle="pill" data-target="#privacyTab">공개 범위 및 보안</a></li>
+							data-toggle="pill" data-target="#privacyTab" id="resetOriginalPrivacyTab">공개 범위 및 보안</a></li>
 					</ul>
 				</div>
 				
@@ -487,10 +504,31 @@ input > strong {
 							</div>
 							
 						</div>
+						
+						
+						
+						<!-- 코멘트 설정 수정란 -->
 						<div class="tab-pane fade" id="tabthree" role="tabpanel">
-							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<h3>댓글 필터링</h3>
+							<p><strong>키워드 필터</strong></p>
+							<form>
+							 	<div class="form-group">
+							      <label for="exampleTextarea">게시물에서 위에 입력한 단어나 문구가 포함된 댓글을 숨깁니다.</label>
+							      <textarea placeholder="쉼표(,)로 구분하여 키워드를 추가하세요." class="form-control" id="exampleTextarea" rows="5" ></textarea>
+							    </div>
+							</form>
+							 <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
+						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
+						           <strong>기본 키워드 사용</strong>
+						        </label>
+						        <p><small>게시물에서 자주 신고된 키워드가 포함된 댓글을 숨깁니다.</small></p>
+						    </div>
 						</div>
+						<!-- -- -->
+						
+						
 						<div class="tab-pane fade" id="emailTab" role="tabpanel">
 							<h1>받아보기:</h1>
 							 <div class="form-check">
@@ -511,8 +549,16 @@ input > strong {
 						      </div>
 						</div>
 						<div class="tab-pane fade" id="tabfive" role="tabpanel">
-							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<div class=row>
+								<div class=col-6>
+									<h2>계정 정보</h2>
+									<h2>프로필 정보</h2>
+								</div>
+								<div class=col-6>
+									<h2>프로필 정보</h2>
+								</div>
+								
+							</div>
 						</div>
 						<div class="tab-pane fade" id="privacyTab" role="tabpanel">
 							<h2>계정 공개 범위: </h2>
@@ -548,7 +594,7 @@ input > strong {
 						    <!-- 댓글 설정 -->
 						    <div>
 						    	<h2>댓글: </h2>
-						    	<a class="nav-link mp" href="#tabthree" data-toggle="tabs">댓글 설정 수정</a>
+						    	<a class="nav-link mp" href="#" id="editCommentPane">댓글 설정 수정</a>
 						    </div>
 						    <!-- -- -->
 						    <hr>
@@ -590,6 +636,7 @@ input > strong {
 					        <p><small>이 옵션을 설정하면 회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드가 전송됩니다.</small></p>
 						  </div>
 						 <hr>
+						 
 						</div>
 						
 						  
