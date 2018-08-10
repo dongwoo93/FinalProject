@@ -13,7 +13,7 @@ public class MemberDTO {
 	public MemberDTO() {
 		
 	}
-
+	
 	public MemberDTO(String id, String pw, String nickname, String email, String phone, String gender, String name) {
 		super();
 		this.id = id;
@@ -76,7 +76,7 @@ public class MemberDTO {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}

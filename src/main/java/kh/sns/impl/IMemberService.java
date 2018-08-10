@@ -1,5 +1,7 @@
 package kh.sns.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,6 @@ public class IMemberService implements MemberService{
 	
 	@Autowired
 	private MemberDAO dao;
-	
 	
 	
 	@Override
@@ -33,11 +34,52 @@ public class IMemberService implements MemberService{
 	}
 	
 	@Override
-	public int updateOneMemberPassword(MemberDTO member) throws Exception {
+	public int updateOneMemberPassword(MemberDTO member) throws Exception {		
 		return dao.updateOneMemberPassword(member);
+	}
+	
+	@Override
+	public int checkEmailDuplicated(String email, String currentUserId) throws Exception {
+		return dao.checkEmailDuplicated(email, currentUserId);
 	}
 
 
+
+	@Override
+	public int signUp(MemberDTO dto) {
+		// TODO Auto-generated method stub
+		return this.dao.signUp(dto);
+	}
+
+
+
+	@Override
+	public int isIdExist(String id) {
+		// TODO Auto-generated method stub
+		return dao.isIdExist(id);
+	}
+
+
+
+	@Override
+	public int isNickExist(String nick) {
+		// TODO Auto-generated method stub
+		return dao.isNickExist(nick);
+	}
+
+
+
+	@Override
+	public int isEmailExist(String email) {
+		// TODO Auto-generated method stub
+		return dao.isEmailExist(email);
+	}
+
+
+	@Override
+	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception{
+		return this.dao.selectfriendlist(id,searchtext);
+	}
 
 //	@Override
 //	public boolean isIdExist(String id) {
