@@ -199,14 +199,6 @@ public class BoardController {
 		new Gson().toJson(result,response.getWriter());
 	}
 	
-	@RequestMapping("/like.bo")
-	public void doLike(HttpServletResponse response, Board_LikeDTO dto, String likecount) throws Exception{
-		int likeResult = 0;
-		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_liked());
-		System.out.println(likecount);
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println("띠용");
-		
-	}
+
 
 }

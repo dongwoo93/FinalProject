@@ -106,21 +106,6 @@ public class IBoardService implements BoardService {
 		return dao.getBoardFromFollowingList(id);
 	}
 
-	@Override
-	public int selectLike(Board_LikeDTO dto) throws Exception {
-		return dao.selectLike(dto);
-	}
-
-	@Override
-	public int insertLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.insertLike(dto);
-	}
-
-	@Override
-	public int updateLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.updateLike(dto);
-	}
+	
 	
 }

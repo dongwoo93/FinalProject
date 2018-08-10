@@ -33,8 +33,5 @@ public interface BoardDAO {
 	public List<BoardDTO> search(String keyword);
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
 	
-	// like
-		public int selectLike(Board_LikeDTO dto) throws Exception;
-		public int insertLike(Board_LikeDTO dto) throws Exception;
-		public int updateLike(Board_LikeDTO dto) throws Exception;
+	
 }

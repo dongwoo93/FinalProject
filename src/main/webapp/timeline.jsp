@@ -280,6 +280,9 @@ function unlikeit(e) {
 			$(e).prev().show();
 			$(e).hide();
 			
+			
+			
+			
 		},
 		error : function() {
 			console.log("에러 발생!");
