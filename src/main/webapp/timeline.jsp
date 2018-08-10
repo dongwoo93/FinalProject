@@ -241,12 +241,93 @@
     width:60%;
     height: 20px;
     }
+    
  
 }
 
 </style>
 
 <script>
+function likeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unlikeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+function markit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unmarkit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
 $(document).ready(function() {
 	
 	$('#searchform').keypress(function(event){
@@ -261,6 +342,10 @@ $(document).ready(function() {
         	} 
         }
     });
+	
+	
+	
+	
 })
 
 </script>
@@ -296,7 +381,7 @@ $(document).ready(function() {
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo?id=${sessionScope.loginId}"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>
@@ -315,7 +400,7 @@ $(document).ready(function() {
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-              <br><a class="mt-1 idtxt" id="id" href="board.bo">${tmp.id}<br>Dangsan.South Korea</a>
+              <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
              
             </div>    
             <div class="mt-2" id="boardimg">
@@ -329,9 +414,10 @@ $(document).ready(function() {
             <div id="cont">
               <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                 <div class="container">
-                  <a class="navbar-brand" href="#">
+                  <a class="navbar-brand">
                			 
-                    <i class="far fa-heart icon mr-1"></i>
+                    <i value="${tmp.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
                     <i class="far fa-comment icon"></i>
                   </a>
                   <ul class="navbar-nav">
@@ -340,7 +426,8 @@ $(document).ready(function() {
                     <i class="fas fa-circle dot"></i>&nbsp  
                   </ul>
                   <a class="btn navbar-btn ml-2 text-white ">
-                    <i class="far fa-bookmark icon"></i> 
+                    <i value="${tmp.board_seq}" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
                   </a> 
                 </div>
               </nav>  
@@ -417,7 +504,7 @@ $(document).ready(function() {
               </div>   
            
               <div class="py-2">     	
-                &nbsp&nbsp&nbsp<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                &nbsp;&nbsp;&nbsp;<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
                 <i class="fas fa-ellipsis-h btn mr-3"></i>      
               </div>
             </div>

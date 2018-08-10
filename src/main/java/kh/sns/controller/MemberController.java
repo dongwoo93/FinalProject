@@ -1,7 +1,10 @@
 package kh.sns.controller;
 
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,12 +13,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kh.sns.beans.SendEmail;
 import kh.sns.beans.Sms;
+import com.google.gson.Gson;
+
 import kh.sns.dto.MemberDTO;
+import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
+import kh.sns.interfaces.ProfileService;
 
 @Controller
 public class MemberController {
@@ -24,6 +32,10 @@ public class MemberController {
 	private MemberService memberService;
 	
 	
+	
+	@Autowired
+	private ProfileService profileService;
+
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
 		return "redirect:main.jsp";
@@ -138,28 +150,38 @@ public class MemberController {
 	@RequestMapping("/profile.member")
 	public ModelAndView editProfile(HttpSession session) throws Exception {
 		
-		System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
-		MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
-		System.out.println();
-		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("mypage.jsp");
-		mav.addObject("member", member);
+		
+		if(session.getAttribute("loginId") != null) {
+			System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
+			MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
+			ProfileDTO profile = profileService.getOneProfile(session.getAttribute("loginId").toString());
+			
+			mav.addObject("member", member);
+			mav.addObject("profile", profile);
+			
+			mav.setViewName("mypage.jsp");
+			
+		} else {
+			// 작업 추가
+		}		
+		
 		return mav;		
 		
 	}
 	
 	@RequestMapping("/editProfileProc.member")
-	public ModelAndView editProfile(MemberDTO member, HttpServletRequest request) throws Exception {
+	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpServletRequest request) throws Exception {
 		
 		member.setId(request.getSession().getAttribute("loginId").toString());
+		profile.setId(request.getSession().getAttribute("loginId").toString());
 		System.out.println(member);
 		
-		int result = memberService.updateOneMemberProfile(member);
+		int result = memberService.updateOneMemberProfile(member, profile);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("result", result);
-		mav.setViewName("redirect:profile.member");
+		mav.addObject("editProfileResult", result);
+		mav.setViewName("redirect:profile.member");	// 리다이렉트? 포워드?
 		return mav;		
 	}
 	
@@ -182,6 +204,26 @@ public class MemberController {
 		mav.addObject("result", result);
 		mav.setViewName("findPass.jsp");
 		return mav;		
+	@RequestMapping("/isEmailDuplicated.ajax")
+	public void checkEmailDuplicated(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		request.setCharacterEncoding("UTF8");
+		// PrintWriter를 꺼내기 전에 response의 인코딩을 설정
+		response.setCharacterEncoding("UTF8");
+		PrintWriter xout = response.getWriter();   
+		
+		boolean isEmailDuplicated = false;
+		int result = memberService.checkEmailDuplicated(request.getParameter("email"), 
+				request.getSession().getAttribute("loginId").toString());
+		if(result >= 1) {
+			isEmailDuplicated = true;
+		} else {
+			isEmailDuplicated = false;
+		}
+		
+		xout.println(isEmailDuplicated);
+	}
+		
 
 	}
 	
@@ -189,6 +231,36 @@ public class MemberController {
 	public ModelAndView findId(String name, String phone, HttpServletResponse response, HttpServletRequest request) throws Exception {
 		
 		
+	@RequestMapping("/searchfriend.do")
+	public void searchFriend(HttpServletResponse response, @RequestParam("searchtext") String searchtext, HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		System.out.println("친구검색들어옴");
+		ModelAndView mav = new ModelAndView();
+		String id = (String)  session.getAttribute("loginId");
+		System.out.println("검색어 : " + searchtext);
+		List<MemberDTO> list = null;
+		List<String> friendlist = new ArrayList<>();
+		
+		try {
+			list = memberService.selectfriendlist(id,searchtext);
+			System.out.println("해당하는거잘찾았냐");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		for(MemberDTO tmp : list) {
+			System.out.println(tmp.getNickname());
+			friendlist.add(tmp.getNickname());
+		}
+		
+		try {
+			new Gson().toJson(friendlist, response.getWriter());
+			
+		}catch(Exception e1) {
+			e1.printStackTrace();
+		}
+	}
 
 		String id =this.memberService.findId(name, phone);
 		int result = 0;
@@ -220,4 +292,30 @@ public class MemberController {
 		(쿼리에 이메일을뽑)이메일이잖아*/
 
 
+	
+	@RequestMapping("/passwordChangeProc.member")
+	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String id = request.getSession().getAttribute("loginId").toString();
+		String beforePassword = request.getParameter("beforePassword");
+		
+		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
+		if(isBeforePasswordCorrect) {
+			member.setId(request.getSession().getAttribute("loginId").toString());
+			System.out.println(member);
+			
+			int result = memberService.updateOneMemberPassword(member);
+			
+			mav.addObject("pwdChangeResult", result);
+		} else {
+			// 이전 패스워드 입력이 틀렸을 때
+			mav.addObject("pwdChangeResult", -1);
+			System.out.println("이전 패스워드 입력이 틀림");
+		}
+		mav.setViewName("redirect:profile.member");
+		
+		return mav;		
+	}
 }
