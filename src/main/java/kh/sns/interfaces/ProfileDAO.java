@@ -8,7 +8,7 @@ public interface ProfileDAO {
 	
 	public int updateOneAdvancedProfile(ProfileDTO profile) throws Exception;
 	
-	public int updateProfileCheckbox(ProfileDTO profile, String fieldName) throws Exception;
+	public int updateProfileCheckbox(ProfileDTO profile, String fieldName, boolean isYes) throws Exception;
 	
 	
 

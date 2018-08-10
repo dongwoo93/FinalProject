@@ -45,8 +45,8 @@ public class IProfileDAO implements ProfileDAO {
 	}
 	
 	@Override
-	public int updateProfileCheckbox(ProfileDTO profile, String fieldName) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateProfileCheckbox(ProfileDTO profile, String fieldName, boolean isYes) throws Exception {
+		String sql = "update profile set " + fieldName + " = ?";
+		return template.update(sql, isYes ? "y" : "n");
 	}
 }
