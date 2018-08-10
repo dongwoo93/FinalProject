@@ -348,7 +348,7 @@ body {
 								<div class="form-group row in">
 									<label for="example-email-input" class="col-2 col-form-label">웹 사이트</label>
 									<div class="col-10">
-										<input class="form-control edit" type="text" value=""
+										<input class="form-control edit" type="text" value="${ profile.website }"
 											id="websiteField" name=website>
 									</div>
 								</div>
@@ -357,7 +357,7 @@ body {
 								 <div class="form-group row in">
      								 <label for="introduceArea" class="col-2 col-form-label">자기소개</label>
      								 <div class=col-10>
-     								 	<textarea class="form-control" id="introduceArea" rows="3" name=introduce></textarea>
+     								 	<textarea class="form-control" id="introduceArea" rows="3" name=introduce>${ profile.introduce }</textarea>
      								 </div>
      								 
    								 </div>
@@ -432,8 +432,23 @@ body {
 								consectetur adipiscing elit.</p>
 						</div>
 						<div class="tab-pane fade" id="tabfour" role="tabpanel">
-							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<h1>받아보기:</h1>
+							 <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y" 
+									${ profile.is_allow_email eq 'y' ? 'checked' : '' }>
+						           <strong>뉴스 이메일</strong>
+						        </label>
+						        <br>유용한 최신 정보를 빠짐없이 받아보세요.
+						      </div>
+						      <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_sms value="y"  id=chkAllowSms
+						          ${ profile.is_allow_sms eq 'y' ? 'checked' : '' }>
+						           <strong>SMS 메시지</strong>
+						        </label>
+						        <br>SMS로 알림을 받아보세요.
+						      </div>
 						</div>
 						<div class="tab-pane fade" id="tabfive" role="tabpanel">
 							<p class="">Tab pane three. Lorem ipsum dolor sit amet,

@@ -19,13 +19,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.MemberDTO;
+import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
+import kh.sns.interfaces.ProfileService;
 
 @Controller
 public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private ProfileService profileService;
 
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
@@ -146,10 +151,13 @@ public class MemberController {
 		if(session.getAttribute("loginId") != null) {
 			System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
 			MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
-			System.out.println();
+			ProfileDTO profile = profileService.getOneProfile(session.getAttribute("loginId").toString());
+			
+			mav.addObject("member", member);
+			mav.addObject("profile", profile);
 			
 			mav.setViewName("mypage.jsp");
-			mav.addObject("member", member);
+			
 		} else {
 			// 작업 추가
 		}		
@@ -159,12 +167,13 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/editProfileProc.member")
-	public ModelAndView editProfile(MemberDTO member, HttpServletRequest request) throws Exception {
+	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpServletRequest request) throws Exception {
 		
 		member.setId(request.getSession().getAttribute("loginId").toString());
+		profile.setId(request.getSession().getAttribute("loginId").toString());
 		System.out.println(member);
 		
-		int result = memberService.updateOneMemberProfile(member);
+		int result = memberService.updateOneMemberProfile(member, profile);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("editProfileResult", result);
@@ -224,10 +233,6 @@ public class MemberController {
 		}
 	}
 
-	
-	
-
-	
 	
 	@RequestMapping("/passwordChangeProc.member")
 	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {

@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.ProfileDAO;
 
+@Repository
 public class IProfileDAO implements ProfileDAO {
 	
 	@Autowired
@@ -38,6 +40,12 @@ public class IProfileDAO implements ProfileDAO {
 	
 	@Override
 	public int updateOneAdvancedProfile(ProfileDTO profile) throws Exception {
+		String sql = "update profile set website = ?, introduce = ?";
+		return template.update(sql, profile.getWebsite(), profile.getIntroduce());
+	}
+	
+	@Override
+	public int updateProfileCheckbox(ProfileDTO profile, String fieldName) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
