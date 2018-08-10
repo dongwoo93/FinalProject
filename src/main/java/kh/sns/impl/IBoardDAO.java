@@ -133,6 +133,8 @@ public class IBoardDAO implements BoardDAO  {
 				
 		return temp.get(0);
 	}
+	
+	
 
 	@Override
 	public int[] insertHashTags(BoardDTO article) throws Exception {
