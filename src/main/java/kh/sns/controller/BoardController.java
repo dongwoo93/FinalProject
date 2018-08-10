@@ -23,15 +23,16 @@ import com.google.gson.Gson;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
-import kh.sns.interfaces.MemberService;
+import kh.sns.interfaces.ProfileService;
 
 @Controller
 public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -185,6 +186,12 @@ public class BoardController {
 	public ModelAndView writeProcBoard(HttpServletRequest request) {		
 		
 		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+		
+		try {
+			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		return mav;
