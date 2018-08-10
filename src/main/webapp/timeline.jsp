@@ -296,7 +296,7 @@ $(document).ready(function() {
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo?id=${sessionScope.loginId}"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>
@@ -315,7 +315,7 @@ $(document).ready(function() {
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-              <br><a class="mt-1 idtxt" id="id" href="board.bo">${tmp.id}<br>Dangsan.South Korea</a>
+              <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
              
             </div>    
             <div class="mt-2" id="boardimg">
@@ -417,7 +417,7 @@ $(document).ready(function() {
               </div>   
            
               <div class="py-2">     	
-                &nbsp&nbsp&nbsp<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                &nbsp;&nbsp;&nbsp;<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
                 <i class="fas fa-ellipsis-h btn mr-3"></i>      
               </div>
             </div>

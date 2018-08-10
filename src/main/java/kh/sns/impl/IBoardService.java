@@ -24,8 +24,14 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDTO> getBoard(String id) {
+	public List<BoardDTO> getBoard(String id) throws Exception {
 		return this.dao.getBoard(id);
+	}
+	
+	@Override
+	public int deleteBoard(int seq) throws Exception{
+	
+		return this.dao.deleteBoard(seq);
 	}
 
 	//search

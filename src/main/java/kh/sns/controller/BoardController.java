@@ -33,11 +33,11 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed() {
+	public ModelAndView toFeed(HttpSession session) {
 		
 		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id="hyong07";
+		String id=(String) session.getAttribute("loginId");
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
@@ -51,13 +51,24 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session) throws Exception{
+	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		String id = (String) session.getAttribute("loginId");
+//		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
 		mav.setViewName("myarticle.jsp");
 		return mav;
+	}
+	
+
+	@RequestMapping("/boardDelete.bo")
+	public ModelAndView deleteBoard(HttpSession session, int seq) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		int result = boardService.deleteBoard(seq);
+		String id = (String) session.getAttribute("loginId");
+		mav.setViewName("board.bo?id="+id);
+		return mav;
+		
 	}
 	
 	//search
