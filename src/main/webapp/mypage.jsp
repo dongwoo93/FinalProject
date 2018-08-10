@@ -139,7 +139,11 @@ input > strong {
 </style>
 
 <script>
-	$(document).ready(function() {
+	$(document).ready(function() {		
+		
+		// 탭 내용 외부 연결			
+	    $('.nav-item a').filter("[data-target='#${ param.targetTab }']").tab('show');	
+		
 		$('#searchform').keypress(function(event) {
 			var keycode = (event.keyCode ? event.keyCode
 					: event.which);
@@ -243,6 +247,13 @@ input > strong {
 		}
 	})
 	
+	// 탭 내용 외부 연결
+	$('a[data-toggle="tabs"]').click(function (e) {	
+		var target = this.href.split('#');
+		console.log(target[1]);
+	    $('.nav-item a').filter("[data-target='#"+ target[1] + "']").tab('show');
+	})
+	
 	// 체크박스
 	$("input[id*='chkAllow']").change(toggleCheckAjax);
 	/* $('#chkAllowEmail').change(toggleCheckAjax);
@@ -312,6 +323,8 @@ input > strong {
 </c:if>
 
 
+
+
 	<div id="topwrapper">
 		<nav class="navbar navbar-expand-md navbar-light" id="navbar">
 			<div class="container" id="navcontainer">
@@ -351,22 +364,25 @@ input > strong {
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="active nav-link mp" data-toggle="pill"
-							data-target="#tabone">프로필 편집</a></li>
+							data-target="#profileTab">프로필 편집</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp"
-							data-toggle="pill" data-target="#tabtwo">비밀번호 변경</a></li>
+							data-toggle="pill" data-target="#passwordTab">비밀번호 변경</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp"
 							data-toggle="pill" data-target="#tabthree">허가된 앱</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp"
-							data-toggle="pill" data-target="#tabfour">이메일 및 SNS</a></li>
+							data-toggle="pill" data-target="#emailTab">이메일 및 SMS</a></li>
 						<li class="nav-item"><a class="nav-link mp" href="#"
 							data-toggle="pill" data-target="#tabfive">연락처 관리</a></li>
 						<li class="nav-item"><a class="nav-link mp" href="#"
-							data-toggle="pill" data-target="#tabsix">공개 범위 및 보안</a></li>
+							data-toggle="pill" data-target="#privacyTab">공개 범위 및 보안</a></li>
 					</ul>
 				</div>
+				
+				<!--  -->
+				
 				<div class="col-8">
 					<div class="tab-content">
-						<div class="tab-pane fade show active" id="tabone" role="tabpanel">
+						<div class="tab-pane fade show active" id="profileTab" role="tabpanel">
 							<img src="resources/images/profile_image.jpg"
 								class="rounded-circle" alt="Cinque Terre" width="50">
 							<!-- profile form 시작 -->
@@ -455,7 +471,7 @@ input > strong {
 							</form>
 							<!-- profile form 끝 -->
 						</div>
-						<div class="tab-pane fade" id="tabtwo" role="tabpanel">
+						<div class="tab-pane fade" id="passwordTab" role="tabpanel">
 							<h1>비밀번호 변경</h1>
 							<div class="form-group">
 								<form action='passwordChangeProc.member' method=post id=pwdfrm>
@@ -475,7 +491,7 @@ input > strong {
 							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
 								consectetur adipiscing elit.</p>
 						</div>
-						<div class="tab-pane fade" id="tabfour" role="tabpanel">
+						<div class="tab-pane fade" id="emailTab" role="tabpanel">
 							<h1>받아보기:</h1>
 							 <div class="form-check">
 						        <label class="form-check-label">
@@ -498,7 +514,7 @@ input > strong {
 							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
 								consectetur adipiscing elit.</p>
 						</div>
-						<div class="tab-pane fade" id="tabsix" role="tabpanel">
+						<div class="tab-pane fade" id="privacyTab" role="tabpanel">
 							<h2>계정 공개 범위: </h2>
 							<div class="form-check">
 						        <label class="form-check-label">
@@ -532,7 +548,7 @@ input > strong {
 						    <!-- 댓글 설정 -->
 						    <div>
 						    	<h2>댓글: </h2>
-						    	<a href="#" class="nav-link mp" href="#" data-toggle="pill" data-target="#tabtwo">댓글 설정 수정</a>
+						    	<a class="nav-link mp" href="#tabthree" data-toggle="tabs">댓글 설정 수정</a>
 						    </div>
 						    <!-- -- -->
 						    <hr>
@@ -556,7 +572,7 @@ input > strong {
 						    </fieldset>
 						    <!-- -- -->
 						    <hr>
-						      <!-- 댓글 설정 -->
+						      <!-- 계정 데이터 설정 -->
 						    <div>
 						    	<h2>계정 데이터: </h2>
 						    	<a href="#" class="nav-link mp" href="#" data-toggle="pill" data-target="#tabtwo">계정 데이터 보기</a>
