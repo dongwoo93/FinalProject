@@ -157,8 +157,7 @@ body {
 			data : {
 				email : email
 			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-			success : function(
-					response) {
+			success : function(response) {
 				// console.log("AJAX Request 성공: ");
 				console.log(response)
 				if (response.indexOf('true') > -1) {
@@ -234,6 +233,40 @@ body {
 			$('#pwdfrm').submit();
 		}
 	})
+	
+	// 체크박스
+	$('#chkAllowEmail').change(toggleCheckAjax);
+	$('#chkAllowSms').change(toggleCheckAjax);
+			
+	function toggleCheckAjax(){		
+		var fieldName = $(this).attr('name');
+		// alert('chkAllowEmail')
+		
+		$.ajax({
+			url : "toggleProfileCheckbox.ajax",
+			type : "get",
+			data : {
+				fieldName : fieldName
+			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			success : function(response) {
+				// console.log("AJAX Request 성공: ");
+				console.log(response)
+				if(response == 1){
+					console.log("1 받았습니다.")
+					// 아무것도 안한다.
+				} else {
+					alert('실패');
+				}
+				
+			},
+			error : function() {
+				console.log("에러 발생");
+			},
+			complete : function() {
+				// console.log("AJAX 종료");
+			}
+		})
+	}
 	
 })
 </script>
