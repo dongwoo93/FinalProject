@@ -14,7 +14,7 @@
 	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
 	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -285,6 +285,8 @@ $(document).ready(function() {
 						type="text" placeholder="검색">
 				</form>
 			</div>
+			
+			
 			<div id="nav-icons">
 				<ul class="navbar-nav">
 
@@ -419,10 +421,10 @@ $(document).ready(function() {
 								</div>
 								<!--               -->
 								<div class="py-2">
-
-									<form if='commentform' onsubmit="return false">    
+  
+									<form id='commentform${tmp.board_seq}' onsubmit="return false">    
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
 									</form> 
 
@@ -438,45 +440,38 @@ $(document).ready(function() {
 		        	if(text == ""){
 		        		alert("댓글을 입력해주세요");
 		        	}
-		        	else {
-		        		
-		        		var params = $("#commentform").formParams();
-		        		
-		        		  $.ajax({
-		   	 	           type: "POST",
-		   	 	           url: "comment.co",
-		   	 	           data: params, 
-		   	 	           success: function(data)
-		   	 	           { alert("success!" + date);
-// 		   		 	               if(data == 1) {
-// 		   		 	            	   $(location).attr("href", "feed.bo");
-// 		   		 	               }else {
-// 		   		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-// 		   		 	               }
-		   	 	           }
-		   	 	         }); //ajax
+		        	else {  
+		        	  	commentSubmit();
 		        	}
 		        	
 		        }
 		    });   
 		
 			
-	/* 		function commentSubmit() {  
-	        	
-	            $.ajax({
+	 		function commentSubmit() {  
+	 			alert("잉");    
+	 			var params = $("#commentform${tmp.board_seq}").serialize(); 
+	 			
+	 			alert("잉");    
+	 			$.ajax({
 	 	           type: "POST",
-	 	           url: "comment.co",
-	 	           data: commentParams, 
+	 	           url: "comment.co", 	
+	 	           data: params, 
 	 	           success: function(data)
-	 	           { alert("success!" + date);
-		 	               if(data == 1) {
-		 	            	   $(location).attr("href", "feed.bo");
-		 	               }else {
-		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-		 	               }
+	 	           {  
+	 	        	alert(data);        
+	 	        	 
+	 	        	(function(e){
+	 	                  return function(){
+	 	                     $("#comment"+e).val("");
+	 	                   }
+	 	               })(data)
+	        
 	 	           }
 	 	         }); //ajax
-	        	}  */
+	        	} 
+	 		
+	 	
 	        	
 			</script>
 							</div>

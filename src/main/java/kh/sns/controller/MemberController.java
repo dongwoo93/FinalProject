@@ -41,7 +41,7 @@ public class MemberController {
 	
 	@RequestMapping("/login.do")
 	public void memberLogin(MemberDTO dto, HttpSession session, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView();
+		
 		response.setCharacterEncoding("UTF-8");
 		System.out.println(dto.getId());
 		System.out.println(dto.getPw());

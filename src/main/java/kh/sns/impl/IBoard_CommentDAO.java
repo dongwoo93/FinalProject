@@ -16,8 +16,8 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 
 	@Override
 	public int insertComment(Board_CommentDTO dto) throws Exception {
-		String sql = "insert into board_comment values(comment_seq.nextval,?,?,?,default)";
-
+		String sql = "insert into board_comment values(board_comment_seq.nextval,?,?,?,default)";
+System.out.println(dto.getComment_contents() + " : " + dto.getId() + " : " + dto.getBoard_seq()); 
 		return template.update(sql, dto.getBoard_seq(),dto.getId(),dto.getComment_contents());
 	}
 }
