@@ -420,14 +420,17 @@ $(document).ready(function() {
 								<!--               -->
 								<div class="py-2">
 
-									
+									<form onsubmit="return false">    
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
 									<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
+									</form> 
 
 								</div>
 								<script>
-			$('#comment${tmp.board_seq}').keypress(function(event){
+								
+							  	
+ 		$('#comment${tmp.board_seq}').keypress(function(event){
 		        var keycode = (event.keyCode ? event.keyCode : event.which);
 		        if(keycode == '13'){
 		        	
@@ -440,10 +443,10 @@ $(document).ready(function() {
 		        	}
 		        	
 		        }
-		    });  
+		    });   
+		
 			
-			
-			function commentSubmit() { 
+			function commentSubmit() {  
 	        	
 	            $.ajax({
 	 	           type: "POST",
@@ -458,7 +461,7 @@ $(document).ready(function() {
 //		 	               }
 	 	           }
 	 	         }); //ajax
-	        	}
+	        	} 
 			</script>
 							</div>
 						</div>
