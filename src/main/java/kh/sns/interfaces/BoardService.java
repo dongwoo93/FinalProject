@@ -3,6 +3,7 @@ package kh.sns.interfaces;
 import java.util.List;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.Board_TagsDTO;
 
@@ -25,4 +26,9 @@ public interface BoardService {
 	//search
 	public List<BoardDTO> search(String keyword) throws Exception;
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
+	
+	// like
+	public int selectLike(Board_LikeDTO dto) throws Exception;
+	public int insertLike(Board_LikeDTO dto) throws Exception;
+	public int updateLike(Board_LikeDTO dto) throws Exception;
 }

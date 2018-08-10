@@ -244,6 +244,48 @@ body {
 </style>
 
 <script>
+function likeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "y",
+			likecount : "0"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unlikeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "n",
+			likecount : "0"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
 $(document).ready(function() {
 	
 	$('#searchform').keypress(function(event){
@@ -329,35 +371,37 @@ $(document).ready(function() {
       var num = Math.floor((Math.random() * 4) + 1);
       var img = "timelineimg/"+num+".PNG"; 
       $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
-      </script>
-							</div> 
-							<div id="cont">
-								<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
-								<div class="container">
-									<a class="navbar-brand" href="#"> <i
-										class="far fa-heart icon mr-1"></i> <i
-										class="far fa-comment icon"></i>
-									</a>
-									<ul class="navbar-nav">
-										<i class="fas fa-circle dot1 "></i>&nbsp
-										<i class="fas fa-circle dot"></i>&nbsp
-										<i class="fas fa-circle dot"></i>&nbsp
-									</ul>
-									<a class="btn navbar-btn ml-2 text-white "> <i
-										class="far fa-bookmark icon"></i>
-									</a>
-								</div>
-								</nav>
-								<div id="contcenter" class="mt-2 mx-3 pb-2">
-									<%--             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id} --%>
-									<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
-
-
-
-     
-									<div class="hidden" id="hidden${tmp.board_seq}">
-
-										<script>
+      </script> 
+             </div>
+            <div id="cont">
+              <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
+                <div class="container">
+                  <a class="navbar-brand">
+               			 
+                    <i value="${tmp.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+                    <i class="far fa-comment icon"></i>
+                  </a>
+                  <ul class="navbar-nav">
+                    <i class="fas fa-circle dot1 "></i>&nbsp
+                    <i class="fas fa-circle dot"></i>&nbsp
+                    <i class="fas fa-circle dot"></i>&nbsp  
+                  </ul>
+                  <a class="btn navbar-btn ml-2 text-white ">
+                    <i class="far fa-bookmark icon"></i> 
+                  </a> 
+                </div>
+              </nav>  
+              <div id="contcenter" class="mt-2 mx-3 pb-2"> 
+<%--             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id} --%>
+				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
+		
+		    		    	  	   
+				
+			
+				<div class="hidden" id="hidden${tmp.board_seq}">
+				
+	 		   	<script>
 				//   	
 				   //	$("#${tmp.board_seq}").click(function() { 
 				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
