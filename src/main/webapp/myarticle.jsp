@@ -483,6 +483,10 @@ $(document).ready(function() {
 	           }
 	         });
 		});
+	
+	$("#toMy").click(function() {
+		$(location).attr("href", "profile.member");
+	})
 	})
 
 </script>
@@ -541,7 +545,7 @@ $(document).ready(function() {
 				<div class="profile-user-settings">
 					<h1 class="profile-user-name">손민수</h1>
 					<div class="profile-edit-btn">팔로잉</div>
-					<div class="profile-settings-btn"><i class="fas fa-cog"></i></div>
+					<div class="profile-settings-btn"><i id="toMy" class="fas fa-cog"></i></div>
 				</div>
 	
 				<div class="profile-stats">

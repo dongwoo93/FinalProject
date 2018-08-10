@@ -24,6 +24,7 @@ import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.MemberService;
 
 @Controller
 public class BoardController {
@@ -96,14 +97,13 @@ public class BoardController {
 		return mav;
 	}
 	
-	
 	@RequestMapping("/write.board")
-	public ModelAndView writeBoard() {
-		System.out.println("@@WRITE BOARD");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("write.jsp");
-		return mav;
-	}
+	   public ModelAndView writeBoard() {
+	      System.out.println("@@WRITE BOARD");
+	      ModelAndView mav = new ModelAndView();
+	      mav.setViewName("write.jsp");
+	      return mav;
+	   }
 
 	@RequestMapping("/writeProc.bo")
 	public ModelAndView writeProcBoard(
@@ -111,7 +111,6 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println("@@writeProc.test 접속되었습니다.");
 		System.out.println(contents);
 	
 		
@@ -126,10 +125,17 @@ public class BoardController {
 				
 				String originalName = mf.getOriginalFilename(); 
 				
-				// 시스템 파일명(임시)
+				// �떆�뒪�뀥 �뙆�씪紐�(�엫�떆)
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
-				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
+				String ext = originalName.substring(originalName.lastIndexOf('.')); // �솗�옣�옄
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
+				String realPath = request.getSession().getServletContext().getRealPath("/image/");
+                   
+                File f = new File(realPath);
+                if(!f.exists()){
+                   f.mkdir();
+                }
+          
 				
 				
 				
