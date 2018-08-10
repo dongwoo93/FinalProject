@@ -421,34 +421,38 @@
 			}
 		}
 	}
-	
-	#boardmodal{
-		width:100%;
-		height:100%;
+
+/*  	#boardmodal{  */
+/* 		width:100%;  */
+/*   		height:100%;  */
+/*  		position : absolute;  */
 		
-	}
-	.modal-dialog{
-		width:100%;
-		height:100%;
 		
-	}
-	.modal-content{
-		width:70%;
-		height:auto;
-		float:left;
-	}
+/*  	}  */
+/* 	.modal-dialog{  */
+/*  		width:1000px;  */
+/*  		height:1000px;  */
+/*  		margin-top : 500px; 		 */
+		
+/*  	}  */
+ 	.modal-content{ 
+ 		width:70%; 
+ 		height:auto; 
+ 		float:left; 
+ 	} 
 	
-	#picture{
-		width:300px;
-		height:auto;
-	}
-	.modal-content1{
-		width:30%;
-		height:auto;
-		display:inline-block;
-	}
+ 	#picture{ 
+ 		width:auto; 
+ 		height:auto; 
+	} 
+ 	.modal-content1{ 
+ 		width:30%; 
+ 		height:auto; 
+ 		display:inline-block; 
+ 	} 
 	
 	
+
 	
 </style>
 
@@ -534,8 +538,8 @@ $(document).ready(function() {
 	  <div class="container">
 			<div class="profile">
 				<div class="profile-image">
-<!-- 					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"> -->
-					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink">
+					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 				</div>
 	
 				<div class="profile-user-settings">
@@ -675,6 +679,25 @@ $(document).ready(function() {
 		      </div>
 		    </div>
 		  </div>
+
+
+<!-- 			<div class="modal-frame" id="boardmodal"> -->
+<!-- 			   <div class="modal"> -->
+<!-- 				<div class="modal-inset"> -->
+<!-- 				   <div class="button close"><i class="fa fa-close"></i></div> -->
+					
+<!-- 				      <div class="modal-body"> -->
+<!-- 				      <input type="hidden" id="hidden">  -->
+<!-- 				      <div class="bg-white" id="seq"></div>  -->
+
+<!-- 								        <h3>Such Modal, Much Animate!</h3> -->
+<!-- 				        				<p>Nothing groundbreaking, but I hope you enjoyed <br /> the physics for the open/close animation =).</p> -->
+<!-- 				        <p class="ps">**I know the SASS is a bit messy, I did this on the fly and for fun <br /> and w.e. I DO WHAT I WANT!!</p> -->
+<!-- 				      			</div> -->
+<!-- 				    		</div> -->
+<!-- 				  	</div> -->
+<!-- 				</div> -->
+<!-- 			<div class="modal-overlay"></div> -->
   
 </body>
 
