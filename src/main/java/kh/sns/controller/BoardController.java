@@ -70,8 +70,6 @@ public class BoardController {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
 		System.out.println("사이즈 : " + result.size());
-		System.out.println(result2.get(0).get(0).getOriginal_file_name());
-		System.out.println(result2.get(0).get(1).getOriginal_file_name());
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
 		mav.setViewName("search.jsp");
