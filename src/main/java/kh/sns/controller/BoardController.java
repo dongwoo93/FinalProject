@@ -97,6 +97,13 @@ public class BoardController {
 		return mav;
 	}
 	
+	@RequestMapping("/write.board")
+	   public ModelAndView writeBoard() {
+	      System.out.println("@@WRITE BOARD");
+	      ModelAndView mav = new ModelAndView();
+	      mav.setViewName("write.jsp");
+	      return mav;
+	   }
 
 	@RequestMapping("/writeProc.bo")
 	public ModelAndView writeProcBoard(
@@ -104,7 +111,6 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println("@@writeProc.test �젒�냽�릺�뿀�뒿�땲�떎.");
 		System.out.println(contents);
 	
 		

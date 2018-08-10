@@ -1,9 +1,12 @@
 package kh.sns.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import kh.sns.dto.MemberDTO;
@@ -29,6 +32,7 @@ public class IMemberDAO implements MemberDAO {
 
 			@Override
 			public MemberDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				System.out.println("홀로로로로ㅗ롤" + rs.getString(1));
 				MemberDTO dto = new MemberDTO("","",rs.getString(1),"","","","");   
 				return dto;
 			}

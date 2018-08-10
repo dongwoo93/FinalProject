@@ -10,10 +10,6 @@ public class MemberDTO {
 	private String gender;
 	private String name;
 	
-	public String toString() {
-		return this.id +":" + this.pw + " :" + this.nickname + " :" + this.email + " : " + this.phone + " : " + this.gender + " : " +this.name;
-	}
-	
 	public MemberDTO() {
 		
 	}

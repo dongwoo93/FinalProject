@@ -3,6 +3,8 @@ package kh.sns.controller;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -186,11 +188,11 @@ public class MemberController {
 		} else {
 			isEmailDuplicated = false;
 		}
+	}
 		
-		System.out.println("isEmailDuplicated: " + isEmailDuplicated + "(" + result + ")");
 
 	@RequestMapping("/searchfriend.do")
-	public void searchFriend(HttpServletResponse response,@RequestParam("searchtext") String searchtext,HttpSession session) {
+	public void searchFriend(HttpServletResponse response, @RequestParam("searchtext") String searchtext, HttpSession session) {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		System.out.println("친구검색들어옴");
@@ -203,7 +205,6 @@ public class MemberController {
 		try {
 			list = memberService.selectfriendlist(id,searchtext);
 			System.out.println("해당하는거잘찾았냐");
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -224,7 +225,7 @@ public class MemberController {
 	
 	
 
-	}
+	
 	
 	@RequestMapping("/passwordChangeProc.member")
 	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
