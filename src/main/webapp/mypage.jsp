@@ -157,8 +157,7 @@ body {
 			data : {
 				email : email
 			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-			success : function(
-					response) {
+			success : function(response) {
 				// console.log("AJAX Request 성공: ");
 				console.log(response)
 				if (response.indexOf('true') > -1) {
@@ -234,6 +233,41 @@ body {
 			$('#pwdfrm').submit();
 		}
 	})
+	
+	// 체크박스
+	$("input[id*='chkAllow']").change(toggleCheckAjax);
+	/* $('#chkAllowEmail').change(toggleCheckAjax);
+	$('#chkAllowSms').change(toggleCheckAjax); */
+			
+	function toggleCheckAjax(){		
+		var fieldName = $(this).attr('name');
+		// alert('chkAllowEmail')
+		
+		$.ajax({
+			url : "toggleProfileCheckbox.ajax",
+			type : "get",
+			data : {
+				fieldName : fieldName
+			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			success : function(response) {
+				// console.log("AJAX Request 성공: ");
+				console.log(response)
+				if(response == 1){
+					console.log("1 받았습니다.")
+					// 아무것도 안한다.
+				} else {
+					alert('실패');
+				}
+				
+			},
+			error : function() {
+				console.log("에러 발생");
+			},
+			complete : function() {
+				// console.log("AJAX 종료");
+			}
+		})
+	}
 	
 })
 </script>
@@ -346,12 +380,21 @@ body {
 								</div>
 
 								<div class="form-group row in">
-									<label for="example-email-input" class="col-2 col-form-label">웹사이트</label>
+									<label for="example-email-input" class="col-2 col-form-label">웹 사이트</label>
 									<div class="col-10">
-										<input class="form-control edit" type="text" value=""
-											id="example-email-input">
+										<input class="form-control edit" type="text" value="${ profile.website }"
+											id="websiteField" name=website>
 									</div>
 								</div>
+								
+								<!-- 소개 필드 -->
+								 <div class="form-group row in">
+     								 <label for="introduceArea" class="col-2 col-form-label">자기소개</label>
+     								 <div class=col-10>
+     								 	<textarea class="form-control" id="introduceArea" rows="3" name=introduce>${ profile.introduce }</textarea>
+     								 </div>
+     								 
+   								 </div>
 
 								<!-- 이메일 필드 -->
 								<div class="form-group row in has-success">
@@ -374,7 +417,7 @@ body {
 								<div class="form-group row in">
 									<label for="example-password-input"
 										class="col-2 col-form-label">성별</label>
-									<div class="col-10 in">
+									<div class="col-10">
 
 										<!-- 성별따라 바뀌게 -->
 										<select class="custom-select edit" name="gender">
@@ -423,17 +466,65 @@ body {
 								consectetur adipiscing elit.</p>
 						</div>
 						<div class="tab-pane fade" id="tabfour" role="tabpanel">
-							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<h1>받아보기:</h1>
+							 <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y" 
+									${ profile.is_allow_email eq 'y' ? 'checked' : '' }>
+						           <strong>뉴스 이메일</strong>
+						        </label>
+						        <br>유용한 최신 정보를 빠짐없이 받아보세요.
+						      </div>
+						      <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_sms value="y"  id=chkAllowSms
+						          ${ profile.is_allow_sms eq 'y' ? 'checked' : '' }>
+						           <strong>SMS 메시지</strong>
+						        </label>
+						        <br>SMS로 알림을 받아보세요.
+						      </div>
 						</div>
 						<div class="tab-pane fade" id="tabfive" role="tabpanel">
 							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
 								consectetur adipiscing elit.</p>
 						</div>
 						<div class="tab-pane fade" id="tabsix" role="tabpanel">
-							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_public value="y" id=chkAllowPublic
+						          ${ profile.is_allow_public eq 'y' ? 'checked' : '' }>
+						           <strong>비공개 계정</strong>
+						        </label>
+						        <br>계정이 비공개 상태인 경우 회원님이 승인한 사람만 Instagram에서 회원님의 사진과 동영상을 볼 수 있습니다. <br>기존 팔로워는 영향을 받지 않습니다.
+						    </div>
+						    <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_status value="y" id=chkAllowStatus
+						          ${ profile.is_allow_status eq 'y' ? 'checked' : '' }>
+						           <strong>Allow Status</strong>
+						        </label>
+						        <br>Allow Status
+						    </div>
+						    <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
+						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
+						           <strong>Allow Share</strong>
+						        </label>
+						        <br>Allow Share
+						    </div>
+						<div class="form-check">
+					        <label class="form-check-label">
+					          <input class="form-check-input" type="checkbox" name=is_allow_login2 value="y" id=chkAllowLogin2
+					          ${ profile.is_allow_login2 eq 'y' ? 'checked' : '' }>
+					           <strong>2단계 인증 사용하기</strong>
+					        </label>
+					        <br>Allow Login2
+						  </div>
 						</div>
+						
+						  
+						
 					</div>
 				</div>
 			</div>
