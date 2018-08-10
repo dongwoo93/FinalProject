@@ -35,6 +35,7 @@ $(document).ready(function(){
 	           data: form.serialize(), // serializes the form's elements.
 	           success: function(data)
 	           {
+	        	   alert(data);
 	               if(data == 1) {
 	            	   $(location).attr("href", "feed.bo");
 	               }else {

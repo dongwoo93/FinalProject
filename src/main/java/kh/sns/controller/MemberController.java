@@ -50,12 +50,14 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
+			
 		}else {
 			
 		}
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
+
 		
 	}
 	@RequestMapping("/sign.do")

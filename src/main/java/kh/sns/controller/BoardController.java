@@ -33,11 +33,11 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed() {
+	public ModelAndView toFeed(HttpSession session) {
 		
 		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id="hyong07";
+		String id = (String)session.getAttribute("loginId");
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
