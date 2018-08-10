@@ -46,6 +46,13 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
+
+		@Override
+		public int deleteBoard(int seq) {
+			String sql = "delete from board where board_seq = ? ";
+			return template.update(sql, seq);
+		}
+	
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
@@ -87,8 +94,8 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		String sql = "select * from board where id=? order by board_seq desc";
-		return template.query(sql, new String[] {id}, new RowMapper<BoardDTO>() {
+		String sql = "select * from board order by board_seq desc";
+		return template.query(sql, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
