@@ -10,6 +10,7 @@ public interface MemberService {
 	public int isIdExist(String id);
 	public int isNickExist(String nick);
 	public int isEmailExist(String email);
+	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception;
 	
 	public MemberDTO getOneMember(String id) throws Exception;
 	

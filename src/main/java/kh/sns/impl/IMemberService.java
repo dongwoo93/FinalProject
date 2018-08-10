@@ -1,5 +1,7 @@
 package kh.sns.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +76,10 @@ public class IMemberService implements MemberService{
 	}
 
 
+	@Override
+	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception{
+		return this.dao.selectfriendlist(id,searchtext);
+	}
 
 //	@Override
 //	public boolean isIdExist(String id) {
