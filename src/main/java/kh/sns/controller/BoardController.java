@@ -21,27 +21,28 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
-import kh.sns.interfaces.MemberService;
+import kh.sns.interfaces.ProfileService;
 
 @Controller
 public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed() {
+	public ModelAndView toFeed(HttpSession seesion) {
 		
 		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id="hyong07";
+		String id = (String) seesion.getAttribute("loginId");
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
-			System.out.println("�뿬湲곕뒗 feed.bo");
 			e.printStackTrace();
 		}	
 		ModelAndView mav = new ModelAndView();
@@ -51,13 +52,24 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session) throws Exception{
+	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		String id = (String) session.getAttribute("loginId");
+//		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
 		mav.setViewName("myarticle.jsp");
 		return mav;
+	}
+	
+
+	@RequestMapping("/boardDelete.bo")
+	public ModelAndView deleteBoard(HttpSession session, int seq) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		int result = boardService.deleteBoard(seq);
+		String id = (String) session.getAttribute("loginId");
+		mav.setViewName("board.bo?id="+id);
+		return mav;
+		
 	}
 	
 	//search
@@ -125,9 +137,9 @@ public class BoardController {
 				
 				String originalName = mf.getOriginalFilename(); 
 				
-				// �떆�뒪�뀥 �뙆�씪紐�(�엫�떆)
+				// 시스템 파일명(임시)
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
-				String ext = originalName.substring(originalName.lastIndexOf('.')); // �솗�옣�옄
+				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
 				String realPath = request.getSession().getServletContext().getRealPath("/image/");
                    
@@ -186,6 +198,12 @@ public class BoardController {
 		
 		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
 		
+		try {
+			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
@@ -196,6 +214,16 @@ public class BoardController {
 		response.setContentType("application/json");
 		BoardDTO result = boardService.getBoardModal(seq);
 		new Gson().toJson(result,response.getWriter());
+	}
+	
+	@RequestMapping("/like.bo")
+	public void doLike(HttpServletResponse response, Board_LikeDTO dto, String likecount) throws Exception{
+		int likeResult = 0;
+		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_liked());
+		System.out.println(likecount);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().println("띠용");
+		
 	}
 
 }

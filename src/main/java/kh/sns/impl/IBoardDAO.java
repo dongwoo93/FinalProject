@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
@@ -44,6 +45,13 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
+	
+
+		@Override
+		public int deleteBoard(int seq) {
+			String sql = "delete from board where board_seq = ? ";
+			return template.update(sql, seq);
+		}
 	
 	// Search 
 	@Override
@@ -86,8 +94,8 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		String sql = "select * from board where id=? order by board_seq desc";
-		return template.query(sql, new String[] {id}, new RowMapper<BoardDTO>() {
+		String sql = "select * from board order by board_seq desc";
+		return template.query(sql, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -228,5 +236,23 @@ public class IBoardDAO implements BoardDAO  {
 				return tmp;
 			}
 		}).get(0);
+	}
+
+	@Override
+	public int selectLike(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertLike(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateLike(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -6,14 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.sns.dto.MemberDTO;
+import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberDAO;
 import kh.sns.interfaces.MemberService;
+import kh.sns.interfaces.ProfileDAO;
 
 @Service
 public class IMemberService implements MemberService{
 	
 	@Autowired
 	private MemberDAO dao;
+	
+	@Autowired
+	private ProfileDAO pdao;
 	
 	
 	@Override
@@ -28,9 +33,12 @@ public class IMemberService implements MemberService{
 		return dao.getOneMember(id);
 	}
 	
+	// @트랜잭셔널
 	@Override
-	public int updateOneMemberProfile(MemberDTO member) throws Exception {
-		return dao.updateOneMemberProfile(member);
+	public int updateOneMemberProfile(MemberDTO member, ProfileDTO profile) throws Exception {
+		int result1 = dao.updateOneMemberProfile(member);
+		int result2 = pdao.updateOneAdvancedProfile(profile);
+		return result1 * result2;
 	}
 	
 	@Override
@@ -73,6 +81,25 @@ public class IMemberService implements MemberService{
 	public int isEmailExist(String email) {
 		// TODO Auto-generated method stub
 		return dao.isEmailExist(email);
+	}
+
+	@Override
+	public int findPw(String id, String email) {
+		// TODO Auto-generated method stub
+		
+		return dao.findPw(id, email);
+	}
+
+	@Override
+	public String changePass(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.changePass(id);
+	}
+
+	@Override
+	public String findId(String name,String phone) throws Exception{
+		// TODO Auto-generated method stub
+		return dao.findId(name, phone);
 	}
 
 

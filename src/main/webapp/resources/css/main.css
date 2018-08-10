@@ -67,7 +67,7 @@ div.form-item p.formLabel {
    top:10px;
    transition:all .4s ease;
    color:#bbb;}
-.formTop{top:-22px !important; left:26px; background-color: #fff; padding:0 5px; font-size: 14px; color:#58bff6 !important;}
+.formTop{top:-30px !important; left:10px !important;  padding:0 5px; font-size: 18px; font-weight:bold; color:#58bff6 !important;}
 .formStatus{color:#8a8a8a !important;}
 input[type="submit"].login{
    float:right;
