@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
@@ -196,6 +197,16 @@ public class BoardController {
 		response.setContentType("application/json");
 		BoardDTO result = boardService.getBoardModal(seq);
 		new Gson().toJson(result,response.getWriter());
+	}
+	
+	@RequestMapping("/like.bo")
+	public void doLike(HttpServletResponse response, Board_LikeDTO dto, String likecount) throws Exception{
+		int likeResult = 0;
+		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_liked());
+		System.out.println(likecount);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().println("띠용");
+		
 	}
 
 }

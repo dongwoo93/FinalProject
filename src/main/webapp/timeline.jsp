@@ -241,12 +241,55 @@
     width:60%;
     height: 20px;
     }
+    
  
 }
 
 </style>
 
 <script>
+function likeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "y",
+			likecount : "0"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unlikeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "n",
+			likecount : "0"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
 $(document).ready(function() {
 	
 	$('#searchform').keypress(function(event){
@@ -261,6 +304,10 @@ $(document).ready(function() {
         	} 
         }
     });
+	
+	
+	
+	
 })
 
 </script>
@@ -329,9 +376,10 @@ $(document).ready(function() {
             <div id="cont">
               <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                 <div class="container">
-                  <a class="navbar-brand" href="#">
+                  <a class="navbar-brand">
                			 
-                    <i class="far fa-heart icon mr-1"></i>
+                    <i value="${tmp.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
                     <i class="far fa-comment icon"></i>
                   </a>
                   <ul class="navbar-nav">
