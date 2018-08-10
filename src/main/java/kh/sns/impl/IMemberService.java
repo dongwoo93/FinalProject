@@ -69,6 +69,25 @@ public class IMemberService implements MemberService{
 		return dao.isEmailExist(email);
 	}
 
+	@Override
+	public int findPw(String id, String email) {
+		// TODO Auto-generated method stub
+		
+		return dao.findPw(id, email);
+	}
+
+	@Override
+	public String changePass(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.changePass(id);
+	}
+
+	@Override
+	public String findId(String name,String phone) throws Exception{
+		// TODO Auto-generated method stub
+		return dao.findId(name, phone);
+	}
+
 
 
 //	@Override

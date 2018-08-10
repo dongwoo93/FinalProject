@@ -3,7 +3,6 @@ package kh.sns.controller;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.sns.beans.SendEmail;
+import kh.sns.beans.Sms;
 import kh.sns.dto.MemberDTO;
 import kh.sns.interfaces.MemberService;
 
@@ -21,7 +22,8 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-
+	
+	
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
 		return "redirect:main.jsp";
@@ -161,7 +163,61 @@ public class MemberController {
 		return mav;		
 	}
 	
+	
+	@RequestMapping("/findPw.do")
+	public ModelAndView findPw(String cId, String cEmail, HttpServletResponse response) throws Exception {
+		
+		
+		System.out.println(cId);
+		System.out.println(cEmail);
+		int result =this.memberService.findPw(cId,cEmail);
+		System.out.println(result);
+		if(result==1) {
+			
+			String certification = memberService.changePass(cId);
+			SendEmail send = new SendEmail(cEmail,certification);
+			send.sendEmail();
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result", result);
+		mav.setViewName("findPass.jsp");
+		return mav;		
 
+	}
+	
+	@RequestMapping("/findId.do")
+	public ModelAndView findId(String name, String phone, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		
+		
+
+		String id =this.memberService.findId(name, phone);
+		int result = 0;
+		System.out.println(id);
+		if(id!=null) {
+			
+			Sms sms = new Sms();
+			String num = sms.sendSMS(phone);
+			
+			result =2;
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result", result);
+		mav.setViewName("findPass.jsp");
+		return mav;	
+		
+		
+	}
+	
+	
+	
+	/*1. jsp 이름 폰번호입력
+	2. 인증번호 받기  버튼 - 컨트롤러 - 
+	3. 이름 폰번호가 같은 계정정보인지 
+	4. 일치하면 , 인증번호 보내기 , 
+	5. 인증번호 입력창 생성
+	6. 인증번호 입력. - 컨트롤러
+		
+		(쿼리에 이메일을뽑)이메일이잖아*/
 
 
 }
