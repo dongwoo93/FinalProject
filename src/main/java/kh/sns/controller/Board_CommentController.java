@@ -25,16 +25,14 @@ public class Board_CommentController {
 		try {
 			result =this.boardcommentservice.insertComment(dto);
 			
-			if(result > 1 ) {
+			if(result >0) { 
 				System.out.println("success");
 			}
 			else {
 				System.out.println("failed");  
 			}
 			
-			response.getWriter().print(dto.getBoard_seq());
-			response.getWriter().flush();
-			response.getWriter().close();
+
 		 
 		}catch(Exception e) {
 			System.out.println("요기는 comment.co입니다");

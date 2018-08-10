@@ -422,11 +422,11 @@ $(document).ready(function() {
 								<!--               -->
 								<div class="py-2">
   
-									<form id='commentform${tmp.board_seq}' onsubmit="return false">    
+<%-- 									<form id='commentform${tmp.board_seq}' onsubmit="return false">     --%>
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." name="comment_contents" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
-									</form> 
+<!-- 									</form>  -->
 
 								</div>
 								<script>
@@ -441,35 +441,42 @@ $(document).ready(function() {
 		        		alert("댓글을 입력해주세요");
 		        	}
 		        	else {  
-		        	  	commentSubmit();
+		        		
+		        		$.ajax({
+			 	 	           type: "POST",  
+			 	 	           url: "comment.co", 	
+			 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text}  
+			 	 	         }); //ajax 
+		        		 $("#comment${tmp.board_seq}").val("");
+			 	 	         
 		        	}
 		        	
 		        }
 		    });   
 		
 			
-	 		function commentSubmit() {  
-	 			alert("잉");    
-	 			var params = $("#commentform${tmp.board_seq}").serialize(); 
-	 			
-	 			alert("잉");    
-	 			$.ajax({
-	 	           type: "POST",
-	 	           url: "comment.co", 	
-	 	           data: params, 
-	 	           success: function(data)
-	 	           {  
-	 	        	alert(data);        
+// 	 		function commentSubmit() {  
+// 	 			alert("잉");    
+
+// 	 			var cont =  $("#comment_contents${tmp.board_seq}").val();
+// 	 			alert(cont);    
+// 	 			$.ajax({
+// 	 	           type: "POST",  
+// 	 	           url: "comment.co", 	
+// 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : cont},
+// 	 	           success: function(data)
+// 	 	           {  
+// 	 	        	alert("휴.." + data);        
 	 	        	 
-	 	        	(function(e){
-	 	                  return function(){
-	 	                     $("#comment"+e).val("");
-	 	                   }
-	 	               })(data)
+// 	 	        	(function(e){
+// 	 	                  return function(){
+// 	 	                     $("#comment"+e).val("");
+// 	 	                   }
+// 	 	               })(data)
 	        
-	 	           }
-	 	         }); //ajax
-	        	} 
+// 	 	           }
+// 	 	         }); //ajax
+// 	        	} 
 	 		
 	 	
 	        	
