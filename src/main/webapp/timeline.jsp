@@ -420,14 +420,17 @@ $(document).ready(function() {
 								<!--               -->
 								<div class="py-2">
 
-									
+									<form if='commentform' onsubmit="return false">    
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
 									<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
+									</form> 
 
 								</div>
 								<script>
-			$('#comment${tmp.board_seq}').keypress(function(event){
+								
+							  	
+ 		$('#comment${tmp.board_seq}').keypress(function(event){
 		        var keycode = (event.keyCode ? event.keyCode : event.which);
 		        if(keycode == '13'){
 		        	
@@ -436,14 +439,29 @@ $(document).ready(function() {
 		        		alert("댓글을 입력해주세요");
 		        	}
 		        	else {
-		        		commentSubmit();
+		        		
+		        		var params = $("#commentform").formParams();
+		        		
+		        		  $.ajax({
+		   	 	           type: "POST",
+		   	 	           url: "comment.co",
+		   	 	           data: params, 
+		   	 	           success: function(data)
+		   	 	           { alert("success!" + date);
+// 		   		 	               if(data == 1) {
+// 		   		 	            	   $(location).attr("href", "feed.bo");
+// 		   		 	               }else {
+// 		   		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
+// 		   		 	               }
+		   	 	           }
+		   	 	         }); //ajax
 		        	}
 		        	
 		        }
-		    });  
+		    });   
+		
 			
-			
-			function commentSubmit() { 
+	/* 		function commentSubmit() {  
 	        	
 	            $.ajax({
 	 	           type: "POST",
@@ -451,14 +469,15 @@ $(document).ready(function() {
 	 	           data: commentParams, 
 	 	           success: function(data)
 	 	           { alert("success!" + date);
-//		 	               if(data == 1) {
-//		 	            	   $(location).attr("href", "feed.bo");
-//		 	               }else {
-//		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-//		 	               }
+		 	               if(data == 1) {
+		 	            	   $(location).attr("href", "feed.bo");
+		 	               }else {
+		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
+		 	               }
 	 	           }
 	 	         }); //ajax
-	        	}
+	        	}  */
+	        	
 			</script>
 							</div>
 						</div>
