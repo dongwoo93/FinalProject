@@ -49,6 +49,15 @@ body {
 	padding-bottom: 3rem;
 }
 
+input[type="checkbox"], input[type="radio"] {
+	margin-top: 8px;
+	margin-right: 4px;
+} 
+
+input > strong {
+	margin-left: 4px;
+}
+
 #allwrapper {
 	height: auto;
 }
@@ -257,6 +266,7 @@ body {
 					// 아무것도 안한다.
 				} else {
 					alert('실패');
+					// 체크박스 액션 취소하기 코드를 넣는다./
 				}
 				
 			},
@@ -339,18 +349,18 @@ body {
 			<div class="row">
 				<div class="col-4">
 					<ul class="nav nav-pills flex-column">
-						<li class="nav-item"><a href="#profile"
+						<li class="nav-item"><a href="#"
 							class="active nav-link mp" data-toggle="pill"
 							data-target="#tabone">프로필 편집</a></li>
-						<li class="nav-item"><a href="#password" class="nav-link mp"
+						<li class="nav-item"><a href="#" class="nav-link mp"
 							data-toggle="pill" data-target="#tabtwo">비밀번호 변경</a></li>
-						<li class="nav-item"><a href="#app" class="nav-link mp"
+						<li class="nav-item"><a href="#" class="nav-link mp"
 							data-toggle="pill" data-target="#tabthree">허가된 앱</a></li>
-						<li class="nav-item"><a href="email" class="nav-link mp"
+						<li class="nav-item"><a href="#" class="nav-link mp"
 							data-toggle="pill" data-target="#tabfour">이메일 및 SNS</a></li>
-						<li class="nav-item"><a class="nav-link mp" href="contact"
+						<li class="nav-item"><a class="nav-link mp" href="#"
 							data-toggle="pill" data-target="#tabfive">연락처 관리</a></li>
-						<li class="nav-item"><a class="nav-link mp" href=""
+						<li class="nav-item"><a class="nav-link mp" href="#"
 							data-toggle="pill" data-target="#tabsix">공개 범위 및 보안</a></li>
 					</ul>
 				</div>
@@ -489,38 +499,81 @@ body {
 								consectetur adipiscing elit.</p>
 						</div>
 						<div class="tab-pane fade" id="tabsix" role="tabpanel">
+							<h2>계정 공개 범위: </h2>
 							<div class="form-check">
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_public value="y" id=chkAllowPublic
 						          ${ profile.is_allow_public eq 'y' ? 'checked' : '' }>
 						           <strong>비공개 계정</strong>
 						        </label>
-						        <br>계정이 비공개 상태인 경우 회원님이 승인한 사람만 Instagram에서 회원님의 사진과 동영상을 볼 수 있습니다. <br>기존 팔로워는 영향을 받지 않습니다.
+						        <p><small>계정이 비공개 상태인 경우 회원님이 승인한 사람만 SocialWired에서 회원님의 사진과 동영상을 볼 수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</small></p>
 						    </div>
+						    <hr>
+						    <h2>활동 상태: </h2>
 						    <div class="form-check">
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_status value="y" id=chkAllowStatus
 						          ${ profile.is_allow_status eq 'y' ? 'checked' : '' }>
-						           <strong>Allow Status</strong>
+						           <strong>활동 상태 표시</strong>
 						        </label>
-						        <br>Allow Status
+						        <p><small>SocialWired 앱에서 최근 활동한 시간 정보가 회원님이 팔로우하는 계정 및 메시지를 보낸 모든 사람에게 표시됩니다. 이 설정을 해제하면 다른 계정의 활동 상태를 볼 수 없습니다.</small></p>
 						    </div>
+						    <hr>
+						    <h2>스토리 공유: </h2>
 						    <div class="form-check">
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
 						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
-						           <strong>Allow Share</strong>
+						           <strong>공유 허용</strong>
 						        </label>
-						        <br>Allow Share
+						        <p><small>사람들이 회원님의 스토리를 메시지로 공유할 수 있습니다.</small></p>
 						    </div>
-						<div class="form-check">
+						    <hr>
+						    <!-- 댓글 설정 -->
+						    <div>
+						    	<h2>댓글: </h2>
+						    	<a href="#" class="nav-link mp" href="#" data-toggle="pill" data-target="#tabtwo">댓글 설정 수정</a>
+						    </div>
+						    <!-- -- -->
+						    <hr>
+						     <!-- 내가 나온 사진 -->
+						    <fieldset class="form-group">
+						      <!-- <legend>Radio buttons</legend> -->
+						      <h3>내가 나온 사진: </h3>
+						      <div class="form-check">
+						        <label class="form-check-label">
+						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+						          	자동으로 추가
+						        </label>
+						      </div>
+						      <div class="form-check">
+						      <label class="form-check-label">
+						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+						          	수동으로 추가
+						        </label>
+						      </div>
+						      
+						    </fieldset>
+						    <!-- -- -->
+						    <hr>
+						      <!-- 댓글 설정 -->
+						    <div>
+						    	<h2>계정 데이터: </h2>
+						    	<a href="#" class="nav-link mp" href="#" data-toggle="pill" data-target="#tabtwo">계정 데이터 보기</a>
+						    </div>
+						    <!-- -- -->
+						    <hr>
+						 <h3>2단계 인증: </h3>
+						<div class="form-check">							
 					        <label class="form-check-label">
+					        
 					          <input class="form-check-input" type="checkbox" name=is_allow_login2 value="y" id=chkAllowLogin2
 					          ${ profile.is_allow_login2 eq 'y' ? 'checked' : '' }>
-					           <strong>2단계 인증 사용하기</strong>
+					           <strong>보안 코드 필요</strong>
 					        </label>
-					        <br>Allow Login2
+					        <p><small>이 옵션을 설정하면 회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드가 전송됩니다.</small></p>
 						  </div>
+						 <hr>
 						</div>
 						
 						  

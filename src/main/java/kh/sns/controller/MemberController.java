@@ -177,7 +177,7 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("editProfileResult", result);
-		mav.setViewName("redirect:profile.member");	// 리다이렉트? 포워드?
+		mav.setViewName("redirect:profile.member#profile");	// 리다이렉트? 포워드?
 		return mav;		
 	}
 	
@@ -255,7 +255,7 @@ public class MemberController {
 			mav.addObject("pwdChangeResult", -1);
 			System.out.println("이전 패스워드 입력이 틀림");
 		}
-		mav.setViewName("redirect:profile.member");
+		mav.setViewName("redirect:profile.member#password");
 		
 		return mav;		
 	}
