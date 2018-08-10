@@ -252,8 +252,7 @@ function likeit(e) {
 		data : {
 			board_seq : board_seq,
 			id : "${sessionScope.loginId}",
-			is_liked : "y",
-			likecount : "0"
+			is_liked : "y"
 		},
 		success : function(resp) {
 			$(e).next().show();
@@ -273,8 +272,47 @@ function unlikeit(e) {
 		data : {
 			board_seq : board_seq,
 			id : "${sessionScope.loginId}",
-			is_liked : "n",
-			likecount : "0"
+			is_liked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+function markit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unmarkit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "n"
 		},
 		success : function(resp) {
 			$(e).prev().show();
@@ -391,7 +429,8 @@ $(document).ready(function() {
                     <i class="fas fa-circle dot"></i>&nbsp  
                   </ul>
                   <a class="btn navbar-btn ml-2 text-white ">
-                    <i class="far fa-bookmark icon"></i> 
+                    <i value="${tmp.board_seq}" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
                   </a> 
                 </div>
               </nav>  

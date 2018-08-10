@@ -34,15 +34,14 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed(HttpSession session) {
+	public ModelAndView toFeed(HttpSession seesion) {
 		
 		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id = (String)session.getAttribute("loginId");
+		String id = (String) seesion.getAttribute("loginId");
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {
-			System.out.println("�뿬湲곕뒗 feed.bo");
 			e.printStackTrace();
 		}	
 		ModelAndView mav = new ModelAndView();
@@ -126,9 +125,9 @@ public class BoardController {
 				
 				String originalName = mf.getOriginalFilename(); 
 				
-				// �떆�뒪�뀥 �뙆�씪紐�(�엫�떆)
+				// 시스템 파일명(임시)
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
-				String ext = originalName.substring(originalName.lastIndexOf('.')); // �솗�옣�옄
+				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
 				String realPath = request.getSession().getServletContext().getRealPath("/image/");
                    
