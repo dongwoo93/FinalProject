@@ -25,9 +25,9 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 		return template.update(sql,dto.getBoard_seq(), dto.getId(),dto.getIs_liked());
 	}
 
-	@Override
+	@Override  
 	public int deleteLike(Board_LikeDTO dto) throws Exception {
-		String sql = "delete from board_like where board_seq=?, id=?";
+		String sql = "delete from board_like where board_seq=? and id=?";
 		return template.update(sql,dto.getBoard_seq(), dto.getId());
 	}
 

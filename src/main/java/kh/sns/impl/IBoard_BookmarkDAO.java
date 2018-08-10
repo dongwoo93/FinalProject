@@ -27,7 +27,7 @@ public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
 
 	@Override
 	public int deleteBookmark(Board_BookmarkDTO dto) throws Exception {
-		String sql = "delete from board_bookmark where board_seq=?, id=?";
+		String sql = "delete from board_bookmark where board_seq=? and id=?";
 		return template.update(sql,dto.getBoard_seq(), dto.getId());
 	}
 

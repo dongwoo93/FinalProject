@@ -525,7 +525,6 @@ $(document).ready(function() {
 		        	var text = $("#comment${tmp.board_seq}").val();
 		        	if(text == ""){
 		        		alert("댓글을 입력해주세요");
-		        		
 		        	}
 		        	else {  
 		        		
