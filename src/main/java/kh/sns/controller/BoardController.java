@@ -23,15 +23,16 @@ import com.google.gson.Gson;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
-import kh.sns.interfaces.MemberService;
+import kh.sns.interfaces.ProfileService;
 
 @Controller
 public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -51,13 +52,24 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session) throws Exception{
+	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		String id = (String) session.getAttribute("loginId");
+//		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
 		mav.setViewName("myarticle.jsp");
 		return mav;
+	}
+	
+
+	@RequestMapping("/boardDelete.bo")
+	public ModelAndView deleteBoard(HttpSession session, int seq) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		int result = boardService.deleteBoard(seq);
+		String id = (String) session.getAttribute("loginId");
+		mav.setViewName("board.bo?id="+id);
+		return mav;
+		
 	}
 	
 	//search
@@ -185,6 +197,12 @@ public class BoardController {
 	public ModelAndView writeProcBoard(HttpServletRequest request) {		
 		
 		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+		
+		try {
+			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		return mav;

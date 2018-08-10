@@ -201,8 +201,24 @@ body {
 	display: inline-block
 }
 
-.col {
-	border: 1px solid black;
+    }
+    
+    #myComment{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 11px;
+    	
+    }
+    
+    .hidden p {
+ 
+    overflow: hidden;    
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width:60%;
+    height: 20px;
+    }
+    
+ 
 }
 
 .idtxt {
@@ -344,7 +360,8 @@ $(document).ready(function() {
     });
 	
 	
-
+	
+	
 })
 
 </script>
@@ -353,62 +370,58 @@ $(document).ready(function() {
 
 <body>
 
-
-	<div id="topwrapper">
-		<nav class="navbar navbar-expand-md navbar-light" id="navbar">
-		<div class="container" id="navcontainer">
-			<i class="fab fa-instagram fa-2x" id="instagramicon"></i>
-			<div class="logo">
-				<a class="navbar-brand ml-2 text-white" href="#">SocialWired</a>
-			</div>
-			<div class="collapse navbar-collapse">
-				<form id="go" action="search.bo" class="form-inline m-0"
-					onsubmit="return false;">
-					<input id="searchform" class="form-control" name="search"
-						type="text" placeholder="검색">
-				</form>
-			</div>
-			
-			
-			<div id="nav-icons">
-				<ul class="navbar-nav">
-
-					<li class="nav-item"><a class="nav-link" href="#"><i
-							class="far fa-comment-alt nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="write.board"><i
-							class="fas fa-pencil-alt nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="#"><i
-							class="far fa-compass nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="#"><i
-							class="far fa-heart nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="board.bo"><i
-							class="far fa-user nav-icon"></i></a></li>
-				</ul>
-			</div>
-		</div>
-		</nav>
-	</div>
-	<div id="allwrapper">
-		<div class="" id="centerwrapper">
-			<div class="container" id="contents">
-				<div id="board">
-
-					<script>var num = 1;</script>
-
-					<c:forEach var="tmp" items="${result}">
-						<div class="py-2 my-5 " id="peed">
-							<div class="profile-image">
-								<img class="ml-3 mr-2"
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-								<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-								<br> <a class="mt-1 idtxt" id="id" href="board.bo">${tmp.id}<br>Dangsan.South
-									Korea
-								</a>
-
-							</div>
-							<div class="mt-2" id="boardimg">
-
-								<script>  
+ 
+      <div id="topwrapper">
+          <nav class="navbar navbar-expand-md navbar-light" id="navbar">
+            <div class="container" id="navcontainer">
+              <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
+              <div class="logo"><a class="navbar-brand ml-2 text-white" href="#">SocialWired</a></div>
+              <div class="collapse navbar-collapse">
+                  <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
+                </form>
+              </div>
+              <div id="nav-icons">
+                <ul class="navbar-nav">
+                
+                 <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-compass nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="board.bo?id=${sessionScope.loginId}"><i class="far fa-user nav-icon"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+      </div>
+    <div id="allwrapper">
+      <div class=""id="centerwrapper">
+          <div class="container" id="contents">
+        <div id="board">
+        
+        <script>var num = 1;</script>
+        
+        <c:forEach var="tmp" items="${result}">
+          <div class="py-2 my-5 " id="peed">   
+            <div class="profile-image"> 	 
+              <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
+              <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
+             
+            </div>    
+            <div class="mt-2" id="boardimg">
+      
+      <script>  
       var num = Math.floor((Math.random() * 4) + 1);
       var img = "timelineimg/"+num+".PNG"; 
       $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
@@ -571,11 +584,36 @@ $(document).ready(function() {
 						</div>
 					</c:forEach>
 				</div>
-				<div class="col-md-6 align-self-center" id="side">
-					<br>
-				</div>
-			</div>
-		</div>
+	
+	
+	
+	
+				<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>	
+	
+			
+              </div>   
+           
+              <div class="py-2">     	
+                &nbsp;&nbsp;&nbsp;<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                <i class="fas fa-ellipsis-h btn mr-3"></i>      
+              </div>
+            </div>
+          </div>
+          </c:forEach>
+        </div>
+        <div class="col-md-6 align-self-center" id="side">
+          <br> 
+        </div>
+      </div>
+      </div>
+    
+      <div class="pt-4 pb-3  " id="footer">
+           <div class="container">
+              <div class="row" >
+                <div class="col-md-10">
+                  <p class="lead">SocialWired 정보지원홍보 센터API채용 정보개인정보처리방침약관디렉터리프로필해시태그언어
+</p>
+                </div>
 
 		<div class="pt-4 pb-3  " id="footer">
 			<div class="container">
