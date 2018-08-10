@@ -447,7 +447,7 @@ $(document).ready(function() {
 			 	 	           type: "POST",  
 			 	 	           url: "comment.co", 	
 			 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text}  
-			 	 	         }); //ajax 
+		        		   }); //ajax 
 		        		 $("#comment${tmp.board_seq}").val("");
 			 	 	         
 		        	}
