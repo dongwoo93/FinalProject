@@ -235,8 +235,9 @@ body {
 	})
 	
 	// 체크박스
-	$('#chkAllowEmail').change(toggleCheckAjax);
-	$('#chkAllowSms').change(toggleCheckAjax);
+	$("input[id*='chkAllow']").change(toggleCheckAjax);
+	/* $('#chkAllowEmail').change(toggleCheckAjax);
+	$('#chkAllowSms').change(toggleCheckAjax); */
 			
 	function toggleCheckAjax(){		
 		var fieldName = $(this).attr('name');
@@ -488,9 +489,42 @@ body {
 								consectetur adipiscing elit.</p>
 						</div>
 						<div class="tab-pane fade" id="tabsix" role="tabpanel">
-							<p class="">Tab pane three. Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit.</p>
+							<div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_public value="y" id=chkAllowPublic
+						          ${ profile.is_allow_public eq 'y' ? 'checked' : '' }>
+						           <strong>비공개 계정</strong>
+						        </label>
+						        <br>계정이 비공개 상태인 경우 회원님이 승인한 사람만 Instagram에서 회원님의 사진과 동영상을 볼 수 있습니다. <br>기존 팔로워는 영향을 받지 않습니다.
+						    </div>
+						    <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_status value="y" id=chkAllowStatus
+						          ${ profile.is_allow_status eq 'y' ? 'checked' : '' }>
+						           <strong>Allow Status</strong>
+						        </label>
+						        <br>Allow Status
+						    </div>
+						    <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
+						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
+						           <strong>Allow Share</strong>
+						        </label>
+						        <br>Allow Share
+						    </div>
+						<div class="form-check">
+					        <label class="form-check-label">
+					          <input class="form-check-input" type="checkbox" name=is_allow_login2 value="y" id=chkAllowLogin2
+					          ${ profile.is_allow_login2 eq 'y' ? 'checked' : '' }>
+					           <strong>2단계 인증 사용하기</strong>
+					        </label>
+					        <br>Allow Login2
+						  </div>
 						</div>
+						
+						  
+						
 					</div>
 				</div>
 			</div>
