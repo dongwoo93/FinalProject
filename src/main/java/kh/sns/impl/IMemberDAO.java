@@ -14,8 +14,8 @@ import kh.sns.interfaces.MemberDAO;
 
 @Component
 public class IMemberDAO implements MemberDAO {
+	
 	@Autowired
-
 	private JdbcTemplate template;
 
 

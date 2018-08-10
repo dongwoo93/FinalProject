@@ -102,6 +102,19 @@ public class ProfileDTO {
 	public void setIs_allow_login2(String is_allow_login2) {
 		this.is_allow_login2 = is_allow_login2;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ProfileDTO [id=" + id + ", website=" + website + ", introduce=" + introduce + ", is_allow_email="
+				+ is_allow_email + ", is_allow_sms=" + is_allow_sms + ", is_allow_public=" + is_allow_public
+				+ ", is_allow_status=" + is_allow_status + ", is_allow_share=" + is_allow_share + ", is_allow_login2="
+				+ is_allow_login2 + "]";
+	}
+	
+	
 	
 	
 	

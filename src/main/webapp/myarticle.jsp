@@ -30,7 +30,7 @@
 	}
 	
 	body{
- 		 border : 1px solid black; 
+ 		 border : 0px solid black; 
 		 height:auto;
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
@@ -421,34 +421,42 @@
 			}
 		}
 	}
+
+
+ 	.modal-dialog{  
+  		margin-top : 150px; 	 	
+  	}  
+ 	.modal-content{ 
+ 		width:100%; 
+ 		height:100%;
+ 		border : 3px solid white; 
+ 		
+ 	} 
 	
-	#boardmodal{
-		width:100%;
-		height:100%;
-		
-	}
-	.modal-dialog{
-		width:100%;
-		height:100%;
-		
-	}
-	.modal-content{
-		width:70%;
-		height:auto;
-		float:left;
-	}
-	
-	#picture{
-		width:300px;
-		height:auto;
-	}
-	.modal-content1{
-		width:30%;
-		height:auto;
-		display:inline-block;
+ 
+	#board{
+		width:100%; 
+ 		height:100%;
+ 		border : 3px solid white; 
 	}
 	
-	
+    
+    #comment {
+      width: 85%;  
+      height: 5%;
+      border: none;
+      font-size: 13px;
+      padding-left: 2%;
+      margin-right: 2%;
+      font-family: "Open Sans", Arial, sans-serif;
+      border : 3px solid white; 
+      
+    }
+   
+   	#picture{
+   		 border : 3px solid white; 
+   	}
+
 	
 </style>
 
@@ -477,8 +485,13 @@ $(document).ready(function() {
 	           data: {seq:seq},
 	           success: function(data)
 	           {
-	        	   $("#seq1").text(data.id);
-	               $("#seq").text(data.contents);
+	        	   $("#modalid").text(data.id);
+	        	
+	        	   
+	               $("#modalcontents").text(data.contents);
+	               
+	               $("#seq1").text(data.board_seq);
+	               $("#seq2").text(data.board_seq);
 	               
 	           }
 	         });
@@ -521,7 +534,7 @@ $(document).ready(function() {
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="board.bo"><i class="far fa-user nav-icon"></i></a>
+                    <a class="nav-link" href="board.bo?id=${sessionScope.loginId}"><i class="far fa-user nav-icon"></i></a>
                   </li>
                 </ul>
               </div>
@@ -538,12 +551,12 @@ $(document).ready(function() {
 	  <div class="container">
 			<div class="profile">
 				<div class="profile-image">
-<!-- 					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"> -->
-					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink">
+					<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 				</div>
 	
 				<div class="profile-user-settings">
-					<h1 class="profile-user-name">손민수</h1>
+					<h1 class="profile-user-name">${result[0].id}</h1>
 					<div class="profile-edit-btn">팔로잉</div>
 					<div class="profile-settings-btn"><i id="toMy" class="fas fa-cog"></i></div>
 				</div>
@@ -586,14 +599,14 @@ $(document).ready(function() {
      <div class="gallery">
       <c:if test="${result.size() != 0}">
 
-		
+			
 		
 		        <c:forEach var="tmp" items="${result}">
 		
 			
 				<div class="gallery-item" id="${tmp.board_seq}">  
 <%-- 				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">    --%>
-					<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image'">   
+					 <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid"> 
 				
 				 
 <%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
@@ -609,8 +622,7 @@ $(document).ready(function() {
 					
   
                        $("#${tmp.board_seq}").click(function() {
-                    	   $("#hidden").val(${tmp.board_seq});
-                    	   
+                    	   $("#hidden").val(${tmp.board_seq});   
                           	$("#boardmodal").modal();                	   
                        });
                         
@@ -618,6 +630,13 @@ $(document).ready(function() {
 //                     	   $("#seq").val(${tmp.board_seq});  
 //                           	$("#boardmodal").modal();                       	   
 //                        });
+
+						
+                       $("seq1").click(function() {             	      
+                         	$("#boardmodal").modal('show');                   	   
+                       });
+                        
+						
 
 				</script>
 				
@@ -659,27 +678,132 @@ $(document).ready(function() {
     
       
 		   <div class="modal fade" id="boardmodal" role="dialog"> 
+		   
+		   
+		   
 		    <div class="modal-dialog" role="document">
+		    
+		    	<div class="modal-content">
+<!--   				 &nbsp;&nbsp; <i class="fas fa-angle-double-left text-black" id="hidden" style="font-size:40px;"></i> -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				 -->
+<!--   				 <i class="fas fa-angle-double-right text-black"  style="font-size:40px;"></i> -->
+
+				<a href="#" class="btn btn-outline-primary" id="seq1"> < </a>
+				<a href="#" class="btn btn-outline-primary"> < </a>
+					
+ 				 </div>
+		  	  <br><br>
 		      <div class="modal-content">
 		    
 		        	<div class="gallery-item" id="picture">  
-		       		 <img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image'">  
+		       		  <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid">
 		        	</div>
 		        	
 		      </div>
 		      
-		      <div class="modal-content1">
+		      <div class="modal-content">
 		    
-		        
-		        	<input type="hidden" id="hidden">
-		        	<div class="bg-white" id="seq"></div>
-		        	<div class="bg-white" id="seq1"></div>
-		     
+<!-- 		        	<div class="bg-white" id="seq"></div> -->
+<!-- 		        	<div class="bg-white" id="seq1"></div> -->
+		        	
+		    		 <div class="hidden" id="hidden"></div>	
+		        	
+		        	  	
+		        	<div class="bg-white" id="a">
+		        	  	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				          <a class="navbar-brand " href="#">
+				            <i class="far fa-heart icon"></i>
+				          </a>
+				           <a class="navbar-brand " href="#">
+				              <i class="far fa-comment icon"></i>
+				          </a>   
+				           <a class="navbar-brand " href="#">
+				             <i class="far fa-bookmark icon"></i> 
+				          </a>        
+		        	  </div>
+		        	  	
+		        	  	
+					<div id="board" class="bg-white">
+			        	<br>
+			          <div class="profile-image"> 	 
+			              <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+			          		<div id="modalid"></div>   		
+			          </div>      
+				      	  			 	              
+					   <br>
+					   <br>
+		       
+		            <div id="contcenter" class="mt-2 mx-3 pb-2"> 
+						  <div class="bg-black" id="modalcontents" ></div>
+					</div>
+				
+              </div>   
+          
 	
+              <div class="py-2 bg-white">     	
+               
+                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                   
+		   <c:choose>
+			<c:when test="${result[0].id == sessionScope.loginId}">
+                       
+		          <div class="btn-group bg-white">
+		            <button class="btn dropdown-toggle bg-white" data-toggle="dropdown"> </button>
+		            <div class="dropdown-menu">
+		              <a class="dropdown-item" href="#">보관</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">수정</a>
+		                <div class="dropdown-divider"></div>
+		             <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
+		                <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+		            </div>
+		          </div>
+        
+        	<script>
+				document.getElementById("delete").onclick = function() {
+					var seq = document.getElementById("hidden").value;
+					location.href = "boardDelete.bo?seq="+seq;
+				}	
+			</script>
+	         
+	         </c:when>
+				<c:otherwise>  
+					<div class="btn-group bg-white">
+		            <button class="btn dropdown-toggle bg-white" data-toggle="dropdown"> </button>
+		            <div class="dropdown-menu">
+		              <a class="dropdown-item" href="#">보관</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">수정</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a> 
+		            </div>
+		          </div>
+		          
+		          
+				
+		           </c:otherwise>
+			</c:choose>
+								
+
+              		</div>
+		         </div>	      
 		      </div>
 		    </div>
 		  </div>
-  
+		
+		
+
 </body>
 
 </html>
