@@ -7,6 +7,7 @@ import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
 
+import java.util.List;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
