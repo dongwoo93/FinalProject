@@ -43,7 +43,7 @@
 	
 		<form id="loginform" method="post">
 	      <div class="form-item">
-	         <p class="formLabel">id</p>
+	         <p class="formLabel">ID</p>
 	         <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
 	      </div>
 	      <div class="form-item">

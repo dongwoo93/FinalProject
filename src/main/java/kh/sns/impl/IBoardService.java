@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.dto.Board_MediaDTO;
@@ -109,6 +110,23 @@ public class IBoardService implements BoardService {
 	@Override
 	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
 		return dao.getBoardFromFollowingList(id);
+	}
+
+	@Override
+	public int selectLike(Board_LikeDTO dto) throws Exception {
+		return dao.selectLike(dto);
+	}
+
+	@Override
+	public int insertLike(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.insertLike(dto);
+	}
+
+	@Override
+	public int updateLike(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.updateLike(dto);
 	}
 	
 }
