@@ -97,9 +97,9 @@ public class IMemberService implements MemberService{
 	}
 
 	@Override
-	public String findId(String name,String phone) throws Exception{
+	public List<MemberDTO> findId(String name,String email) throws Exception{
 		// TODO Auto-generated method stub
-		return dao.findId(name, phone);
+		return dao.findId(name, email);
 	}
 
 
