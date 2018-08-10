@@ -188,6 +188,8 @@ public class MemberController {
 		} else {
 			isEmailDuplicated = false;
 		}
+		
+		xout.println(isEmailDuplicated);
 	}
 		
 

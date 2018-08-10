@@ -346,12 +346,21 @@ body {
 								</div>
 
 								<div class="form-group row in">
-									<label for="example-email-input" class="col-2 col-form-label">웹사이트</label>
+									<label for="example-email-input" class="col-2 col-form-label">웹 사이트</label>
 									<div class="col-10">
 										<input class="form-control edit" type="text" value=""
-											id="example-email-input">
+											id="websiteField" name=website>
 									</div>
 								</div>
+								
+								<!-- 소개 필드 -->
+								 <div class="form-group row in">
+     								 <label for="introduceArea" class="col-2 col-form-label">자기소개</label>
+     								 <div class=col-10>
+     								 	<textarea class="form-control" id="introduceArea" rows="3" name=introduce></textarea>
+     								 </div>
+     								 
+   								 </div>
 
 								<!-- 이메일 필드 -->
 								<div class="form-group row in has-success">
@@ -374,7 +383,7 @@ body {
 								<div class="form-group row in">
 									<label for="example-password-input"
 										class="col-2 col-form-label">성별</label>
-									<div class="col-10 in">
+									<div class="col-10">
 
 										<!-- 성별따라 바뀌게 -->
 										<select class="custom-select edit" name="gender">
