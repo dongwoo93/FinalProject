@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -18,7 +19,7 @@ public class Board_CommentController {
 
 
 	@RequestMapping("/comment.co")
-	public void insertComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response) {
+	public void insertComment(Board_CommentDTO dto, HttpSession session, HttpServletRequest response) {
 		String id = (String)session.getAttribute("loginId");
 		dto.setId(id);
 		int result = 0;
@@ -28,18 +29,35 @@ public class Board_CommentController {
 			if(result >0) { 
 				System.out.println("success");
 			}
-			else {
+			else {  
 				System.out.println("failed");  
 			}
-			
 
-		 
 		}catch(Exception e) {
 			System.out.println("요기는 comment.co입니다");
 			e.printStackTrace();
 		}
-		
-		
-		
+	
+	}
+	
+	@RequestMapping("/commentdel.co")
+	public void delComment(String comment_seq ,HttpServletResponse response)  {
+		System.out.println(comment_seq);  
+		int result = 0; 
+		try {
+			result = this.boardcommentservice.delComment(Integer.parseInt(comment_seq));   
+			System.out.println(result);   
+			if(result > 0 ) {
+				System.out.println("del success");	
+			}	
+			else {
+				System.out.println("del failed");
+			}
+			
+		}catch(Exception e) {
+			System.out.println("요기는  commentdel.co입니다");
+			e.printStackTrace();
+		}
+	  
 	}
 }

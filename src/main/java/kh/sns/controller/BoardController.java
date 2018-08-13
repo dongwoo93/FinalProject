@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +25,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_LikeDTO;
+import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -32,21 +37,40 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	@Autowired
+	private Board_CommentService board_commentService;
+	@Autowired
 	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
-		
-		
+
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		List<Board_CommentDTO> list1 = new ArrayList<>();
+		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
 		String id = (String) seesion.getAttribute("loginId"); 
 		try {
 			list = boardService.getFeed(id);
+			list1 = board_commentService.getFeedComment(id);
+			Set<Integer> seqlist = new HashSet<>();
+		for(Board_CommentDTO dto : list1) {	
+			seqlist.add(dto.getBoard_seq());
+			commentlist.put(dto.getBoard_seq(), new ArrayList<>());
+	
+		}  
+		for(Board_CommentDTO dto : list1) {
+			for(int seq : seqlist) {
+				if(dto.getBoard_seq() == seq ) {
+					commentlist.get(seq).add(dto);  
+				} 
+			}
+		}
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
+		mav.addObject("commentresult",commentlist);
 		mav.setViewName("timeline.jsp");	
 		return mav;
 	}

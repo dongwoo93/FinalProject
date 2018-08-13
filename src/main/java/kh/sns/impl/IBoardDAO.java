@@ -94,8 +94,8 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		String sql = "select * from board order by board_seq desc";
-		return template.query(sql, new RowMapper<BoardDTO>() {
+		String sql = "select * from board where (id in (select target_id from member_follow where id=?)) or (id=?) order by board_seq desc";
+		return template.query(sql, new String[] {id,id}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {

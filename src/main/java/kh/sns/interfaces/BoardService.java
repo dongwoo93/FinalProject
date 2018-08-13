@@ -28,5 +28,9 @@ public interface BoardService {
 	public List<BoardDTO> search(String keyword) throws Exception;
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
 	
+	
+	//board_comment
+	
+	
 
 }

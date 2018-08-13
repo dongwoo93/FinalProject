@@ -191,6 +191,7 @@ body {
 
 #board {
 	width: 62%;
+	border: 0.3px solid lightgray; 
 }
 
 #side {
@@ -256,7 +257,25 @@ body {
 	width: 60%;
 	height: 20px;
 }
+
+  
+.comment-contents li {
+		display: inline-block;
+  
+		}  
+  
+#li1 {
+width:15%;
 }
+#li2  {        
+width:68%;
+}
+
+#li3 {
+width:15%;  
+}
+		
+
 </style>
 
 <script>
@@ -410,7 +429,7 @@ $(document).ready(function() {
     <div id="allwrapper">  
       <div class=""id="centerwrapper">
           <div class="container" id="contents">
-        <div id="board">
+        <div id="board" >
         
         <script>var num = 1;</script>
         
@@ -493,6 +512,8 @@ $(document).ready(function() {
 
 				 </script>
 				 
+		 
+				 
 				<p id="myContents${tmp.board_seq}">${tmp.contents}
 
 					<script>    
@@ -514,9 +535,56 @@ $(document).ready(function() {
 							</div>
 							
 						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
-						<div>
+						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
+						
+						<!-- 댓글자리 -->
+						  
+						<c:forEach var="commenttmp" items="${commentresult}">
+						<c:choose>      
+						<c:when test="${commenttmp.key == tmp.board_seq}">  
+						<c:forEach var="comment" items="${commenttmp.value}">
+					 
+					
 						
 						
+							<ul id="ul${comment.comment_seq}">     
+							<li id='li1'><a href="#">${comment.id}</a></li> 
+							<li id='li2'>${comment.comment_contents}</li> 
+							
+							<c:choose>  
+							<c:when test ="${sessionScope.loginId == comment.id}">  
+							<li id='li3'><a id='commentdel${comment.comment_seq}'>x</a> </li>    
+							</c:when>
+							</c:choose>
+							</ul>
+					
+				       
+				      
+				      				<script>  
+						    
+						$("#commentdel${comment.comment_seq}").click(function() {  
+							$.ajax({
+				 	 	           type: "POST",  
+				 	 	           url: "commentdel.co", 	
+				 	 	           data: {comment_seq:${comment.comment_seq}}  
+				 	 	             
+			        		   }) //ajax 
+			        		   $("#ul${comment.comment_seq}").remove(); 
+							
+						})    
+		
+						
+						</script>
+				      
+						</c:forEach>
+							</c:when>  
+								</c:choose>
+								
+								
+		
+						</c:forEach>
+					
+					
 						
 						</div>
 
@@ -547,14 +615,17 @@ $(document).ready(function() {
 								        		alert("댓글을 입력해주세요");
 								        	}
 								        	else {  
-								        		
+								         		
 								        		$.ajax({
 									 	 	           type: "POST",  
 									 	 	           url: "comment.co", 	
-									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text}  
+									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text} 
+								        	
 								        		   }) //ajax 
-								        		 $("#comment${tmp.board_seq}").val("");   
-								        	}	
+								        		 $("#comment${tmp.board_seq}").val("");       
+							        			$("#comment-contents${tmp.board_seq}").prepend("<ul ><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a href='#'>x</a> </li></ul> ")
+								        		
+								        	}	 
 								        }
 								    });  
 						 		</script>
@@ -571,13 +642,7 @@ $(document).ready(function() {
       </div>  <!-- centerwrapper -->
       </div>  <!--  allwrapper-->
     
-      <div class="pt-4 pb-3  " id="footer">
-           <div class="container">
-              <div class="row" >
-                <div class="col-md-10">
-                  <p class="lead">SocialWired 정보지원홍보 센터API채용 정보개인정보처리방침약관디렉터리프로필해시태그언어
-</p>
-                </div>
+  
 
 		<div class="pt-4 pb-3  " id="footer">
 			<div class="container">
@@ -593,7 +658,7 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
-	</div>
+
 
 </body>
 
