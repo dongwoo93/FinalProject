@@ -39,7 +39,7 @@ public class BoardController {
 		
 		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id = (String) seesion.getAttribute("loginId");
+		String id = (String) seesion.getAttribute("loginId"); 
 		try {
 			list = boardService.getFeed(id);
 		}catch(Exception e) {

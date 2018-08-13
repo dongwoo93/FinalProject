@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	AOS.init();
+   AOS.init();
    var formInputs = $('input[type="id"],input[type="password"]');
    formInputs.focus(function() {
        $(this).parent().children('p.formLabel').addClass('formTop');
@@ -20,30 +20,29 @@ $(document).ready(function(){
    });
    
 
-		
-		
-		
-	
+      
+      
+      
+   
    $("#loginform").submit(function(e) {
 
 
-	    var form = $(this);
+       var form = $(this);
 
-	    $.ajax({
-	           type: "POST",
-	           url: "login.do",
-	           data: form.serialize(), // serializes the form's elements.
-	           success: function(data)
-	           {
-	        	   alert(data);
-	               if(data == 1) {
-	            	   $(location).attr("href", "feed.bo");
-	               }else {
-	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-	               }
-	           }
-	         });
+       $.ajax({
+              type: "POST",
+              url: "login.do",
+              data: form.serialize(), // serializes the form's elements.
+              success: function(data)
+              {
+                  if(data == 1) {
+                     $(location).attr("href", "feed.bo");
+                  }else {
+                     $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
+                  }
+              }
+            });
 
-	    e.preventDefault(); // avoid to execute the actual submit of the form.
-	});
+       e.preventDefault(); // avoid to execute the actual submit of the form.
+   });
 });
