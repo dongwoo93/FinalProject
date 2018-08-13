@@ -677,9 +677,6 @@ $(document).ready(function() {
     
       
 		   <div class="modal fade" id="boardmodal" role="dialog"> 
-		   
-		   
-		   
 		    <div class="modal-dialog" role="document">
 		    
 		    	<div class="modal-content">

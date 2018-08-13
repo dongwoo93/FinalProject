@@ -23,7 +23,7 @@
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
             <div class="container" id="navcontainer">
               <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
-              <div class="logo"><a class="navbar-brand ml-2 text-white" href="#">SocialWired</a></div>
+              <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
                   <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
