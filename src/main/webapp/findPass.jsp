@@ -17,67 +17,7 @@
 <title>Insert title here</title>
 
 </head>
-<script>
-$("#phone").on('keydown', function(e){
-    // 숫자만 입력받기
-     var trans_num = $(this).val().replace(/-/gi,'');
-	var k = e.keyCode;
-				
-	if(trans_num.length >= 11 && ((k >= 48 && k <=126) || (k >= 12592 && k <= 12687 || k==32 || k==229 || (k>=45032 && k<=55203)) ))
-	{
-	    e.preventDefault();
-	
-	}
-	
- }).on('blur', function(){ // 포커스를 잃었을때 실행합니다.
-     if($(this).val() == '') return;
 
-     // 기존 번호에서 - 를 삭제합니다.
-     var trans_num = $(this).val().replace(/-/gi,'');
-   
-     // 입력값이 있을때만 실행합니다.
-     if(trans_num != null && trans_num != '')
-     {
-         // 총 핸드폰 자리수는 11글자이거나, 10자여야 합니다.
-         if(trans_num.length==11 || trans_num.length==10) 
-         {   
-             // 유효성 체크
-            
-             var regExp_ctn = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})([0-9]{3,4})([0-9]{4})$/;
-             if(regExp_ctn.test(trans_num))
-             {
-                 // 유효성 체크에 성공하면 하이픈을 넣고 값을 바꿔줍니다.
-                 
-                 trans_num = trans_num.replace(/^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?([0-9]{3,4})-?([0-9]{4})$/, "$1-$2-$3");                  
-                 $(this).val(trans_num);
-               
-              
-            
-             }
-             else
-             {
-                 alert("유효하지 않은 전화번호 입니다.");
-                
-                 $(this).val("");
-                 $(this).focus();
-             
-     			
-             }
-         }
-         else 
-         {
-             alert("유효하지 않은 전화번호 입니다.");
-            
-             $(this).val("");
-             $(this).focus();
-          
-         }
-   }
-    
-}); 
-
-
-</script>
 
 <style>
 body {
@@ -112,7 +52,10 @@ opacity: 0.7;
 <script>
 alert("맞지 않는 계정 정보입니다. 다시 입력해주세요");
 $("#id").val("");
-$("#email").val("");
+$("#Cemail").val("");
+$("#name").val("");
+$("#email2").val("");
+
 $("#id").focus();
 </script>
 </c:when>
@@ -178,7 +121,7 @@ $(location).attr('href',"main.do");
 							</div>
 							
 							<div class="col-lg-12">
-								<form id="login-form" action="findId.do" method="post" role="form" >
+								<form id="login-form2" action="findId.do" method="post" role="form" >
 									<div class="form-group">
 										<label>Finding ID</label>
 									</div>
@@ -186,13 +129,13 @@ $(location).attr('href',"main.do");
 										<input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="User Name" >
 									</div>
 									<div class="form-group ">
-										<input type="text" name="phone" id="phone" tabindex="2" class="form-control" placeholder="Phone Number">
+										<input type="text" name="email" id="email2" tabindex="2" class="form-control" placeholder="Input Email Address">
 									</div>
 
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="findId" id="findId" tabindex="4" class="form-control btn btn-login" value="인증번호 받기">
+												<input type="submit" name="findId" id="findId" tabindex="4" class="form-control btn btn-login" value="SEND">
 											</div>
 										</div>
 									</div>
