@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.beans.SendEmail;
-
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
@@ -70,11 +70,39 @@ public class MemberController {
 		
 	}
 	@RequestMapping("/sign.do")
-	public ModelAndView signUp(MemberDTO dto) {
+	public ModelAndView signUp(MemberDTO dto, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
-		int result = this.memberService.signUp(dto);
-		
-		mav.addObject("result",result);
+		int joinresult = 0;
+		int insertMem = 0 ;
+		int insertProfile = 0;
+		try {
+			insertMem = this.memberService.signUp(dto);
+			insertProfile = this.memberService.insertProfile(dto.getId());
+			
+			 String realPath = request.getSession().getServletContext().getRealPath("/"+dto.getId()+"/");
+	         
+	         File f = new File(realPath);
+	         if(!f.exists()){
+	            f.mkdir();
+	          }
+	         realPath = realPath+"log.txt";
+	         File f1 = new File(realPath);
+	         if(!f1.exists()){
+	            f1.mkdir();
+	          }
+	         
+	         System.out.println(realPath); 
+	         
+	         
+		if(insertMem> 0 && insertProfile > 0) {
+			joinresult = 1;
+		}
+	
+		}catch(Exception e) {  
+			
+			e.printStackTrace();
+		}
+		mav.addObject("result",joinresult);
 		mav.setViewName("join.jsp");
 		return mav;
 	}
