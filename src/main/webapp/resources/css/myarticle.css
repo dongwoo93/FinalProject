@@ -106,6 +106,14 @@ img {
 		cursor: pointer;
 	}
 	.gallery-item:hover .gallery-item-info {
+		visibility: visible;
+		opacity: 1;
+		transition: visibility 0s, opacity 0.3s linear;
+	 
+	}
+	.gallery-item-info {
+	visibility: hidden;
+	opacity: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -114,11 +122,7 @@ img {
 		width: 80%;
 		height: 100%;
 		background-color: rgba(0, 0, 0, 0.3);
-	 
-	}
-	.gallery-item-info {
-		display: none;
-		
+		transition: visibility 0.3s, opacity 0.3s linear;
 	}
 	.gallery-item-info li {
 		display: inline-block;

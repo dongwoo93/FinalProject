@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	$("#logout").click(function() {
+		$(location).attr("href", "logout.do");
+	})
 	
 	$("#boardmodal").on("shown.bs.modal", function () {
 		
@@ -129,6 +132,39 @@ $(document).ready(function() {
 			           	}
 			         });
 			})
+			
+			document.getElementById("delete").onclick = function() {
+					var seq = document.getElementById("hidden").value;
+					location.href = "boardDelete.bo?seq="+seq;
+				}	
+				
+				$("#modify").click(function(){
+					$("#modalcontents").attr("contentEditable","true");
+					$("#modalcontents").focus();
+
+				})
+				
+				$("#modifysubmitbtn").click(function(){
+					var board_seq = $("#seq").val();
+					var contents = $("#modalcontents").html();
+					
+					$.ajax({
+						type:"POST",
+						url:"boardModify.bo",
+						data: {board_seq:board_seq, contents:contents},
+						success: function(data)
+						{
+							if(data == 1){
+								$("#modalcontents").val(contents);
+								$("#modalcontents").attr("contentEditable","false");
+								
+							}else {
+								alert("다시 시도해주세요");
+							}
+							
+						}
+					});
+				})
 	
 	
 	})

@@ -28,6 +28,7 @@
 					<h1 class="profile-user-name">${result[0].id}</h1>
 					<div class="profile-edit-btn">팔로잉</div>
 					<div class="profile-settings-btn"><i id="toMy" class="fas fa-cog"></i></div>
+					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button>
 				</div>
 	
 				<div class="profile-stats">
@@ -230,38 +231,7 @@
 		          </div>
         
         	<script>
-				document.getElementById("delete").onclick = function() {
-					var seq = document.getElementById("hidden").value;
-					location.href = "boardDelete.bo?seq="+seq;
-				}	
 				
-				$("#modify").click(function(){
-					$("#modalcontents").attr("contentEditable","true");
-					$("#modalcontents").focus();
-
-				})
-				
-				$("#modifysubmitbtn").click(function(){
-					var board_seq = $("#seq").val();
-					var contents = $("#modalcontents").html();
-					
-					$.ajax({
-						type:"POST",
-						url:"boardModify.bo",
-						data: {board_seq:board_seq, contents:contents},
-						success: function(data)
-						{
-							if(data == 1){
-								$("#modalcontents").val(contents);
-								$("#modalcontents").attr("contentEditable","false");
-								
-							}else {
-								alert("다시 시도해주세요");
-							}
-							
-						}
-					});
-				})
 			</script>
 	         
 	         </c:when>

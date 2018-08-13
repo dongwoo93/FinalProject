@@ -74,7 +74,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
-		mav.setViewName("board.bo?id="+id);
+		mav.setViewName("redirect:board.bo?id="+id);
 		return mav;
 		
 	}
@@ -129,7 +129,7 @@ public class BoardController {
 	   public ModelAndView writeBoard() {
 	      System.out.println("@@WRITE BOARD");
 	      ModelAndView mav = new ModelAndView();
-	      mav.setViewName("write.jsp");
+	      mav.setViewName("write2.jsp");
 	      return mav;
 	   }
 

@@ -34,6 +34,7 @@
         z-index: 1;
         width: 100%;
         background-color: #35e0db;
+        transition: background-color 200ms linear;
     }
     
     #topwrapper{
@@ -92,3 +93,23 @@
         display: none;
         flex-grow: 1;
     }
+    
+    .text-white {
+    	font-weight: bold;
+    }
+    
+    #navbar.scrolled {
+	background-color: #eef2f5 !important;
+	transition: background-color 200ms linear;
+}
+
+#navbar.scrolled .nav-icon {
+	color: black;
+}
+
+#navbar.scrolled #instagramicon {
+	color: #dc3545;
+}
+#navbar.scrolled .text-white {
+	color: black !important;
+}

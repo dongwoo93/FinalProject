@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
 
     <script>
+    AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
     	$.ajax({
@@ -93,7 +94,7 @@
         <script>var num = 1;</script>
         
         <c:forEach var="tmp" items="${result}">
-          <div class="py-2 my-5 " id="peed">   
+          <div class="py-2 my-5" data-aos='fade-up' data-aos-once="true" id="peed">   
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>

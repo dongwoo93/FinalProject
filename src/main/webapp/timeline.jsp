@@ -596,21 +596,9 @@ $(document).ready(function() {
               </div>
             </div>
           </div>
-          </c:forEach>
-        </div>
-        <div class="col-md-6 align-self-center" id="side">
-          <br> 
-        </div>
-      </div>
-      </div>
+        
     
-      <div class="pt-4 pb-3  " id="footer">
-           <div class="container">
-              <div class="row" >
-                <div class="col-md-10">
-                  <p class="lead">SocialWired 정보지원홍보 센터API채용 정보개인정보처리방침약관디렉터리프로필해시태그언어
-</p>
-                </div>
+      
 
 		<div class="pt-4 pb-3  " id="footer">
 			<div class="container">
@@ -626,7 +614,7 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
-	</div>
+
 
 </body>
 

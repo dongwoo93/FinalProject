@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.beans.SendEmail;
-
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
@@ -67,6 +66,15 @@ public class MemberController {
 		response.getWriter().close();
 		
 	}
+	
+	@RequestMapping("/logout.do")
+	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		session.invalidate();
+		mav.setViewName("redirect:main.jsp");
+		return mav;
+	}
+	
 	@RequestMapping("/sign.do")
 	public ModelAndView signUp(MemberDTO dto) {
 		ModelAndView mav = new ModelAndView();
@@ -160,7 +168,7 @@ public class MemberController {
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			
-			mav.setViewName("mypage.jsp");
+			mav.setViewName("mypage2.jsp");
 			
 		} else {
 			// 작업 추가
