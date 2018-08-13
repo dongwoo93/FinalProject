@@ -3,6 +3,17 @@
     <%@ include file="include/top.jsp"%>
     <link rel="stylesheet" type="text/css" href="resources/css/myarticle.css">
     <script src="resources/js/myarticle.js"></script>
+    
+    <c:if test="${result.size() > 0}">
+	<script> var list= []; </script>
+	<c:forEach var="tmp" items="${result}" varStatus="status">
+			<script>    
+			list.push("${tmp.board_seq}");    
+			
+			</script>
+		</c:forEach>
+ </c:if>
+    
     <div id="allwrapper">
    
 
@@ -59,7 +70,7 @@
 
 			
 		
-		        <c:forEach var="tmp" items="${result}">
+		        <c:forEach var="tmp" items="${result}" varStatus="status">
 		
 			
 				<div class="gallery-item" id="${tmp.board_seq}">  
@@ -80,23 +91,23 @@
 					
   
                        $("#${tmp.board_seq}").click(function() {
-                    	   $("#hidden").val(${tmp.board_seq});   
+                    	   $("#prev").val(${result[status.index-1].board_seq}); 
+                    	   $("#next").val(${result[status.index+1].board_seq}); 
+                    	   $("#hidden").val(${result[status.index].board_seq});
                           	$("#boardmodal").modal();                	   
                        });
                         
-//                        $("#item${tmp.board_seq}").click(function() {
+//                        $("#modify${tmp.board_seq}").click(function() {
 //                     	   $("#seq").val(${tmp.board_seq});  
 //                           	$("#boardmodal").modal();                       	   
 //                        });
 
 						
-                       $("seq1").click(function() {             	      
-                         	$("#boardmodal").modal('show');                   	   
-                       });
-                        
-						
-
-				</script>
+//                        $("seq1").click(function() {             	      
+//                          	$("#boardmodal").modal('show');                   	   
+//                        });
+           
+					</script>
 				
 			
 				</div>
@@ -118,10 +129,11 @@
 	
 
 	</div>
+	
 	<div class="modal fade" id="boardmodal" role="dialog"> 
 		    <div class="modal-dialog" role="document">
 		    
-		    	<div class="modal-content">
+		    <div class="modal-content">
 <!--   				 &nbsp;&nbsp; <i class="fas fa-angle-double-left text-black" id="hidden" style="font-size:40px;"></i> -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -136,10 +148,13 @@
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				 -->
 <!--   				 <i class="fas fa-angle-double-right text-black"  style="font-size:40px;"></i> -->
 
-				<a href="#" class="btn btn-outline-primary" id="seq1"> < </a>
-				<a href="#" class="btn btn-outline-primary"> < </a>
-					
- 				 </div>
+
+				<button id="goNext" class="btn btn-outline-primary">&#62;</button>
+				<button id="goPrev" class="btn btn-outline-primary">&#60;</button>
+ 			</div>
+		
+		  	 
+		  	 
 		  	  <br><br>
 		      <div class="modal-content">
 		    
@@ -154,7 +169,9 @@
 <!-- 		        	<div class="bg-white" id="seq"></div> -->
 <!-- 		        	<div class="bg-white" id="seq1"></div> -->
 		        	
-		    		 <div class="hidden" id="hidden"></div>	
+		    		 <div class="hidden" id="hidden"></div>
+		    		 <div class="hidden" id="prev"></div>
+		    		 <div class="hidden" id="next"></div>
 		        	
 		        	  	
 		        	<div class="bg-white" id="a">
@@ -171,7 +188,7 @@
 		        	  </div>
 		        	  	
 		        	  	
-					<div id="board" class="bg-white">
+				<div id="board" class="bg-white">
 			        	<br>
 			          <div class="profile-image"> 	 
 			              <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
@@ -180,12 +197,14 @@
 				      	  			 	              
 					   <br>
 					   <br>
-		       
-		            <div id="contcenter" class="mt-2 mx-3 pb-2"> 
-						  <div class="bg-black" id="modalcontents" ></div>
+		       		
+		     
+		       		<input id="seq" type=hidden name=board_seq>
+		            <div id="articlecontents" class="mt-2 mx-3 pb-2"> 
+                    <div class="bg-black" id="modalcontents"></div>					
 					</div>
-				
-              </div>   
+
+              	</div>   
           
 	
               <div class="py-2 bg-white">     	
@@ -194,16 +213,18 @@
                    
 		   <c:choose>
 			<c:when test="${result[0].id == sessionScope.loginId}">
-                       
+              
 		          <div class="btn-group bg-white">
 		            <button class="btn dropdown-toggle bg-white" data-toggle="dropdown"> </button>
 		            <div class="dropdown-menu">
 		              <a class="dropdown-item" href="#">보관</a>
+		              <div class="dropdown-divider" id="modifydiv"></div>
+		              <a class="dropdown-item" id="modify" href="#">수정</a>
 		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item" href="#">수정</a>
-		                <div class="dropdown-divider"></div>
-		             <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
-		                <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
+		              <div class="dropdown-divider"></div>
 		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
 		            </div>
 		          </div>
@@ -213,6 +234,34 @@
 					var seq = document.getElementById("hidden").value;
 					location.href = "boardDelete.bo?seq="+seq;
 				}	
+				
+				$("#modify").click(function(){
+					$("#modalcontents").attr("contentEditable","true");
+					$("#modalcontents").focus();
+
+				})
+				
+				$("#modifysubmitbtn").click(function(){
+					var board_seq = $("#seq").val();
+					var contents = $("#modalcontents").html();
+					
+					$.ajax({
+						type:"POST",
+						url:"boardModify.bo",
+						data: {board_seq:board_seq, contents:contents},
+						success: function(data)
+						{
+							if(data == 1){
+								$("#modalcontents").val(contents);
+								$("#modalcontents").attr("contentEditable","false");
+								
+							}else {
+								alert("다시 시도해주세요");
+							}
+							
+						}
+					});
+				})
 			</script>
 	         
 	         </c:when>
@@ -220,9 +269,7 @@
 					<div class="btn-group bg-white">
 		            <button class="btn dropdown-toggle bg-white" data-toggle="dropdown"> </button>
 		            <div class="dropdown-menu">
-		              <a class="dropdown-item" href="#">보관</a>
-		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item" href="#">수정</a>
+		              <a class="dropdown-item" href="#">보관</a>	              
 		              <div class="dropdown-divider"></div>
 		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a> 
 		            </div>
@@ -235,7 +282,8 @@
 								
 
               		</div>
-		         </div>	      
+		         </div>	
+		              
 		      </div>
 		    </div>
 	<%@ include file="include/bottom.jsp"%>
