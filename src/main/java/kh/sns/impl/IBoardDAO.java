@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
@@ -45,6 +46,42 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+		String sql = "select * from board where board_seq=?";
+		
+		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		}).get(0);
+	}
+	
+
+		@Override
+		public int deleteBoard(int seq) {
+			String sql = "delete from board where board_seq = ? ";
+			return template.update(sql, seq);
+		}
+	
+		
+
+		@Override
+		public int modifyBoard(BoardDTO dto) throws Exception {
+			String sql = "update board set contents = ? where board_seq = ?";  
+			return template.update(sql, dto.getContents(), dto.getBoard_seq());
+		}
+
+		
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
@@ -86,8 +123,8 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		String sql = "select * from board where id=? order by board_seq desc";
-		return template.query(sql, new String[] {id}, new RowMapper<BoardDTO>() {
+		String sql = "select * from board where (id in (select target_id from member_follow where id=?)) or (id=?) order by board_seq desc";
+		return template.query(sql, new String[] {id,id}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -133,6 +170,8 @@ public class IBoardDAO implements BoardDAO  {
 				
 		return temp.get(0);
 	}
+	
+	
 
 	@Override
 	public int[] insertHashTags( BoardDTO article) throws Exception {
@@ -208,23 +247,7 @@ public class IBoardDAO implements BoardDAO  {
 	}
 	
 
-	@Override
-	public BoardDTO getBoardModal(String seq) throws Exception {
-		String sql = "select * from board where board_seq=?";
-		
-		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
 
-			@Override
-			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				BoardDTO tmp = new BoardDTO();
-				tmp.setBoard_seq(rs.getInt(1));
-				tmp.setContents(rs.getString(2));
-				tmp.setId(rs.getString(3));
-				tmp.setWritedate(rs.getString(4));
-				tmp.setRead_count(rs.getString(5));
-				tmp.setIs_allow_comments(rs.getString(6));
-				return tmp;
-			}
-		}).get(0);
-	}
+
+
 }

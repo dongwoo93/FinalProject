@@ -14,7 +14,7 @@
 	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
 	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -191,6 +191,7 @@ body {
 
 #board {
 	width: 62%;
+	border: 0.3px solid lightgray; 
 }
 
 #side {
@@ -201,8 +202,24 @@ body {
 	display: inline-block
 }
 
-.col {
-	border: 1px solid black;
+    }
+    
+    #myComment{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 11px;
+    	
+    }
+    
+    .hidden p {
+ 
+    overflow: hidden;    
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width:60%;
+    height: 20px;
+    }
+    
+ 
 }
 
 .idtxt {
@@ -240,10 +257,111 @@ body {
 	width: 60%;
 	height: 20px;
 }
+
+  
+.comment-contents li {
+		display: inline-block;
+  
+		}  
+  
+#li1 {
+width:15%;
 }
+#li2  {        
+width:68%;
+}
+
+#li3 {
+width:15%;  
+}
+		
+
 </style>
 
 <script>
+function likeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unlikeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+function markit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unmarkit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+			
+			
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
 $(document).ready(function() {
 	
 	$('#searchform').keypress(function(event){
@@ -261,7 +379,8 @@ $(document).ready(function() {
     });
 	
 	
-
+	
+	
 })
 
 </script>
@@ -270,92 +389,96 @@ $(document).ready(function() {
 
 <body>
 
-
-	<div id="topwrapper">
-		<nav class="navbar navbar-expand-md navbar-light" id="navbar">
-		<div class="container" id="navcontainer">
-			<i class="fab fa-instagram fa-2x" id="instagramicon"></i>
-			<div class="logo">
-				<a class="navbar-brand ml-2 text-white" href="#">SocialWired</a>
-			</div>
-			<div class="collapse navbar-collapse">
-				<form id="go" action="search.bo" class="form-inline m-0"
-					onsubmit="return false;">
-					<input id="searchform" class="form-control" name="search"
-						type="text" placeholder="검색">
-				</form>
-			</div>
-			<div id="nav-icons">
-				<ul class="navbar-nav">
-
-					<li class="nav-item"><a class="nav-link" href="#"><i
-							class="far fa-comment-alt nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="write.board"><i
-							class="fas fa-pencil-alt nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="#"><i
-							class="far fa-compass nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="#"><i
-							class="far fa-heart nav-icon"></i></a></li>
-					<li class="nav-item"><a class="nav-link" href="board.bo"><i
-							class="far fa-user nav-icon"></i></a></li>
-				</ul>
-			</div>
-		</div>
-		</nav>
-	</div>
-	<div id="allwrapper">
-		<div class="" id="centerwrapper">
-			<div class="container" id="contents">
-				<div id="board">
-
-					<script>var num = 1;</script>
-
-					<c:forEach var="tmp" items="${result}">
-						<div class="py-2 my-5 " id="peed">
-							<div class="profile-image">
-								<img class="ml-3 mr-2"
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-								<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-								<br> <a class="mt-1 idtxt" id="id" href="board.bo">${tmp.id}<br>Dangsan.South
-									Korea
-								</a>
-
-							</div>
-							<div class="mt-2" id="boardimg">
-
-								<script>  
+ 
+      <div id="topwrapper">
+          <nav class="navbar navbar-expand-md navbar-light" id="navbar">
+            <div class="container" id="navcontainer">
+              <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
+              <div class="logo"><a class="navbar-brand ml-2 text-white" href="#">SocialWired</a></div>
+              <div class="collapse navbar-collapse">
+                  <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
+                </form>
+              </div>
+              <div id="nav-icons">
+                <ul class="navbar-nav">
+                
+                 <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-compass nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="board.bo?id=${sessionScope.loginId}"><i class="far fa-user nav-icon"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+      </div>
+      
+      
+      
+    <div id="allwrapper">  
+      <div class=""id="centerwrapper">
+          <div class="container" id="contents">
+        <div id="board" >
+        
+        <script>var num = 1;</script>
+        
+        <c:forEach var="tmp" items="${result}">
+        
+          <div class="py-2 my-5 " id="feed">   
+            <div class="profile-image"> 	 
+              <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
+              <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
+            </div>    
+            <div class="mt-2" id="boardimg">
+      
+      <script>  
       var num = Math.floor((Math.random() * 4) + 1);
       var img = "timelineimg/"+num+".PNG"; 
       $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
-      </script>
-							</div> 
-							<div id="cont">
-								<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
-								<div class="container">
-									<a class="navbar-brand" href="#"> <i
-										class="far fa-heart icon mr-1"></i> <i
-										class="far fa-comment icon"></i>
-									</a>
-									<ul class="navbar-nav">
-										<i class="fas fa-circle dot1 "></i>&nbsp
-										<i class="fas fa-circle dot"></i>&nbsp
-										<i class="fas fa-circle dot"></i>&nbsp
-									</ul>
-									<a class="btn navbar-btn ml-2 text-white "> <i
-										class="far fa-bookmark icon"></i>
-									</a>
-								</div>
-								</nav>
-								<div id="contcenter" class="mt-2 mx-3 pb-2">
-									<%--             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id} --%>
-									<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
+      </script> 
+             </div>
+             
+             
+            <div id="cont">
+              <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
+                <div class="container">
+                  <a class="navbar-brand">
+               			 
+                    <i value="${tmp.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+                    <i class="far fa-comment icon"></i>
+                  </a>
+                  <ul class="navbar-nav">
+                    <i class="fas fa-circle dot1 "></i>&nbsp
+                    <i class="fas fa-circle dot"></i>&nbsp
+                    <i class="fas fa-circle dot"></i>&nbsp  
+                  </ul>
+                  <a class="btn navbar-btn ml-2 text-white ">
+                    <i value="${tmp.board_seq}" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+                  </a> 
+                </div>
+              </nav> 
+              
+               
+              <div id="contcenter" class="mt-2 mx-3 pb-2"> 
+				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
 
-
-
-     
-									<div class="hidden" id="hidden${tmp.board_seq}">
-
-										<script>
+				<div class="hidden" id="hidden${tmp.board_seq}">
+				
+	 		   	<script>
 				//   	
 				   //	$("#${tmp.board_seq}").click(function() { 
 				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
@@ -388,11 +511,12 @@ $(document).ready(function() {
 			 */
 
 				 </script>
+				 
+		 
+				 
+				<p id="myContents${tmp.board_seq}">${tmp.contents}
 
-
-										<p id="myContents${tmp.board_seq}">${tmp.contents}
-
-											<script>    
+					<script>    
 					var plus = "";    
 					var txt = "${tmp.contents}";       
 			    	  if(txt.length > 48) {                
@@ -408,67 +532,117 @@ $(document).ready(function() {
 				   	});
 				   	
 					</script>
-									</div>
-
-
-
-
-									<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+							</div>
+							
+						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
+						
+						<!-- 댓글자리 -->
+						  
+						<c:forEach var="commenttmp" items="${commentresult}">
+						<c:choose>      
+						<c:when test="${commenttmp.key == tmp.board_seq}">  
+						<c:forEach var="comment" items="${commenttmp.value}">
+					 
+					
+						
+						
+							<ul id="ul${comment.comment_seq}">     
+							<li id='li1'><a href="#">${comment.id}</a></li> 
+							<li id='li2'>${comment.comment_contents}</li> 
+							
+							<c:choose>  
+							<c:when test ="${sessionScope.loginId == comment.id}">  
+							<li id='li3'><a id='commentdel${comment.comment_seq}'>x</a> </li>    
+							</c:when>
+							</c:choose>
+							</ul>
+					
+				       
+				      
+				      				<script>  
+						    
+						$("#commentdel${comment.comment_seq}").click(function() {  
+							$.ajax({
+				 	 	           type: "POST",  
+				 	 	           url: "commentdel.co", 	
+				 	 	           data: {comment_seq:${comment.comment_seq}}  
+				 	 	             
+			        		   }) //ajax 
+			        		   $("#ul${comment.comment_seq}").remove(); 
+							
+						})    
+		
+						
+						</script>
+				      
+						</c:forEach>
+							</c:when>  
+								</c:choose>
+								
+								
+		
+						</c:forEach>
+					
+					
+						
+						</div>
 
 
 								</div>
 								<!--               -->
+								
+								
 								<div class="py-2">
+  
 
-									
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
 
+
 								</div>
+								
+								
 								<script>
-			$('#comment${tmp.board_seq}').keypress(function(event){
-		        var keycode = (event.keyCode ? event.keyCode : event.which);
-		        if(keycode == '13'){
-		        	
-		        	var text = $("#comment${tmp.board_seq}").val();
-		        	if(text == ""){
-		        		alert("댓글을 입력해주세요");
-		        	}
-		        	else {
-		        		commentSubmit();
-		        	}
-		        	
-		        }
-		    });  
-			
-			
-			function commentSubmit() { 
-	        	
-	            $.ajax({
-	 	           type: "POST",
-	 	           url: "comment.co",
-	 	           data: commentParams, 
-	 	           success: function(data)
-	 	           { alert("success!" + date);
-//		 	               if(data == 1) {
-//		 	            	   $(location).attr("href", "feed.bo");
-//		 	               }else {
-//		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-//		 	               }
-	 	           }
-	 	         }); //ajax
-	        	}
-			</script>
-							</div>
-						</div>
+						
+						 		$('#comment${tmp.board_seq}').keypress(function(event){
+								        var keycode = (event.keyCode ? event.keyCode : event.which);
+								        if(keycode == '13'){
+								        	
+								        	var text = $("#comment${tmp.board_seq}").val();
+								        	if(text == ""){
+								        		alert("댓글을 입력해주세요");
+								        	}
+								        	else {  
+								         		
+								        		$.ajax({
+									 	 	           type: "POST",  
+									 	 	           url: "comment.co", 	
+									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text} 
+								        	
+								        		   }) //ajax 
+								        		 $("#comment${tmp.board_seq}").val("");       
+							        			$("#comment-contents${tmp.board_seq}").prepend("<ul ><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a href='#'>x</a> </li></ul> ")
+								        		
+								        	}	 
+								        }
+								    });  
+						 		</script>
+							</div> <!--cont  -->
+						</div> <!-- feed -->
 					</c:forEach>
-				</div>
-				<div class="col-md-6 align-self-center" id="side">
-					<br>
-				</div>
-			</div>
-		</div>
+				</div> <!-- board -->
+	
+
+        </div>  <!-- container -->
+        <div class="col-md-6 align-self-center" id="side">
+          <br> 
+        </div>
+      </div>  <!-- centerwrapper -->
+      </div>  <!--  allwrapper-->
+    
+  
 
 		<div class="pt-4 pb-3  " id="footer">
 			<div class="container">
@@ -484,7 +658,7 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
-	</div>
+
 
 </body>
 

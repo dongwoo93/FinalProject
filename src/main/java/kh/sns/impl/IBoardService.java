@@ -4,13 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_TagsDTO;
-import kh.sns.interfaces.BoardDAO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 
 @Service
@@ -25,21 +24,23 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDTO> getBoard(String id) {
+	public List<BoardDTO> getBoard(String id) throws Exception {
 		return this.dao.getBoard(id);
 	}
-
-	//search
+	
 	@Override
-	public List<BoardDTO> search(String seq) {
-		return this.dao.search(seq);
-		
-		
+	public int deleteBoard(int seq) throws Exception{
+	
+		return this.dao.deleteBoard(seq);
 	}
 	
-	
-	
+	@Override
+	public int modifyBoard(BoardDTO dto) throws Exception {
 		
+		return this.dao.modifyBoard(dto);
+	}
+
+
 	
 	@Override	
 	// @Transactional("txManager")
@@ -105,5 +106,12 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
 		return dao.getBoardFromFollowingList(id);
 	}
+
+	@Override
+	public List<BoardDTO> search(String keyword) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.search(keyword);
+	}
+	
 	
 }

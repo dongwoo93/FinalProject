@@ -410,7 +410,7 @@ $("#sign").click(function(){
 		var phone = $("#phone").val();
 		if(phoneCheck==1){
 			console.log("맞아용");
-			var yes = confirm(phone+"맞냐?");
+			var yes = confirm(phone+"맞아용?");
 			
 			if(yes){
 				
@@ -450,7 +450,7 @@ $("#sign").click(function(){
 							if(insert==data){
 								$("#certification").css("background-color", "#ccff33");
 								 $("input[name=certification]").attr("readonly",true);
-								
+							
 								phoneConfirm=1;		
 								
 							}else{
@@ -462,7 +462,7 @@ $("#sign").click(function(){
 							});
 						
 						}else{
-							console.log("응다시 써");
+							alert("올바른 번호를 입력해주세요");
 							$("#certification").remove();
 							$("#phone").val("");
 							$("#phone").focus();
@@ -471,13 +471,13 @@ $("#sign").click(function(){
 					
 				});	
 			}else{
-				console.log("다시 써");
+				alert("올바른 번호를 입력해주세요");
 				$("#phone").val("");
 				$("#phone").focus();
 			}
 			
 		}else{
-			console.log("다시 해");
+			alert("올바른 번호를 입력해주세요");
 			$(this).val("");
 			$(this).focus();
 		}
@@ -570,7 +570,7 @@ $("#sign").click(function(){
 						
 						console.log(idCheck);
 					} else {
-						console.log("떙");
+						console.log("땡");
 						idCheck=0;
 						console.log(idCheck);
 					}
@@ -704,7 +704,7 @@ $("#sign").click(function(){
 	 });
 	
 	function timeIsUp() {
-        alert("끝났다");
+        alert("유효시간이 만료 됐습니다");
         $(".phoneinput").remove();
         $("input[name=phone]").attr("readonly",false);
         $("#phone").val("");
@@ -752,7 +752,7 @@ $(location).attr("href", "main.jsp");
 
 								<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id"
 									name="id" onblur="checkId()" type="text" class="validate"
-									required> <label for="id">ID</label>
+									required> <label for="id">ID 4~19자리(영문 숫자 혼합)</label>
 
 
 
@@ -762,7 +762,7 @@ $(location).attr("href", "main.jsp");
 							<div class="input-field col s6 name">
 								<input id="name" name="name" type="text" minlength="2"
 									onblur="checkName()" class="validate" required> <label
-									for="name">Name</label>
+									for="name">Name 한글만 입력 해 주세요</label>
 							</div>
 						</div>
 						<div class="row">
@@ -796,7 +796,7 @@ $(location).attr("href", "main.jsp");
 							<div class="input-field col s12 nick">
 								<input id="nick" onblur="checkNick()" name="nickname"
 									type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$"
-									class="validate" required> <label for="nick">Nickname</label>
+									class="validate" required> <label for="nick">Nickname 4~19자리(영문 숫자 혼합)</label>
 							</div>
 						</div>
 						<div class="row confirm">

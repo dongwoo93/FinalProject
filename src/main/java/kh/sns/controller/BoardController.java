@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,43 +25,95 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_CommentService;
+import kh.sns.interfaces.ProfileService;
 
 @Controller
 public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private Board_CommentService board_commentService;
+	@Autowired
+	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed() {
-		
-		
+	public ModelAndView toFeed(HttpSession seesion) {
+
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id="hyong07";
+		List<Board_CommentDTO> list1 = new ArrayList<>();
+		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+		String id = (String) seesion.getAttribute("loginId"); 
 		try {
 			list = boardService.getFeed(id);
+			list1 = board_commentService.getFeedComment(id);
+			Set<Integer> seqlist = new HashSet<>();
+		for(Board_CommentDTO dto : list1) {	
+			seqlist.add(dto.getBoard_seq());
+			commentlist.put(dto.getBoard_seq(), new ArrayList<>());
+	
+		}  
+		for(Board_CommentDTO dto : list1) {
+			for(int seq : seqlist) {
+				if(dto.getBoard_seq() == seq ) {
+					commentlist.get(seq).add(dto);  
+				} 
+			}
+		}
+
 		}catch(Exception e) {
-			System.out.println("�뿬湲곕뒗 feed.bo");
 			e.printStackTrace();
 		}	
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
+		mav.addObject("commentresult",commentlist);
 		mav.setViewName("timeline.jsp");	
 		return mav;
 	}
 	
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session) throws Exception{
+	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		String id = (String) session.getAttribute("loginId");
+//		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
 		mav.setViewName("myarticle.jsp");
 		return mav;
 	}
+	
+	@RequestMapping("/boardView.bo")
+	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		BoardDTO result = boardService.getBoardModal(seq);
+		new Gson().toJson(result,response.getWriter());
+	}
+	
+
+	@RequestMapping("/boardDelete.bo")
+	public ModelAndView deleteBoard(HttpSession session, int seq) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		int result = boardService.deleteBoard(seq);
+		String id = (String) session.getAttribute("loginId");
+		mav.setViewName("board.bo?id="+id);
+		return mav;
+		
+	}
+	
+	
+	@RequestMapping("/boardModify.bo")
+	public void modifyBoard(HttpServletResponse response, BoardDTO dto) throws Exception {
+		int result = boardService.modifyBoard(dto);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+		response.getWriter().close();
+	}
+	
 	
 	//search
 	@RequestMapping("/search.bo")
@@ -96,14 +152,13 @@ public class BoardController {
 		return mav;
 	}
 	
-	
 	@RequestMapping("/write.board")
-	public ModelAndView writeBoard() {
-		System.out.println("@@WRITE BOARD");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("write.jsp");
-		return mav;
-	}
+	   public ModelAndView writeBoard() {
+	      System.out.println("@@WRITE BOARD");
+	      ModelAndView mav = new ModelAndView();
+	      mav.setViewName("write.jsp");
+	      return mav;
+	   }
 
 	@RequestMapping("/writeProc.bo")
 	public ModelAndView writeProcBoard(
@@ -111,7 +166,6 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println("@@writeProc.test 접속되었습니다.");
 		System.out.println(contents);
 	
 		
@@ -130,6 +184,13 @@ public class BoardController {
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
 				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
 				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
+				String realPath = request.getSession().getServletContext().getRealPath("/image/");
+                   
+                File f = new File(realPath);
+                if(!f.exists()){
+                   f.mkdir();
+                }
+          
 				
 				
 				
@@ -180,16 +241,17 @@ public class BoardController {
 		
 		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
 		
+		try {
+			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
 	
-	@RequestMapping("/boardView.bo")
-	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		BoardDTO result = boardService.getBoardModal(seq);
-		new Gson().toJson(result,response.getWriter());
-	}
+	
+
 
 }
