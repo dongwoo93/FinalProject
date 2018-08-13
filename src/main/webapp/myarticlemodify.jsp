@@ -469,164 +469,44 @@ $(document).ready(function() {
           var text = $("#searchform").val();
         	if(text == ""){
         		alert("검색어를 입력해 주세요");
-        	} 
+        	}
         	else{
         		$("#go").attr("onsubmit","return true;");
         	} 
         }
     });
 	
-	$("#boardmodal").on("shown.bs.modal", function () {
-	
+	$("#boardmodal").on("shown.bs.modal", function () { 
 		var seq = $("#hidden").val();
-		 
-		
-		var prevSeq;
-		var nextSeq;
-		
-		for(var i =0; i<list.length; i++) {
-			if(seq == list[i]) {
-				if(i==0) {
-					$("#goPrev").hide();
-				}
-				else if(i == (list.length-1)){
-					$("#goNext").hide();
-				} 
-				else { 
-					$("#goPrev").show(); 
-					$("#goNext").show();
-					
-				}
-				prevSeq = list[i-1];
-				nextSeq = list[i+1];
-				break;
-			}
-		}
-		
+
 	    $.ajax({
 	           type: "POST",
 	           url: "boardView.bo",
 	           data: {seq:seq},
 	           success: function(data)
 	           {
-	        	   $("#modalid").text(data.id);	        	   
-// 	               $("#modalcontents").text(data.contents);       
-				   $("#modalcontents").html(data.contents);
-	               $("#seq").val(data.board_seq);
-	               $("#modalid2").text(data.id);	   
-	               $("#prev").val(prevSeq); 
-            	   $("#next").val(nextSeq);
-	           	}
+	        	   $("#modalid").text(data.id);
+	        	
+	        	   
+	               $("#modalcontents").text(data.contents);
+	               
+	               $("#seq1").text(data.board_seq);
+	               $("#seq2").text(data.board_seq);
+	               
+	           }
 	         });
 		});
 	
-		$("#toMy").click(function() {
-			$(location).attr("href", "profile.member");
-			})
-			
-			$("#goNext").click(function() {
-			var seq = $("#next").val();
-			var prevSeq;
-			var nextSeq;
-			for(var i = 0; i<list.length; i++) {
-				if(seq == list[i]) {
-					if(i==0) {
-						$("#goPrev").hide();
-					}
-					else if(i == (list.length-1)){
-						$("#goNext").hide();
-					} 
-					else { 
-						$("#goPrev").show(); 
-						$("#goNext").show();
-						
-					}
-					prevSeq = list[i-1];
-					nextSeq = list[i+1];
-					break;
-				}
-			}
-				$.ajax({
-			           type: "POST",
-			           url: "boardView.bo",
-			           data: {seq:seq},
-			           success: function(data)
-			           {
-			        	   $("#modalid").text(data.id);	        	   
-						   $("#modalcontents").html(data.contents);
-			               $("#seq").val(data.board_seq);
-			               $("#modalid2").text(data.id);	   
-			               $("#prev").val(prevSeq); 
-                    	   $("#next").val(nextSeq);
-                    	   
-              
-			           	}
-			         });
-			})
-			
-			$("#goPrev").click(function() {
-			var seq = $("#prev").val();
-			var prevSeq;
-			var nextSeq;
-			for(var i =0; i<list.length; i++) {
-				if(seq == list[i]) {
-					if(i==0) {
-						$("#goPrev").hide();
-					}
-					else if(i == (list.length-1)){
-						$("#goNext").hide();
-					} 
-					else { 
-						$("#goPrev").show(); 
-						$("#goNext").show();
-						   
-					}
-					prevSeq = list[i-1];
-					nextSeq = list[i+1];
-					break;
-				}
-			}
-				$.ajax({
-			           type: "POST",
-			           url: "boardView.bo",
-			           data: {seq:seq},
-			           success: function(data)
-			           {
-			        	   $("#modalid").text(data.id);	        	       
-						   $("#modalcontents").html(data.contents);
-			               $("#seq").val(data.board_seq);
-			               $("#modalid2").text(data.id);	 
-			               $("#prev").val(prevSeq); 
-                    	   $("#next").val(nextSeq); 
-                    	   
- 							if(i == 0) {
-                    		   
-                    	   }
-			           	}
-			         });
-			})
-		})
-		
-		
+	$("#toMy").click(function() {
+		$(location).attr("href", "profile.member");
+	})
+	})
 
 </script>
 
 </head>
 
 <body>
-
-	
-	<c:if test="${result.size() > 0}">
-	<script> var list= []; </script>
-	<c:forEach var="tmp" items="${result}" varStatus="status">
-			<script>    
-			list.push("${tmp.board_seq}");    
-			
-			</script>
-		</c:forEach>
- </c:if>
-
- 
  
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
@@ -721,7 +601,7 @@ $(document).ready(function() {
 
 			
 		
-		        <c:forEach var="tmp" items="${result}" varStatus="status">
+		        <c:forEach var="tmp" items="${result}">
 		
 			
 				<div class="gallery-item" id="${tmp.board_seq}">  
@@ -742,23 +622,23 @@ $(document).ready(function() {
 					
   
                        $("#${tmp.board_seq}").click(function() {
-                    	   $("#prev").val(${result[status.index-1].board_seq}); 
-                    	   $("#next").val(${result[status.index+1].board_seq}); 
-                    	   $("#hidden").val(${result[status.index].board_seq});
+                    	   $("#hidden").val(${tmp.board_seq});   
                           	$("#boardmodal").modal();                	   
                        });
                         
-//                        $("#modify${tmp.board_seq}").click(function() {
+//                        $("#item${tmp.board_seq}").click(function() {
 //                     	   $("#seq").val(${tmp.board_seq});  
 //                           	$("#boardmodal").modal();                       	   
 //                        });
 
 						
-//                        $("seq1").click(function() {             	      
-//                          	$("#boardmodal").modal('show');                   	   
-//                        });
-           
-					</script>
+                       $("seq1").click(function() {             	      
+                         	$("#boardmodal").modal('show');                   	   
+                       });
+                        
+						
+
+				</script>
 				
 			
 				</div>
@@ -803,7 +683,7 @@ $(document).ready(function() {
 		   
 		    <div class="modal-dialog" role="document">
 		    
-		    <div class="modal-content">
+		    	<div class="modal-content">
 <!--   				 &nbsp;&nbsp; <i class="fas fa-angle-double-left text-black" id="hidden" style="font-size:40px;"></i> -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -818,13 +698,10 @@ $(document).ready(function() {
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				 -->
 <!--   				 <i class="fas fa-angle-double-right text-black"  style="font-size:40px;"></i> -->
 
-
-				<button id="goNext" class="btn btn-outline-primary">&#62;</button>
-				<button id="goPrev" class="btn btn-outline-primary">&#60;</button>
- 			</div>
-		
-		  	 
-		  	 
+				<a href="#" class="btn btn-outline-primary" id="seq1"> < </a>
+				<a href="#" class="btn btn-outline-primary"> < </a>
+					
+ 				 </div>
 		  	  <br><br>
 		      <div class="modal-content">
 		    
@@ -839,9 +716,7 @@ $(document).ready(function() {
 <!-- 		        	<div class="bg-white" id="seq"></div> -->
 <!-- 		        	<div class="bg-white" id="seq1"></div> -->
 		        	
-		    		 <div class="hidden" id="hidden"></div>
-		    		 <div class="hidden" id="prev"></div>
-		    		 <div class="hidden" id="next"></div>
+		    		 <div class="hidden" id="hidden"></div>	
 		        	
 		        	  	
 		        	<div class="bg-white" id="a">
@@ -858,7 +733,7 @@ $(document).ready(function() {
 		        	  </div>
 		        	  	
 		        	  	
-				<div id="board" class="bg-white">
+					<div id="board" class="bg-white">
 			        	<br>
 			          <div class="profile-image"> 	 
 			              <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
@@ -867,14 +742,12 @@ $(document).ready(function() {
 				      	  			 	              
 					   <br>
 					   <br>
-		       		
-		     
-		       		<input id="seq" type=hidden name=board_seq>
-		            <div id="articlecontents" class="mt-2 mx-3 pb-2"> 
-                    <div class="bg-black" id="modalcontents"></div>					
+		       
+		            <div id="contcenter" class="mt-2 mx-3 pb-2"> 
+						  <div class="bg-black" id="modalcontents" ></div>
 					</div>
-
-              	</div>   
+				
+              </div>   
           
 	
               <div class="py-2 bg-white">     	
@@ -883,18 +756,16 @@ $(document).ready(function() {
                    
 		   <c:choose>
 			<c:when test="${result[0].id == sessionScope.loginId}">
-              
+                       
 		          <div class="btn-group bg-white">
 		            <button class="btn dropdown-toggle bg-white" data-toggle="dropdown"> </button>
 		            <div class="dropdown-menu">
 		              <a class="dropdown-item" href="#">보관</a>
-		              <div class="dropdown-divider" id="modifydiv"></div>
-		              <a class="dropdown-item" id="modify" href="#">수정</a>
 		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
-		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
-		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item"  name=modify id="modify" href="#">수정</a>
+		                <div class="dropdown-divider"></div>
+		             <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
+		                <div class="dropdown-divider"></div>
 		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
 		            </div>
 		          </div>
@@ -905,33 +776,10 @@ $(document).ready(function() {
 					location.href = "boardDelete.bo?seq="+seq;
 				}	
 				
-				$("#modify").click(function(){
-					$("#modalcontents").attr("contentEditable","true");
-					$("#modalcontents").focus();
-
-				})
-				
-				$("#modifysubmitbtn").click(function(){
-					var board_seq = $("#seq").val();
-					var contents = $("#modalcontents").html();
-					
-					$.ajax({
-						type:"POST",
-						url:"boardModify.bo",
-						data: {board_seq:board_seq, contents:contents},
-						success: function(data)
-						{
-							if(data == 1){
-								$("#modalcontents").val(contents);
-								$("#modalcontents").attr("contentEditable","false");
-								
-							}else {
-								alert("다시 시도해주세요");
-							}
-							
-						}
-					});
-				})
+				document.getElementById("modify").onclick = function() {
+					var seq = document.getElementById("hidden").value;
+					location.href = "boardModify.bo?seq="+seq;
+				}	
 			</script>
 	         
 	         </c:when>
@@ -939,7 +787,9 @@ $(document).ready(function() {
 					<div class="btn-group bg-white">
 		            <button class="btn dropdown-toggle bg-white" data-toggle="dropdown"> </button>
 		            <div class="dropdown-menu">
-		              <a class="dropdown-item" href="#">보관</a>	              
+		              <a class="dropdown-item" href="#">보관</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">수정</a>
 		              <div class="dropdown-divider"></div>
 		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a> 
 		            </div>
@@ -952,17 +802,12 @@ $(document).ready(function() {
 								
 
               		</div>
-		         </div>	
-		              
+		         </div>	      
 		      </div>
 		    </div>
 		  </div>
 		
-			   
 		
-		
-		
-					      
 
 </body>
 
