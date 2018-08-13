@@ -16,9 +16,9 @@
 <title>SoicalWired</title>
 
 <script>
-	if(${sessionScope.loginId != null}) {
-		$(location).attr("href", "feed.bo");
-	}
+   if(${sessionScope.loginId != null}) {
+      $(location).attr("href", "feed.bo");
+   }
 </script>
 
 </head>
@@ -28,10 +28,10 @@
 <div id="formWrapper">
 
 <div id="form">
-		<!-- <div class="logo"> -->
-		<!-- <h1 class="text-center head text-light display-4">SocialWired</h1> -->
-		<!-- <p class="text-light">We ♥ new friends</p> -->
-		<!-- </div> -->
+      <!-- <div class="logo"> -->
+      <!-- <h1 class="text-center head text-light display-4">SocialWired</h1> -->
+      <!-- <p class="text-light">We ♥ new friends</p> -->
+      <!-- </div> -->
 
 
 

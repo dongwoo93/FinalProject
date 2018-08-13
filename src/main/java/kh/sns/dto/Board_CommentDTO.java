@@ -10,7 +10,7 @@ public class Board_CommentDTO {
 	
 	public Board_CommentDTO() {
 		
-		
+		  
 	}
 
 	public Board_CommentDTO(int comment_seq, int board_seq, String id, String comment_contents, String writedate) {

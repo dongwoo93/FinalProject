@@ -14,7 +14,7 @@
 	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
 	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -191,6 +191,7 @@ body {
 
 #board {
 	width: 62%;
+	border: 0.3px solid lightgray; 
 }
 
 #side {
@@ -256,7 +257,25 @@ body {
 	width: 60%;
 	height: 20px;
 }
+
+  
+.comment-contents li {
+		display: inline-block;
+  
+		}  
+  
+#li1 {
+width:15%;
 }
+#li2  {        
+width:68%;
+}
+
+#li3 {
+width:15%;  
+}
+		
+
 </style>
 
 <script>
@@ -334,6 +353,9 @@ function unmarkit(e) {
 			$(e).prev().show();
 			$(e).hide();
 			
+			
+			
+			
 		},
 		error : function() {
 			console.log("에러 발생!");
@@ -401,20 +423,23 @@ $(document).ready(function() {
             </div>
           </nav>
       </div>
-    <div id="allwrapper">
+      
+      
+      
+    <div id="allwrapper">  
       <div class=""id="centerwrapper">
           <div class="container" id="contents">
-        <div id="board">
+        <div id="board" >
         
         <script>var num = 1;</script>
         
         <c:forEach var="tmp" items="${result}">
-          <div class="py-2 my-5 " id="peed">   
+        
+          <div class="py-2 my-5 " id="feed">   
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
               <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
-             
             </div>    
             <div class="mt-2" id="boardimg">
       
@@ -424,6 +449,8 @@ $(document).ready(function() {
       $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
       </script> 
              </div>
+             
+             
             <div id="cont">
               <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                 <div class="container">
@@ -443,14 +470,12 @@ $(document).ready(function() {
                     <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
                   </a> 
                 </div>
-              </nav>  
+              </nav> 
+              
+               
               <div id="contcenter" class="mt-2 mx-3 pb-2"> 
-<%--             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id} --%>
 				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
-		
-		    		    	  	   
-				
-			
+
 				<div class="hidden" id="hidden${tmp.board_seq}">
 				
 	 		   	<script>
@@ -486,11 +511,12 @@ $(document).ready(function() {
 			 */
 
 				 </script>
+				 
+		 
+				 
+				<p id="myContents${tmp.board_seq}">${tmp.contents}
 
-
-										<p id="myContents${tmp.board_seq}">${tmp.contents}
-
-											<script>    
+					<script>    
 					var plus = "";    
 					var txt = "${tmp.contents}";       
 			    	  if(txt.length > 48) {                
@@ -506,99 +532,117 @@ $(document).ready(function() {
 				   	});
 				   	
 					</script>
-									</div>
-
-
-
-
-									<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+							</div>
+							
+						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
+						
+						<!-- 댓글자리 -->
+						  
+						<c:forEach var="commenttmp" items="${commentresult}">
+						<c:choose>      
+						<c:when test="${commenttmp.key == tmp.board_seq}">  
+						<c:forEach var="comment" items="${commenttmp.value}">
+					 
+					
+						
+						
+							<ul id="ul${comment.comment_seq}">     
+							<li id='li1'><a href="#">${comment.id}</a></li> 
+							<li id='li2'>${comment.comment_contents}</li> 
+							
+							<c:choose>  
+							<c:when test ="${sessionScope.loginId == comment.id}">  
+							<li id='li3'><a id='commentdel${comment.comment_seq}'>x</a> </li>    
+							</c:when>
+							</c:choose>
+							</ul>
+					
+				       
+				      
+				      				<script>  
+						    
+						$("#commentdel${comment.comment_seq}").click(function() {  
+							$.ajax({
+				 	 	           type: "POST",  
+				 	 	           url: "commentdel.co", 	
+				 	 	           data: {comment_seq:${comment.comment_seq}}  
+				 	 	             
+			        		   }) //ajax 
+			        		   $("#ul${comment.comment_seq}").remove(); 
+							
+						})    
+		
+						
+						</script>
+				      
+						</c:forEach>
+							</c:when>  
+								</c:choose>
+								
+								
+		
+						</c:forEach>
+					
+					
+						
+						</div>
 
 
 								</div>
 								<!--               -->
+								
+								
 								<div class="py-2">
+  
 
-									<form if='commentform' onsubmit="return false">    
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
-									</form> 
+
 
 								</div>
-								<script>
 								
-							  	
- 		$('#comment${tmp.board_seq}').keypress(function(event){
-		        var keycode = (event.keyCode ? event.keyCode : event.which);
-		        if(keycode == '13'){
-		        	
-		        	var text = $("#comment${tmp.board_seq}").val();
-		        	if(text == ""){
-		        		alert("댓글을 입력해주세요");
-		        	}
-		        	else {
-		        		
-		        		var params = $("#commentform").formParams();
-		        		
-		        		  $.ajax({
-		   	 	           type: "POST",
-		   	 	           url: "comment.co",
-		   	 	           data: params, 
-		   	 	           success: function(data)
-		   	 	           { alert("success!" + date);
-// 		   		 	               if(data == 1) {
-// 		   		 	            	   $(location).attr("href", "feed.bo");
-// 		   		 	               }else {
-// 		   		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-// 		   		 	               }
-		   	 	           }
-		   	 	         }); //ajax
-		        	}
-		        	
-		        }
-		    });   
-		
-			
-	/* 		function commentSubmit() {  
-	        	
-	            $.ajax({
-	 	           type: "POST",
-	 	           url: "comment.co",
-	 	           data: commentParams, 
-	 	           success: function(data)
-	 	           { alert("success!" + date);
-		 	               if(data == 1) {
-		 	            	   $(location).attr("href", "feed.bo");
-		 	               }else {
-		 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-		 	               }
-	 	           }
-	 	         }); //ajax
-	        	}  */
-	        	
-			</script>
-							</div>
-						</div>
+								
+								<script>
+						
+						 		$('#comment${tmp.board_seq}').keypress(function(event){
+								        var keycode = (event.keyCode ? event.keyCode : event.which);
+								        if(keycode == '13'){
+								        	
+								        	var text = $("#comment${tmp.board_seq}").val();
+								        	if(text == ""){
+								        		alert("댓글을 입력해주세요");
+								        	}
+								        	else {  
+								         		
+								        		$.ajax({
+									 	 	           type: "POST",  
+									 	 	           url: "comment.co", 	
+									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text} 
+								        	
+								        		   }) //ajax 
+								        		 $("#comment${tmp.board_seq}").val("");       
+							        			$("#comment-contents${tmp.board_seq}").prepend("<ul ><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a href='#'>x</a> </li></ul> ")
+								        		
+								        	}	 
+								        }
+								    });  
+						 		</script>
+							</div> <!--cont  -->
+						</div> <!-- feed -->
 					</c:forEach>
-				</div>
+				</div> <!-- board -->
 	
-	
-	
-	
-				<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>	
-	
-			
-              </div>   
-           
-              <div class="py-2">     	
-                &nbsp;&nbsp;&nbsp;<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
-                <i class="fas fa-ellipsis-h btn mr-3"></i>      
-              </div>
-            </div>
-          </div>
-        
+
+        </div>  <!-- container -->
+        <div class="col-md-6 align-self-center" id="side">
+          <br> 
+        </div>
+      </div>  <!-- centerwrapper -->
+      </div>  <!--  allwrapper-->
     
-      
+  
 
 		<div class="pt-4 pb-3  " id="footer">
 			<div class="container">

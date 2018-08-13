@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	AOS.init();
+   AOS.init();
    var formInputs = $('input[type="id"],input[type="password"]');
    formInputs.focus(function() {
        $(this).parent().children('p.formLabel').addClass('formTop');
@@ -20,10 +20,10 @@ $(document).ready(function(){
    });
    
 
-		
-		
-		
-	
+      
+      
+      
+   
    $("#loginform").submit(function(e) {
 
 
@@ -45,6 +45,6 @@ $(document).ready(function(){
 	           }
 	         });
 
-	    e.preventDefault(); // avoid to execute the actual submit of the form.
-	});
+       e.preventDefault(); // avoid to execute the actual submit of the form.
+   });
 });
