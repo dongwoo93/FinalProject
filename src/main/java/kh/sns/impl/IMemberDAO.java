@@ -43,11 +43,17 @@ public class IMemberDAO implements MemberDAO {
 
 
 	@Override
-	public int signUp(MemberDTO dto) {
+	public int signUp(MemberDTO dto)  throws Exception {
 		// TODO Auto-generated method stub
 		String sql = "insert into member values(?,?,?,?,?,?,?) ";
 		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
 				
+	}
+	
+	@Override
+	public int insertProfile(String id) throws Exception {
+		String sql = "insert into profile values(?,'','',default,default,default,default,default,default)";
+		return template.update(sql,id);
 	}
 
 
