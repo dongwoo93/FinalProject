@@ -18,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import kh.sns.beans.SendEmail;
+
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
@@ -29,9 +31,11 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	
+	
 	@Autowired
 	private ProfileService profileService;
-
+	
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
 		return "redirect:main.jsp";
@@ -177,9 +181,31 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("editProfileResult", result);
-		mav.setViewName("redirect:profile.member");	// 리다이렉트? 포워드?
+		mav.setViewName("redirect:profile.member?targetTab=profileTab");	// 리다이렉트? 포워드?
 		return mav;		
 	}
+	
+	
+	@RequestMapping("/findPw.do")
+	public ModelAndView findPw(String cId, String cEmail, HttpServletResponse response) throws Exception {
+		
+		
+		System.out.println(cId);
+		System.out.println(cEmail);
+		int result =this.memberService.findPw(cId,cEmail);
+		System.out.println(result);
+		if(result==1) {
+			
+			String certification = memberService.changePass(cId);
+			SendEmail send = new SendEmail(cEmail,certification);
+			send.sendEmail();
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result", result);
+		mav.setViewName("findPass.jsp");
+		return mav;		
+	}
+	
 	
 	@RequestMapping("/isEmailDuplicated.ajax")
 	public void checkEmailDuplicated(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -200,8 +226,78 @@ public class MemberController {
 		
 		xout.println(isEmailDuplicated);
 	}
-		
+	
+	@RequestMapping("/findId.do")
+	public ModelAndView findId(String name, String email, HttpServletResponse response) throws Exception {
 
+		List<MemberDTO> findId =this.memberService.findId(name, email);
+		
+		
+		int result = 0;
+	
+		
+		
+		
+		if(findId.size() == 1) {
+			System.out.println("id:"+findId.get(0).getId());
+			SendEmail sendemail = new SendEmail(1,findId.get(0).getId(),email);
+			sendemail.sendEmail();
+			result = 2;
+		}else {
+			result = 0;
+		}
+		
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result", result);
+
+		mav.setViewName("findPass.jsp");
+		return mav;	
+		
+		
+	}
+	
+	
+	
+	/*1. jsp 이름 폰번호입력
+	2. 인증번호 받기  버튼 - 컨트롤러 - //
+	3. 이름 폰번호가 같은 계정정보인지 
+	4. 일치하면 , 인증번호 보내기 , //  
+	
+	5. 인증번호 입력창 생성
+	6. 인증번호 입력. - 컨트롤러
+		
+		(쿼리에 이메일을뽑)이메일이잖아*/
+
+
+	
+	@RequestMapping("/passwordChangeProc.member")
+	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String id = request.getSession().getAttribute("loginId").toString();
+		String beforePassword = request.getParameter("beforePassword");
+		
+		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
+		if(isBeforePasswordCorrect) {
+			member.setId(request.getSession().getAttribute("loginId").toString());
+			System.out.println(member);
+			
+			int result = memberService.updateOneMemberPassword(member);
+			
+			mav.addObject("pwdChangeResult", result);
+		} else {
+			// 이전 패스워드 입력이 틀렸을 때
+			mav.addObject("pwdChangeResult", -1);
+			System.out.println("이전 패스워드 입력이 틀림");
+		}
+		mav.setViewName("redirect:profile.member?targetTab=passwordTab");
+		
+		return mav;		
+	}
+	
 	@RequestMapping("/searchfriend.do")
 	public void searchFriend(HttpServletResponse response, @RequestParam("searchtext") String searchtext, HttpSession session) {
 		response.setCharacterEncoding("UTF-8");
@@ -231,32 +327,5 @@ public class MemberController {
 		}catch(Exception e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	
-	@RequestMapping("/passwordChangeProc.member")
-	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
-		
-		ModelAndView mav = new ModelAndView();
-		
-		String id = request.getSession().getAttribute("loginId").toString();
-		String beforePassword = request.getParameter("beforePassword");
-		
-		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
-		if(isBeforePasswordCorrect) {
-			member.setId(request.getSession().getAttribute("loginId").toString());
-			System.out.println(member);
-			
-			int result = memberService.updateOneMemberPassword(member);
-			
-			mav.addObject("pwdChangeResult", result);
-		} else {
-			// 이전 패스워드 입력이 틀렸을 때
-			mav.addObject("pwdChangeResult", -1);
-			System.out.println("이전 패스워드 입력이 틀림");
-		}
-		mav.setViewName("redirect:profile.member");
-		
-		return mav;		
 	}
 }

@@ -8,18 +8,19 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link rel="stylesheet" type="text/css" href="resources/css/main.css">
+<script src="resources/js/main.js"></script>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
-<script src="resources/js/main.js"></script>
+
+
 <script>
-if(${sessionScope.loginId != null}) {
-	$(location).attr("href", "feed.bo");
-}
+	if(${sessionScope.loginId != null}) {
+		$(location).attr("href", "feed.bo");
+	}
 </script>
-
-
 
 </head>
 <body>
@@ -42,7 +43,7 @@ if(${sessionScope.loginId != null}) {
 	
 		<form id="loginform" method="post">
 	      <div class="form-item">
-	         <p class="formLabel">id</p>
+	         <p class="formLabel">ID</p>
 	         <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
 	      </div>
 	      <div class="form-item">
@@ -55,7 +56,7 @@ if(${sessionScope.loginId != null}) {
 	      </div>
 	      
 	      <div class="form-item">
-	      <p class=""><a href="" ><small>Forgot Password ?</small></a></p>   
+	      <p class=""><a href="findPass.jsp" ><small>Forgot Password ?</small></a></p>   
 	      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
 	      <input id="submit" type="submit" class="login pull-right" value="Log In">
 	      <div class="clear-fix"></div>
@@ -65,5 +66,4 @@ if(${sessionScope.loginId != null}) {
 	</div>
 
 </body>
-<link rel="stylesheet" type="text/css" href="resources/css/main.css">
 </html>
