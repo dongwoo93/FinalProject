@@ -14,6 +14,7 @@ public interface BoardDAO {
 	public List<BoardDTO> getFeed(String id) throws Exception ;
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
+	public int modifyBoard(BoardDTO dto) throws Exception;
 	/* 태그 넣는 기능 */
 	public int[] insertHashTags(BoardDTO article) throws Exception;
 

@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
-import kh.sns.dto.Board_TagsDTO;
-import kh.sns.interfaces.BoardDAO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 
 @Service
@@ -34,18 +33,14 @@ public class IBoardService implements BoardService {
 	
 		return this.dao.deleteBoard(seq);
 	}
-
-	//search
+	
 	@Override
-	public List<BoardDTO> search(String seq) {
-		return this.dao.search(seq);
+	public int modifyBoard(BoardDTO dto) throws Exception {
 		
-		
+		return this.dao.modifyBoard(dto);
 	}
-	
-	
-	
-		
+
+
 	
 	@Override	
 	// @Transactional("txManager")
@@ -112,6 +107,11 @@ public class IBoardService implements BoardService {
 		return dao.getBoardFromFollowingList(id);
 	}
 
+	@Override
+	public List<BoardDTO> search(String keyword) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.search(keyword);
+	}
 	
 	
 }

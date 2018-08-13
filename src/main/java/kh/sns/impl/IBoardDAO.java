@@ -46,6 +46,26 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+		String sql = "select * from board where board_seq=?";
+		
+		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		}).get(0);
+	}
+	
 
 		@Override
 		public int deleteBoard(int seq) {
@@ -53,6 +73,15 @@ public class IBoardDAO implements BoardDAO  {
 			return template.update(sql, seq);
 		}
 	
+		
+
+		@Override
+		public int modifyBoard(BoardDTO dto) throws Exception {
+			String sql = "update board set contents = ? where board_seq = ?";  
+			return template.update(sql, dto.getContents(), dto.getBoard_seq());
+		}
+
+		
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
@@ -218,25 +247,7 @@ public class IBoardDAO implements BoardDAO  {
 	}
 	
 
-	@Override
-	public BoardDTO getBoardModal(String seq) throws Exception {
-		String sql = "select * from board where board_seq=?";
-		
-		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
 
-			@Override
-			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				BoardDTO tmp = new BoardDTO();
-				tmp.setBoard_seq(rs.getInt(1));
-				tmp.setContents(rs.getString(2));
-				tmp.setId(rs.getString(3));
-				tmp.setWritedate(rs.getString(4));
-				tmp.setRead_count(rs.getString(5));
-				tmp.setIs_allow_comments(rs.getString(6));
-				return tmp;
-			}
-		}).get(0);
-	}
 
 
 }
