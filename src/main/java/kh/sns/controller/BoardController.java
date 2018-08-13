@@ -36,8 +36,7 @@ public class BoardController {
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
-		
-		
+			
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		String id = (String) seesion.getAttribute("loginId");
 		try {
@@ -61,6 +60,14 @@ public class BoardController {
 		return mav;
 	}
 	
+	@RequestMapping("/boardView.bo")
+	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		BoardDTO result = boardService.getBoardModal(seq);
+		new Gson().toJson(result,response.getWriter());
+	}
+	
 
 	@RequestMapping("/boardDelete.bo")
 	public ModelAndView deleteBoard(HttpSession session, int seq) throws Exception {
@@ -71,6 +78,17 @@ public class BoardController {
 		return mav;
 		
 	}
+	
+	
+	@RequestMapping("/boardModify.bo")
+	public void modifyBoard(HttpServletResponse response, BoardDTO dto) throws Exception {
+		int result = boardService.modifyBoard(dto);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+		response.getWriter().close();
+	}
+	
 	
 	//search
 	@RequestMapping("/search.bo")
@@ -206,13 +224,6 @@ public class BoardController {
 		return mav;
 	}
 	
-	@RequestMapping("/boardView.bo")
-	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		BoardDTO result = boardService.getBoardModal(seq);
-		new Gson().toJson(result,response.getWriter());
-	}
 	
 	@RequestMapping("/like.bo")
 	public void doLike(HttpServletResponse response, Board_LikeDTO dto, String likecount) throws Exception{
