@@ -55,6 +55,7 @@
 	      </div>
 	      
 	      <div class="form-item">
+	      <p class=""><a href="findPass.jsp" ><small>Forgot Password ?</small></a></p>   
 	      <p class="pull-left"><a href="join.do"><small>Register</small></a></p>
 	      <input type="submit" class="login pull-right" value="Log In">
 	      <div class="clear-fix"></div>
