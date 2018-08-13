@@ -404,7 +404,10 @@ $(document).ready(function() {
             </div>
           </nav>
       </div>
-    <div id="allwrapper">
+      
+      
+      
+    <div id="allwrapper">  
       <div class=""id="centerwrapper">
           <div class="container" id="contents">
         <div id="board">
@@ -412,12 +415,12 @@ $(document).ready(function() {
         <script>var num = 1;</script>
         
         <c:forEach var="tmp" items="${result}">
-          <div class="py-2 my-5 " id="peed">   
+        
+          <div class="py-2 my-5 " id="feed">   
             <div class="profile-image"> 	 
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
               <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
-             
             </div>    
             <div class="mt-2" id="boardimg">
       
@@ -427,6 +430,8 @@ $(document).ready(function() {
       $("#boardimg:last-child").after("<img src='"+img+"' width='100%' class='boardimg'> ");
       </script> 
              </div>
+             
+             
             <div id="cont">
               <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                 <div class="container">
@@ -446,14 +451,12 @@ $(document).ready(function() {
                     <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
                   </a> 
                 </div>
-              </nav>  
+              </nav> 
+              
+               
               <div id="contcenter" class="mt-2 mx-3 pb-2"> 
-<%--             	<h5 class="mt-1 ml-1 idtxt" id="con">${tmp.id} --%>
 				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
-		
-		    		    	  	   
-				
-			
+
 				<div class="hidden" id="hidden${tmp.board_seq}">
 				
 	 		   	<script>
@@ -509,6 +512,7 @@ $(document).ready(function() {
 				   	
 					</script>
 							</div>
+							
 						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
 						<div>
 						
@@ -519,6 +523,8 @@ $(document).ready(function() {
 
 								</div>
 								<!--               -->
+								
+								
 								<div class="py-2">
   
 
@@ -528,84 +534,42 @@ $(document).ready(function() {
 
 
 								</div>
-								<script>
 								
-							  	
- 		$('#comment${tmp.board_seq}').keypress(function(event){
-		        var keycode = (event.keyCode ? event.keyCode : event.which);
-		        if(keycode == '13'){
-		        	
-		        	var text = $("#comment${tmp.board_seq}").val();
-		        	if(text == ""){
-		        		alert("댓글을 입력해주세요");
-		        	}
-		        	else {  
-		        		
-		        		$.ajax({
-			 	 	           type: "POST",  
-			 	 	           url: "comment.co", 	
-			 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text}  
-		        		   }); //ajax 
-		        		 $("#comment${tmp.board_seq}").val("");
-			 	 	         
-		        	}
-		        	
-		        }
-		    });   
-		
-			
-// 	 		function commentSubmit() {  
-// 	 			alert("잉");    
-
-// 	 			var cont =  $("#comment_contents${tmp.board_seq}").val();
-// 	 			alert(cont);    
-// 	 			$.ajax({
-// 	 	           type: "POST",  
-// 	 	           url: "comment.co", 	
-// 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : cont},
-// 	 	           success: function(data)
-// 	 	           {  
-// 	 	        	alert("휴.." + data);        
-	 	        	 
-// 	 	        	(function(e){
-// 	 	                  return function(){
-// 	 	                     $("#comment"+e).val("");
-// 	 	                   }
-// 	 	               })(data)
-	        
-// 	 	           }
-// 	 	         }); //ajax
-// 	        	} 
-	 		
-	 	
-	        	
-			</script>
-							</div>
-						</div>
+								
+								<script>
+						
+						 		$('#comment${tmp.board_seq}').keypress(function(event){
+								        var keycode = (event.keyCode ? event.keyCode : event.which);
+								        if(keycode == '13'){
+								        	
+								        	var text = $("#comment${tmp.board_seq}").val();
+								        	if(text == ""){
+								        		alert("댓글을 입력해주세요");
+								        	}
+								        	else {  
+								        		
+								        		$.ajax({
+									 	 	           type: "POST",  
+									 	 	           url: "comment.co", 	
+									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text}  
+								        		   }) //ajax 
+								        		 $("#comment${tmp.board_seq}").val("");   
+								        	}	
+								        }
+								    });  
+						 		</script>
+							</div> <!--cont  -->
+						</div> <!-- feed -->
 					</c:forEach>
-				</div>
+				</div> <!-- board -->
 	
-	
-	
-	
-				<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>	
-	
-			
-              </div>   
-           
-              <div class="py-2">     	
-                &nbsp;&nbsp;&nbsp;<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
-                <i class="fas fa-ellipsis-h btn mr-3"></i>      
-              </div>
-            </div>
-          </div>
-          </c:forEach>
-        </div>
+
+        </div>  <!-- container -->
         <div class="col-md-6 align-self-center" id="side">
           <br> 
         </div>
-      </div>
-      </div>
+      </div>  <!-- centerwrapper -->
+      </div>  <!--  allwrapper-->
     
       <div class="pt-4 pb-3  " id="footer">
            <div class="container">
