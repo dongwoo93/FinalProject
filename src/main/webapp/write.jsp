@@ -101,6 +101,11 @@
         #centerwrapper {
             height: 100%;
         }
+        
+        #editorDiv{
+        	border: 1px solid #eff1f4;
+        	height: 300px;
+        }
 
         /*    전체적인틀 CSS 끝*/
 
@@ -302,6 +307,94 @@
                 }
             });
             
+            <!-- -->
+            function getCaretPosition(editableDiv) {
+            	  var caretPos = 0,
+            	    sel, range;
+            	  if (window.getSelection) {
+            	    sel = window.getSelection();
+            	    if (sel.rangeCount) {
+            	      range = sel.getRangeAt(0);
+            	      if (range.commonAncestorContainer.parentNode == editableDiv) {
+            	        caretPos = range.endOffset;
+            	      }
+            	    }
+            	  } else if (document.selection && document.selection.createRange) {
+            	    range = document.selection.createRange();
+            	    if (range.parentElement() == editableDiv) {
+            	      var tempEl = document.createElement("span");
+            	      editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            	      var tempRange = range.duplicate();
+            	      tempRange.moveToElementText(tempEl);
+            	      tempRange.setEndPoint("EndToEnd", range);
+            	      caretPos = tempRange.text.length;
+            	    }
+            	  }
+            	  return caretPos;
+            	}
+            
+            var update = function() {
+                $('#caretposition').html(getCaretPosition(this));
+              };
+              
+            $('#editorDiv').on("mousedown mouseup keydown keyup", update);
+            
+            var map = {16: false, 32: false};
+            $("#editorDiv").keydown(function(e){
+                if (e.keyCode === 32) {
+                       map[e.keyCode] = true;
+                       if(map[16]) {
+                    	  
+                       }
+                       
+                       var regex = /(#[^#\s,;<>]+)/gi;      
+                       if(regex){
+                    	   
+                    	   
+                        var newtxt = $('#editorDiv').text().replace(regex, "<span class=text-danger>" + "$1" + "</span>");                       	
+                      	 
+                     	// console.log($('#editorDiv').text().length);
+                     	console.log(newtxt)
+                     	newtxt += "<kz></kz>"
+                      	$('#editorDiv').html(newtxt)
+                         	
+                         	var el = document.getElementById("editorDiv");
+                         	
+                         	console.log("childNodes: " + el.childNodes.length);
+                         	
+                         	var range = document.createRange();
+                         	var sel = window.getSelection();
+                         	range.setStart(el.lastChild, 0);
+                         	range.collapse(false);
+                         	sel.removeAllRanges();
+                         	sel.addRange(range);
+                         	
+                         	$('#editorDiv').focusout();
+                         	$('#editorDiv').focus();
+                       
+                      
+                       console.log('keydown');
+                       
+                   		}
+                }
+               }).keyup(function(e){
+                  if(e.keyCode === 32){
+                     map[e.keyCode] = false;
+                    
+                    }
+                     
+                 
+                  
+                  
+                  console.log('keyup');
+               });
+            
+            $('#submitbutton').click(function(){
+            	alert('전송')
+            	$('#contentsHidden').val($('#editorDiv').text())
+            	$('#frm').submit();
+            });
+            
             $("#searchfriend").keyup(function(){
             	 var searchtext = $(this).val();
             	 $("#friendlist *").remove();
@@ -444,7 +537,7 @@
         </nav>
     </div>
     <div id="allwrapper">
-    <form action='writeProc.bo' method=post enctype="multipart/form-data"> <!-- form 시작 -->
+    <form id=frm action='writeProc.bo' method=post enctype="multipart/form-data"> <!-- form 시작 -->
         <div id="centerwrapper" class="pt-3">
             <div class="container" id="contents">
                 <div class="row">
@@ -534,7 +627,9 @@
                     <div class="col-md-5" id="writeform">
                         <div class="card">
                             <div class="card-body">
-                                <textarea id="writetextarea" class="form-control p-0" placeholder="Contents..." name=contents></textarea>
+                                <!-- <textarea id="writetextarea" class="form-control p-0" placeholder="Contents..." name=contents></textarea> -->
+                                <div id=editorDiv contenteditable=true><!--  --></div>
+                                <div id="caretposition">0</div>
                             </div>
                             <ul class="list-group list-group-flush">
 		                        <li class="list-group-item"><i class="fas fa-map-marker-alt tagicon mr-3"></i><a onclick="placemodal()" style="cursor: pointer;" id="place">위치 태그하기</a></li>
@@ -542,8 +637,9 @@
 		                      </ul>
                         </div>
                         <div class="py-3">
-                            <button type="submit" id="submitbutton"><i class="fas fa-arrow-right fa-2x"></i></button>
+                            <button type="button" id="submitbutton"><i class="fas fa-arrow-right fa-2x"></i></button>
                         </div>
+                        <input type=hidden name=contents id=contentsHidden>
                     </div>
                 </div>
             </div>
