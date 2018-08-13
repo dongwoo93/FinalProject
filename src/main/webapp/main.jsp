@@ -40,7 +40,7 @@
 		<p class="text-light">We ♥ new friends</p>
 		</div>
 	
-		<form id="loginform" method="post">
+		<form action="login.do" method="post">
 	      <div class="form-item">
 	         <p class="formLabel">ID</p>
 	         <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
