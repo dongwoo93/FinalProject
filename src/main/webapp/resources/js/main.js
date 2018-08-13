@@ -28,6 +28,7 @@ $(document).ready(function(){
 
 
 	    var form = $(this);
+	    $("#preloader").show();
 
 	    $.ajax({
 	           type: "POST",
@@ -39,6 +40,7 @@ $(document).ready(function(){
 	            	   $(location).attr("href", "feed.bo");
 	               }else {
 	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
+	            	   $("#preloader").hide();
 	               }
 	           }
 	         });

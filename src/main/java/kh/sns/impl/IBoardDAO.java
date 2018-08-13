@@ -56,8 +56,9 @@ public class IBoardDAO implements BoardDAO  {
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%'))";
-		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
+		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%')) or "
+				+ "(board_seq in (select board_seq from board_location where location_name like '%'||?||'%')) order by board_seq desc";
+		return template.query(sql, new Object[] {keyword, keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -76,7 +77,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<Board_MediaDTO> search2(int seq) throws Exception {
-		String sql = "select * from board_media where board_seq=?";
+		String sql = "select * from board_media where board_seq=? order by media_seq";
 		return template.query(sql, new Object[] {seq}, new RowMapper<Board_MediaDTO>() {
 
 			@Override

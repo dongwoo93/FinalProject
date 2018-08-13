@@ -191,7 +191,7 @@
 				             	 <a>${result.id}</a>
 				                 <a href="#">팔로우</a>
 			                </h4>
-			                <c:forEach var="media" items="${result2[status.index]}">
+			                <c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 				               <a href="#">  <!-- ${system_file_name}  -->
 				                 <img class="card-img-top" src='AttachedMedia/${media.system_file_name}' alt="Card image cap"></a>
 				                 </c:forEach>			                 	

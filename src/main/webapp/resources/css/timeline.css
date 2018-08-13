@@ -1,0 +1,132 @@
+#contents {
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      display: -webkit-box;
+    
+    }
+
+    #centerwrapper {
+      height: 100%;
+     
+    }
+    
+        /*컨테이너*/
+
+    .profile-image {
+      width: calc(33.333% - 1rem);
+      display: flex;
+      margin-right: 3rem;
+      align-items: center;
+      margin-right: 3rem;
+    }
+
+    .profile-image img {
+      border-radius: 50%;
+    }
+
+    .cock {
+      float: left;
+    }
+
+    .bookmark {
+      float: left;
+    }
+
+    .icon {
+      font-size:20px;  
+      color: black;
+      border:0.5px;     
+       
+    }
+
+    .dot {
+      font-size: 7px;
+      color: lightgray;
+    }
+
+    .dot1 {
+      font-size: 10px;
+      color: #4FC3F7;
+    }
+
+   
+
+    #comment {
+      width: 85%;  
+      height: 5%;
+      border: none;
+      font-size: 13px;
+      padding-left: 2%;
+      margin-right: 2%;
+      font-family: "Open Sans", Arial, sans-serif;
+      
+    }
+
+    #contcenter {
+      border-bottom: 0.3px solid lightgray;
+    }
+
+    .btn {
+      font-size: 15px;
+    }
+
+    #peed {
+      border: 0.3px solid lightgray;
+    }
+    
+    #board {
+      width: 62%;
+    }
+
+    #side {  
+       
+      width: 38%;
+    }
+
+    #row {
+      display: inline-block
+    }
+
+    .col {
+      border: 1px solid black;
+    }  
+    
+    .idtxt {   
+    	font-weight:600;      
+    }
+      
+    .boardimg {  
+    	max-height:600px;
+    }
+    
+    #id{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 11px;
+    }
+    
+    #con{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 14px;
+    }
+    
+    #myContents{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 13px;
+
+    }
+    
+    #myComment{
+    	font-family: "Open Sans", Arial, sans-serif;
+    	font-size: 11px;
+    	
+    }
+    
+    .hidden p {
+ 
+    overflow: hidden;    
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    width:60%;
+    height: 20px;
+    }
