@@ -40,8 +40,8 @@ public class IProfileDAO implements ProfileDAO {
 	
 	@Override
 	public int updateOneAdvancedProfile(ProfileDTO profile) throws Exception {
-		String sql = "update profile set website = ?, introduce = ?";
-		return template.update(sql, profile.getWebsite(), profile.getIntroduce());
+		String sql = "update profile set website = ?, introduce = ? where id = ?";
+		return template.update(sql, profile.getWebsite(), profile.getIntroduce(), profile.getId());
 	}
 	
 	@Override

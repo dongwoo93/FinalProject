@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +25,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_LikeDTO;
+import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -32,22 +37,41 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	@Autowired
+	private Board_CommentService board_commentService;
+	@Autowired
 	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
-		
-		
+
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		String id = (String) seesion.getAttribute("loginId");
+		List<Board_CommentDTO> list1 = new ArrayList<>();
+		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+		String id = (String) seesion.getAttribute("loginId"); 
 		try {
 			list = boardService.getFeed(id);
+			list1 = board_commentService.getFeedComment(id);
+			Set<Integer> seqlist = new HashSet<>();
+		for(Board_CommentDTO dto : list1) {	
+			seqlist.add(dto.getBoard_seq());
+			commentlist.put(dto.getBoard_seq(), new ArrayList<>());
+	
+		}  
+		for(Board_CommentDTO dto : list1) {
+			for(int seq : seqlist) {
+				if(dto.getBoard_seq() == seq ) {
+					commentlist.get(seq).add(dto);  
+				} 
+			}
+		}
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
-		mav.setViewName("timeline.jsp");	
+		mav.addObject("commentresult",commentlist);
+		mav.setViewName("timeline2.jsp");	
 		return mav;
 	}
 	
@@ -57,8 +81,16 @@ public class BoardController {
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
-		mav.setViewName("myarticle.jsp");
+		mav.setViewName("myarticle3.jsp");
 		return mav;
+	}
+	
+	@RequestMapping("/boardView.bo")
+	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		BoardDTO result = boardService.getBoardModal(seq);
+		new Gson().toJson(result,response.getWriter());
 	}
 	
 
@@ -67,10 +99,21 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
-		mav.setViewName("board.bo?id="+id);
+		mav.setViewName("redirect:board.bo?id="+id);
 		return mav;
 		
 	}
+	
+	
+	@RequestMapping("/boardModify.bo")
+	public void modifyBoard(HttpServletResponse response, BoardDTO dto) throws Exception {
+		int result = boardService.modifyBoard(dto);
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(result);
+		response.getWriter().flush();
+		response.getWriter().close();
+	}
+	
 	
 	//search
 	@RequestMapping("/search.bo")
@@ -85,7 +128,7 @@ public class BoardController {
 		System.out.println("사이즈 : " + result.size());
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
-		mav.setViewName("search.jsp");
+		mav.setViewName("search2.jsp");
 		return mav;
 	}
 	
@@ -111,7 +154,7 @@ public class BoardController {
 	   public ModelAndView writeBoard() {
 	      System.out.println("@@WRITE BOARD");
 	      ModelAndView mav = new ModelAndView();
-	      mav.setViewName("write.jsp");
+	      mav.setViewName("write2.jsp");
 	      return mav;
 	   }
 
@@ -206,22 +249,7 @@ public class BoardController {
 		return mav;
 	}
 	
-	@RequestMapping("/boardView.bo")
-	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		BoardDTO result = boardService.getBoardModal(seq);
-		new Gson().toJson(result,response.getWriter());
-	}
 	
-	@RequestMapping("/like.bo")
-	public void doLike(HttpServletResponse response, Board_LikeDTO dto, String likecount) throws Exception{
-		int likeResult = 0;
-		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_liked());
-		System.out.println(likecount);
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println("띠용");
-		
-	}
+
 
 }

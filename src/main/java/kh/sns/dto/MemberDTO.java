@@ -10,6 +10,8 @@ public class MemberDTO {
 	private String gender;
 	private String name;
 	
+	
+	
 	public MemberDTO() {
 		
 	}
