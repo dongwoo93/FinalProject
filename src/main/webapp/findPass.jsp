@@ -52,7 +52,10 @@ opacity: 0.7;
 <script>
 alert("맞지 않는 계정 정보입니다. 다시 입력해주세요");
 $("#id").val("");
-$("#email").val("");
+$("#Cemail").val("");
+$("#name").val("");
+$("#email2").val("");
+
 $("#id").focus();
 </script>
 </c:when>

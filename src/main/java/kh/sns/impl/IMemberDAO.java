@@ -170,13 +170,12 @@ public class IMemberDAO implements MemberDAO {
 	public List<MemberDTO> findId(String name, String email) throws Exception{
 		System.out.println(name);
 		String sql = "select id from member where name=? and email=?";
-		
-		Object[] param = {name, email};
-		return template.query(sql, param, new RowMapper<MemberDTO>() {
+	
+		return template.query(sql, new String[] {name,email}, new RowMapper<MemberDTO>() {
 			@Override
 			public MemberDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				MemberDTO tmp = new MemberDTO();
-				tmp.setId(rs.getString("id"));
+				MemberDTO tmp = new MemberDTO(rs.getString("id"),"","","","","","");
+		
 				return tmp;
 			}
 		});		

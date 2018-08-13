@@ -234,13 +234,19 @@ public class MemberController {
 		
 		
 		int result = 0;
-		System.out.println("id:"+findId.get(0).getId());
+	
 		
-		if(findId.size() > 0) {
+		
+		
+		if(findId.size() == 1) {
+			System.out.println("id:"+findId.get(0).getId());
 			SendEmail sendemail = new SendEmail(1,findId.get(0).getId(),email);
 			sendemail.sendEmail();
-			result =2;
+			result = 2;
+		}else {
+			result = 0;
 		}
+		
 		
 		
 		ModelAndView mav = new ModelAndView();
