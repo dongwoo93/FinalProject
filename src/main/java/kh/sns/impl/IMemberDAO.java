@@ -135,6 +135,50 @@ public class IMemberDAO implements MemberDAO {
 		String sql = "select * from member where email = ? and id != ?";
 		return template.update(sql, email, currentUserId);
 	}
+
+
+	@Override
+	public int findPw(String id, String email) {
+		// TODO Auto-generated method stub
+		
+	     String certification = Integer.toString((int)(Math.random() * 9000 + 1000));               
+	 
+	     String sql = "update member set pw=? where id=? and email=?";
+
+		
+		return template.update(sql, certification, id, email);
+	}
+
+
+	@Override
+	public String changePass(String id) throws Exception{
+		// TODO Auto-generated method stub
+		String sql = "select pw from member where id=?";
+		
+		List<MemberDTO> temp = template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+			MemberDTO member = new MemberDTO("",rs.getString("pw"),"","","","","");
+			
+			return member;			
+		});		
+		
+		return temp.get(0).getPw();
+		
+	}
+
+
+	@Override
+	public List<MemberDTO> findId(String name, String email) throws Exception{
+		System.out.println(name);
+		String sql = "select id from member where name=? and email=?";
 	
+		return template.query(sql, new String[] {name,email}, new RowMapper<MemberDTO>() {
+			@Override
+			public MemberDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				MemberDTO tmp = new MemberDTO(rs.getString("id"),"","","","","","");
+		
+				return tmp;
+			}
+		});		
+	}
 	
 }

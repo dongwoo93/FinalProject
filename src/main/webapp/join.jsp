@@ -410,7 +410,7 @@ $("#sign").click(function(){
 		var phone = $("#phone").val();
 		if(phoneCheck==1){
 			console.log("맞아용");
-			var yes = confirm(phone+"맞냐?");
+			var yes = confirm(phone+"맞아용?");
 			
 			if(yes){
 				
@@ -450,7 +450,7 @@ $("#sign").click(function(){
 							if(insert==data){
 								$("#certification").css("background-color", "#ccff33");
 								 $("input[name=certification]").attr("readonly",true);
-								
+								같을떄 ? 이메일
 								phoneConfirm=1;		
 								
 							}else{
