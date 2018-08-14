@@ -44,7 +44,7 @@
         
 
         $(document).ready(function() {
-        	console.log('쌍두취3ddㅇㅇ3너무합니다진짜...');
+        	console.log('ㅋㄹㄷㄱ3ㄱ3ㄱ');
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
               function getCaretPosition(editableDiv) {   
@@ -110,7 +110,7 @@
               var map = {16: false, 32: false}; 
               $("#editorDiv").keyup(function(e){   
             	   
-                  if ( (e.keyCode === 32 ) ) {   
+                  if ( (e.keyCode === 32 ) || (e.keyCode === 13 ) ) {   
                          map[e.keyCode] = true;     
                          
                          if(parseInt($('#caretposition').val()) == 0){
@@ -232,7 +232,11 @@
                         if (i == 0) {
                             reader.onload = function(e) {
                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
+                                //alert('fileLength 1')
+                            	$("[id*='filterPreviewImg_']").attr("src", e.target.result)
+
                             }
+                            
                         
                         } else {
                             reader.onload= function(e) {
@@ -248,7 +252,9 @@
 //                             $('#attachDiv').css('height', maxHeight + 'px');
 //                                maxHeight = 0; 
                             }                          
-                        }        
+                        }   
+                        
+                        
                     }
 
                     reader.readAsDataURL(input.files[i]);
@@ -256,6 +262,24 @@
                     
                 }  
             }  
+            
+            $('#leftCarouselBtn').click(function(){
+            	// alert('left')
+            	setTimeout(function(){
+            		var src = $('.active').find('img').attr('src');
+            		$("[id*='filterPreviewImg_']").attr("src", src)
+            	}, 700);
+            	
+            })
+            $('#rightCarouselBtn').click(function(){
+            	// alert('right')
+            	setTimeout(function(){
+            		var src = $('.active').find('img').attr('src');
+            		$("[id*='filterPreviewImg_']").attr("src", src)
+            	}, 700);
+            	
+
+            })
         });
     
     </script>
@@ -284,11 +308,11 @@
 								<div id="carouselAttachDiv" class="carousel slide "
 									data-ride="carousel" data-interval="false">
 									<div class="carousel-inner" id=attachDivInner></div>
-									<a class="carousel-control-prev" href="#carouselAttachDiv"
+									<a id=leftCarouselBtn class="carousel-control-prev" href="#carouselAttachDiv"
 										role="button" data-slide="prev"> <span
 										class="carousel-control-prev-icon" aria-hidden="true"></span>
 										<span class="sr-only">Previous</span>
-									</a> <a class="carousel-control-next" href="#carouselAttachDiv"
+									</a> <a id=rightCarouselBtn class="carousel-control-next" href="#carouselAttachDiv"
 										role="button" data-slide="next"> <span
 										class="carousel-control-next-icon" aria-hidden="true"></span>
 										<span class="sr-only">Next</span>
@@ -321,7 +345,7 @@
 											<div class="col-md-3 col-6 p-1">
 												<a id="${i}"> <img
 													class="d-block img-fluid ${i}"
-													src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg" id='${i}'>
+													src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg" id='filterPreviewImg_${i}'>
 												</a>
 												<p class="text-center">${i}</p>
 											</div>
