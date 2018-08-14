@@ -69,6 +69,15 @@ public class MemberController {
 
 		
 	}
+	
+	@RequestMapping("/logout.do")
+	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		session.invalidate();
+		mav.setViewName("redirect:main.jsp");
+		return mav;
+	}
+	
 	@RequestMapping("/sign.do")
 	public ModelAndView signUp(MemberDTO dto, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
@@ -190,7 +199,7 @@ public class MemberController {
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			
-			mav.setViewName("mypage.jsp");
+			mav.setViewName("mypage2.jsp");
 			
 		} else {
 			// 작업 추가

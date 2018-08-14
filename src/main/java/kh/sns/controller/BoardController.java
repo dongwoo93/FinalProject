@@ -71,7 +71,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", list);
 		mav.addObject("commentresult",commentlist);
-		mav.setViewName("timeline.jsp");	
+		mav.setViewName("timeline2.jsp");	
 		return mav;
 	}
 	
@@ -81,7 +81,7 @@ public class BoardController {
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		mav.addObject("result", result);	
-		mav.setViewName("myarticle.jsp");
+		mav.setViewName("myarticle3.jsp");
 		return mav;
 	}
 	
@@ -99,7 +99,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
-		mav.setViewName("board.bo?id="+id);
+		mav.setViewName("redirect:board.bo?id="+id);
 		return mav;
 		
 	}
@@ -126,11 +126,9 @@ public class BoardController {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
 		System.out.println("사이즈 : " + result.size());
-		System.out.println(result2.get(0).get(0).getOriginal_file_name());
-		System.out.println(result2.get(0).get(1).getOriginal_file_name());
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
-		mav.setViewName("search.jsp");
+		mav.setViewName("search2.jsp");
 		return mav;
 	}
 	
@@ -156,7 +154,7 @@ public class BoardController {
 	   public ModelAndView writeBoard() {
 	      System.out.println("@@WRITE BOARD");
 	      ModelAndView mav = new ModelAndView();
-	      mav.setViewName("write.jsp");
+	      mav.setViewName("write2.jsp");
 	      return mav;
 	   }
 
