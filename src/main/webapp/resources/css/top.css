@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
-	@import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
+@import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
 
 	/* Base Styles */
 	:root {
@@ -20,6 +20,7 @@
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
 		 padding-bottom: 3rem;  
+		  
 		 
 	 
 	 } 
@@ -101,16 +102,16 @@
     #navbar.scrolled {
 	background-color: #eef2f5 !important;
 	transition: background-color 200ms linear;
-}
+	}
 
-#navbar.scrolled .nav-icon {
-	color: black;
-}
-
-#navbar.scrolled #instagramicon {
-	color: #dc3545;
-	border-right: 1px solid black;
-}
-#navbar.scrolled .text-white {
-	color: black !important;
-}
+	#navbar.scrolled .nav-icon {
+		color: black;
+	}
+	
+	#navbar.scrolled #instagramicon {
+		color: #dc3545;
+		border-right: 1px solid black;
+	}
+	#navbar.scrolled .text-white {
+		color: black !important;
+	}

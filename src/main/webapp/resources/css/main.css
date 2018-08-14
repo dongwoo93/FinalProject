@@ -1,5 +1,5 @@
 body{
-  background: url(http://www.timurtek.com/wp-content/uploads/2014/10/form-bg.jpg) no-repeat center center fixed; 
+  background: url(https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -7,6 +7,34 @@ body{
   font-family:'HelveticaNeue','Arial', sans-serif;
 
 }
+
+/* @keyframes slidy { */
+/* 0% { left: 0%; } */
+/* 20% { left: 0%; } */
+/* 25% { left: -100%; } */
+/* 45% { left: -100%; } */
+/* 50% { left: -200%; } */
+/* 70% { left: -200%; } */
+/* 75% { left: -300%; } */
+/* 95% { left: -300%; } */
+/* 100% { left: -400%; } */
+/* } */
+
+/* body { margin: 0; }  */
+/* div#slider { overflow: hidden; } */
+/* div#slider figure img { width: 20%; float: left; } */
+/* div#slider figure {  */
+/*   position: relative; */
+/*   width: 500%; */
+/*   margin: 0; */
+/*   left: 0; */
+/*   text-align: left; */
+/*   font-size: 0; */
+/*   animation: 20s slidy infinite;  */
+/*   font-family:'HelveticaNeue','Arial', sans-serif; */
+/*   object-fit : cover; */
+/* } */
+
 a{color:#58bff6;text-decoration: none;}
 a:hover{color:#aaa; }
 .pull-right{float: right;}
@@ -30,7 +58,7 @@ div#form{
    width:400px;
    height:320px;
    height:auto;
-/*      background-color: #fff;   */
+    background-color: #fff;  
    margin:auto;
    border-radius: 5px;
    padding:20px;
@@ -52,8 +80,8 @@ div.form-item{position: relative; display: block; margin-bottom: 40px;}
 /*     -moz-border-radius: 27px;  */
 /*     -webkit-border-radius: 27px;  */
 /*    border-radius: 27px; */
-    -moz-background-clip: padding; 
-    -webkit-background-clip: padding-box; 
+   -moz-background-clip: padding; 
+   -webkit-background-clip: padding-box; 
    background-clip: padding-box;
    background-color: #fff;
    font-family:'HelveticaNeue','Arial', sans-serif;
@@ -91,9 +119,12 @@ h1{
    color 
 }
 
+#ptag{
+	color:#55b1df;	
+}
 #result {
-text-align: center;
-color: white;
+	text-align: center;
+	color: white;
 }
 
 #preloader {
