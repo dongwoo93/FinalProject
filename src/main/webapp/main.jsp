@@ -18,12 +18,12 @@
 <script>
    if(${sessionScope.loginId != null}) {
       $(location).attr("href", "feed.bo");
-   }
+   } 
 </script>
 
 </head>
 <body>
-
+   
 
 <div id="formWrapper">
 
