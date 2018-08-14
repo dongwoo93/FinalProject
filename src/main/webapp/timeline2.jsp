@@ -4,6 +4,15 @@
     <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
 
     <script>
+    $(document).ready(function(){
+    	$("#modalBoardBtn").click(function(){
+    		
+    		$("#changeBoardModal").modal();
+    		
+    	});
+    })
+    
+    
     AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
@@ -305,43 +314,29 @@
 								<div class="crecodiv py-2">
   
 
-									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									
 									 <c:choose>
 				<c:when test="${result[0].id == sessionScope.loginId}">
-              
-		          <div class="btn-group bg-white">
-		            <button class="btn dropdown-toggle bg-white" data-placement="top"  data-toggle="dropdown"> </button>
-		            <div class="dropdown-menu">
-		              <a class="dropdown-item" href="#">보관</a>
-		              <div class="dropdown-divider" id="modifydiv"></div>
-		              <a class="dropdown-item" id="modify" href="#">수정</a>
-		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
-		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
-		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
-		            </div>
-		          </div>
-        
-        	<script>
+
+										<div class="btn-group bg-white">
+											<i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1" data-toggle="modal" >
+											</i>
+</div>
+											
+										
+										<script>
 				
 			</script>
 	         
 	         </c:when>
 				<c:otherwise>  
 					<div class="btn-group bg-white">
-		            <button class="btn dropdown-toggle bg-white"  data-placement="top" data-toggle="dropdown"> </button>
-		            <div class="dropdown-menu" >
-		              <a class="dropdown-item" href="#">보관</a>	              
-		              <div class="dropdown-divider"></div>
-		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a> 
-		            </div>
+		          <i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1 "> </i>
+		           
 		          </div>
-		          
-		          
+		           
 				
 		           </c:otherwise>
 			</c:choose>
@@ -456,5 +451,50 @@
         </div>
       </div>  <!-- centerwrapper -->
       </div>  <!--  allwrapper-->
+      
+      <div class="modal fade" id="changeBoardModal" tabindex="-1"
+												role="dialog">
+												<div class="modal-dialog modal-dialog-centered"
+													role="document">
+													<c:choose>
+      <c:when test="${result[0].id == sessionScope.loginId}">
+													<div class="modal-content">
+
+
+														<div class="modal-body">
+															<a class="dropdown-item" href="#">보관</a>
+															<div class="dropdown-divider" id="modifydiv"></div>
+															<a class="dropdown-item" id="modify" href="#">수정</a>
+															<div class="dropdown-divider"></div>
+															<a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
+															<div class="dropdown-divider"></div>
+															<a class="dropdown-item" name=delete id="delete" href="#">삭제</a>
+															<div class="dropdown-divider"></div>
+															<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-secondary"
+																data-dismiss="modal">Close</button>
+														</div>
+													</div>
+														</c:when>
+														<c:otherwise>
+														   <div class="modal-content">
+		              <div class="modal-body">
+		              <a class="dropdown-item" href="#">보관</a>	              
+		              <div class="dropdown-divider"></div>
+		              
+		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+		              </div>
+		              </div> 
+														
+														</c:otherwise>
+															</c:choose>	
+												</div>
+											</div>
+					
+		           
+		       			
+								
       <%@ include file="include/bottom.jsp"%>
   
