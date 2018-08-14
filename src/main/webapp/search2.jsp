@@ -18,10 +18,12 @@ function likeit(e) {
 			is_liked : "y"
 		},
 		success : function(resp) {
-			console.log("들어왔니");
+			console.log("들어왔니" +resp);
 			$(e).next().show();
-			$(e).hide();
-		},
+			$(e).hide(); 
+			
+			$(e).next().text(resp);
+		},  
 		error : function() {
 			console.log("에러 발생!");
 			}
@@ -38,9 +40,10 @@ function unlikeit(e) {
 			is_liked : "n"
 		},
 		success : function(resp) {
+			console.log(resp);  
 			$(e).prev().show();
-			$(e).hide();
-			
+			$(e).hide(); 
+			$(e).prev().text(resp);
 		},
 		error : function() {
 			console.log("에러 발생!");
@@ -92,7 +95,6 @@ function unmarkit(e) {
 				<!-- choose문 시작하는 지점 -->
 				<c:choose>
 					<c:when test="${result.size() > 0}">
-
 						<div class="card-columns">
 							<c:forEach var="result" items="${result}" varStatus="status">
 								<div class="card" id="card">
@@ -104,8 +106,16 @@ function unmarkit(e) {
 											<i value="${result.board_seq}" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
                 						    <i value="${result.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
 											<!-- 좋아요 -->
-											<i value="${result.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
-                   						    <i value="${result.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+											<c:choose>
+												<c:when test="${result3.containsKey(result.board_seq)}">
+													<i value="${result.board_seq}" style="cursor: pointer; display: none;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"><c:out value="${result4[result.board_seq]}"/></i>
+		                   						    <i value="${result.board_seq}" style="font-weight: bold; color: red; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)">${result4[result.board_seq]}</i>
+												</c:when>
+													<c:otherwise>   
+														<i value="${result.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)">${result4[result.board_seq]}</i>
+		                   						    	<i value="${result.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)">${result4[result.board_seq]}</i>												
+													</c:otherwise>
+											</c:choose>
 										</a> <a href="#">팔로우</a>
 									</h4>
 										<!-- 태그,글 보이기 -->
@@ -126,7 +136,7 @@ function unmarkit(e) {
 											   	});
 										   </script>
 										</div>
-											<!-- 이미지 -->
+										<!-- 이미지 -->
 											<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 												<a href="#"> <!--src='AttachedMedia/${media.system_file_name}'-->
 													<img class="card-img-top" id="card"
@@ -137,14 +147,10 @@ function unmarkit(e) {
 							</c:forEach>
 						</div>
 					</c:when>
-
-					<c:otherwise>
-						<h1>검색 결과가 없습니다.</h1>
-					</c:otherwise>
-
+						<c:otherwise>
+							<h1>검색 결과가 없습니다.</h1>
+						</c:otherwise>
 				</c:choose>
 				<!-- choose문 끝나는 지점 -->
-			</div>
-		</div>
-		</div>
+
       <%@ include file="include/bottom.jsp"%>
