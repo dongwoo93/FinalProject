@@ -106,6 +106,7 @@
 }
 
 .boardimg {
+	z-index:auto;
 	max-height: 600px;
 }
 
@@ -139,6 +140,7 @@
 
   
 .comment-contents li {
+		position:relative;	
 		display: inline-block;
   
 		}  

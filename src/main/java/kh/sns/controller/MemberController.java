@@ -135,6 +135,7 @@ public class MemberController {
 	public void isEmailExist(String email, HttpServletResponse response) throws Exception{
 		
 		int result =this.memberService.isEmailExist(email);
+		System.out.println(result);
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
