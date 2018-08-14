@@ -163,7 +163,7 @@ public class BoardController {
           		"filter-sutro","filter-toaster","filter-valencia","filter-vesper","filter-walden","filter-willow","filter-xpro-ii"));
 	      ModelAndView mav = new ModelAndView();
 	      mav.addObject("filter", filter);
-	      mav.setViewName("write2.jsp"); 
+	      mav.setViewName("write.jsp"); 
 	      return mav;
 	   }
 

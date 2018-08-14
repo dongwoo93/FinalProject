@@ -43,114 +43,7 @@
         
 
         $(document).ready(function() {
-        	
-            $('.tagRemove').click(function(event) {
-                event.preventDefault();
-                $(this).parent().remove();
-            });
-            $('ul.tags').click(function() {
-                $('#search-field').focus();
-            });
-            $('#search-field').keypress(function(event) {
-                if (event.which == '13') {
-                    if (($(this).val() != ''))  {
-                            $('<li class="addedTag">' + $(this).val() + '<span class="tagRemove" onclick="$(this).parent().remove();">x</span><input type="hidden" value="' + $(this).val() + '" name="tags[]"></li>').insertBefore('.tags .tagAdd');
-                            $(this).val('');
-
-                    } else {
-                        $(this).val('');
-                    }
-                }
-            });
-            
-            <!-- -->
-            function getCaretPosition(editableDiv) {
-            	  var caretPos = 0,
-            	    sel, range;
-            	  if (window.getSelection) {
-            	    sel = window.getSelection();
-            	    if (sel.rangeCount) {
-            	      range = sel.getRangeAt(0);
-            	      if (range.commonAncestorContainer.parentNode == editableDiv) {
-            	        caretPos = range.endOffset;
-            	      }
-            	    }
-            	  } else if (document.selection && document.selection.createRange) {
-            	    range = document.selection.createRange();
-            	    if (range.parentElement() == editableDiv) {
-            	      var tempEl = document.createElement("span");
-            	      editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-            	      var tempRange = range.duplicate();
-            	      tempRange.moveToElementText(tempEl);
-            	      tempRange.setEndPoint("EndToEnd", range);
-            	      caretPos = tempRange.text.length;
-            	    }
-            	  }
-            	  return caretPos;
-            	}
-            
-            var update = function() {
-                $('#caretposition').html(getCaretPosition(this));
-              };
-              
-            $('#editorDiv').on("mousedown mouseup keydown keyup", update);
-            
-            var map = {16: false, 32: false};
-            $("#editorDiv").keydown(function(e){
-                if (e.keyCode === 32) {
-                       map[e.keyCode] = true;
-                       if(map[16]) {
-                    	  
-                       }
-                       
-                       var regex = /(#[^#\s,;<>]+)/gi;      
-                       if(regex){
-                    	   
-                    	   
-                        var newtxt = $('#editorDiv').text().replace(regex, "<span class=text-danger>" + "$1" + "</span>");                       	
-                      	 
-                     	// console.log($('#editorDiv').text().length);
-                     	console.log(newtxt)
-                     	newtxt += "<kz></kz>"
-                      	$('#editorDiv').html(newtxt)
-                         	
-                         	var el = document.getElementById("editorDiv");
-                         	
-                         	console.log("childNodes: " + el.childNodes.length);
-                         	
-                         	var range = document.createRange();
-                         	var sel = window.getSelection();
-                         	range.setStart(el.lastChild, 0);
-                         	range.collapse(false);
-                         	sel.removeAllRanges();
-                         	sel.addRange(range);
-                         	
-                         	$('#editorDiv').focusout();
-                         	$('#editorDiv').focus();
-                       
-                      
-                       console.log('keydown');
-                       
-                   		}
-                }
-               }).keyup(function(e){
-                  if(e.keyCode === 32){
-                     map[e.keyCode] = false;
-                    
-                    }
-                     
-                 
-                  
-                  
-                  console.log('keyup');
-               });
-            
-            $('#submitbutton').click(function(){
-            	alert('전송')
-            	$('#contentsHidden').val($('#editorDiv').text())
-            	$('#frm').submit();
-            });
-            
+			
             $("#searchfriend").keyup(function(){
             	 var searchtext = $(this).val();
             	 $("#friendlist *").remove();
@@ -173,6 +66,24 @@
                      }
                  });
             });
+            
+            $("#personmodalbt").click(function(){
+         	   var textValue = $(".tags li").length;
+         	   alert(textValue);
+         	   $("#person *").remove();
+         	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
+
+         	   for(var i = 1; i<textValue+1;i++){
+		            
+                var realValue = $(".tags li:nth-child("+i+")").attr("id");
+               		 $(".tag").append('<li class="addedTag">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
+               		$('#personModal').modal('hide');
+                }
+         	   
+         	   $("#searchfriend").val("");
+            });
+            
+            
       
            	   
         	
@@ -205,8 +116,7 @@
                         if (i == 0) {
                             reader.onload = function(e) {
                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
-                                
-                                
+                        
                             }
                         
                         } else {
@@ -234,15 +144,9 @@
 
                     reader.readAsDataURL(input.files[i]);
                     console.log(reader);     
-                   
-                              
                     
                 }             
-                
-                    
-                    // $('.imgWidth100').map(function(e){console.log(e)});
-                
-               
+                 
 
             }
             
@@ -256,220 +160,259 @@
     
     </script>
 
-</head>
 
-<body>
     <div id="allwrapper">
-    <form id=frm action='writeProc.bo' method=post enctype="multipart/form-data"> <!-- form 시작 -->
-        <div id="centerwrapper" class="pt-3">
-            <div class="container" id="contents">
-                <div class="row">
-                    <div class="col-md-7 align-self-center">
-                        <!-- -->
-                        <input type="file" multiple=multiple id="fileSelect" name="filename[]">
-                        <i class="far fa-images"></i>
-                        <!-- -->
-<!--                        <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_14.jpg" style="width: 100%;" id='frontImage'>-->
+		<form action='writeProc.bo' method=post enctype="multipart/form-data">
+			<!-- form 시작 -->
+			<div id="centerwrapper" class="pt-3">
+				<div class="container" id="contents">
+					<div class="row">
+						<div class="col-md-7 align-self-center">
+							<!-- -->
+<!-- 							<input type="file" class="btn" multiple=multiple id="fileSelect" -->
+<!-- 								name="filename[]"> <i class="far fa-images"></i> -->
+							<!-- -->
+							<!--                        <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_14.jpg" style="width: 100%;" id='frontImage'>-->
+
+								<div class="filebox">  
+								<input type="file" class="btn btn-light"  multiple id="fileSelect"
+								name="filename[]"> <i class="far fa-images"></i>
+								</div>
+								
 
 
-                        <div id="attachDiv" style="height: 600px;">
-                            <div id="carouselAttachDiv" class="carousel slide " data-ride="carousel">
-                                <div class="carousel-inner" id=attachDivInner>
-                                    <div class="carousel-item">
-                                    </div>
-                                </div>
-                                  <a class="carousel-control-prev" href="#carouselAttachDiv" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselAttachDiv" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                            </div>
-                              
-                        </div>
+
+							<div id="attachDiv" style="height: 600px;">
+								<div id="carouselAttachDiv" class="carousel slide "
+									data-ride="carousel" data-interval="false">
+									<div class="carousel-inner" id=attachDivInner></div>
+									<a class="carousel-control-prev" href="#carouselAttachDiv"
+										role="button" data-slide="prev"> <span
+										class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="sr-only">Previous</span>
+									</a> <a class="carousel-control-next" href="#carouselAttachDiv"
+										role="button" data-slide="next"> <span
+										class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="sr-only">Next</span>
+									</a>
+								</div>
+
+							</div>
 
 
-                        <div id="filter">
-                            <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <div class="row">
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg"> </a>
-                                            </div>
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_14.jpg"> </a>
-                                            </div>
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_16.jpg"> </a>
-                                            </div>
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_16.jpg"> </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="row">
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg"> </a>
-                                            </div>
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_14.jpg"> </a>
-                                            </div>
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_16.jpg"> </a>
-                                            </div>
-                                            <div class="col-md-3 col-6 p-1">
-                                                <a href="#">
-                                  <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_16.jpg"> </a>
-                                            </div>
+							<div id="filter">
+								<div id="carouselExampleControls" class="carousel slide "
+									data-ride="carousel" data-interval="false">
 
-                                        </div>
-                                    </div>
-                                </div>
-                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5" id="writeform">
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- <textarea id="writetextarea" class="form-control p-0" placeholder="Contents..." name=contents></textarea> -->
-                                <div id=editorDiv contenteditable=true><!--  --></div>
-                                <div id="caretposition">0</div>
-                            </div>
-                            <ul class="list-group list-group-flush">
-		                        <li class="list-group-item"><i class="fas fa-map-marker-alt tagicon mr-3"></i><a onclick="placemodal()" style="cursor: pointer;" id="place">위치 태그하기</a></li>
-		                        <li class="list-group-item"><i class="fas fa-users tagicon mr-2 pr-1"></i><a onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
-		                      </ul>
-                        </div>
-                        <div class="py-3">
-                            <button type="button" id="submitbutton"><i class="fas fa-arrow-right fa-2x"></i></button>
-                        </div>
-                        <input type=hidden name=contents id=contentsHidden>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </form>	<!-- form 끝 -->
+									<div class="carousel-inner">
+										<c:forEach var="i" items="${filter}" varStatus="status">
+											  <c:choose>
+						                          <c:when test = "${status.index == 0}">
+						                        
+						                              <div class="carousel-item active">
+						                                 <div class="row">
+						                              
+						                        </c:when>
+						                        <c:when test = "${(status.index %4 == 0) && (status.index != 0)}">
+						                        
+						                              <div class="carousel-item">
+						                                 <div class="row">
+						                              
+						                        </c:when>
+						                        </c:choose>
+											<div class="col-md-3 col-6 p-1">
+												<a id="${i}"> <img
+													class="d-block img-fluid ${i}"
+													src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg" id='${i}'>
+												</a>
+												<p class="text-center">${i}</p>
+											</div>
+											<c:choose>
+												<c:when test="${(status.index%4 == 3) || (status.index == 40)}">
+													</div>
+													</div>
+												</c:when>
+											</c:choose>
+									
+									<a class="carousel-control-prev" href="#carouselExampleControls"
+										role="button" data-slide="prev"> <span
+										class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+										class="sr-only">Previous</span>
+									</a> <a class="carousel-control-next" href="#carouselExampleControls"
+										role="button" data-slide="next"> <span
+										class="carousel-control-next-icon" aria-hidden="true"></span> <span
+										class="sr-only">Next</span>
+									</a>
+								
+								
+								<script>
+									$("#${i}").click(function(){
+										$("#attachDivInner .active img").attr("class","${i} imgWidth100");
+									});
+								</script>
+								</c:forEach>
+								</div>
+								</div>
+							</div>
 
-     
-    </div>
-        
-        <!--       위치태그하기 Modal부분-->
-      <div id="placeModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-map-marker-alt tagicon mr-2"></i>위치 태그하기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div id="pac-container">
-                    <input id="pac-input" type="text" placeholder="Enter a location">
-                </div>
-                <div id="map"></div>
-              </div>
-              <div class="modal-footer">
-                <p>핀클릭시 장소 태그</p>
-              </div>
-            </div>
-          </div>
-        </div>
-<!--        위치태그하기 Modal 끝-->
-
-<!--       사람태그하기 Modal부분-->
-      <div id="personModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-users tagicon mr-2"></i>사람 태그하기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                      <div class="row">
-                        <div class="col-4">
-                           <input type="text" class="form-control mb-2" placeholder="friend" id="searchfriend">
-                          <ul class="nav nav-pills flex-column" id="friendlist">
-	                            <script>
-		                            function tag_friend(e){
-		                            	var text = $(e).text();
-		                            	alert("태그할곳을 클릭해주세요");
-		                            	$("#imagemap").append("<span shape='circle' class='span' data-placement='top' title='"+text+"'></span>");
-		                            }
-		                            
-		                            $('img').click(function(e) {
-		                                var offset = $(this).offset();
-		                                var X = (e.pageX - offset.left);
-		                                var Y = (e.pageY - offset.top);
-		                                
-		                                
-		                                $(".span").css({
-		                                    "top":(Y),
-		                                    "left":(X+15)
-		                                }).tooltip('show');
-		                            });
-		                            
-		                            $(function () {
-		                              $('[data-toggle="tooltip"]').tooltip()
-		                            });
-		                            $(".span").tooltip({trigger: 'manual'});
-		                            $("#friendtag").tooltip({'trigger':'focus'});
-	                            </script>
-                          </ul>
-                        </div>
-                        <div class="col-8" >
-                          <div class="tab-content">
-                            <div class="tab-pane fade show active" id="imgtag" role="tabpanel">
-                              <img src="/루이.jpg" alt="My Image" style="width:100%; height:500px;" usemap="#imagemap">
-                               <map name="imagemap" id="imagemap">
-                      		   </map>
-                              
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                
-              </div>
-              <div class="modal-footer">
-                <ul class="tags">
-			          <li class="addedTag">Web Deisgn<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden" name="tags[]" value="Web Deisgn"></li>
-			    
-			          <li class="addedTag">Web Develop<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden" name="tags[]" value="Web Develop"></li>
-			    
-			          <li class="addedTag">SEO<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden" name="tags[]" value="SEO"></li>
-			          <li class="tagAdd taglist">  
-			              <input type="text" id="search-field">
-				      </li>
-				</ul>
-              </div>
-            </div>
-          </div>
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
-    async defer></script>
-        </div>
-<!--        사람태그하기 Modal 끝-->
+							
+						</div>
+						<div class="col-md-5" id="writeform">
+							<div class="card">
+								<div class="card-body" contenteditable="true" id="writetextarea"
+									placeholder="Contents..." name=contents></div>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item"><i
+										class="fas fa-map-marker-alt tagicon mr-3"></i><a
+										onclick="placemodal()" style="cursor: pointer;" id="place">위치
+											태그하기</a></li>
+									<li class="list-group-item" id="person"><i
+										class="fas fa-users tagicon mr-2 pr-1"></i><a
+										onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
+		
+								</ul>
+							</div>
+							<div class="py-3">
+								<button type="submit" id="submitbutton">
+									<i class="fas fa-arrow-right fa-2x"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
 	
+	</form>
+	</div>
+	<!-- form 끝 -->
+
+	<script>
+		function personmodal() {
+			$("#friendlist *").remove();
+			$.ajax({
+                url: "searchfriend.do", // 처리할 페이지(서블릿) 주소
+                type: "get",
+                data: {searchtext: ""},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+                success: function(response) {
+                    console.log("AJAX Request 성공");
+                    console.log(response.length)
+                    for(var i=0;i<response.length;i++){
+                   	 $("#friendlist").append("<li class='nav-item friendlist pl-2' onclick='tag_friend(this)'>"+response[i]+"</li>");
+                    }
+                },
+                error: function() {
+                    console.log("에러 발생");
+                },
+                complete: function(){
+                    console.log("AJAX 종료");
+                }
+            });   
+			$('#personModal').modal('show');
+		                            
+		}
+		</script>
+
+	<!--       위치태그하기 Modal부분-->
+	<div id="placeModal" class="modal fade bd-example-modal-lg"
+		tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						<i class="fas fa-map-marker-alt tagicon mr-2"></i>위치 태그하기
+					</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="pac-container">
+						<input id="pac-input" type="text" placeholder="Enter a location">
+					</div>
+					<div id="map"></div>
+				</div>
+				<div class="modal-footer">
+					<p>핀클릭시 장소 태그</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--        위치태그하기 Modal 끝-->
+
+	<!--       사람태그하기 Modal부분-->
+	<div id="personModal" class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						<i class="fas fa-users tagicon mr-2"></i>사람 태그하기
+					</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="persondagmodal">
+					<div class="row">
+						<div class="col-5">
+							<input type="text" class="form-control mb-2" placeholder="friend"
+								id="searchfriend">
+							<ul class="nav nav-pills flex-column" id="friendlist">
+								<script>
+	                           function tag_friend(e){
+		                           var text = $(e).text();
+		                           var index = 1;
+		                           var textValue = $(".tags li").length;
+		                           for(var i = 1; i<textValue+1;i++){
+		            
+			                           var realValue = $(".tags li:nth-child("+i+")").attr("id");
+		                        	   if(realValue == text){
+		                        		   alert("이미 태그한 친구입니다.");
+		                        		   index++;
+		                        		   break;
+		                        	   }
+		                           }
+		                           
+		                           if(index == 1){
+		                        	   $(".tags").append('<li class="addedTag" id="'+text+'">' + text + '<span class="tagRemove" onclick="$(this).parent().remove();">x</span><input type="hidden" value="' + text + '" name="tags[]"></li>');
+		                           }
+		                        
+	                           }
+	                           
+	                           $('.tagRemove').click(function(event) {
+	                                event.preventDefault();
+	                                $(this).parent().remove();
+	                            });
+	                           
+	                           
+	                           </script>
+							</ul>
+						</div>
+						<div class="col-7">
+							<div class="tab-content">
+								<ul class="tags">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="personmodalbt">확인</button>
+				</div>
+			</div>
+		</div>
+		<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
+			async defer></script>
+	</div>
+	<!--        사람태그하기 Modal 끝-->
+
 	<script>
       var map;
       var i = 1;
@@ -494,11 +437,7 @@
           i++;
       }
       
-      function personmodal() {
-          
-          $('#personModal').modal('show');
-          
-      }
+      
       
       function initAutocomplete() {
           map = new google.maps.Map(document.getElementById('map'), {
