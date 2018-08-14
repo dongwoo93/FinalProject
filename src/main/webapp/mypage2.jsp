@@ -37,12 +37,12 @@
 							data-target="#profileTab">프로필 편집</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp"
 							data-toggle="pill" data-target="#passwordTab">비밀번호 변경</a></li>
-						<li class="nav-item"><a href="#" class="nav-link mp"
-							data-toggle="pill" data-target="#tabthree">허가된 앱</a></li>
+						<!-- <li class="nav-item"><a href="#" class="nav-link mp"
+							data-toggle="pill" data-target="#tabthree">허가된 앱</a></li> -->
 						<li class="nav-item"><a href="#" class="nav-link mp"
 							data-toggle="pill" data-target="#emailTab">이메일 및 SMS</a></li>
-						<li class="nav-item"><a class="nav-link mp" href="#"
-							data-toggle="pill" data-target="#tabfive">연락처 관리</a></li>
+						<!-- <li class="nav-item"><a class="nav-link mp" href="#"
+							data-toggle="pill" data-target="#tabfive">연락처 관리</a></li> -->
 						<li class="nav-item"><a class="nav-link mp" href="#"
 							data-toggle="pill" data-target="#privacyTab" id="resetOriginalPrivacyTab">공개 범위 및 보안</a></li>
 					</ul>
