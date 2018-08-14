@@ -14,6 +14,7 @@ public interface BoardDAO {
 	public List<BoardDTO> getFeed(String id) throws Exception ;
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
+	public int modifyBoard(BoardDTO dto) throws Exception;
 	/* 태그 넣는 기능 */
 	public int[] insertHashTags(BoardDTO article) throws Exception;
 
@@ -34,8 +35,5 @@ public interface BoardDAO {
 	public List<BoardDTO> search(String keyword);
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
 	
-	// like
-		public int selectLike(Board_LikeDTO dto) throws Exception;
-		public int insertLike(Board_LikeDTO dto) throws Exception;
-		public int updateLike(Board_LikeDTO dto) throws Exception;
+	
 }

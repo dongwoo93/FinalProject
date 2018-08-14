@@ -5,5 +5,6 @@
 	<typeAliases>
 		<typeAlias alias="MemberDTO" type="kh.sns.dto.MemberDTO"/>
 		<typeAlias alias="BoardDTO" type="kh.sns.dto.BoardDTO"/>
+		<typeAlias alias="Board_CommentDTO" type="kh.sns.dto.Board_CommentDTO"/>
 	</typeAliases>
 </configuration>

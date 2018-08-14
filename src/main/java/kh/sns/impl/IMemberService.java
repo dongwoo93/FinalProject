@@ -54,12 +54,18 @@ public class IMemberService implements MemberService{
 
 
 	@Override
-	public int signUp(MemberDTO dto) {
+	public int signUp(MemberDTO dto) throws Exception {
 		// TODO Auto-generated method stub
 		return this.dao.signUp(dto);
 	}
+	
 
-
+	@Override
+	public int insertProfile(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return this.dao.insertProfile(id);
+	}
+	
 
 	@Override
 	public int isIdExist(String id) {
