@@ -81,7 +81,18 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
-		mav.addObject("result", result);	
+		List<Board_MediaDTO> result2 = new ArrayList<>();
+		for(int i = 0; i < result.size(); i++) {
+			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
+		}
+		String boardCount = boardService.boardCount(id);
+		int followerCount = boardService.getFollowerCount(id);
+		int followingCount = boardService.getFollowingCount(id);
+		mav.addObject("result", result);
+		mav.addObject("result2", result2);
+		mav.addObject("boardCount", boardCount);
+		mav.addObject("followerCount", followerCount);
+		mav.addObject("followingCount", followingCount);
 		mav.setViewName("myarticle3.jsp");
 		return mav;
 	}
@@ -91,7 +102,12 @@ public class BoardController {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		BoardDTO result = boardService.getBoardModal(seq);
-		new Gson().toJson(result,response.getWriter());
+		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));
+		List<Object> result3 = new ArrayList<>();
+		result3.add(result);
+		result3.add(result2);
+		new Gson().toJson(result3,response.getWriter());
+
 	}
 	
 
