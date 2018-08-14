@@ -30,6 +30,7 @@ import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_CommentService;
+import kh.sns.interfaces.Board_LikeService;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -41,6 +42,8 @@ public class BoardController {
 	private Board_CommentService board_commentService;
 	@Autowired
 	private ProfileService profileService;
+	@Autowired
+	private Board_LikeService board_likeService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -134,19 +137,37 @@ public class BoardController {
 	//search
 	@RequestMapping("/search.bo")
 	public ModelAndView search(HttpSession session, String search) throws Exception{
+		String id = (String)session.getAttribute("loginId");
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
 		List<BoardDTO> result = boardService.search(search);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();
+		List<Integer> result3 = board_likeService.searchLike(id);
+		List<int[]> result4 = board_likeService.selectLikeAll();
+		Map<Integer,String> map = new HashMap<>();
+		Map<Integer,Integer> countlike = new HashMap<>();
+		
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
+		for(int tmp : result3) {
+			map.put(tmp, "y");
+		}
+		
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
 		System.out.println("사이즈 : " + result.size());
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
+		mav.addObject("result3", map);
+		mav.addObject("result4",countlike);
 		mav.setViewName("search2.jsp");
 		return mav;
 	}
+	
+	
 	
 	//search
 //	@RequestMapping("/search2.bo")
