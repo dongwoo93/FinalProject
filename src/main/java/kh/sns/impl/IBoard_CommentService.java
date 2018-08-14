@@ -28,4 +28,7 @@ public class IBoard_CommentService implements Board_CommentService {
 		return board_commentdao.delComment(comment_seq);
 	}
 	
+	public int getCommentSeq() throws Exception {
+		return board_commentdao.getCommentSeq();
+	}
 }

@@ -225,16 +225,20 @@
 				      
 				      				<script>  
 						    
-						$("#commentdel${comment.comment_seq}").click(function() {  
-							$.ajax({
-				 	 	           type: "POST",  
-				 	 	           url: "commentdel.co", 	
-				 	 	           data: {comment_seq:${comment.comment_seq}}  
-				 	 	             
-			        		   }) //ajax 
-			        		   $("#ul${comment.comment_seq}").remove(); 
-							
-						})    
+				      				$("#commentdel${comment.comment_seq}").click(function() {  
+				                        $.ajax({
+				                                  type: "POST",  
+				                                  url: "commentdel.co",    
+				                                  data: {comment_seq:${comment.comment_seq}},
+				                                  success : function() {
+				                                   $("#ul${comment.comment_seq}").remove();  
+				                                  }
+				                                    
+				                             }) //ajax 
+				                            
+				                        
+				                     })    
+				            
 		
 						
 						</script>
@@ -269,28 +273,49 @@
 								
 								<script>
 						
-						 		$('#comment${tmp.board_seq}').keypress(function(event){
-								        var keycode = (event.keyCode ? event.keyCode : event.which);
-								        if(keycode == '13'){
-								        	
-								        	var text = $("#comment${tmp.board_seq}").val();
-								        	if(text == ""){
-								        		alert("댓글을 입력해주세요");
-								        	}
-								        	else {  
-								         		
-								        		$.ajax({
-									 	 	           type: "POST",  
-									 	 	           url: "comment.co", 	
-									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text} 
-								        	
-								        		   }) //ajax 
-								        		 $("#comment${tmp.board_seq}").val("");       
-							        			$("#comment-contents${tmp.board_seq}").prepend("<ul ><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a href='#'>x</a> </li></ul> ")
-								        		
-								        	}	 
-								        }
-								    });  
+								$('#comment${tmp.board_seq}').keypress(function(event){
+	                                var keycode = (event.keyCode ? event.keyCode : event.which);
+	                                if(keycode == '13'){
+	                                   
+	                                   var text = $("#comment${tmp.board_seq}").val();
+	                                   if(text == ""){
+	                                      alert("댓글을 입력해주세요");
+	                                   }
+	                                   else {  
+	                                       
+	                                      $.ajax({
+	                                              type: "POST",  
+	                                              url: "comment.co",    
+	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
+	                                              success : function(seq) {
+	                                               $("#comment${tmp.board_seq}").val("");        
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a id='commentdel"+seq+"'>x</a> </li></ul> ")
+	                                               
+
+	                                             $("#commentdel"+seq).click(function() {  
+	                                                $.ajax({
+	                                                          type: "POST",  
+	                                                          url: "commentdel.co",    
+	                                                          data: {comment_seq:seq},
+	                                                          success : function() {
+	                                                           $("#ul"+seq).remove(); 
+	                                                          }
+	                                                            
+	                                                     }) //ajax  
+	                                                      
+	                                                
+	                                             })    
+	                                 
+	                                             
+	                                               
+	                                               
+	                                              }
+	                                   
+	                                         }) //ajax 
+	                                      
+	                                   }    
+	                                }
+	                            }); 
 						 		</script>
 							</div> <!--cont  -->
 						</div> <!-- feed -->
