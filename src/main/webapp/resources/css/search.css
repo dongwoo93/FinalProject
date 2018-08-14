@@ -12,7 +12,7 @@
 	margin-bottom: 20px;
 }
 
-#icon {
+#mark, #markcancel, #likeit, #likecancel {
 	float: right;
 	font-size: 18px;
 	margin-right: 5px;
@@ -21,4 +21,12 @@
 #searchTop {
 	margin-top: 5px;
 	margin-left: 5px;
+}
+
+#card {
+	border-radius: 3px 3px 5px 5px;
+}
+
+#hidden{
+	padding-left: 20px;
 }
