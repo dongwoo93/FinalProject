@@ -101,8 +101,7 @@ public class BoardController {
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
 		mav.setViewName("redirect:board.bo?id="+id);
-		return mav;
-		
+		return mav;	
 	}
 	
 	
@@ -164,7 +163,7 @@ public class BoardController {
           		"filter-sutro","filter-toaster","filter-valencia","filter-vesper","filter-walden","filter-willow","filter-xpro-ii"));
 	      ModelAndView mav = new ModelAndView();
 	      mav.addObject("filter", filter);
-	      mav.setViewName("write.jsp");
+	      mav.setViewName("write.jsp"); 
 	      return mav;
 	   }
 
@@ -174,7 +173,6 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println(contents);
 	
 		
 		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
