@@ -67,10 +67,10 @@
 #peed {
 	border: 0.3px solid lightgray;
 }
-
+  
 #board {
 	width: 62%;
-	border: 0.3px solid lightgray; 
+	
 }
 
 #side {
@@ -144,12 +144,34 @@
 		}  
   
 #li1 {
-width:15%;
+width:14%;
 }
-#li2  {        
-width:68%;
-}
+#li2  {          
+width:60%;
+}  
 
 #li3 {
-width:15%;  
+width:12%;  
+}    
+  
+#li4 {
+	width:12%; 
+
+}  
+  
+.commenttxt { 
+	border:none;
+	width:100%; 
 }
+  
+.creco {  
+	border:none;
+	
+	width:80%; 
+}
+  
+#feed {    
+	border:0.5px solid lightgray;  
+	}
+}
+  

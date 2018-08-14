@@ -194,10 +194,10 @@
 				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
 				   	});
 				   	
-					</script>
+					</script>  
 							</div>
 							
-						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+						<p class="text-info" id="myComment${tmp.board_seq}"></p>
 						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
 						
 						<!-- 댓글자리 -->
@@ -207,18 +207,23 @@
 						<c:when test="${commenttmp.key == tmp.board_seq}">  
 						<c:forEach var="comment" items="${commenttmp.value}">
 					 
-					
+					<c:if test="${commenttmp.value.size() > 2 }">      
+                     <script>    
+                     $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
+                     </script>   
+                     </c:if> 
 						
 						
 							<ul id="ul${comment.comment_seq}">     
-							<li id='li1'><a href="#">${comment.id}</a></li> 
-							<li id='li2'>${comment.comment_contents}</li> 
+							<li id='li1'><a href="#">${comment.id}</a></li>   
+							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents} " readonly></li> 
 							
 							<c:choose>  
 							<c:when test ="${sessionScope.loginId == comment.id}">  
-							<li id='li3'><a id='commentdel${comment.comment_seq}'>x</a> </li>    
+							<li id='li3'><a id='commentdel${comment.comment_seq}'>x</a> </li>
+							<li id='li4'><a id='commentmod${comment.comment_seq}'>v</a> </li>    
 							</c:when>
-							</c:choose>
+							</c:choose>  
 							</ul>
 					
 				       
@@ -237,7 +242,27 @@
 				                             }) //ajax 
 				                            
 				                        
-				                     })    
+				                     }) 
+				                     
+				                     $("#commentmod${comment.comment_seq}").click(function() {  
+				                    	 $("#commenttxt${comment.comment_seq}").attr("readonly",false);
+				                    	 $("#commenttxt${comment.comment_seq}").attr("style","border:0.5px solid lightgray");
+				                    	 $("#commentmod${comment.comment_seq}").click(function() {
+				                    	 	var txt = $("#commenttxt${comment.comment_seq}").val();
+				                    	 	alert(txt); 
+				                        	$.ajax({
+				                                  type: "POST",    
+				                                  url: "commentmod.co",    
+				                                  data: {comment_seq:${comment.comment_seq}, comment_contents:txt},  
+				                                  success : function() {
+				                                	  $("#commenttxt${comment.comment_seq}").attr("readonly",true);
+								                    $("#commenttxt${comment.comment_seq}").attr("style","border:none");
+				                                  }
+				                                    
+				                             }) //ajax 
+				                            
+				                    	 })
+				                     }); 
 				            
 		
 						
@@ -260,11 +285,11 @@
 								<!--               -->
 								
 								
-								<div class="py-2">
+								<div class="crecodiv py-2">
   
 
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
 
 
@@ -287,11 +312,11 @@
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {
-	                                               $("#comment${tmp.board_seq}").val("");        
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a id='commentdel"+seq+"'>x</a> </li></ul> ")
-	                                               
-
+	                                              success : function(seq) {  
+	                                               $("#comment${tmp.board_seq}").val("");            
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:14%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:13%'><a id='commentdel"+seq+"'>x</a></li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"'>v</a></li></ul> ")
+	                                                 
+  
 	                                             $("#commentdel"+seq).click(function() {  
 	                                                $.ajax({
 	                                                          type: "POST",  
@@ -305,6 +330,26 @@
 	                                                      
 	                                                
 	                                             })    
+	                                             
+	                                             
+	                                             $("#commentmod"+seq).click(function() {  
+	        				                    	 $("#commenttxt"+seq).attr("readonly",false);
+	        				                    	 $("#commentmod"+seq).click(function() {
+	        				                    	 	var txt = $("#commenttxt"+seq).val();
+	        				                    	 	alert(txt); 
+	        				                        	$.ajax({
+	        				                                  type: "POST",    
+	        				                                  url: "commentmod.co",    
+	        				                                  data: {comment_seq:seq, comment_contents:txt},  
+	        				                                  success : function() {
+	        				                                	  $("#commenttxt"+seq).attr("readonly",true);
+	        								                    $("#commenttxt"+seq).attr("style","border:none");
+	        				                                  }
+	        				                                    
+	        				                             }) //ajax 
+	        				                            
+	        				                    	 })
+	        				                     }); 
 	                                 
 	                                             
 	                                               

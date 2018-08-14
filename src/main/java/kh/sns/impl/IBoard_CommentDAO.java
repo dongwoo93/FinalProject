@@ -57,4 +57,14 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		return list.get(0);
 	}
 
+	@Override
+	public int modComment(Board_CommentDTO dto) {
+		String sql = "update board_comment set comment_contents = ? where comment_seq=?";
+		return template.update(sql,dto.getComment_contents(), dto.getComment_seq());
+	}
+	
+
+
+	
+
 }
