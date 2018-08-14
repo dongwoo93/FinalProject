@@ -181,6 +181,8 @@ public class BoardController {
 		
 		List<Board_MediaDTO> fileList = new ArrayList<Board_MediaDTO>();
 		
+		System.out.println(request.getParameter("filters"));
+		
 		for(MultipartFile mf : mfList) {
 			try {
 				

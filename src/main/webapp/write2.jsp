@@ -160,7 +160,13 @@
    
               $('#submitbutton').click(function(){   
                 // alert('전송')   
+            	var length = $('.imgWidth100').length;
+              	var filterOutput = "";
+              	for(i = 0; i < length; i++){
+              		filterOutput += $('.imgWidth100').eq(i).attr('class').replace("imgWidth100", ";").replace(" ", "")
+              	}
                 $('#contentsHidden').val($('#editorDiv').text())   
+                $('#filtersHidden').val(filterOutput)  
                 $('#frm').submit();   
               });
    
@@ -280,13 +286,20 @@
             	
 
             })
+            
+          /*    $('#testButton').click(function(){           	
+            	console.log($('.imgWidth100'))
+            	
+            	alert(output)
+
+            }) */
         });
     
     </script>
 
 
     <div id="allwrapper">
-		<form action='writeProc.bo' method=post enctype="multipart/form-data">
+		<form id=frm action='writeProc.bo' method=post enctype="multipart/form-data">
 			<!-- form 시작 -->
 			<div id="centerwrapper" class="pt-3">
 				<div class="container" id="contents">
@@ -385,6 +398,7 @@
 								<div class="card-body" contenteditable="true" id="editorDiv"></div>
 								<input type=hidden id="caretposition" value="0">
 								<input type=hidden name=contents id=contentsHidden> 
+								<input type=hidden name=filters id=filtersHidden>
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a
@@ -397,9 +411,10 @@
 								</ul>
 							</div>
 							<div class="py-3">
-								<button type="submit" id="submitbutton">
+								<button type="button" id="submitbutton">
 									<i class="fas fa-arrow-right fa-2x"></i>
 								</button>
+								<button type=button id="testButton">테스트</button>
 							</div>
 						</div>
 					</div>
