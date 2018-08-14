@@ -25,10 +25,10 @@
 				</div>
 	
 				<div class="profile-user-settings">
-					<h1 class="profile-user-name">${result[0].id}</h1>
-					<div class="profile-edit-btn">팔로잉</div>
-					<div class="profile-settings-btn"><i id="toMy" class="fas fa-cog"></i></div>
-					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button>
+					<h2 class="profile-user-name">${result[0].id}</h2>
+					<div class="profile-edit-btn" id="toMy">프로필편집</div>
+					<div class="profile-settings-btn"><i class="far fa-times-circle" id="logout"></i></div>
+<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
 				</div>
 	
 				<div class="profile-stats">
