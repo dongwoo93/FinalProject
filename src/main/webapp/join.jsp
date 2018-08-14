@@ -450,9 +450,9 @@ $("#sign").click(function(){
 							if(insert==data){
 								$("#certification").css("background-color", "#ccff33");
 								 $("input[name=certification]").attr("readonly",true);
-							
+									
 								phoneConfirm=1;		
-								
+								alert("인증 성공");
 							}else{
 								$("#certification").css("background-color", "red");
 								phoneConfirm=0;		
@@ -644,16 +644,17 @@ $("#sign").click(function(){
 					
 					if(color == "rgb(76, 175, 80)" || color=="") {
 						console.log("띵동");
-						emailCheck=1;
-						/*   $.ajax({
-				                url: "emailCheck", // 처리할 페이지(서블릿) 주소
+				
+					   $.ajax({
+				                url: "emailCheck.do", // 처리할 페이지(서블릿) 주소
 				                type: "get",
 				                data: {email: email},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 				                success: function(data) {
 				                    console.log("AJAX Request 성공");
-				                    if(data==1){
-						                
-				                    	emailCheck=0;
+				                    console.log(data);
+				                    if(data==2){
+						              
+				                    		emailCheck=0;
 					                	   var start = $(".email");
 					   						start.after('<div class="mt-2" id="chEmail"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>');
 					                	
@@ -680,7 +681,7 @@ $("#sign").click(function(){
 				                complete: function(){
 				                    console.log("AJAX 종료");
 				                }
-				            });  */
+				            });  
 				          
 			
 						console.log(emailCheck);
@@ -770,7 +771,7 @@ $(location).attr("href", "main.jsp");
 							<div class="input-field col s6 pw">
 								<input id="pw" name="pw" oninput="checkPwd()" type="password"
 									class="validate" minlength="6" required> <label
-									for="pw">PassWord</label>
+									for="pw">PassWord 6자리 이상</label>
 							</div>
 							<div class="input-field col s6 pw2">
 								<input id="pwCheck" oninput="checkPwd()" type="password"
