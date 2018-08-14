@@ -1,6 +1,7 @@
-img {
-		display: block;
+	img {
+			display: block;
 	}
+	
 	.my {
 		max-width: 93.5rem;
 		margin: 0 auto;
@@ -16,6 +17,8 @@ img {
 	/* Profile Section */	
 	.profile {
 		padding: 5rem 0;
+		
+		
 	}
 	
 	.profile::after {
@@ -30,7 +33,7 @@ img {
 		justify-content: center;
 		align-items: center;
 		margin-right: 3rem;
-	}	
+	}	 
 	.profile-image img {
 		border-radius: 50%;
 	}
@@ -346,3 +349,9 @@ img {
    	#picture{
    		 border : 3px solid white; 
    	}
+   	
+   	.carousel-inner img {
+      width: 100%;
+    max-height: 494px;
+    object-fit: contain;
+  }

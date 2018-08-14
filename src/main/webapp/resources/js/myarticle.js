@@ -3,48 +3,13 @@ $(document).ready(function() {
 		$(location).attr("href", "logout.do");
 	})
 	
-	$("#boardmodal").on("shown.bs.modal", function () {
-		
-		var seq = $("#hidden").val();
-		 
-		
-		var prevSeq;
-		var nextSeq;
-		
-		for(var i =0; i<list.length; i++) {
-			if(seq == list[i]) {
-				if(i==0) {
-					$("#goPrev").hide();
-				}
-				else if(i == (list.length-1)){
-					$("#goNext").hide();
-				} 
-				else { 
-					$("#goPrev").show(); 
-					$("#goNext").show();
-					
-				}
-				prevSeq = list[i-1];
-				nextSeq = list[i+1];
-				break;
-			}
+	$('#boardmodal').on('hidden.bs.modal', function () {
+		$(".first").remove();
+		$("#firstli").attr('class', 'active');
+		$("#firstItem").attr('class', 'carousel-item active');
+		if($("#carousel-indicators li:nth-child(2)").length) {
+			$(".element").remove();
 		}
-		
-	    $.ajax({
-	           type: "POST",
-	           url: "boardView.bo",
-	           data: {seq:seq},
-	           success: function(data)
-	           {
-	        	   $("#modalid").text(data.id);	        	   
-// 	               $("#modalcontents").text(data.contents);       
-				   $("#modalcontents").html(data.contents);
-	               $("#seq").val(data.board_seq);
-	               $("#modalid2").text(data.id);	   
-	               $("#prev").val(prevSeq); 
-            	   $("#next").val(nextSeq);
-	           	}
-	         });
 		});
 	
 		$("#toMy").click(function() {
@@ -52,6 +17,12 @@ $(document).ready(function() {
 			})
 			
 			$("#goNext").click(function() {
+				$(".first").remove();
+				$("#firstli").attr('class', 'active');
+				$("#firstItem").attr('class', 'carousel-item active');
+				if($("#carousel-indicators li:nth-child(2)").length) {
+					$(".element").remove();
+				}
 			var seq = $("#next").val();
 			var prevSeq;
 			var nextSeq;
@@ -59,9 +30,11 @@ $(document).ready(function() {
 				if(seq == list[i]) {
 					if(i==0) {
 						$("#goPrev").hide();
+						$("#goNext").show();
 					}
 					else if(i == (list.length-1)){
 						$("#goNext").hide();
+						$("#goPrev").show();
 					} 
 					else { 
 						$("#goPrev").show(); 
@@ -79,12 +52,18 @@ $(document).ready(function() {
 			           data: {seq:seq},
 			           success: function(data)
 			           {
-			        	   $("#modalid").text(data.id);	        	   
-						   $("#modalcontents").html(data.contents);
-			               $("#seq").val(data.board_seq);
-			               $("#modalid2").text(data.id);	   
+			        	   $("#modalid").text(data[0].id);	        	   
+						   $("#modalcontents").html(data[0].contents);
+			               $("#seq").val(data[0].board_seq);
+			               $("#modalid2").text(data[0].id);	   
 			               $("#prev").val(prevSeq); 
                     	   $("#next").val(nextSeq);
+                    	   $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                    	   for(var i = 1; i < data[1].length; i++) {
+                    		   $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
+                    		   $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");
+                    		   
+                    	   }
                     	   
               
 			           	}
@@ -92,6 +71,12 @@ $(document).ready(function() {
 			})
 			
 			$("#goPrev").click(function() {
+				$(".first").remove();
+				$("#firstli").attr('class', 'active');
+				$("#firstItem").attr('class', 'carousel-item active');
+				if($("#carousel-indicators li:nth-child(2)").length) {
+					$(".element").remove();
+				}
 			var seq = $("#prev").val();
 			var prevSeq;
 			var nextSeq;
@@ -99,9 +84,11 @@ $(document).ready(function() {
 				if(seq == list[i]) {
 					if(i==0) {
 						$("#goPrev").hide();
+						$("#goNext").show();
 					}
 					else if(i == (list.length-1)){
 						$("#goNext").hide();
+						$("#goPrev").show();
 					} 
 					else { 
 						$("#goPrev").show(); 
@@ -119,16 +106,19 @@ $(document).ready(function() {
 			           data: {seq:seq},
 			           success: function(data)
 			           {
-			        	   $("#modalid").text(data.id);	        	       
-						   $("#modalcontents").html(data.contents);
-			               $("#seq").val(data.board_seq);
-			               $("#modalid2").text(data.id);	 
+			        	   $("#modalid").text(data[0].id);	        	       
+						   $("#modalcontents").html(data[0].contents);
+			               $("#seq").val(data[0].board_seq);
+			               $("#modalid2").text(data[0].id);	 
 			               $("#prev").val(prevSeq); 
-                    	   $("#next").val(nextSeq); 
-                    	   
- 							if(i == 0) {
+                    	   $("#next").val(nextSeq);
+                    	   $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                    	   for(var i = 1; i < data[1].length; i++) {
+                    		   $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
+                    		   $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");
                     		   
                     	   }
+                    	   
 			           	}
 			         });
 			})
