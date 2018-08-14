@@ -1,8 +1,276 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ include file="include/top.jsp"%>
-    <link rel="stylesheet" href="resources/css/instagram.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/write.css">
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="https://v40.pingendo.com/assets/4.0.0/default/theme.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="resources/css/instagram.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<style>
+/*    전체적인틀 CSS*/
+#allwrapper {
+	height: auto;
+}
+
+#navbar {
+	border-bottom: 1px solid #ccc;
+	position: fixed;
+	z-index: 1;
+	width: 100%;
+	background-color: #80DEEA;
+}
+
+#topwrapper {
+	height: 72px;
+}
+
+#navcontainer {
+	max-width: 1000px;
+}
+
+#search {
+	height: 25px;
+	border: 0.6px solid #ccc;
+}
+
+#instagramicon {
+	color: white;
+	border-right: 1px solid white;
+	padding-right: 13px;
+}
+
+.nav-icon {
+	font-size: 22px;
+	color: white;
+}
+
+.nav-item>a {
+	margin-left: 25px;
+}
+
+.navbar-nav {
+	flex-direction: row;
+}
+
+@media ( max-width : 768px) {
+	.nav-icon {
+		font-size: 20px;
+	}
+}
+
+@media ( min-width : 430px) {
+	.logo {
+		display: flex !important;
+		flex-basis: auto;
+	}
+}
+
+@media ( max-width : 411.33px) {
+	.nav-item>a {
+		margin-left: 40px;
+	}
+}
+
+.logo {
+	display: none;
+	flex-grow: 1;
+}
+
+#mainname {
+	color: white;
+}
+
+#contents {
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#centerwrapper {
+	height: 100%;
+}
+
+/*    전체적인틀 CSS 끝*/
+
+/*    글쓰기 contents CSS*/
+#writeform {
+	width: 100%;
+	margin-top: 3%;
+}
+
+#writetextarea {
+	width: 100%;
+	height: 250px;
+	resize: none;
+}
+
+#submitbutton {
+	border: none;
+	background-color: white;
+	cursor: pointer;
+}
+
+.imgWidth100 {
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+}
+
+/*
+        .divImgWidth100 {
+            background-size: contain; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            width: 100%; 
+            height: 300px;
+        }
+*/
+#attachDivInner {
+	text-align: center;
+	/*            display: table; margin-bottom: auto; margin-top: auto;*/
+	/*
+            
+            display:flex;
+            justify-content:center;
+            align-items:center;
+*/
+	line-height: 620px;
+}
+
+/*위치 모달 css*/
+.tagicon {
+	color: gray;
+}
+/*구글 지도 api*/
+#map {
+	width: 100%;
+	height: 400px;
+	border-radius: 8px;
+}
+
+.pac-controls label {
+	font-family: Roboto;
+	font-size: 13px;
+	font-weight: 300;
+}
+
+#pac-input {
+	font-size: 20px;
+	font-weight: 500;
+	width: 600px;
+	background: rgba(255, 255, 255, 0.7);
+	border: none;
+	border-radius: 5px;
+}
+
+.pac-container {
+	z-index: 1050;
+}
+/*사람태그모달 태그1*/
+.span {
+	position: absolute;
+}
+
+.friendlist {
+	height: 35px;
+	cursor: pointer;
+	border-radius: 5px;
+	overflow-y: scroll;
+}
+
+.friendlist:hover {
+	background-color: #80DEEA;
+	color: white;
+}
+
+ol, ul {
+	list-style: outside none none;
+}
+
+.tags, .tag {
+	background: none repeat scroll 0 0 #fff;
+	display: table;
+	padding: 0.5em;
+	width: 100%;
+}
+
+.tags li.tagAdd, .tags li.addedTag, .tag li.tagAdd, .tag li.addedTag {
+	float: left;
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+}
+
+.tags li.addedTag, .tag li.addedTag {
+	background: none repeat scroll 0 0 #80DEEA;
+	border-radius: 2px;
+	color: #fff;
+	padding: 0.25em;
+}
+
+li.addedTag {
+	border: 1px solid transparent;
+	border-radius: 2px;
+	box-shadow: none;
+	display: block;
+	padding: 0.5em;
+}
+
+span.tagRemove {
+	cursor: pointer;
+	display: inline-block;
+	padding-left: 0.5em;
+}
+
+span.tagRemove:hover {
+	color: #222222;
+}
+
+#persondagmodal {
+	height: 500px;
+}
+
+#fileSelect{
+	
+}
+
+.filebox input[type="file"] { 
+	border: 2px solid #35e0db;
+    border-radius: 25px;
+    
+}
+
+
+
+
+</style>
 <script>
         // var filesArr = Array.prototype.slice.call(files);
 
@@ -44,126 +312,6 @@
         
 
         $(document).ready(function() {
-        	console.log('쌍두취3ddㅇㅇ3너무합니다진짜...');
-        	        	
-        	  <!-- 000000000000000000000000000000000000000000 -->        	  
-              function getCaretPosition(editableDiv) {   
-                  var caretPos = 0, sel, range;   
-                  if (window.getSelection) {   
-                    sel = window.getSelection();   
-                    if (sel.rangeCount) {   
-                      range = sel.getRangeAt(0);   
-                    
-                      // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
-                      if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) { 
-                        caretPos = range.endOffset;
-                       // console.log("caretPos: " + caretPos)
-               
-        				
-        				var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
-                        var isEqualOrLower = false;
-        				while(i >= 0){
-        					if($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() != $(range.commonAncestorContainer).text()){
-        						i--;
-        						continue;
-        					} else {
-        						while( i >= 0 ){
-        							var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
-                              	  console.log($impl.text());
-                          		  caretPos += $impl.text().length
-                          		  i--;
-        						}
-        						break;
-        					}
-        				}             	  
-                        
-                      }                       
-                    }
-                    
-                      
-                  } else if (document.selection && document.selection.createRange) {   
-                    range = document.selection.createRange();   
-                    if (range.parentElement() == editableDiv) {  
-                    	
-                      var tempEl = document.createElement("span");   
-                      editableDiv.insertBefore(tempEl, editableDiv.firstChild);   
-                      var tempRange = range.duplicate();   
-                      tempRange.moveToElementText(tempEl);   
-                      tempRange.setEndPoint("EndToEnd", range);   
-                      caretPos = tempRange.text.length;   
-                    }   
-                  }
-   
-                  return caretPos;   
-                }
-              
-              
-   
-              var update = function() {   
-                  $('#caretposition').val(getCaretPosition(this));   
-                };    
-                
-      
-              $('#editorDiv').on("mousedown mouseup keydown keyup", update);         
-             
-   			
-              var map = {16: false, 32: false}; 
-              $("#editorDiv").keyup(function(e){   
-            	   
-                  if ( (e.keyCode === 32 ) ) {   
-                         map[e.keyCode] = true;     
-                         
-                         if(parseInt($('#caretposition').val()) == 0){
-                        	 // alert('뭐?')                        	 
-                         } else if (parseInt($('#caretposition').val()) == $('#editorDiv').text().length){
-                        	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
-                         } else {
-                        	 // alert('임마?')
-                        	 return;
-                         }
-                         
-                         
-                         var regex = /(#[^#\s,;<>.]+)/gi;  
-                             if(regex){      
-                            	 var newtxt = "<span class=fugue>" + $('#editorDiv').text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
-                            	 									  
-       							 // console.log($('#editorDiv').text().length);   
-                             	// console.log(newtxt)   
-                              newtxt += "<kz></kz>"   
-                              $('#editorDiv').html(newtxt)  
-                                 var el = document.getElementById("editorDiv");   
-                                 console.log("childNodes: " + el.childNodes.length); 
-                                 var range = document.createRange();   
-                                 var sel = window.getSelection();   
-                                 range.setStart(el.lastChild, 0);   
-                                 range.collapse(false);   
-                                 sel.removeAllRanges();   
-                                 sel.addRange(range);                         
-       
-                                 $('#editorDiv').focusout();   
-                                 $('#editorDiv').focus();
-                         if( parseInt($('#caretposition').val()) == $('#editorDiv').text().length ){
-                        	 
-                         }
-   
-                         }   
-                  }   
-                 })/* .keyup(function(e){   
-                    if(e.keyCode === 32){   
-                       map[e.keyCode] = false;             
-   
-                      }
-                    console.log($('#editorDiv').text().length);
-   
-                 }); */   
-              <!-- 000000000000000000000000000000000000000000 -->  
-   
-              $('#submitbutton').click(function(){   
-                // alert('전송')   
-                $('#contentsHidden').val($('#editorDiv').text())   
-                $('#frm').submit();   
-              });
-   
 			
             $("#searchfriend").keyup(function(){
             	 var searchtext = $(this).val();
@@ -217,10 +365,15 @@
                    
   
             function readImage(input) {
+
                 var files = input.files;
+
                 console.log(files);
+
                 for (i = 0; i < files.length; i++) {
+
                     console.log(files[i])
+
                     if (files[i].size > 1024 * 1024 * 10) {
                         alert('10MB 초과');
                         continue;
@@ -228,10 +381,11 @@
 
                     if (input.files && input.files[i]) {
                         var reader = new FileReader();
-                        
+
                         if (i == 0) {
                             reader.onload = function(e) {
-                                $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
+                                $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
+                        
                             }
                         
                         } else {
@@ -246,22 +400,70 @@
 //                                    maxHeight = maxHeight
 //                                }
 //                             $('#attachDiv').css('height', maxHeight + 'px');
-//                                maxHeight = 0; 
+//                                maxHeight = 0;
+                                
+                                
+  
                             }                          
-                        }        
+                        }             
+                        
+                        
+                        
                     }
 
                     reader.readAsDataURL(input.files[i]);
                     console.log(reader);     
                     
-                }  
-            }  
+                }             
+                 
+
+            }
+            
+           
+            
+            
         });
+        
+        
+    
     
     </script>
 
+</head>
 
-    <div id="allwrapper">
+<body>
+
+	<div id="topwrapper">
+		<nav class="navbar navbar-expand-md navbar-light" id="navbar">
+			<div class="container" id="navcontainer">
+				<i class="fab fa-instagram fa-2x" id="instagramicon"></i>
+				<div class="logo">
+					<a class="navbar-brand ml-2 " href="#" id="mainname">Instagram</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<form class="form-inline m-0">
+						<input class="form-control" type="text" placeholder="검색"
+							id="search">
+					</form>
+				</div>
+				<div id="nav-icons">
+					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link" href="#"><i
+								class="far fa-comment-alt nav-icon"></i></a></li>
+						<li class="nav-item"><a class="nav-link" href="write.board"><i
+								class="fas fa-pencil-alt nav-icon"></i></a></li>
+						<li class="nav-item"><a class="nav-link" href="#"><i
+								class="far fa-compass nav-icon"></i></a></li>
+						<li class="nav-item"><a class="nav-link" href="#"><i
+								class="far fa-heart nav-icon"></i></a></li>
+						<li class="nav-item"><a class="nav-link" href="board.bo"><i
+								class="far fa-user nav-icon"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div id="allwrapper">
 		<form action='writeProc.bo' method=post enctype="multipart/form-data">
 			<!-- form 시작 -->
 			<div id="centerwrapper" class="pt-3">
@@ -279,6 +481,8 @@
 								name="filename[]"> <i class="far fa-images"></i>
 								</div>
 								
+
+
 
 							<div id="attachDiv" style="height: 600px;">
 								<div id="carouselAttachDiv" class="carousel slide "
@@ -357,10 +561,8 @@
 						</div>
 						<div class="col-md-5" id="writeform">
 							<div class="card">
-		<!-- 글쓰기 칸 -->
-								<div class="card-body" contenteditable="true" id="editorDiv"></div>
-								<input type=hidden id="caretposition" value="0">
-								<input type=hidden name=contents id=contentsHidden> 
+								<div class="card-body" contenteditable="true" id="writetextarea"
+									placeholder="Contents..." name=contents></div>
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a
@@ -412,6 +614,21 @@
 		                            
 		}
 		</script>
+
+
+	<div class="pt-4 pb-3" id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10">
+					<p class="lead">Sign up to our newsletter for the latest news</p>
+				</div>
+
+				<div class="col-4 col-md-2 align-self-center">
+					<p>@2018Instagram</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!--       위치태그하기 Modal부분-->
 	<div id="placeModal" class="modal fade bd-example-modal-lg"
@@ -616,4 +833,10 @@
       }
 
     </script>
-    <%@ include file="include/bottom.jsp"%>
+
+
+
+
+</body>
+
+</html>
