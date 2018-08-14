@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -100,8 +101,7 @@ public class BoardController {
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
 		mav.setViewName("redirect:board.bo?id="+id);
-		return mav;
-		
+		return mav;	
 	}
 	
 	
@@ -153,8 +153,17 @@ public class BoardController {
 	@RequestMapping("/write.board")
 	   public ModelAndView writeBoard() {
 	      System.out.println("@@WRITE BOARD");
+	      
+	      List<String> filter = new ArrayList<>(Arrays.asList("filter-1977","filter-aden","filter-amaro","filter-ashby","filter-brannan",
+          		"filter-brooklyn","filter-charmes","filter-clarendon","filter-crema","filter-dogpatch",
+          		"filter-earlybird","filter-gingham","filter-ginza","filter-hefe","filter-helena","filter-hudson",
+          		"filter-inkwell","filter-kelvin","filter-juno","filter-lark","filter-lofi","filter-ludwig",
+          		"filter-maven","filter-mayfair","filter-moon","filter-nashville","filter-perpetua","filter-poprocket",
+          		"filter-reyes","filter-rise","filter-sierra","filter-skyline","filter-slumber","filter-stinson",
+          		"filter-sutro","filter-toaster","filter-valencia","filter-vesper","filter-walden","filter-willow","filter-xpro-ii"));
 	      ModelAndView mav = new ModelAndView();
-	      mav.setViewName("write2.jsp");
+	      mav.addObject("filter", filter);
+	      mav.setViewName("write2.jsp"); 
 	      return mav;
 	   }
 
@@ -164,7 +173,6 @@ public class BoardController {
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files) {
 		
-		System.out.println(contents);
 	
 		
 		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
