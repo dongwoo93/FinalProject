@@ -44,6 +44,126 @@
         
 
         $(document).ready(function() {
+        	console.log('쌍두취3ddㅇㅇ3너무합니다진짜...');
+        	        	
+        	  <!-- 000000000000000000000000000000000000000000 -->        	  
+              function getCaretPosition(editableDiv) {   
+                  var caretPos = 0, sel, range;   
+                  if (window.getSelection) {   
+                    sel = window.getSelection();   
+                    if (sel.rangeCount) {   
+                      range = sel.getRangeAt(0);   
+                    
+                      // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+                      if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) { 
+                        caretPos = range.endOffset;
+                       // console.log("caretPos: " + caretPos)
+               
+        				
+        				var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+                        var isEqualOrLower = false;
+        				while(i >= 0){
+        					if($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() != $(range.commonAncestorContainer).text()){
+        						i--;
+        						continue;
+        					} else {
+        						while( i >= 0 ){
+        							var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+                              	  console.log($impl.text());
+                          		  caretPos += $impl.text().length
+                          		  i--;
+        						}
+        						break;
+        					}
+        				}             	  
+                        
+                      }                       
+                    }
+                    
+                      
+                  } else if (document.selection && document.selection.createRange) {   
+                    range = document.selection.createRange();   
+                    if (range.parentElement() == editableDiv) {  
+                    	
+                      var tempEl = document.createElement("span");   
+                      editableDiv.insertBefore(tempEl, editableDiv.firstChild);   
+                      var tempRange = range.duplicate();   
+                      tempRange.moveToElementText(tempEl);   
+                      tempRange.setEndPoint("EndToEnd", range);   
+                      caretPos = tempRange.text.length;   
+                    }   
+                  }
+   
+                  return caretPos;   
+                }
+              
+              
+   
+              var update = function() {   
+                  $('#caretposition').val(getCaretPosition(this));   
+                };    
+                
+      
+              $('#editorDiv').on("mousedown mouseup keydown keyup", update);         
+             
+   			
+              var map = {16: false, 32: false}; 
+              $("#editorDiv").keyup(function(e){   
+            	   
+                  if ( (e.keyCode === 32 ) ) {   
+                         map[e.keyCode] = true;     
+                         
+                         if(parseInt($('#caretposition').val()) == 0){
+                        	 // alert('뭐?')                        	 
+                         } else if (parseInt($('#caretposition').val()) == $('#editorDiv').text().length){
+                        	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
+                         } else {
+                        	 // alert('임마?')
+                        	 return;
+                         }
+                         
+                         
+                         var regex = /(#[^#\s,;<>.]+)/gi;  
+                             if(regex){      
+                            	 var newtxt = "<span class=fugue>" + $('#editorDiv').text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
+                            	 									  
+       							 // console.log($('#editorDiv').text().length);   
+                             	// console.log(newtxt)   
+                              newtxt += "<kz></kz>"   
+                              $('#editorDiv').html(newtxt)  
+                                 var el = document.getElementById("editorDiv");   
+                                 console.log("childNodes: " + el.childNodes.length); 
+                                 var range = document.createRange();   
+                                 var sel = window.getSelection();   
+                                 range.setStart(el.lastChild, 0);   
+                                 range.collapse(false);   
+                                 sel.removeAllRanges();   
+                                 sel.addRange(range);                         
+       
+                                 $('#editorDiv').focusout();   
+                                 $('#editorDiv').focus();
+                         if( parseInt($('#caretposition').val()) == $('#editorDiv').text().length ){
+                        	 
+                         }
+   
+                         }   
+                  }   
+                 })/* .keyup(function(e){   
+                    if(e.keyCode === 32){   
+                       map[e.keyCode] = false;             
+   
+                      }
+                    console.log($('#editorDiv').text().length);
+   
+                 }); */   
+              <!-- 000000000000000000000000000000000000000000 -->  
+   
+              $('#submitbutton').click(function(){   
+                // alert('전송')   
+                $('#contentsHidden').val($('#editorDiv').text())   
+                $('#frm').submit();   
+              });
+   
 			
             $("#searchfriend").keyup(function(){
             	 var searchtext = $(this).val();
@@ -97,15 +217,10 @@
                    
   
             function readImage(input) {
-
                 var files = input.files;
-
                 console.log(files);
-
                 for (i = 0; i < files.length; i++) {
-
                     console.log(files[i])
-
                     if (files[i].size > 1024 * 1024 * 10) {
                         alert('10MB 초과');
                         continue;
@@ -113,11 +228,10 @@
 
                     if (input.files && input.files[i]) {
                         var reader = new FileReader();
-
+                        
                         if (i == 0) {
                             reader.onload = function(e) {
-                                $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                                  
-                        
+                                $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
                             }
                         
                         } else {
@@ -132,32 +246,17 @@
 //                                    maxHeight = maxHeight
 //                                }
 //                             $('#attachDiv').css('height', maxHeight + 'px');
-//                                maxHeight = 0;
-                                
-                                
-  
+//                                maxHeight = 0; 
                             }                          
-                        }             
-                        
-                        
-                        
+                        }        
                     }
 
                     reader.readAsDataURL(input.files[i]);
                     console.log(reader);     
                     
-                }             
-                 
-
-            }
-            
-           
-            
-            
+                }  
+            }  
         });
-        
-        
-    
     
     </script>
 
@@ -180,8 +279,6 @@
 								name="filename[]"> <i class="far fa-images"></i>
 								</div>
 								
-
-
 
 							<div id="attachDiv" style="height: 600px;">
 								<div id="carouselAttachDiv" class="carousel slide "
@@ -260,8 +357,10 @@
 						</div>
 						<div class="col-md-5" id="writeform">
 							<div class="card">
-								<div class="card-body" contenteditable="true" id="writetextarea"
-									placeholder="Contents..." name=contents></div>
+		<!-- 글쓰기 칸 -->
+								<div class="card-body" contenteditable="true" id="editorDiv"></div>
+								<input type=hidden id="caretposition" value="0">
+								<input type=hidden name=contents id=contentsHidden> 
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a

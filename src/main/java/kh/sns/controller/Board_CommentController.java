@@ -68,4 +68,27 @@ public class Board_CommentController {
       }
      
    }
+   
+   @RequestMapping("/commentmod.co")
+   public void modComment(Board_CommentDTO dto, HttpServletResponse response)  {
+      System.out.println(dto.getComment_seq() + " : " + dto.getComment_contents());  
+      int result = 0; 
+      try {
+         result = this.boardcommentservice.modComment(dto);   
+         System.out.println(result);   
+         if(result > 0 ) {
+            System.out.println("mod success");   
+         }   
+         else {
+            System.out.println("mod failed");
+         }
+         
+      }catch(Exception e) {
+         System.out.println("요기는  commentmod.co입니다");
+         e.printStackTrace();
+      }
+     
+   }
+   
+   
 }

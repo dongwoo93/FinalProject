@@ -21,15 +21,16 @@ public class Board_LikeController {
 		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_liked());
 	
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println("띠용");
-	
-		
 		if(dto.getIs_liked().equals("y")) {
 			board_likeservice.insertLike(dto);
 		}
 		else if(dto.getIs_liked().equals("n")) {
 			board_likeservice.deleteLike(dto);
 		}
+		
+		int likeCount = board_likeservice.selectLike(dto);
+		response.getWriter().println(likeCount);
+		
 		
 	}
 

@@ -29,6 +29,11 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
+	public String boardCount(String id) throws Exception {
+		return this.dao.boardCount(id);
+	}
+	
+	@Override
 	public int deleteBoard(int seq) throws Exception{
 	
 		return this.dao.deleteBoard(seq);
@@ -112,6 +117,8 @@ public class IBoardService implements BoardService {
 		// TODO Auto-generated method stub
 		return dao.search(keyword);
 	}
+
+	
 	
 	
 }
