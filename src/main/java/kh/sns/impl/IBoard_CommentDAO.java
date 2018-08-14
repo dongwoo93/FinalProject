@@ -25,9 +25,9 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 
 	@Override
 	public int insertComment(Board_CommentDTO dto) throws Exception {
-		String sql = "insert into board_comment values(board_comment_seq.nextval,?,?,?,default)";
+		String sql = "insert into board_comment values(?,?,?,?,default)";
 		System.out.println(dto.getComment_contents() + " : " + dto.getId() + " : " + dto.getBoard_seq()); 
-		return template.update(sql, dto.getBoard_seq(),dto.getId(),dto.getComment_contents());
+		return template.update(sql, dto.getComment_seq(),dto.getBoard_seq(),dto.getId(),dto.getComment_contents()); 
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		String sql = "delete from board_comment where comment_seq=?";
 		return template.update(sql,comment_seq);
 	}
-
+ 
 	@Override
 	public int getCommentSeq() throws Exception {
 		String sql = "select BOARD_COMMENT_SEQ.nextval from dual";
