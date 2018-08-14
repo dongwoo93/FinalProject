@@ -31,4 +31,8 @@ public class IBoard_CommentService implements Board_CommentService {
 	public int getCommentSeq() throws Exception {
 		return board_commentdao.getCommentSeq();
 	}
+	
+	public int modComment(Board_CommentDTO dto) {
+		return board_commentdao.modComment(dto);
+	}
 }
