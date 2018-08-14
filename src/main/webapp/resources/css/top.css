@@ -109,6 +109,7 @@
 
 #navbar.scrolled #instagramicon {
 	color: #dc3545;
+	border-right: 1px solid black;
 }
 #navbar.scrolled .text-white {
 	color: black !important;
