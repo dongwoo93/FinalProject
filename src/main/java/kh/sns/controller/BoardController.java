@@ -183,6 +183,12 @@ public class BoardController {
 		
 		System.out.println(request.getParameter("filters"));
 		
+		String[] filterList = request.getParameter("filters").split(";");
+		
+		for(String s : filterList) {
+			System.out.println(s);
+		}
+		
 		for(MultipartFile mf : mfList) {
 			try {
 				
