@@ -1,5 +1,8 @@
 package kh.sns.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +32,17 @@ public class IBoard_LikeService implements Board_LikeService {
 	public int deleteLike(Board_LikeDTO dto) throws Exception {
 		// TODO Auto-generated method stub
 		return board_likedao.deleteLike(dto);
+	}
+
+	@Override
+	public List<Integer> searchLike(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return board_likedao.searchLike(id);
+	}
+
+	@Override
+	public List<int[]> selectLikeAll() throws Exception {
+		// TODO Auto-generated method stub
+		return board_likedao.selectLikeAll();
 	}
 }
