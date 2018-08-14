@@ -142,29 +142,9 @@
 				<div class="hidden" id="hidden${tmp.board_seq}">
 				
 	 		   	<script>
-				//   	
-				   //	$("#${tmp.board_seq}").click(function() { 
+		 
 				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
-				  // 	});
-				   	
-// 				   		var x = document.getElementById("hidden${tmp.board_seq}");
-// 					    if (x.style.display === "none") {
-// 					        x.style.display = "block";
-// 					    } else {
-// 					        x.style.display = "none";
-// 					    }    
-   
-					
-		    	
-					/* function myFunction() {   
-					    var x = document.getElementById("hidden${tmp.board_seq}");
-					    if (x.style.display === "none") {
-					        x.style.display = "block";
-					    } else {
-					        x.style.display = "none";
-					    }
-					} */
-					
+  
 			 /* 	
 					var regex = /(#[^#\s,;]+)/gi  ;             
 	 		    	var txt = "${tmp.contents}";     
@@ -194,10 +174,10 @@
 				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
 				   	});
 				   	
-					</script>
+					</script>  
 							</div>
 							
-						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+						<p class="text-info" id="myComment${tmp.board_seq}"></p>
 						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
 						
 						<!-- 댓글자리 -->
@@ -207,44 +187,110 @@
 						<c:when test="${commenttmp.key == tmp.board_seq}">  
 						<c:forEach var="comment" items="${commenttmp.value}">
 					 
-					
+					<c:if test="${commenttmp.value.size() > 2 }">      
+                     <script>    
+                     $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
+                     </script>   
+                     </c:if> 
 						
 						
 							<ul id="ul${comment.comment_seq}">     
-							<li id='li1'><a href="#">${comment.id}</a></li> 
-							<li id='li2'>${comment.comment_contents}</li> 
-							
-							<c:choose>  
-							<c:when test ="${sessionScope.loginId == comment.id}">  
-							<li id='li3'><a id='commentdel${comment.comment_seq}'>x</a> </li>    
-							</c:when>
-							</c:choose>
+							<li id='li1'><a href="#">${comment.id}</a></li>   
+							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents} " readonly></li> 
+	
+							<li id='li3'><a id='commentdel${comment.comment_seq}'></a> </li>
+							<li id='li4'><a id='commentmod${comment.comment_seq}'></a> </li>    
+
 							</ul>
 					
-				       
-				      
+				       <c:choose>
+				       <c:when test ="${sessionScope.loginId == comment.id}">
+				        
 				      				<script>  
+				      				
+				      				$("#ul${comment.comment_seq}").hover(function() {
+				      					$("#ul${comment.comment_seq}").attr("style","background-color:#E1F5FE");
+				      					$("#commenttxt${comment.comment_seq}").attr("style","background-color:#E1F5FE"); 
+				      					$("#commentdel${comment.comment_seq}").html("삭제");   
+				      					$("#commentmod${comment.comment_seq}").html("수정");
+				      	 				
+				      					
+				      				})
+				      				  
+				      				$("#ul${comment.comment_seq}").mouseleave(function() {
+				      					$("#ul${comment.comment_seq}").attr("style",false);  
+				      					$("#commenttxt${comment.comment_seq}").attr("style",false); 
+				      					$("#commentdel${comment.comment_seq}").html("");  
+				      					$("#commentmod${comment.comment_seq}").html("");
+				      				})
+				      				
+				      					$("#commentdel${comment.comment_seq}").click(function() {     
+				                        	$.ajax({
+				                                  type: "POST",  
+				                                  url: "commentdel.co",    
+				                                  data: {comment_seq:${comment.comment_seq}},
+				                                  success : function() {
+				                                   $("#ul${comment.comment_seq}").remove();  
+				                                  }
+				                                    
+				                             }) //ajax 
+				                          })
+				                          
+				                          var modnum = 0;
+				      				
+				                         $("#commentmod${comment.comment_seq}").click(function() {
+				                        	 modnum++;
+				                        	 if(modnum %2 != 0 ){  
+				                        		 
+				                        		 $("#commenttxt${comment.comment_seq}").attr("readonly",false);
+						                    	 $("#commenttxt${comment.comment_seq}").attr("style","border:0.5px solid lightgray");
+						                    	 $("#commenttxt${comment.comment_seq}").focus();  
+		 				
+				                        	 }
+				                        	 else {  
+				                        		 var txt = $("#commenttxt${comment.comment_seq}").val();
+					                    	 	  
+		 				                        	$.ajax({ 
+		 				                                  type: "POST",    
+		 				                                  url: "commentmod.co",    
+		 				                                  data: {comment_seq:${comment.comment_seq}, comment_contents:txt},  
+		 				                                  success : function() {
+		 				                                	$("#commenttxt${comment.comment_seq}").attr("readonly",true);
+		 								                    $("#commenttxt${comment.comment_seq}").attr("style","border:none"); 
+		 								                   $("#commenttxt${comment.comment_seq}").attr("style","background-color:#E1F5FE");
+		 				                                  }
+						                                     
+		 				                             }); //ajax 
+				                        		 
+				                        	 }
+				                    	 	
+				                     	}); 
+				                         	
+				      					</script>
+				      				</c:when>
+				      				<c:otherwise>
+				      					<script>    
+				      				
+				      				$("#ul${comment.comment_seq}").hover(function() {     
+				      					$("#ul${comment.comment_seq}").attr("style","background-color:#E1F5FE");
+				      					$("#commenttxt${comment.comment_seq}").attr("style","background-color:#E1F5FE"); 
+				      					
+				      				})
+				      				  
+				      				$("#ul${comment.comment_seq}").mouseleave(function() {
+				      					$("#ul${comment.comment_seq}").attr("style",false);  
+				      					$("#commenttxt${comment.comment_seq}").attr("style",false); 
+				      				})
+				      				
+				      					</script>
+				      			</c:otherwise>
+				      				</c:choose>
 						    
-						$("#commentdel${comment.comment_seq}").click(function() {  
-							$.ajax({
-				 	 	           type: "POST",  
-				 	 	           url: "commentdel.co", 	
-				 	 	           data: {comment_seq:${comment.comment_seq}}  
-				 	 	             
-			        		   }) //ajax 
-			        		   $("#ul${comment.comment_seq}").remove(); 
-							
-						})    
 		
-						
-						</script>
-				      
 						</c:forEach>
 							</c:when>  
 								</c:choose>
-								
-								
-		
+							
 						</c:forEach>
 					
 					
@@ -256,11 +302,12 @@
 								<!--               -->
 								
 								
-								<div class="py-2">
+								<div class="crecodiv py-2">
   
 
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
-									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco ml-2 pl-2" id="comment${tmp.board_seq}"> 
 									<i class="fas fa-ellipsis-h btn mr-3"></i>
 
 
@@ -269,28 +316,98 @@
 								
 								<script>
 						
-						 		$('#comment${tmp.board_seq}').keypress(function(event){
-								        var keycode = (event.keyCode ? event.keyCode : event.which);
-								        if(keycode == '13'){
-								        	
-								        	var text = $("#comment${tmp.board_seq}").val();
-								        	if(text == ""){
-								        		alert("댓글을 입력해주세요");
-								        	}
-								        	else {  
-								         		
-								        		$.ajax({
-									 	 	           type: "POST",  
-									 	 	           url: "comment.co", 	
-									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text} 
-								        	
-								        		   }) //ajax 
-								        		 $("#comment${tmp.board_seq}").val("");       
-							        			$("#comment-contents${tmp.board_seq}").prepend("<ul ><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a href='#'>x</a> </li></ul> ")
-								        		
-								        	}	 
-								        }
-								    });  
+					
+								$('#comment${tmp.board_seq}').keypress(function(event){
+	                                var keycode = (event.keyCode ? event.keyCode : event.which);
+	                                if(keycode == '13'){
+	                                   
+	                                   var text = $("#comment${tmp.board_seq}").val();
+	                                   if(text == ""){
+	                                      alert("댓글을 입력해주세요");
+	                                   }
+	                                   else {  
+	                                       
+	                                      $.ajax({
+	                                              type: "POST",  
+	                                              url: "comment.co",    
+	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
+	                                              success : function(seq) {
+	                                 
+	                                               $("#comment${tmp.board_seq}").val("");            
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:14%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:12%'><a id='commentdel"+seq+"'></a> </li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"'></a></li></ul>")
+	                                 
+	           									$("#ul"+seq).hover(function() {  
+	           				      					$("#ul"+seq).attr("style","background-color:#E1F5FE");
+	           				      					$("#commenttxt"+seq).attr("style","border:none; width:100%; background-color:#E1F5FE"); 
+	           				      					$("#commentdel"+seq).html("삭제");   
+	           				      					$("#commentmod"+seq).html("수정");
+	           				      	 				
+	           				      					
+	           				      				})
+	           				      				  
+	           				      				$("#ul"+seq).mouseleave(function() {
+	           				      					$("#ul"+seq).attr("style",false);      
+	           				      					$("#commenttxt"+seq).attr("style","border:none; width:100%"); 
+	           				      					$("#commentdel"+seq).html("");  
+	           				      					$("#commentmod"+seq).html("");
+	           				      				})
+	           				      				
+	           				      			$("#commentdel"+seq).click(function() {     
+					                        	$.ajax({
+					                                  type: "POST",  
+					                                  url: "commentdel.co",    
+					                                  data: {comment_seq:seq},
+					                                  success : function() {
+					                                   $("#ul"+seq).remove();  
+					                                  }
+					                                    
+					                             }) //ajax 
+					                          })
+					                          
+					                          var modnum = 0;
+					      				
+					                         $("#commentmod"+seq).click(function() {
+					                        	 modnum++;
+					                        	 if(modnum %2 != 0 ){  
+					                        		 
+					                        		 $("#commenttxt"+seq).attr("readonly",false);
+							                    	 $("#commenttxt"+seq).attr("style","width:100%; border:0.5px solid lightgray");
+							                    	 $("#commenttxt"+seq).focus();  
+			 				
+					                        	 }
+					                        	 else {  
+					                        		 var txt = $("#commenttxt"+seq).val();
+						                    	 	  
+			 				                        	$.ajax({ 
+			 				                                  type: "POST",    
+			 				                                  url: "commentmod.co",    
+			 				                                  data: {comment_seq:seq, comment_contents:txt},  
+			 				                                  success : function() {
+			 				                                	$("#commenttxt"+seq).attr("readonly",true);
+			 								                    $("#commenttxt"+seq).attr("style","width:100%; border:none; background-color:#E1F5FE"); 
+			 								                   
+			 				                                  }
+							                                     
+			 				                             }); //ajax 
+					                        		 
+					                        	 }
+					                    	 	
+					                     	}); 
+	          							  }
+	                             
+	                                     }) //ajax 
+	                                   }    
+	                                }
+	                       
+	                          
+	                            }); 
+							 
+						
+								
+								
+	                                    
+	                                       	
+	                              
 						 		</script>
 							</div> <!--cont  -->
 						</div> <!-- feed -->
