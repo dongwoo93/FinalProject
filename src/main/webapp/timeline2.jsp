@@ -265,11 +265,47 @@
 
 									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="ml-2 pl-2" id="comment${tmp.board_seq}"> 
-									<i class="fas fa-ellipsis-h btn mr-3"></i>
+									
+									 <c:choose>
+				<c:when test="${result[0].id == sessionScope.loginId}">
+              
+		          <div class="btn-group bg-white">
+		            <button class="btn dropdown-toggle bg-white" data-placement="top"  data-toggle="dropdown"> </button>
+		            <div class="dropdown-menu">
+		              <a class="dropdown-item" href="#">보관</a>
+		              <div class="dropdown-divider" id="modifydiv"></div>
+		              <a class="dropdown-item" id="modify" href="#">수정</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item"  name=delete id="delete" href="#">삭제</a>
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+		            </div>
+		          </div>
+        
+        	<script>
+				
+			</script>
+	         
+	         </c:when>
+				<c:otherwise>  
+					<div class="btn-group bg-white">
+		            <button class="btn dropdown-toggle bg-white"  data-placement="top" data-toggle="dropdown"> </button>
+		            <div class="dropdown-menu" >
+		              <a class="dropdown-item" href="#">보관</a>	              
+		              <div class="dropdown-divider"></div>
+		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a> 
+		            </div>
+		          </div>
+		          
+		          
+				
+		           </c:otherwise>
+			</c:choose>
 
 
 								</div>
-								
 								
 								<script>
 						

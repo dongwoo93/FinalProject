@@ -19,13 +19,13 @@
 
 <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
 <script>
-var count = 5;
+
 	$(window).scroll(function(){
 		if($(window).scrollTop() >=$(document).height()- $(window).height()-50){
-			for(i=1;i<5;i++){
+			{
 				
 				
-		$('.container').append('<div><img src="https://unsplash.it/400/300/?random" border="1"></div>');
+		$('.article').append('<div><img src="https://unsplash.it/400/300/?random" border="1"></div>');
 			}
 		
 		}
@@ -49,7 +49,7 @@ height:770px;
 background:#ff0;
 }
 .container .article{
-	
+	align:center;
 	
 }
 
@@ -58,6 +58,7 @@ background:#ff0;
 <body>
 <div class="container">
 	<div class='article'><img src="https://unsplash.it/400/300/?random" border="1"></div>
+
 
 </div>
 
