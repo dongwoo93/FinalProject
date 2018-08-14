@@ -147,7 +147,105 @@ body {
 </style>
 </head>
 
+<script>
+function likeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
 
+function unlikeit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "like.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_liked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+function markit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "y"
+		},
+		success : function(resp) {
+			$(e).next().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+
+function unmarkit(e) {
+	var board_seq = $(e).attr("value");
+	$.ajax({
+		url : "bookmark.bo",
+		type : "get",
+		data : {
+			board_seq : board_seq,
+			id : "${sessionScope.loginId}",
+			is_marked : "n"
+		},
+		success : function(resp) {
+			$(e).prev().show();
+			$(e).hide();
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+$(document).ready(function() {
+	
+	$('#searchform').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+          var text = $("#searchform").val();
+        	if(text == ""){
+        		alert("검색어를 입력해 주세요");
+        	}
+        	else{
+        		
+        		$("#go").attr("onsubmit","return true;");
+        	} 
+        }
+    });
+
+})
+
+</script>
 
 <body>
 
@@ -194,13 +292,19 @@ body {
 							<c:forEach var="result" items="${result}" varStatus="status">
 								<div class="card">
 									<h4 class="card-title" id="searchTop">
-										<img
-											src="https://scontent-icn1-1.cdninstagram.com/vp/7c370096e65b401d7c23388739c4f142/5C09D614/t51.2885-19/s150x150/37329457_1608380405938260_7561205846328213504_n.jpg"
-											width="30" class="rounded-circle"> <a>${result.id}
-											<i id="icon" class="far fa-bookmark"></i> <i id="icon"
-											class="far fa-heart"></i>
+										<img src="" alt="Card image cap" width="30" class="rounded-circle"> 
+										<a>${result.id}
+											<!-- 아이콘 -->
+											 <a class="btn navbar-btn ml-2 text-white ">
+							                 <i value="${tmp.board_seq}" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
+							                 <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+							                 </a> 
+								 			<i value="${tmp.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+						                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+
 										</a> <a href="#">팔로우</a>
 									</h4>
+
 									<c:forEach var="media" items="${result2[status.index]}">
 										<a href="#"> <!--src='AttachedMedia/${media.system_file_name}'-->
 											<img class="card-img-top"
