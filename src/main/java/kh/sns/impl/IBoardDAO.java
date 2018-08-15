@@ -27,8 +27,8 @@ public class IBoardDAO implements BoardDAO  {
 	private JdbcTemplate template;
 
 	@Override
-	public List<BoardDTO> getBoard(String id) throws Exception {		 
-		String sql = "select * from board where id = ?";
+	public List<BoardDTO> getBoard(String id) throws Exception {	   	 
+		String sql = "select * from board where id = ? order by board_seq desc";
 		return template.query(sql, new Object[] {id}, new RowMapper<BoardDTO>() {
 
 			@Override
