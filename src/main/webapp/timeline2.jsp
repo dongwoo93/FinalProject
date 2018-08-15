@@ -155,8 +155,8 @@
                     <i value="${tmp.board_seq}" style="cursor: pointer; font-weight: bold; color: #00B8D4;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
                   
                     </c:when>  
-                    <c:otherwise>
-                     
+                    <c:otherwise> 
+                    
                     <i value="${tmp.board_seq}" id="mark" style="cursor: pointer;" class="far fa-bookmark icon" onclick="markit(this)"></i>
                     <i value="${tmp.board_seq}" style="cursor: pointer; font-weight: bold; color: #00B8D4; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
                   
@@ -176,7 +176,7 @@
 		<div class="navbar-nav">
 		<a class="ml-1 idtxt" id="con" href="board.bo?id=${tmp.id}">${tmp.id}</a>  
 	
-		<div class='pl-3 mt-1 ' id="contdiv"></div>  
+		<div class='pl-3 mt-1 ' id="contdiv"></div> 
 			<script>
 			 var regex = /(#[^#\s,;]+)/gi  ;            
 		  var txt = "${tmp.contents}";        
