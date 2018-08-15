@@ -64,6 +64,20 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		return template.update(sql,dto.getComment_contents(), dto.getComment_seq());
 	}
 	
+	public int commentCount(int board_seq) throws Exception {
+		String sql = "select count(*) from board_comment where board_seq = ?";
+		List<Integer> list = template.query(sql, new Object[] {board_seq}, new RowMapper<Integer>() {
+
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getInt("count(*)");
+			}
+		});
+		
+		return list.get(0);
+	}
+		
+	
 
 
 	

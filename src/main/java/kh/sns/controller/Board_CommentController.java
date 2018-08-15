@@ -23,16 +23,19 @@ public class Board_CommentController {
       System.out.println(dto.getComment_seq());
       String id = (String)session.getAttribute("loginId");
       dto.setId(id);
-      int result = 0;
+      
       int commentseq = 0;
+      int count = 0; 
       try { 
          commentseq = this.boardcommentservice.getCommentSeq();
+        // count = this.boardcommentservice.commentCount(dto.getBoard_seq());
          dto.setComment_seq(commentseq);
-         result =this.boardcommentservice.insertComment(dto);
+         int result =this.boardcommentservice.insertComment(dto);
          
          if(result >0) {  
             System.out.println("success");
             System.out.println(dto.getComment_seq()); 
+            
             response.getWriter().print(dto.getComment_seq());
             response.getWriter().flush();
             response.getWriter().close();
@@ -49,11 +52,13 @@ public class Board_CommentController {
    }
    
    @RequestMapping("/commentdel.co")
-   public void delComment(String comment_seq ,HttpServletResponse response)  {
+   public void delComment(String board_seq, String comment_seq ,HttpServletResponse response)  {
       System.out.println(comment_seq);  
       int result = 0; 
+      int count = 0;
       try {
-         result = this.boardcommentservice.delComment(Integer.parseInt(comment_seq));   
+         result = this.boardcommentservice.delComment(Integer.parseInt(comment_seq));
+         count = this.boardcommentservice.commentCount(Integer.parseInt(board_seq));  
          System.out.println(result);   
          if(result > 0 ) {
             System.out.println("del success");   
@@ -61,7 +66,11 @@ public class Board_CommentController {
          else {
             System.out.println("del failed");
          }
-         
+         System.out.println(count); 
+       response.getWriter().print(count);
+ 		response.getWriter().flush();
+ 		response.getWriter().close();
+           
       }catch(Exception e) {
          System.out.println("요기는  commentdel.co입니다");
          e.printStackTrace();

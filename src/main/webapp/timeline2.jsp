@@ -12,7 +12,7 @@
     	});
     })
     
-    
+     
     AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
@@ -97,6 +97,8 @@
     			}
     		})
     }
+    
+
     </script>
 <div id="allwrapper">  
       <div class=""id="centerwrapper">
@@ -146,49 +148,25 @@
               
                
               <div id="contcenter" class="mt-2 mx-3 pb-2"> 
-				<a class="mt-1 ml-1 idtxt" id="con" href="board.bo">${tmp.id}</a>
+              <!-- 글내용자리 --> 
+		<div class="navbar-nav">
+		<a class="ml-1 idtxt" id="con" href="board.bo?id=${tmp.id}">${tmp.id}</a>  
+	
+		<div class='pl-3 mt-1 ' id="contdiv"></div> 
+			<script>
+			 var regex = /(#[^#\s,;]+)/gi  ;           
+		  var txt = "${tmp.contents}";          
+          var newtxt = txt.replace(regex, "<a href='search.bo?search="+"$1"+"' style='color:red'>"+"$1"+"</a>");        
+          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
+		$("#contdiv").html(newtxt);         
 
-				<div class="hidden" id="hidden${tmp.board_seq}">
-				
-	 		   	<script>
-		 
-				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
-  
-			 /* 	
-					var regex = /(#[^#\s,;]+)/gi  ;             
-	 		    	var txt = "${tmp.contents}";     
-			    	
-			    	  var newtxt = txt.replace(regex, "<a href=''>"+"$1"+"</a>");        
-	 		    	  $("#con:last-child").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);	        
-			 */
-
-				 </script>
-				 
-		 
-				 
-				<p id="myContents${tmp.board_seq}">${tmp.contents}
-
-					<script>    
-					var plus = "";    
-					var txt = "${tmp.contents}";       
-			    	  if(txt.length > 48) {                
-			    		  plus = "<p id='${tmp.board_seq}' >&nbsp-더보기</p>";
-	 		    	  }
-			     
-					$("#myContents${tmp.board_seq}:last-child").after("</p>"+plus);   			
-					
-					
-				  	
-				   	$("#${tmp.board_seq}").click(function() { 
-				   		$("#myContents${tmp.board_seq}").attr("style","overflow:visible");  
-				   	});
-				   	
-					</script>  
-							</div>
-							
-						<p class="text-info" id="myComment${tmp.board_seq}"></p>
+		</script>          
+		</div>    
+<!-- 글내용자리 -->   
+							     
+						<p class="text-info pt-4 mb-1" id="myComment${tmp.board_seq}"></p>
 						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
-						
+						  
 						<!-- 댓글자리 -->
 						  
 						<c:forEach var="commenttmp" items="${commentresult}">
@@ -202,15 +180,15 @@
                      </script>   
                      </c:if> 
 						
-						
-							<ul id="ul${comment.comment_seq}">     
-							<li id='li1'><a href="#">${comment.id}</a></li>   
+						  
+							<ul id="ul${comment.comment_seq}" class="commentline navbar-nav">       
+							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>   
 							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents} " readonly></li> 
 	
 							<li id='li3'><a id='commentdel${comment.comment_seq}'></a> </li>
 							<li id='li4'><a id='commentmod${comment.comment_seq}'></a> </li>    
 
-							</ul>
+							</ul>  
 					
 				       <c:choose>
 				       <c:when test ="${sessionScope.loginId == comment.id}">
@@ -236,14 +214,20 @@
 				      					$("#commentdel${comment.comment_seq}").click(function() {     
 				                        	$.ajax({
 				                                  type: "POST",  
-				                                  url: "commentdel.co",    
-				                                  data: {comment_seq:${comment.comment_seq}},
-				                                  success : function() {
+				                                  url: "commentdel.co",      
+				                                  data: {board_seq:${tmp.board_seq},comment_seq:${comment.comment_seq}},
+				                                  success : function(cnt) {
+				                                	  console.log(cnt);
 				                                   $("#ul${comment.comment_seq}").remove();  
+				                                   if(cnt>2){ 
+					                                   $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
+					                                   else {
+					                                	   $("#myComment${tmp.board_seq}").html("");  
+					                                   }
 				                                  }
 				                                    
 				                             }) //ajax 
-				                          })
+				                          });
 				                          
 				                          var modnum = 0;
 				      				
@@ -311,11 +295,11 @@
 								<!--               -->
 								
 								
-								<div class="crecodiv py-2">
+								<div class="crecodiv py-2 navbar-nav">  
   
 
-									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp 
-									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 pl-2" id="comment${tmp.board_seq}"> 
+									<input type="hidden" id="board_seq" name="board_seq" value="${tmp.board_seq}"> &nbsp&nbsp&nbsp   
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}"> 
 									
 									 <c:choose>
 				<c:when test="${result[0].id == sessionScope.loginId}">
@@ -324,12 +308,7 @@
 											<i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1" data-toggle="modal" >
 											</i>
 </div>
-											
-										
-										<script>
-				
-			</script>
-	         
+		
 	         </c:when>
 				<c:otherwise>  
 					<div class="btn-group bg-white">
@@ -340,7 +319,6 @@
 				
 		           </c:otherwise>
 			</c:choose>
-
 
 								</div>
 								
@@ -364,15 +342,15 @@
 	                                              success : function(seq) {
 	                                 
 	                                               $("#comment${tmp.board_seq}").val("");            
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:14%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:12%'><a id='commentdel"+seq+"'></a> </li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"'></a></li></ul>")
-	                                 
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:14%'><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:12%'><a id='commentdel"+seq+"'></a> </li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"'></a></li></ul>")
+	                                
 	           									$("#ul"+seq).hover(function() {  
 	           				      					$("#ul"+seq).attr("style","background-color:#E1F5FE");
 	           				      					$("#commenttxt"+seq).attr("style","border:none; width:100%; background-color:#E1F5FE"); 
 	           				      					$("#commentdel"+seq).html("삭제");   
 	           				      					$("#commentmod"+seq).html("수정");
 	           				      	 				
-	           				      					
+	           				      					 
 	           				      				})
 	           				      				  
 	           				      				$("#ul"+seq).mouseleave(function() {
@@ -388,7 +366,10 @@
 					                                  url: "commentdel.co",    
 					                                  data: {comment_seq:seq},
 					                                  success : function() {
-					                                   $("#ul"+seq).remove();  
+					                                	
+					                                   $("#ul"+seq).remove(); 
+					                                  
+					                                   
 					                                  }
 					                                    
 					                             }) //ajax 
@@ -492,7 +473,7 @@
 															</c:choose>	
 												</div>
 											</div>
-					
+					 
 		           
 		       			
 								

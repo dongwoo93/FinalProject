@@ -124,7 +124,8 @@
 //                 	               $("#modalcontents").text(data.contents);       
                 				   $("#modalcontents").html(data[0].contents);
                 	               $("#seq").val(data[0].board_seq);
-                	               $("#modalid2").text(data[0].id);	   
+                	               $("#modalid2").text(data[0].id);
+                	               
                             	   $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
                             	   for(var i = 1; i < data[1].length; i++) {
                             		   $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
@@ -137,6 +138,7 @@
                     	   
                           	$("#boardmodal").modal();                	   
                        });
+
                         
 //                        $("#modify${tmp.board_seq}").click(function() {
 //                     	   $("#seq").val(${tmp.board_seq});  
@@ -264,7 +266,37 @@
 	
               <div class="py-2 bg-white">     	
                
-                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment" >   
+                
+                <script>
+                $('#comment').keypress(function(event){
+             	   var seq = $("#seq").val();
+             	   var comment_contents = $("#comment").val();
+             	     
+                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                    if(keycode == '13'){ 
+                       
+                       var text = $("#comment${tmp.board_seq}").val();
+                       if(text == ""){
+                          alert("댓글을 입력해주세요");
+                       }
+                       else {
+                     	   
+                     	  $.ajax({
+                               type: "POST",  
+                               url: "comment.co",    
+                               data: {board_seq:seq, comment_contents : comment_contents},
+                               success : function(seq) {
+                  
+                                $("#comment").val("");            
+                              
+                       }
+                    })
+                       }
+                    }
+                    
+                });
+                </script>	  
                    
 		   <c:choose>
 				<c:when test="${result[0].id == sessionScope.loginId}">
