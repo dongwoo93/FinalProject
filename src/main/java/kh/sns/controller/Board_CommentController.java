@@ -19,15 +19,23 @@ public class Board_CommentController {
 
 
 	@RequestMapping("/comment.co")
-	public void insertComment(Board_CommentDTO dto, HttpSession session, HttpServletRequest response) {
+	public void insertComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response) {
+		System.out.println(dto.getComment_seq());
 		String id = (String)session.getAttribute("loginId");
 		dto.setId(id);
 		int result = 0;
-		try {
+		int commentseq = 0;
+		try { 
+			commentseq = this.boardcommentservice.getCommentSeq();
+			dto.setComment_seq(commentseq);
 			result =this.boardcommentservice.insertComment(dto);
 			
-			if(result >0) { 
+			if(result >0) {  
 				System.out.println("success");
+				System.out.println(dto.getComment_seq()); 
+				response.getWriter().print(dto.getComment_seq());
+				response.getWriter().flush();
+				response.getWriter().close();
 			}
 			else {  
 				System.out.println("failed");  
