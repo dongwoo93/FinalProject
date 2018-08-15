@@ -114,7 +114,7 @@
               <img class="ml-3 mr-2" src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
               <br><a class="mt-1 idtxt" id="id" href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South Korea</a>
-            </div>    
+            </div>      
             <div class="mt-2" id="boardimg">
       
       <script>  
@@ -175,8 +175,8 @@
               <!-- 글내용자리 --> 
 		<div class="navbar-nav">  
 		<a class="ml-1 idtxt" id="con${tmp.board_seq}" href="board.bo?id=${tmp.id}">${tmp.id}</a>  
-	
-		<div class='pl-3 mt-1 ' id="contdiv${tmp.board_seq}"></div> 
+	 
+		<div class='pl-3' id="contdiv${tmp.board_seq}"></div> 
 			<script>
 			 var regex = /(#[^#\s,;]+)/gi  ;            
 		  var txt = "${tmp.contents}";                    
