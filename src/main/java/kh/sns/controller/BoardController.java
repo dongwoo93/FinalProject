@@ -29,6 +29,7 @@ import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
 import kh.sns.interfaces.ProfileService;
@@ -44,6 +45,8 @@ public class BoardController {
 	private ProfileService profileService;
 	@Autowired
 	private Board_LikeService board_likeService;
+	@Autowired
+	private Board_BookmarkService board_bookmarkService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -51,10 +54,17 @@ public class BoardController {
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		List<Board_CommentDTO> list1 = new ArrayList<>();
 		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+		List<Integer> like = new ArrayList<>();
+		Map<Integer,String> maplike = new HashMap<>();
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer,String> mapmark = new HashMap<>();
 		String id = (String) seesion.getAttribute("loginId"); 
 		try {
 			list = boardService.getFeed(id);
 			list1 = board_commentService.getFeedComment(id);
+			like = board_likeService.searchLike(id);
+			mark = board_bookmarkService.searchMark(id);
+			
 			Set<Integer> seqlist = new HashSet<>();
 		for(Board_CommentDTO dto : list1) {	
 			seqlist.add(dto.getBoard_seq());
@@ -68,12 +78,23 @@ public class BoardController {
 				} 
 			}
 		}
+		
+		
+		for(int tmp : like) {
+			maplike.put(tmp, "y");
+		}
+		
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
 
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView();  
 		mav.addObject("result", list);
+		mav.addObject("like", maplike);
+		mav.addObject("bookmark", mapmark);
 		mav.addObject("commentresult",commentlist);
 		mav.setViewName("timeline2.jsp");	
 		return mav;
@@ -150,7 +171,7 @@ public class BoardController {
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
 		}
-		
+	
 		for(int tmp : result3) {
 			map.put(tmp, "y");
 		}

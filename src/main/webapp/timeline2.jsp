@@ -129,9 +129,17 @@
               <nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                 <div class="container">
                   <a class="navbar-brand">
-               			 
-                    <i value="${tmp.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
-                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none; cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+               			 <c:choose>  
+               			 <c:when test="${like.containsKey(tmp.board_seq)}"> 
+                    <i value="${tmp.board_seq}" style="cursor: pointer; display: none;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red;  cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+                    </c:when>
+                    <c:otherwise>
+                     <i value="${tmp.board_seq}" style="cursor: pointer; " id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+                    <i value="${tmp.board_seq}" style="font-weight: bold; color: red; display: none;  cursor: pointer;" id="likecancel" class="far fa-heart icon mr-1" onclick="unlikeit(this)"></i>
+                    
+                    </c:otherwise>
+                    </c:choose>
                     <i class="far fa-comment icon"></i>
                   </a>
                   <ul class="navbar-nav">
@@ -140,8 +148,24 @@
                     <i class="fas fa-circle dot"></i>&nbsp  
                   </ul>
                   <a class="btn navbar-btn ml-2 text-white ">
-                    <i value="${tmp.board_seq}" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
-                    <i value="${tmp.board_seq}" style="font-weight: bold; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+                  	 <c:choose>  
+               			 <c:when test="${bookmark.containsKey(tmp.board_seq)}"> 
+                    
+                    <i value="${tmp.board_seq}" id="mark" class="far fa-bookmark icon" style= "cursor: pointer; display: none;" onclick="markit(this)"></i>
+                    <i value="${tmp.board_seq}" style="cursor: pointer; font-weight: bold; color: #00B8D4;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+                  
+                    </c:when>  
+                    <c:otherwise>
+                     
+                    <i value="${tmp.board_seq}" id="mark" style="cursor: pointer;" class="far fa-bookmark icon" onclick="markit(this)"></i>
+                    <i value="${tmp.board_seq}" style="cursor: pointer; font-weight: bold; color: #00B8D4; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+                  
+                    </c:otherwise>
+                    </c:choose>
+                  
+                  
+                  
+                  
                   </a> 
                 </div>
               </nav> 
@@ -152,10 +176,10 @@
 		<div class="navbar-nav">
 		<a class="ml-1 idtxt" id="con" href="board.bo?id=${tmp.id}">${tmp.id}</a>  
 	
-		<div class='pl-3 mt-1 ' id="contdiv"></div> 
+		<div class='pl-3 mt-1 ' id="contdiv"></div>  
 			<script>
-			 var regex = /(#[^#\s,;]+)/gi  ;           
-		  var txt = "${tmp.contents}";          
+			 var regex = /(#[^#\s,;]+)/gi  ;            
+		  var txt = "${tmp.contents}";        
           var newtxt = txt.replace(regex, "<a href='search.bo?search="+"$1"+"' style='color:red'>"+"$1"+"</a>");        
           // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 		$("#contdiv").html(newtxt);         
@@ -185,7 +209,7 @@
 							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>   
 							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents} " readonly></li> 
 	
-							<li id='li3'><a id='commentdel${comment.comment_seq}'></a> </li>
+							<li id='li3'><a id='commentdel${comment.comment_seq}' ></a> </li>
 							<li id='li4'><a id='commentmod${comment.comment_seq}'></a> </li>    
 
 							</ul>  
