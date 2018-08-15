@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,7 +102,9 @@ public class BoardController {
 	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
+		
 		ModelAndView mav = new ModelAndView();
+		
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		List<Board_MediaDTO> result2 = new ArrayList<>();
@@ -112,11 +114,25 @@ public class BoardController {
 		String boardCount = boardService.boardCount(id);
 		int followerCount = boardService.getFollowerCount(id);
 		int followingCount = boardService.getFollowingCount(id);
+		List<int[]> likecnt = board_likeService.selectLikeCount();
+		Map<Integer, Integer> likecount = new HashMap<>();
+		List<int[]> commentcnt = board_commentService.selectCommentCount();
+		Map<Integer, Integer> commentcount = new HashMap<>();
+		
+		for(int[] tmp : likecnt) {
+			likecount.put(tmp[0],tmp[1]);
+		}
+		 
+		for(int[] tmp : commentcnt) {
+			commentcount.put(tmp[0],tmp[1]);
+		}
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
 		mav.addObject("followerCount", followerCount);
 		mav.addObject("followingCount", followingCount);
+		mav.addObject("likecount", likecount); 
+		mav.addObject("commentcount", commentcount);  
 		mav.setViewName("myarticle3.jsp");
 		return mav;
 	}
@@ -164,7 +180,7 @@ public class BoardController {
 		List<BoardDTO> result = boardService.search(search);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();
 		List<Integer> result3 = board_likeService.searchLike(id);
-		List<int[]> result4 = board_likeService.selectLikeAll();
+		List<int[]> result4 = board_likeService.selectLikeCount();
 		Map<Integer,String> map = new HashMap<>();
 		Map<Integer,Integer> countlike = new HashMap<>();
 		

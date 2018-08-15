@@ -59,7 +59,7 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 	}
 
 	@Override
-	public List<int[]> selectLikeAll() throws Exception {
+	public List<int[]> selectLikeCount() throws Exception {
 		String sql = "select board_seq, count(*) from board_like GROUP by board_seq";
 		
 		return template.query(sql,new RowMapper<int[]>() {

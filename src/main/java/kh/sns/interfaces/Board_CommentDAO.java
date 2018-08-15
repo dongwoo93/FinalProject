@@ -12,6 +12,6 @@ public interface Board_CommentDAO {
 	public int getCommentSeq() throws Exception;
 	public int modComment(Board_CommentDTO dto) throws Exception;
 	public int commentCount(int board_seq) throws Exception;
-
+	public List<int[]> selectCommentCount() throws Exception;
 
 }

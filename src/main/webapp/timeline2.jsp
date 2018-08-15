@@ -173,16 +173,16 @@
                
               <div id="contcenter" class="mt-2 mx-3 pb-2"> 
               <!-- 글내용자리 --> 
-		<div class="navbar-nav">
-		<a class="ml-1 idtxt" id="con" href="board.bo?id=${tmp.id}">${tmp.id}</a>  
+		<div class="navbar-nav">  
+		<a class="ml-1 idtxt" id="con${tmp.board_seq}" href="board.bo?id=${tmp.id}">${tmp.id}</a>  
 	
-		<div class='pl-3 mt-1 ' id="contdiv"></div> 
+		<div class='pl-3 mt-1 ' id="contdiv${tmp.board_seq}"></div> 
 			<script>
 			 var regex = /(#[^#\s,;]+)/gi  ;            
-		  var txt = "${tmp.contents}";        
-          var newtxt = txt.replace(regex, "<a href='search.bo?search="+"$1"+"' style='color:red'>"+"$1"+"</a>");        
+		  var txt = "${tmp.contents}";         
+          var newtxt = txt.replace(regex, "<a href='' style='color:red'>"+"$1"+"</a>");        
           // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-		$("#contdiv").html(newtxt);         
+		$("#contdiv${tmp.board_seq}").html(newtxt);         
 
 		</script>          
 		</div>    

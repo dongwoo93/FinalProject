@@ -80,10 +80,10 @@
 				
 				 
 <%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
-						<div class="gallery-item-info">        
-						<ul>
-							<li class="gallery-item-likes"><i class="fas fa-heart"></i> 18</li>
-							<li class="gallery-item-comments"><i class="fas fa-comment"></i> 2</li>
+						<div class="gallery-item-info">         
+						<ul>  
+							<li class="gallery-item-likes"><i class="fas fa-heart"></i><c:out value="${likecount[tmp.board_seq]}"/></li>
+							<li class="gallery-item-comments"><i class="fas fa-comment"></i><c:out value="${commentcount[tmp.board_seq]}"/></li>
 						</ul>
 					</div>
 				

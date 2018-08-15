@@ -76,6 +76,22 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		
 		return list.get(0);
 	}
+
+	@Override
+	public List<int[]> selectCommentCount() throws Exception {
+			String sql = "select board_seq, count(*) from board_comment GROUP by board_seq";
+		
+		return template.query(sql,new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int[] list = {rs.getInt("board_seq"), rs.getInt("count(*)")};
+				return list;
+			}
+			
+		});
+		
+	}
 		
 	
 
