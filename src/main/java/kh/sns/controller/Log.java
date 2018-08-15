@@ -25,6 +25,7 @@ public class Log {
 		while((line = br.readLine()) != null) { 
 			if(line.contains(category)) {  
 				line.replace("["+category+"]","["+category+"]\n"+log);
+				
 			}
 		}
 		bw.close();
