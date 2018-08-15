@@ -29,6 +29,11 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
+	public String boardCount(String id) throws Exception {
+		return this.dao.boardCount(id);
+	}
+	
+	@Override
 	public int deleteBoard(int seq) throws Exception{
 	
 		return this.dao.deleteBoard(seq);
@@ -108,26 +113,12 @@ public class IBoardService implements BoardService {
 	}
 
 	@Override
-	public int selectLike(Board_LikeDTO dto) throws Exception {
-		return dao.selectLike(dto);
-	}
-
-	@Override
-	public int insertLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.insertLike(dto);
-	}
-
-	@Override
-	public int updateLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.updateLike(dto);
-	}
-
-	@Override
 	public List<BoardDTO> search(String keyword) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.search(keyword);
 	}
+
+	
+	
 	
 }

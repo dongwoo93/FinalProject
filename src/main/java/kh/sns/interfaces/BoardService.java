@@ -13,6 +13,7 @@ public interface BoardService {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
 	public List<BoardDTO> getBoard(String id) throws Exception;
+	public String boardCount(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
 	public int modifyBoard(BoardDTO dto) throws Exception;
 
@@ -31,8 +32,9 @@ public interface BoardService {
 	public List<BoardDTO> search(String keyword) throws Exception;
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
 	
-	// like
-	public int selectLike(Board_LikeDTO dto) throws Exception;
-	public int insertLike(Board_LikeDTO dto) throws Exception;
-	public int updateLike(Board_LikeDTO dto) throws Exception;
+	
+	//board_comment
+	
+	
+
 }
