@@ -27,21 +27,23 @@ $(document).ready(function(){
    $("#loginform").submit(function(e) {
 
 
-       var form = $(this);
+	    var form = $(this);
+	    $("#preloader").show();
 
-       $.ajax({
-              type: "POST",
-              url: "login.do",
-              data: form.serialize(), // serializes the form's elements.
-              success: function(data)
-              {
-                  if(data == 1) {
-                     $(location).attr("href", "feed.bo");
-                  }else {
-                     $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
-                  }
-              }
-            });
+	    $.ajax({
+	           type: "POST",
+	           url: "login.do",
+	           data: form.serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	               if(data == 1) {
+	            	   $(location).attr("href", "feed.bo");
+	               }else {
+	            	   $("#result").html("<div data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
+	            	   $("#preloader").hide();
+	               }
+	           }
+	         });
 
        e.preventDefault(); // avoid to execute the actual submit of the form.
    });

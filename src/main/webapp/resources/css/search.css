@@ -1,0 +1,28 @@
+#contents {
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#centerwrapper {
+	height: 100%;
+}
+
+.portfolio-item {
+	margin-bottom: 20px;
+}
+
+#mark, #markcancel, #likeit, #likecancel {
+	float: right;
+	font-size: 18px;
+	margin-right: 5px;
+}
+
+#searchTop {
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+#card {
+	border-radius: 3px 3px 5px 5px;
+}
