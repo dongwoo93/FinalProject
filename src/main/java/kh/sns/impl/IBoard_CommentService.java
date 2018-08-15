@@ -28,10 +28,6 @@ public class IBoard_CommentService implements Board_CommentService {
 		return board_commentdao.delComment(comment_seq);
 	}
 
-	@Override
-	public int getCommentSeq() throws Exception {
-		return board_commentdao.getCommentSeq();
-	}
 	
 	public int getCommentSeq() throws Exception {
 		return board_commentdao.getCommentSeq();
