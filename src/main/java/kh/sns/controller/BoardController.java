@@ -268,11 +268,19 @@ public class BoardController {
 		System.out.println(request.getParameter("filters"));
 		
 		String[] filterList = request.getParameter("filters").split(";");
+		List<String> orderedFilterList = new ArrayList<>();
+		// ??
 		
-		for(String s : filterList) {
-			System.out.println(s);
+		if(filterList[0] != null) {
+			for(int i = 1; i < filterList.length; i++) {
+				orderedFilterList.add(filterList[i]);
+			}
+			orderedFilterList.add(filterList[0]);
+			orderedFilterList.forEach(System.out::println);
 		}
 		
+		
+		int k = 0;
 		for(MultipartFile mf : mfList) {
 			try {
 				
@@ -289,9 +297,6 @@ public class BoardController {
                    f.mkdir();
                 }
           
-				
-				
-				
 				// 설정한 path에 파일저장(임시)
 				// D:\Spring\workspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\AttachedMedia				
 				String complexPath = request.getSession().getServletContext().getRealPath("AttachedMedia");
@@ -299,7 +304,8 @@ public class BoardController {
 				File serverFile = new File(complexPath + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
-				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));				
+				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName, orderedFilterList.get(k) != null ? orderedFilterList.get(k) : null, null, null));				
+				k++;
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -317,6 +323,7 @@ public class BoardController {
 			if(request.getSession().getAttribute("loginId") != null) {
 				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
 			} else {
+				// 잘못된 접근
 				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
 			}
 			
