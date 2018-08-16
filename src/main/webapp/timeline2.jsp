@@ -162,7 +162,7 @@
           
     }
     
-    function modal(e) {
+    function modal(e) {  
     	var board_seq = $(e).attr("value");
     	$("#modalseq").val(board_seq);
     	
@@ -420,10 +420,7 @@
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
    <div class="modal-dialog modal-dialog-centered" role="document">
   			<input type=hidden id=modalseq>
-  			<script>
-  			alert($("#modalseq").val());  
-  			</script>
-            <div class="modal-content">
+  			    <div class="modal-content">
                <div class="modal-body">
                <div class="dropdown-divider" ></div>   
                   <a class="dropdown-item" href="#">게시물로 이동</a>
