@@ -534,7 +534,7 @@ $(document).ready(function() {
 					</script>
 							</div>
 							
-						<p class="text-info" id="myComment">&nbsp&nbsp모두 14개의 댓글보기</p>
+						<p class="text-info" id="myComment${tmp.board_seq}"></p>
 						<div class="comment-contents" id="comment-contents${tmp.board_seq}">   
 						
 						<!-- 댓글자리 -->
@@ -543,10 +543,13 @@ $(document).ready(function() {
 						<c:choose>      
 						<c:when test="${commenttmp.key == tmp.board_seq}">  
 						<c:forEach var="comment" items="${commenttmp.value}">
+						
+							<c:if test="${commenttmp.value.size() > 2 }">      
+							<script>    
+							$("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
+							</script>   
+							</c:if> 
 					 
-					
-						
-						
 							<ul id="ul${comment.comment_seq}">     
 							<li id='li1'><a href="#">${comment.id}</a></li> 
 							<li id='li2'>${comment.comment_contents}</li> 
@@ -566,10 +569,13 @@ $(document).ready(function() {
 							$.ajax({
 				 	 	           type: "POST",  
 				 	 	           url: "commentdel.co", 	
-				 	 	           data: {comment_seq:${comment.comment_seq}}  
+				 	 	           data: {comment_seq:${comment.comment_seq}},
+				 	 	           success : function() {
+				 	 	        	 $("#ul${comment.comment_seq}").remove();  
+				 	 	           }
 				 	 	             
 			        		   }) //ajax 
-			        		   $("#ul${comment.comment_seq}").remove(); 
+			        		  
 							
 						})    
 		
@@ -619,15 +625,40 @@ $(document).ready(function() {
 								        		$.ajax({
 									 	 	           type: "POST",  
 									 	 	           url: "comment.co", 	
-									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text} 
+									 	 	           data: {board_seq:${tmp.board_seq}, comment_contents : text},
+									 	 	           success : function(seq) {
+									 	 	        	 $("#comment${tmp.board_seq}").val("");        
+										        			$("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a id='commentdel"+seq+"'>x</a> </li></ul> ")
+											        		
+
+															$("#commentdel"+seq).click(function() {  
+																$.ajax({
+													 	 	           type: "POST",  
+													 	 	           url: "commentdel.co", 	
+													 	 	           data: {comment_seq:seq},
+													 	 	           success : function() {
+													 	 	        	 $("#ul"+seq).remove(); 
+													 	 	           }
+													 	 	             
+												        		   }) //ajax  
+												        		    
+																
+															})    
+											
+															
+										        			
+										        			
+									 	 	           }
 								        	
 								        		   }) //ajax 
-								        		 $("#comment${tmp.board_seq}").val("");       
-							        			$("#comment-contents${tmp.board_seq}").prepend("<ul ><li style='display: inline-block; width:15%'><a href='#'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:69%'>"+text+"</li><li style='display: inline-block; width:15%'><a href='#'>x</a> </li></ul> ")
 								        		
 								        	}	 
 								        }
-								    });  
+								    }); 
+						 		
+			        
+					
+						 		
 						 		</script>
 							</div> <!--cont  -->
 						</div> <!-- feed -->
