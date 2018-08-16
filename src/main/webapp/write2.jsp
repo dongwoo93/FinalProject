@@ -69,7 +69,7 @@
         					} else {
         						while( i >= 0 ){
         							var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
-                              	  console.log($impl.text());
+                              	 // console.log($impl.text());
                           		  caretPos += $impl.text().length
                           		  i--;
         						}
@@ -160,6 +160,10 @@
    
               $('#submitbutton').click(function(){   
                 // alert('전송')   
+                if($('#fileSelect').val() == '' || $('#fileSelect').val() == null){
+                	alert('사진은 1개 이상 필요합니다.')
+                	return;
+                }
             	var length = $('.imgWidth100').length;
               	var filterOutput = "";
               	for(i = 0; i < length; i++){
@@ -237,15 +241,17 @@
                         
                         if (i == 0) {
                             reader.onload = function(e) {
+                            	console.log(files[i])
                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
                                 //alert('fileLength 1')
-                            	$("[id*='filterPreviewImg_']").attr("src", e.target.result)
+                            	$("[id*='filterPreviewImg_']").attr("src", e.target.result);
 
                             }
                             
                         
                         } else {
-                            reader.onload= function(e) {
+                            reader.onload = function(e) {
+                            	console.log(files[i])
                                 $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
                                 // alert('Final Max Height :' + maxHeight) 
 //                                if (maxHeight > 620){
@@ -287,12 +293,14 @@
 
             })
             
-          /*    $('#testButton').click(function(){           	
+           $('#testButton').click(function(){           	
             	console.log($('.imgWidth100'))
             	
-            	alert(output)
+            	// alert(output)
+            	
+            	console.log($('#fileSelect').val());
 
-            }) */
+            })
         });
     
     </script>

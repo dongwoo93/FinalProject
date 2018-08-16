@@ -31,6 +31,7 @@
 }
 
 .icon {
+	
 	font-size: 20px;
 	color: black;
 	border: 0.5px;
@@ -117,7 +118,7 @@
 
 #con {
 	font-family: "Open Sans", Arial, sans-serif;
-	font-size: 14px;
+	font-size: 14px;  
 }
 
 #myContents {
@@ -140,40 +141,65 @@
 
   
 .comment-contents li {
-		position:relative;	
-		display: inline-block;
-  
+position:relative;	
 		}  
   
 #li1 {
 width:14%;
+display:contents;
+    
+   
 }
-#li2  {          
-width:60%;
+#li2  {            
+width:72%;         
+padding-left:3%;     
 }  
 
 #li3 {
-width:12%;  	
+width:12%; 
+text-align:right;    
+padding-right:3%;  	
 }    
   
 #li4 {
 	width:12%; 
+
+	display:contents; 
 
 }  
   
 .commenttxt { 
 	border:none;
 	width:100%; 
+	
+   
 }  
   
 .creco {  
-	border:none;
-	
-	width:80%; 
+	border:none;   
+	width:80%;    
+	  
 }
  
 #feed {    
 	border:0.5px solid lightgray;  
 	}
+	
+.commentline {  
+	padding-left: 0px;   
+
+	margin-left: 1%;   
+	margin-bottom:0px;
 }
-  
+
+.carousel-indicators li {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  bottom: -50px;
+  background-color: lightgray;
+}
+
+.carousel-indicators .active {
+    background-color: #4FC3F7;
+}

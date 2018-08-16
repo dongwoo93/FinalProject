@@ -12,5 +12,5 @@ public interface Board_LikeDAO {
 			public int insertLike(Board_LikeDTO dto) throws Exception;
 			public int deleteLike(Board_LikeDTO dto) throws Exception;
 			public List<Integer> searchLike(String id) throws Exception;
-			public List<int[]> selectLikeAll() throws Exception;
+			public List<int[]> selectLikeCount() throws Exception;
 }

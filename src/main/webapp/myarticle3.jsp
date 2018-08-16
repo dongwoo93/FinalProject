@@ -80,10 +80,10 @@
 				
 				 
 <%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
-						<div class="gallery-item-info">        
-						<ul>
-							<li class="gallery-item-likes"><i class="fas fa-heart"></i> 18</li>
-							<li class="gallery-item-comments"><i class="fas fa-comment"></i> 2</li>
+						<div class="gallery-item-info">         
+						<ul>  
+							<li class="gallery-item-likes"><i class="fas fa-heart"></i><c:out value="${likecount[tmp.board_seq]}"/></li>
+							<li class="gallery-item-comments"><i class="fas fa-comment"></i><c:out value="${commentcount[tmp.board_seq]}"/></li>
 						</ul>
 					</div>
 				
@@ -98,10 +98,13 @@
                     	   $("#hidden").val(${result[status.index].board_seq});
                     	   for(var i =0; i<list.length; i++) {
                    			if(seq == list[i]) {
-                   				if(i==0) {
-                   					$("#goPrev").hide();
-                   					$("#goNext").show();
-                   				}
+                   				if(list.length == 1) {
+            						$("#modalbtn").hide();
+            					}
+            					else if(i==0) {
+            						$("#goPrev").hide();
+            						$("#goNext").show();
+            					}
                    				else if(i == (list.length-1)){
                    					$("#goNext").hide();
                    					$("#goPrev").show(); 
@@ -120,11 +123,19 @@
                 	           data: {seq:seq},
                 	           success: function(data)
                 	           {
+                	        	   if(data[1].length == 1) {
+               						$("#carousel-prev").hide();
+            						$("#carousel-next").hide();
+                	        	   }else {
+                	        		   $("#carousel-prev").show();
+                	        		   $("#carousel-next").show();
+                	        	   }
                 	        	   $("#modalid").text(data.id);	        	   
 //                 	               $("#modalcontents").text(data.contents);       
                 				   $("#modalcontents").html(data[0].contents);
                 	               $("#seq").val(data[0].board_seq);
-                	               $("#modalid2").text(data[0].id);	   
+                	               $("#modalid2").text(data[0].id);
+                	               
                             	   $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
                             	   for(var i = 1; i < data[1].length; i++) {
                             		   $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
@@ -137,6 +148,7 @@
                     	   
                           	$("#boardmodal").modal();                	   
                        });
+
                         
 //                        $("#modify${tmp.board_seq}").click(function() {
 //                     	   $("#seq").val(${tmp.board_seq});  
@@ -174,7 +186,7 @@
 	<div class="modal fade" id="boardmodal" role="dialog"> 
 		    <div class="modal-dialog" role="document">
 		    
-		    <div class="modal-content">
+		    <div id="modalbtn" class="modal-content">
 <!--   				 &nbsp;&nbsp; <i class="fas fa-angle-double-left text-black" id="hidden" style="font-size:40px;"></i> -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -208,10 +220,10 @@
     <div id="firstItem" class="carousel-item active">
     </div>
   </div>
-  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+  <a id="carousel-prev" class="carousel-control-prev" href="#demo" data-slide="prev">
     <span class="carousel-control-prev-icon"></span>
   </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
+  <a id="carousel-next" class="carousel-control-next" href="#demo" data-slide="next">
     <span class="carousel-control-next-icon"></span>
   </a>
 </div>
@@ -264,7 +276,37 @@
 	
               <div class="py-2 bg-white">     	
                
-                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment" >   
+                
+                <script>
+                $('#comment').keypress(function(event){
+             	   var seq = $("#seq").val();
+             	   var comment_contents = $("#comment").val();
+             	     
+                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                    if(keycode == '13'){ 
+                       
+                       var text = $("#comment${tmp.board_seq}").val();
+                       if(text == ""){
+                          alert("댓글을 입력해주세요");
+                       }
+                       else {
+                     	   
+                     	  $.ajax({
+                               type: "POST",  
+                               url: "comment.co",    
+                               data: {board_seq:seq, comment_contents : comment_contents},
+                               success : function(seq) {
+                  
+                                $("#comment").val("");            
+                              
+                       }
+                    })
+                       }
+                    }
+                    
+                });
+                </script>	  
                    
 		   <c:choose>
 				<c:when test="${result[0].id == sessionScope.loginId}">
