@@ -191,3 +191,15 @@ padding-right:3%;
 	margin-left: 1%;   
 	margin-bottom:0px;
 }
+
+.carousel-indicators li {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  bottom: -50px;
+  background-color: lightgray;
+}
+
+.carousel-indicators .active {
+    background-color: #4FC3F7;
+}

@@ -50,53 +50,63 @@ public class BoardController {
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
-
-		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		List<Board_CommentDTO> list1 = new ArrayList<>();
-		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
-		List<Integer> like = new ArrayList<>();
-		Map<Integer,String> maplike = new HashMap<>();
-		List<Integer> mark = new ArrayList<>();
-		Map<Integer,String> mapmark = new HashMap<>();
-		String id = (String) seesion.getAttribute("loginId"); 
-		try {
-			list = boardService.getFeed(id);
-			list1 = board_commentService.getFeedComment(id);
-			like = board_likeService.searchLike(id);
-			mark = board_bookmarkService.searchMark(id);
-			
-			Set<Integer> seqlist = new HashSet<>();
-		for(Board_CommentDTO dto : list1) {	
-			seqlist.add(dto.getBoard_seq());
-			commentlist.put(dto.getBoard_seq(), new ArrayList<>());
-	
-		}  
-		for(Board_CommentDTO dto : list1) {
-			for(int seq : seqlist) {
-				if(dto.getBoard_seq() == seq ) {
-					commentlist.get(seq).add(dto);  
-				} 
+		ModelAndView mav = new ModelAndView();
+		String id = (String) seesion.getAttribute("loginId");
+		if(id != null) {
+			List<BoardDTO> list = new ArrayList<BoardDTO>();
+			List<Board_CommentDTO> list1 = new ArrayList<>();
+			Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+			List<Integer> like = new ArrayList<>();
+			Map<Integer,String> maplike = new HashMap<>();
+			List<Integer> mark = new ArrayList<>();
+			Map<Integer,String> mapmark = new HashMap<>();
+			List<List<Board_MediaDTO>> media = new ArrayList<>();
+			 
+			try {
+				list = boardService.getFeed(id);
+				for(int i = 0; i < list.size(); i++) {
+					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				}
+				list1 = board_commentService.getFeedComment(id);
+				like = board_likeService.searchLike(id);
+				mark = board_bookmarkService.searchMark(id);
+				
+				Set<Integer> seqlist = new HashSet<>();
+			for(Board_CommentDTO dto : list1) {	
+				seqlist.add(dto.getBoard_seq());
+				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
+		
+			}  
+			for(Board_CommentDTO dto : list1) {
+				for(int seq : seqlist) {
+					if(dto.getBoard_seq() == seq ) {
+						commentlist.get(seq).add(dto);  
+					} 
+				}
 			}
-		}
-		
-		
-		for(int tmp : like) {
-			maplike.put(tmp, "y");
-		}
-		
-		for(int tmp : mark) {
-			mapmark.put(tmp, "y");
-		}
+			
+			
+			for(int tmp : like) {
+				maplike.put(tmp, "y");
+			}
+			
+			for(int tmp : mark) {
+				mapmark.put(tmp, "y");
+			}
 
-		}catch(Exception e) {
-			e.printStackTrace();
-		}	
-		ModelAndView mav = new ModelAndView();  
-		mav.addObject("result", list);
-		mav.addObject("like", maplike);
-		mav.addObject("bookmark", mapmark);
-		mav.addObject("commentresult",commentlist);
-		mav.setViewName("timeline2.jsp");	
+			}catch(Exception e) {
+				e.printStackTrace();
+			}	  
+			mav.addObject("result", list);
+			mav.addObject("result2", media);
+			mav.addObject("like", maplike);
+			mav.addObject("bookmark", mapmark);
+			mav.addObject("commentresult",commentlist);
+			mav.setViewName("timeline2.jsp");
+		}else {
+			mav.setViewName("redirect:main.jsp");
+		}
+			
 		return mav;
 	}
 	
@@ -320,7 +330,7 @@ public class BoardController {
 		}		
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("feed.bo");
+		mav.setViewName("redirect:feed.bo");
 		return mav;
 	}
 	
