@@ -44,7 +44,7 @@
         
 
         $(document).ready(function() {
-        	console.log('ㅋㄹㄷㄱ3ㄱ3ㄱ');
+        	console.log('x111ddd111');
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
               function getCaretPosition(editableDiv) {   
@@ -167,6 +167,7 @@
             	var length = $('.imgWidth100').length;
               	var filterOutput = "";
               	for(i = 0; i < length; i++){
+              		filterOutput += ($('.imgWidth100').eq(i).attr('id') + ":")
               		filterOutput += $('.imgWidth100').eq(i).attr('class').replace("imgWidth100", ";").replace(" ", "")
               	}
                 $('#contentsHidden').val($('#editorDiv').text())   
@@ -225,12 +226,17 @@
 
             var selImages = [];
                    
+            var globalChase = 1;
   
             function readImage(input) {
+            	
+            	var d = new Date();
+            	
                 var files = input.files;
                 console.log(files);
+                
                 for (i = 0; i < files.length; i++) {
-                    console.log(files[i])
+                   /*  console.log(files[i])
                     if (files[i].size > 1024 * 1024 * 10) {
                         alert('10MB 초과');
                         continue;
@@ -240,37 +246,44 @@
                         var reader = new FileReader();
                         
                         if (i == 0) {
-                            reader.onload = function(e) {
-                            	console.log(files[i])
+                            reader.onload = async function(e) {
                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
                                 //alert('fileLength 1')
                             	$("[id*='filterPreviewImg_']").attr("src", e.target.result);
-
+                                
                             }
                             
-                        
                         } else {
-                            reader.onload = function(e) {
-                            	console.log(files[i])
-                                $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
-                                // alert('Final Max Height :' + maxHeight) 
-//                                if (maxHeight > 620){
-//                                    maxHeight = 620;
-//                                } else if (maxHeight < 400){
-//                                    maxHeight = 400;
-//                                } else {
-//                                    maxHeight = maxHeight
-//                                }
-//                             $('#attachDiv').css('height', maxHeight + 'px');
-//                                maxHeight = 0; 
-                            }                          
-                        }   
-                        
+                        		reader.onload = async function(e) {
+                                  	 $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>" );                            
+                                	
+                               
+                               }
+                                                     
+                        }                       
                         
                     }
 
                     reader.readAsDataURL(input.files[i]);
-                    console.log(reader);     
+                    console.log(reader); */     
+                    
+                	(function(file) {
+                		console.log(files[i])
+                        var name = file.name;
+                        var reader = new FileReader();
+                        var isFirst = '';
+                        
+                        if(i == 0)	isFirst = 'active';
+                        
+                        
+                        	reader.onload = function(e) {  
+                                // get file content  
+                                $('#attachDivInner').append("<div class='carousel-item "+isFirst+"'><img src='" + e.target.result + "' class='imgWidth100' id='"+name+"'></div>");                       
+                               }
+                        
+                        
+                       		reader.readAsDataURL(file);
+                    })(files[i]);
                     
                 }  
             }  
@@ -422,7 +435,7 @@
 								<button type="button" id="submitbutton">
 									<i class="fas fa-arrow-right fa-2x"></i>
 								</button>
-								<button type=button id="testButton">테스트</button>
+								<!-- <button type=button id="testButton">테스트</button> -->
 							</div>
 						</div>
 					</div>
