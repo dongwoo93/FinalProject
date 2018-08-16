@@ -44,7 +44,7 @@
         
 
         $(document).ready(function() {
-        	console.log('쌍두취3ddㅇㅇ3너무합니다진짜...');
+        	console.log('ㅋㄹㄷㄱ3ㄱ3ㄱ');
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
               function getCaretPosition(editableDiv) {   
@@ -110,7 +110,7 @@
               var map = {16: false, 32: false}; 
               $("#editorDiv").keyup(function(e){   
             	   
-                  if ( (e.keyCode === 32 ) ) {   
+                  if ( (e.keyCode === 32 ) || (e.keyCode === 13 ) ) {   
                          map[e.keyCode] = true;     
                          
                          if(parseInt($('#caretposition').val()) == 0){
@@ -160,7 +160,13 @@
    
               $('#submitbutton').click(function(){   
                 // alert('전송')   
+            	var length = $('.imgWidth100').length;
+              	var filterOutput = "";
+              	for(i = 0; i < length; i++){
+              		filterOutput += $('.imgWidth100').eq(i).attr('class').replace("imgWidth100", ";").replace(" ", "")
+              	}
                 $('#contentsHidden').val($('#editorDiv').text())   
+                $('#filtersHidden').val(filterOutput)  
                 $('#frm').submit();   
               });
    
@@ -232,7 +238,11 @@
                         if (i == 0) {
                             reader.onload = function(e) {
                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
+                                //alert('fileLength 1')
+                            	$("[id*='filterPreviewImg_']").attr("src", e.target.result)
+
                             }
+                            
                         
                         } else {
                             reader.onload= function(e) {
@@ -248,7 +258,9 @@
 //                             $('#attachDiv').css('height', maxHeight + 'px');
 //                                maxHeight = 0; 
                             }                          
-                        }        
+                        }   
+                        
+                        
                     }
 
                     reader.readAsDataURL(input.files[i]);
@@ -256,13 +268,38 @@
                     
                 }  
             }  
+            
+            $('#leftCarouselBtn').click(function(){
+            	// alert('left')
+            	setTimeout(function(){
+            		var src = $('.active').find('img').attr('src');
+            		$("[id*='filterPreviewImg_']").attr("src", src)
+            	}, 700);
+            	
+            })
+            $('#rightCarouselBtn').click(function(){
+            	// alert('right')
+            	setTimeout(function(){
+            		var src = $('.active').find('img').attr('src');
+            		$("[id*='filterPreviewImg_']").attr("src", src)
+            	}, 700);
+            	
+
+            })
+            
+          /*    $('#testButton').click(function(){           	
+            	console.log($('.imgWidth100'))
+            	
+            	alert(output)
+
+            }) */
         });
     
     </script>
 
 
     <div id="allwrapper">
-		<form action='writeProc.bo' method=post enctype="multipart/form-data">
+		<form id=frm action='writeProc.bo' method=post enctype="multipart/form-data">
 			<!-- form 시작 -->
 			<div id="centerwrapper" class="pt-3">
 				<div class="container" id="contents">
@@ -284,11 +321,11 @@
 								<div id="carouselAttachDiv" class="carousel slide "
 									data-ride="carousel" data-interval="false">
 									<div class="carousel-inner" id=attachDivInner></div>
-									<a class="carousel-control-prev" href="#carouselAttachDiv"
+									<a id=leftCarouselBtn class="carousel-control-prev" href="#carouselAttachDiv"
 										role="button" data-slide="prev"> <span
 										class="carousel-control-prev-icon" aria-hidden="true"></span>
 										<span class="sr-only">Previous</span>
-									</a> <a class="carousel-control-next" href="#carouselAttachDiv"
+									</a> <a id=rightCarouselBtn class="carousel-control-next" href="#carouselAttachDiv"
 										role="button" data-slide="next"> <span
 										class="carousel-control-next-icon" aria-hidden="true"></span>
 										<span class="sr-only">Next</span>
@@ -321,7 +358,7 @@
 											<div class="col-md-3 col-6 p-1">
 												<a id="${i}"> <img
 													class="d-block img-fluid ${i}"
-													src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg" id='${i}'>
+													src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg" id='filterPreviewImg_${i}'>
 												</a>
 												<p class="text-center">${i}</p>
 											</div>
@@ -361,6 +398,7 @@
 								<div class="card-body" contenteditable="true" id="editorDiv"></div>
 								<input type=hidden id="caretposition" value="0">
 								<input type=hidden name=contents id=contentsHidden> 
+								<input type=hidden name=filters id=filtersHidden>
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a
@@ -373,9 +411,10 @@
 								</ul>
 							</div>
 							<div class="py-3">
-								<button type="submit" id="submitbutton">
+								<button type="button" id="submitbutton">
 									<i class="fas fa-arrow-right fa-2x"></i>
 								</button>
+								<button type=button id="testButton">테스트</button>
 							</div>
 						</div>
 					</div>

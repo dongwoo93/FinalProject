@@ -218,6 +218,14 @@ public class BoardController {
 		
 		List<Board_MediaDTO> fileList = new ArrayList<Board_MediaDTO>();
 		
+		System.out.println(request.getParameter("filters"));
+		
+		String[] filterList = request.getParameter("filters").split(";");
+		
+		for(String s : filterList) {
+			System.out.println(s);
+		}
+		
 		for(MultipartFile mf : mfList) {
 			try {
 				
@@ -226,7 +234,7 @@ public class BoardController {
 				// 시스템 파일명(임시)
 				String fileName = originalName.substring(0, originalName.lastIndexOf('.'));
 				String ext = originalName.substring(originalName.lastIndexOf('.')); // 확장자
-				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;
+				String saveFileName = fileName + "_" + (int)(Math.random() * 10000) + ext;	// 나중에 네이밍 컨벤션 정해지면 바꿉니다.
 				String realPath = request.getSession().getServletContext().getRealPath("/image/");
                    
                 File f = new File(realPath);
