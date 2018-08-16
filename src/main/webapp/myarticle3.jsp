@@ -98,10 +98,13 @@
                     	   $("#hidden").val(${result[status.index].board_seq});
                     	   for(var i =0; i<list.length; i++) {
                    			if(seq == list[i]) {
-                   				if(i==0) {
-                   					$("#goPrev").hide();
-                   					$("#goNext").show();
-                   				}
+                   				if(list.length == 1) {
+            						$("#modalbtn").hide();
+            					}
+            					else if(i==0) {
+            						$("#goPrev").hide();
+            						$("#goNext").show();
+            					}
                    				else if(i == (list.length-1)){
                    					$("#goNext").hide();
                    					$("#goPrev").show(); 
@@ -120,6 +123,13 @@
                 	           data: {seq:seq},
                 	           success: function(data)
                 	           {
+                	        	   if(data[1].length == 1) {
+               						$("#carousel-prev").hide();
+            						$("#carousel-next").hide();
+                	        	   }else {
+                	        		   $("#carousel-prev").show();
+                	        		   $("#carousel-next").show();
+                	        	   }
                 	        	   $("#modalid").text(data.id);	        	   
 //                 	               $("#modalcontents").text(data.contents);       
                 				   $("#modalcontents").html(data[0].contents);
@@ -176,7 +186,7 @@
 	<div class="modal fade" id="boardmodal" role="dialog"> 
 		    <div class="modal-dialog" role="document">
 		    
-		    <div class="modal-content">
+		    <div id="modalbtn" class="modal-content">
 <!--   				 &nbsp;&nbsp; <i class="fas fa-angle-double-left text-black" id="hidden" style="font-size:40px;"></i> -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 <!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -210,10 +220,10 @@
     <div id="firstItem" class="carousel-item active">
     </div>
   </div>
-  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+  <a id="carousel-prev" class="carousel-control-prev" href="#demo" data-slide="prev">
     <span class="carousel-control-prev-icon"></span>
   </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
+  <a id="carousel-next" class="carousel-control-next" href="#demo" data-slide="next">
     <span class="carousel-control-next-icon"></span>
   </a>
 </div>
