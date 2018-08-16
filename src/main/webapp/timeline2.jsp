@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<c:choose>
+<c:choose> 
 <c:when test="${sessionScope.loginId != null}">
 <script>
     $(document).ready(function(){
