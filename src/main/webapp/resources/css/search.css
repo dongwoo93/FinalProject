@@ -14,7 +14,7 @@
 
 #mark, #markcancel, #likeit, #likecancel {
 	float: right;
-	font-size: 18px;
+	font-size: 15px;
 	margin-right: 5px;
 }
 
@@ -25,4 +25,17 @@
 
 #card {
 	border-radius: 3px 3px 5px 5px;
+}
+
+#ids{
+	font-size: 13px;
+	font-weight: bold;
+    margin-left: 5px;
+}
+
+#p{
+	margin-top : 10px;
+	margin-left : 5px;
+	font-size : 10px;
+	font-weight: bold;
 }
