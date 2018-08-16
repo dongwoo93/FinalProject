@@ -2,19 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<c:choose>
-<c:when test="${sessionScope.loginId != null}">
+
 <script>
-    $(document).ready(function(){
-    	$("#modalBoardBtn").click(function(){
-    		
-    		$("#changeBoardModal").modal();
-    		
-    	});
-    	
-    })
-    
-     
+  
     AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
@@ -100,8 +90,83 @@
     		})
     }
     
+    function commentover(e) { 
+    	
+	var seq = $(e).attr("value"); 
+    var sessionid = $("#sessionid").val();
+	var boardid = $("#boardid").val();  
+	
+		$("#ul"+seq).attr("style","background-color:#E1F5FE");
+		$("#commenttxt"+seq).attr("style","border:none; width:100%; background-color:#E1F5FE"); 
+		
+		if(sessionid == boardid) {      
+		$("#commentdel"+seq).html("삭제");   
+		$("#commentmod"+seq).html("수정");
+		}  
+	
+    }
+    
+    function commentleave(e) {
+    	var seq = $(e).attr("value"); 
+		
+		$("#ul"+seq).attr("style",false);      
+		$("#commenttxt"+seq).attr("style","border:none; width:100%"); 
+		$("#commentdel"+seq).html("");  
+		$("#commentmod"+seq).html("");
+  
+    }
+    
+    function delComment(e) {
+			var board_seq = $(e).attr("value").split(":")[0]; 
+			var comment_seq = $(e).attr("value").split(":")[1];
+        	$.ajax({
+                  type: "POST",  
+                  url: "commentdel.co",      
+                  data: {board_seq:board_seq,comment_seq:comment_seq},
+                  success : function(cnt) {
+                	  console.log(cnt);
+                   $("#ul"+comment_seq).remove();    
+                   if(cnt>2){ 
+                       $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
+                       else {
+                    	   $("#myComment"+board_seq).html("");  
+                       }
+                  }
+                    
+             }) //ajax 
+    }
 
-    </script>
+    function modComment(e) { 
+       
+      	 var comment_seq = $(e).attr("value");
+    
+      		 
+      		 $("#commenttxt"+comment_seq).attr("readonly",false);
+          	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
+          	 $("#commenttxt"+comment_seq).focus();  
+        
+          	$(e).click(function() {
+          			 var txt = $("#commenttxt"+comment_seq).val();
+             	 	  
+                    	$.ajax({    
+                              type: "POST",    
+                              url: "commentmod.co",    
+                              data: {comment_seq:comment_seq, comment_contents:txt},  
+                              success : function() {
+                            	$("#commenttxt"+comment_seq).attr("readonly",true);
+     		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
+     		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
+                              }  
+                         }); //ajax 
+          	})
+          
+    }
+    
+    function modal(e) {
+    	var board_seq = $(e).attr("value");
+    	$("#changeBoardModal").modal();
+    }
+</script>
 <div id="allwrapper">
 	<div class="" id="centerwrapper">
 		<div class="container" id="contents">
@@ -111,8 +176,7 @@
 
 				<c:forEach var="tmp" items="${result}" varStatus="status">
 
-					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
-						id="feed">
+					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"id="feed">
 						<div class="profile-image">
 							<img class="ml-3 mr-2"
 								src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
@@ -218,6 +282,7 @@
 							</nav>
 
 
+
 							<div id="contcenter" class="mt-2 mx-3 pb-2">
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
@@ -256,124 +321,28 @@
 													<c:if test="${commenttmp.value.size() > 2 }">
 														<script>    
                      $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
-                     </script>
-													</c:if>
-
-
-													<ul id="ul${comment.comment_seq}"
-														class="commentline navbar-nav">
-														<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>
-														<li id='li2'><input type=text
-															id='commenttxt${comment.comment_seq}' class='commenttxt'
-															value="${comment.comment_contents} " readonly></li>
-
-														<li id='li3'><a id='commentdel${comment.comment_seq}'></a></li>
-														<li id='li4'><a id='commentmod${comment.comment_seq}'></a></li>
-
-													</ul>
-
-													<c:choose>
-														<c:when test="${sessionScope.loginId == comment.id}">
-
-															<script>  
-				      				
-				      				$("#ul${comment.comment_seq}").hover(function() {
-				      					$("#ul${comment.comment_seq}").attr("style","background-color:#E1F5FE");
-				      					$("#commenttxt${comment.comment_seq}").attr("style","background-color:#E1F5FE"); 
-				      					$("#commentdel${comment.comment_seq}").html("삭제");   
-				      					$("#commentmod${comment.comment_seq}").html("수정");
-				      	 				
-				      					
-				      				})
-				      				  
-				      				$("#ul${comment.comment_seq}").mouseleave(function() {
-				      					$("#ul${comment.comment_seq}").attr("style",false);  
-				      					$("#commenttxt${comment.comment_seq}").attr("style",false); 
-				      					$("#commentdel${comment.comment_seq}").html("");  
-				      					$("#commentmod${comment.comment_seq}").html("");
-				      				})
-				      				
-				      					$("#commentdel${comment.comment_seq}").click(function() {     
-				                        	$.ajax({
-				                                  type: "POST",  
-				                                  url: "commentdel.co",      
-				                                  data: {board_seq:"${tmp.board_seq}",comment_seq:"${comment.comment_seq}"},
-				                                  success : function(cnt) {
-				                                	  console.log(cnt);
-				                                   $("#ul${comment.comment_seq}").remove();  
-				                                   if(cnt>2){ 
-					                                   $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
-					                                   else {
-					                                	   $("#myComment${tmp.board_seq}").html("");  
-					                                   }
-				                                  }
-				                                    
-				                             }) //ajax 
-				                          });
-				                          
-				                          var modnum = 0;
-				      				
-				                         $("#commentmod${comment.comment_seq}").click(function() {
-				                        	 modnum++;
-				                        	 if(modnum %2 != 0 ){  
-				                        		 
-				                        		 $("#commenttxt${comment.comment_seq}").attr("readonly",false);
-						                    	 $("#commenttxt${comment.comment_seq}").attr("style","border:0.5px solid lightgray");
-						                    	 $("#commenttxt${comment.comment_seq}").focus();  
-		 				
-				                        	 }
-				                        	 else {  
-				                        		 var txt = $("#commenttxt${comment.comment_seq}").val();
-					                    	 	  
-		 				                        	$.ajax({ 
-		 				                                  type: "POST",    
-		 				                                  url: "commentmod.co",    
-		 				                                  data: {comment_seq:"${comment.comment_seq}", comment_contents:txt},  
-		 				                                  success : function() {
-		 				                                	$("#commenttxt${comment.comment_seq}").attr("readonly",true);
-		 								                    $("#commenttxt${comment.comment_seq}").attr("style","border:none"); 
-		 								                   $("#commenttxt${comment.comment_seq}").attr("style","background-color:#E1F5FE");
-		 				                                  }
-						                                     
-		 				                             }); //ajax 
-				                        		 
-				                        	 }
-				                    	 	
-				                     	}); 
-				                         	
-				      					</script>
-														</c:when>
-														<c:otherwise>
-															<script>    
-				      				
-				      				$("#ul${comment.comment_seq}").hover(function() {     
-				      					$("#ul${comment.comment_seq}").attr("style","background-color:#E1F5FE");
-				      					$("#commenttxt${comment.comment_seq}").attr("style","background-color:#E1F5FE"); 
-				      					
-				      				})
-				      				  
-				      				$("#ul${comment.comment_seq}").mouseleave(function() {
-				      					$("#ul${comment.comment_seq}").attr("style",false);  
-				      					$("#commenttxt${comment.comment_seq}").attr("style",false); 
-				      				})
-				      				
-				      					</script>
-														</c:otherwise>
-													</c:choose>
-
-
-												</c:forEach>
-											</c:when>
-										</c:choose>
-
-									</c:forEach>
-
-
-
+                     </script>   
+                     </c:if> 
+						  
+						   
+							<ul id="ul${comment.comment_seq}" value="${comment.comment_seq}" onmouseover="commentover(this)" onmouseleave="commentleave(this)" class="commentline navbar-nav">       
+							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>    
+							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents }"  readonly></li> 
+	
+							<li id='li3'><a id='commentdel${comment.comment_seq}' value="${tmp.board_seq}:${comment.comment_seq}" onclick="delComment(this)" style="cursor: pointer;"></a> </li>
+							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" style="cursor: pointer;"></a> </li>    
+  
+							</ul>  
+						</c:forEach>
+							</c:when>  
+								</c:choose>
+							
+						</c:forEach>
+						</div>
 								</div>
 
 
-							</div>
+ 
 							<!--               -->
 
 
@@ -381,31 +350,15 @@
 
 
 								<input type="hidden" id="board_seq" name="board_seq"
-									value="${tmp.board_seq}"> &nbsp&nbsp&nbsp <input
-									type="text" placeholder="댓글 달기..."
-									name="comment_contents${tmp.board_seq}" class="creco  ml-2 "
-									id="comment${tmp.board_seq}">
-
-								<c:choose>
-									<c:when test="${result[0].id == sessionScope.loginId}">
+									value="${tmp.board_seq}"> &nbsp&nbsp&nbsp 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
-											<i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1"
+											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
 												data-toggle="modal"> </i>
 										</div>
 
-									</c:when>
-									<c:otherwise>
-										<div class="btn-group bg-white">
-											<i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1 ">
-											</i>
-
-										</div>
-
-
-									</c:otherwise>
-								</c:choose>
-
+								
 							</div>
 
 							<script>
@@ -414,97 +367,25 @@
 								$('#comment${tmp.board_seq}').keypress(function(event){
 	                                var keycode = (event.keyCode ? event.keyCode : event.which);
 	                                if(keycode == '13'){
-	                                   
 	                                   var text = $("#comment${tmp.board_seq}").val();
 	                                   if(text == ""){
 	                                      alert("댓글을 입력해주세요");
 	                                   }
 	                                   else {  
-	                                       
-	                                      $.ajax({
+	                                      $.ajax({ 
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {
-	                                 
-	                                               $("#comment${tmp.board_seq}").val("");            
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"'><li style='display: inline-block; width:14%'><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:12%'><a id='commentdel"+seq+"'></a> </li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"'></a></li></ul>")
-	                                
-	           									$("#ul"+seq).hover(function() {  
-	           				      					$("#ul"+seq).attr("style","background-color:#E1F5FE");
-	           				      					$("#commenttxt"+seq).attr("style","border:none; width:100%; background-color:#E1F5FE"); 
-	           				      					$("#commentdel"+seq).html("삭제");   
-	           				      					$("#commentmod"+seq).html("수정");
-	           				      	 				
-	           				      					 
-	           				      				})
-	           				      				  
-	           				      				$("#ul"+seq).mouseleave(function() {
-	           				      					$("#ul"+seq).attr("style",false);      
-	           				      					$("#commenttxt"+seq).attr("style","border:none; width:100%"); 
-	           				      					$("#commentdel"+seq).html("");  
-	           				      					$("#commentmod"+seq).html("");
-	           				      				})
-	           				      				
-	           				      			$("#commentdel"+seq).click(function() {     
-					                        	$.ajax({
-					                                  type: "POST",  
-					                                  url: "commentdel.co",    
-					                                  data: {comment_seq:seq},
-					                                  success : function() {
-					                                	
-					                                   $("#ul"+seq).remove(); 
-					                                  
-					                                   
-					                                  }
-					                                    
-					                             }) //ajax 
-					                          })
-					                          
-					                          var modnum = 0;
-					      				
-					                         $("#commentmod"+seq).click(function() {
-					                        	 modnum++;
-					                        	 if(modnum %2 != 0 ){  
-					                        		 
-					                        		 $("#commenttxt"+seq).attr("readonly",false);
-							                    	 $("#commenttxt"+seq).attr("style","width:100%; border:0.5px solid lightgray");
-							                    	 $("#commenttxt"+seq).focus();  
-			 				
-					                        	 }
-					                        	 else {  
-					                        		 var txt = $("#commenttxt"+seq).val();
-						                    	 	  
-			 				                        	$.ajax({ 
-			 				                                  type: "POST",    
-			 				                                  url: "commentmod.co",    
-			 				                                  data: {comment_seq:seq, comment_contents:txt},  
-			 				                                  success : function() {
-			 				                                	$("#commenttxt"+seq).attr("readonly",true);
-			 								                    $("#commenttxt"+seq).attr("style","width:100%; border:none; background-color:#E1F5FE"); 
-			 								                   
-			 				                                  }
-							                                     
-			 				                             }); //ajax 
-					                        		 
-					                        	 }
-					                    	 	
-					                     	}); 
+	                                              success : function(seq) {   
+	                                               $("#comment${tmp.board_seq}").val("");              
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' style='cursor: pointer;'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
 	          							  }
-	                             
-	                                     }) //ajax 
+	                                     }); //ajax 
 	                                   }    
-	                                }
-	                       
-	                          
+	                                }  
 	                            }); 
 							 
-						
-								
-								
-	                                    
-	                                       	
-	                              
+
 						 		</script>
 						</div>
 						<!--cont  -->
@@ -534,39 +415,30 @@
 </div>
 <!--  allwrapper-->
 
-														<div class="modal-body">
-															<a class="dropdown-item" href="#">게시물로 이동</a>
-															<div class="dropdown-divider" id="modifydiv"></div>
-															<a class="dropdown-item" id="modify" href="#">부적절한 콘텐츠 신고</a>
-															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" id="modifysubmitbtn" href="#">퍼가기</a>
-															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" name=delete id="delete" href="#">링크 복사하기</a>
 
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btn-secondary"
-																data-dismiss="modal">Close</button>
-														</div>
-													</div>
-														</c:when>
-														<c:otherwise>
-														   <div class="modal-content">
-		              <div class="modal-body">
-		              <a class="dropdown-item" href="#">보관</a>	              
-		              <div class="dropdown-divider"></div>
-		              
-		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
-		              </div>
-		              </div> 
-														
-														</c:otherwise>
-															</c:choose>	
-												</div>
-											</div>
-					
-		           
-		       			
-								
+<div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+       
+            <div class="modal-content">
+               <div class="modal-body">
+               <div class="dropdown-divider" ></div>   
+                  <a class="dropdown-item" href="#">게시물로 이동</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item"  href="#">부적절한 콘텐츠 신고</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item" href="#">링크 복사</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item" href="#">팔로우 취소</a>   
+                  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         
+   </div>
+</div>
+												
       <%@ include file="include/bottom.jsp"%>
   

@@ -157,13 +157,12 @@ padding-left:3%;
 
 #li3 {
 width:12%; 
-text-align:right;    
-padding-right:3%;  	
+text-align:right; 
+padding-right:3%;	
 }    
   
 #li4 {
 	width:12%; 
-
 	display:contents; 
 
 }  
@@ -187,7 +186,6 @@ padding-right:3%;
 	
 .commentline {  
 	padding-left: 0px;   
-
 	margin-left: 1%;   
 	margin-bottom:0px;
 }
@@ -202,4 +200,17 @@ padding-right:3%;
 
 .carousel-indicators .active {
     background-color: #4FC3F7;
+}
+
+.modal-body {  
+	text-align: center;  
+}
+
+.modal-content {
+	width:70%;  
+}
+
+.dropdown-item:hover{
+	background-color:#E1F5FE;  
+	
 }
