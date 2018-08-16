@@ -171,8 +171,9 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
 
-		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?)";
-		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name());
+		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
+		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name(),
+				media.getFilterName(), media.getSoundOriginalFileName(), media.getSoundSystemFileName());
 	}
 
 	public int selectBoardSeqRecentCurrVal() throws Exception {
