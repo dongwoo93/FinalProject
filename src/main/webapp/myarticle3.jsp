@@ -25,17 +25,17 @@
 				</div>
 	
 				<div class="profile-user-settings">
-					<h1 class="profile-user-name">${result[0].id}</h1>
-					<div class="profile-edit-btn">팔로잉</div>
-					<div class="profile-settings-btn"><i id="toMy" class="fas fa-cog"></i></div>
-					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button>
+					<h2 class="profile-user-name">${result[0].id}</h2>
+					<div class="profile-edit-btn" id="toMy">프로필편집</div>
+					<div class="profile-settings-btn"><i class="far fa-times-circle" id="logout"></i></div>
+<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
 				</div>
 	
 				<div class="profile-stats">
 					<ul>
-						<li><span class="profile-stat-count">164</span> 게시글</li>
-						<li><span class="profile-stat-count">188</span> 팔로워</li>
-						<li><span class="profile-stat-count">206</span> 팔로우</li>
+						<li><span class="profile-stat-count">${boardCount}</span> 게시글</li>
+						<li><span class="profile-stat-count">${followerCount}</span> 팔로워</li>
+						<li><span class="profile-stat-count">${followingCount}</span> 팔로우</li>
 					</ul>
 				</div>
 	
@@ -76,7 +76,7 @@
 			
 				<div class="gallery-item" id="${tmp.board_seq}">  
 <%-- 				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">    --%>
-					 <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid"> 
+					 <img src="AttachedMedia/${result2[status.index].system_file_name}" class="img-fluid"> 
 				
 				 
 <%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
@@ -92,9 +92,49 @@
 					
   
                        $("#${tmp.board_seq}").click(function() {
+                    	   var seq = "${tmp.board_seq}";
                     	   $("#prev").val(${result[status.index-1].board_seq}); 
                     	   $("#next").val(${result[status.index+1].board_seq}); 
                     	   $("#hidden").val(${result[status.index].board_seq});
+                    	   for(var i =0; i<list.length; i++) {
+                   			if(seq == list[i]) {
+                   				if(i==0) {
+                   					$("#goPrev").hide();
+                   					$("#goNext").show();
+                   				}
+                   				else if(i == (list.length-1)){
+                   					$("#goNext").hide();
+                   					$("#goPrev").show(); 
+                   				} 
+                   				else { 
+                   					$("#goPrev").show(); 
+                   					$("#goNext").show();
+                   					
+                   				}
+                   				break;
+                   			}
+                   		}
+                    	   $.ajax({
+                	           type: "POST",
+                	           url: "boardView.bo",
+                	           data: {seq:seq},
+                	           success: function(data)
+                	           {
+                	        	   $("#modalid").text(data.id);	        	   
+//                 	               $("#modalcontents").text(data.contents);       
+                				   $("#modalcontents").html(data[0].contents);
+                	               $("#seq").val(data[0].board_seq);
+                	               $("#modalid2").text(data[0].id);	   
+                            	   $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                            	   for(var i = 1; i < data[1].length; i++) {
+                            		   $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
+                            		   $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");
+                            		   
+                            	   }
+                            	   
+                	           	}
+                	         });
+                    	   
                           	$("#boardmodal").modal();                	   
                        });
                         
@@ -160,7 +200,21 @@
 		      <div class="modal-content">
 		    
 		        	<div class="gallery-item" id="picture">  
-		       		  <img src="https://pingendo.github.io/templates/sections/assets/gallery_girl.jpg" class="img-fluid">
+		       		  <div id="demo" class="carousel slide" data-ride="carousel" data-interval="false">
+  <ul id="carousel-indicators" class="carousel-indicators">
+    <li id="firstli" data-target="#demo" data-slide-to="0" class="active"></li>
+  </ul>
+  <div id="carousel-inner" class="carousel-inner">
+    <div id="firstItem" class="carousel-item active">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+</div>
 		        	</div>
 		        	
 		      </div>

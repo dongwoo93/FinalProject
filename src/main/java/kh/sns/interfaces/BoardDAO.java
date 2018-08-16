@@ -3,16 +3,13 @@ package kh.sns.interfaces;
 import java.util.List;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
-
-import java.util.List;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
 	public List<BoardDTO> getBoard(String id) throws Exception;
+	public String boardCount(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
 	public int modifyBoard(BoardDTO dto) throws Exception;
 	/* 태그 넣는 기능 */
