@@ -4,16 +4,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
 
 <script>
-    $(document).ready(function(){
-    	$("#modalBoardBtn").click(function(){
-    		
-    		$("#changeBoardModal").modal();
-    		
-    	});
-    	
-    })
-
-		  
+  
     AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
@@ -112,10 +103,7 @@
 		$("#commentdel"+seq).html("삭제");   
 		$("#commentmod"+seq).html("수정");
 		}  
-		
-		
-	 
-				
+	
     }
     
     function commentleave(e) {
@@ -172,6 +160,11 @@
                          }); //ajax 
           	})
           
+    }
+    
+    function modal(e) {
+    	var board_seq = $(e).attr("value");
+    	$("#changeBoardModal").modal();
     }
 </script>
 <div id="allwrapper">
@@ -331,7 +324,7 @@
                      </script>   
                      </c:if> 
 						  
-						  
+						   
 							<ul id="ul${comment.comment_seq}" value="${comment.comment_seq}" onmouseover="commentover(this)" onmouseleave="commentleave(this)" class="commentline navbar-nav">       
 							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>    
 							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents }"  readonly></li> 
@@ -349,7 +342,7 @@
 								</div>
 
 
-
+ 
 							<!--               -->
 
 
@@ -357,31 +350,15 @@
 
 
 								<input type="hidden" id="board_seq" name="board_seq"
-									value="${tmp.board_seq}"> &nbsp&nbsp&nbsp <input
-									type="text" placeholder="댓글 달기..."
-									name="comment_contents${tmp.board_seq}" class="creco  ml-2 "
-									id="comment${tmp.board_seq}">
-
-								<c:choose>
-									<c:when test="${result[0].id == sessionScope.loginId}">
+									value="${tmp.board_seq}"> &nbsp&nbsp&nbsp 
+									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
-											<i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1"
+											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
 												data-toggle="modal"> </i>
 										</div>
 
-									</c:when>
-									<c:otherwise>
-										<div class="btn-group bg-white">
-											<i id="modalBoardBtn" class="fas fa-ellipsis-h btn mr-1 ">
-											</i>
-
-										</div>
-
-
-									</c:otherwise>
-								</c:choose>
-
+								
 							</div>
 
 							<script>
@@ -395,13 +372,13 @@
 	                                      alert("댓글을 입력해주세요");
 	                                   }
 	                                   else {  
-	                                      $.ajax({
+	                                      $.ajax({ 
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {
-	                                               $("#comment${tmp.board_seq}").val("");             
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li style='display: inline-block; width:14%'><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:12%'><a id='commentdel"+seq+"'  style='cursor: pointer;'></a> </li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
+	                                              success : function(seq) {   
+	                                               $("#comment${tmp.board_seq}").val("");              
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' style='cursor: pointer;'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
 	          							  }
 	                                     }); //ajax 
 	                                   }    
@@ -438,39 +415,30 @@
 </div>
 <!--  allwrapper-->
 
-														<div class="modal-body">
-															<a class="dropdown-item" href="#">게시물로 이동</a>
-															<div class="dropdown-divider" id="modifydiv"></div>
-															<a class="dropdown-item" id="modify" href="#">부적절한 콘텐츠 신고</a>
-															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" id="modifysubmitbtn" href="#">퍼가기</a>
-															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" name=delete id="delete" href="#">링크 복사하기</a>
 
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btn-secondary"
-																data-dismiss="modal">Close</button>
-														</div>
-													</div>
-														</c:when>
-														<c:otherwise>
-														   <div class="modal-content">
-		              <div class="modal-body">
-		              <a class="dropdown-item" href="#">보관</a>	              
-		              <div class="dropdown-divider"></div>
-		              
-		              <a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
-		              </div>
-		              </div> 
-														
-														</c:otherwise>
-															</c:choose>	
-												</div>
-											</div>
-					
-		           
-		       			
-								
+<div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+       
+            <div class="modal-content">
+               <div class="modal-body">
+               <div class="dropdown-divider" ></div>   
+                  <a class="dropdown-item" href="#">게시물로 이동</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item"  href="#">부적절한 콘텐츠 신고</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item" href="#">링크 복사</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item" href="#">팔로우 취소</a>   
+                  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         
+   </div>
+</div>
+												
       <%@ include file="include/bottom.jsp"%>
   
