@@ -462,15 +462,14 @@
 
 
 														<div class="modal-body">
-															<a class="dropdown-item" href="#">보관</a>
+															<a class="dropdown-item" href="#">게시물로 이동</a>
 															<div class="dropdown-divider" id="modifydiv"></div>
-															<a class="dropdown-item" id="modify" href="#">수정</a>
+															<a class="dropdown-item" id="modify" href="#">부적절한 콘텐츠 신고</a>
 															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
+															<a class="dropdown-item" id="modifysubmitbtn" href="#">퍼가기</a>
 															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" name=delete id="delete" href="#">삭제</a>
-															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+															<a class="dropdown-item" name=delete id="delete" href="#">링크 복사하기</a>
+
 														</div>
 														<div class="modal-footer">
 															<button type="button" class="btn btn-secondary"
