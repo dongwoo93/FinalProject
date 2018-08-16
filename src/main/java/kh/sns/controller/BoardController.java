@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +29,7 @@ import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
 import kh.sns.interfaces.ProfileService;
@@ -44,6 +45,8 @@ public class BoardController {
 	private ProfileService profileService;
 	@Autowired
 	private Board_LikeService board_likeService;
+	@Autowired
+	private Board_BookmarkService board_bookmarkService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -51,10 +54,17 @@ public class BoardController {
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		List<Board_CommentDTO> list1 = new ArrayList<>();
 		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+		List<Integer> like = new ArrayList<>();
+		Map<Integer,String> maplike = new HashMap<>();
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer,String> mapmark = new HashMap<>();
 		String id = (String) seesion.getAttribute("loginId"); 
 		try {
 			list = boardService.getFeed(id);
 			list1 = board_commentService.getFeedComment(id);
+			like = board_likeService.searchLike(id);
+			mark = board_bookmarkService.searchMark(id);
+			
 			Set<Integer> seqlist = new HashSet<>();
 		for(Board_CommentDTO dto : list1) {	
 			seqlist.add(dto.getBoard_seq());
@@ -68,12 +78,23 @@ public class BoardController {
 				} 
 			}
 		}
+		
+		
+		for(int tmp : like) {
+			maplike.put(tmp, "y");
+		}
+		
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
 
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView();  
 		mav.addObject("result", list);
+		mav.addObject("like", maplike);
+		mav.addObject("bookmark", mapmark);
 		mav.addObject("commentresult",commentlist);
 		mav.setViewName("timeline2.jsp");	
 		return mav;
@@ -81,7 +102,9 @@ public class BoardController {
 	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
+		
 		ModelAndView mav = new ModelAndView();
+		
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
 		List<Board_MediaDTO> result2 = new ArrayList<>();
@@ -91,11 +114,25 @@ public class BoardController {
 		String boardCount = boardService.boardCount(id);
 		int followerCount = boardService.getFollowerCount(id);
 		int followingCount = boardService.getFollowingCount(id);
+		List<int[]> likecnt = board_likeService.selectLikeCount();
+		Map<Integer, Integer> likecount = new HashMap<>();
+		List<int[]> commentcnt = board_commentService.selectCommentCount();
+		Map<Integer, Integer> commentcount = new HashMap<>();
+		
+		for(int[] tmp : likecnt) {
+			likecount.put(tmp[0],tmp[1]);
+		}
+		 
+		for(int[] tmp : commentcnt) {
+			commentcount.put(tmp[0],tmp[1]);
+		}
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
 		mav.addObject("followerCount", followerCount);
 		mav.addObject("followingCount", followingCount);
+		mav.addObject("likecount", likecount); 
+		mav.addObject("commentcount", commentcount);  
 		mav.setViewName("myarticle3.jsp");
 		return mav;
 	}
@@ -143,14 +180,14 @@ public class BoardController {
 		List<BoardDTO> result = boardService.search(search);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();
 		List<Integer> result3 = board_likeService.searchLike(id);
-		List<int[]> result4 = board_likeService.selectLikeAll();
+		List<int[]> result4 = board_likeService.selectLikeCount();
 		Map<Integer,String> map = new HashMap<>();
 		Map<Integer,Integer> countlike = new HashMap<>();
 		
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
 		}
-		
+	
 		for(int tmp : result3) {
 			map.put(tmp, "y");
 		}
