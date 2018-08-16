@@ -302,16 +302,13 @@
 							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" style="cursor: pointer;"></a> </li>    
   
 							</ul>  
-	
 						</c:forEach>
 							</c:when>  
 								</c:choose>
 							
 						</c:forEach>
 						</div>
-
 								</div>
-				
 								<div class="crecodiv py-2 navbar-nav">  
   
 
@@ -366,9 +363,10 @@
 	                                   }    
 	                                }
 	                       
-	                          
+	                           
 	                            }); 
 							 
+
 						 		</script>
 							</div> <!--cont  -->
 						</div> <!-- feed -->
