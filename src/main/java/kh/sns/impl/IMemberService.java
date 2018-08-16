@@ -113,6 +113,11 @@ public class IMemberService implements MemberService{
 	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception{
 		return this.dao.selectfriendlist(id,searchtext);
 	}
+	
+	@Override
+	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception{
+		return this.dao.selectfollowlist(id,searchtext);
+	}
 
 //	@Override
 //	public boolean isIdExist(String id) {

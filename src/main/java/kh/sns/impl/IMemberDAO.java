@@ -40,6 +40,23 @@ public class IMemberDAO implements MemberDAO {
 			
 		});
 	}
+	
+	@Override
+	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception{
+		String sql = "select nickname from member where id in(select target_id from member_follow where id=?) and nickname like '%'||?||'%'";
+		
+		return template.query(sql, new String[] {id,searchtext}, new RowMapper<MemberDTO>() {
+
+			@Override
+			public MemberDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				System.out.println("홀로로로로ㅗ롤" + rs.getString(1));
+				MemberDTO dto = new MemberDTO("","",rs.getString(1),"","","","");   
+				return dto;
+			}
+
+			
+		});
+	}
 
 
 	@Override
