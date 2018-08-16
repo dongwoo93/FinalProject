@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.interfaces.Board_CommentDAO;
 
@@ -62,6 +63,36 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		String sql = "update board_comment set comment_contents = ? where comment_seq=?";
 		return template.update(sql,dto.getComment_contents(), dto.getComment_seq());
 	}
+	
+	public int commentCount(int board_seq) throws Exception {
+		String sql = "select count(*) from board_comment where board_seq = ?";
+		List<Integer> list = template.query(sql, new Object[] {board_seq}, new RowMapper<Integer>() {
+
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getInt("count(*)");
+			}
+		});
+		
+		return list.get(0);
+	}
+
+	@Override
+	public List<int[]> selectCommentCount() throws Exception {
+			String sql = "select board_seq, count(*) from board_comment GROUP by board_seq";
+		
+		return template.query(sql,new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int[] list = {rs.getInt("board_seq"), rs.getInt("count(*)")};
+				return list;
+			}
+			
+		});
+		
+	}
+		
 	
 
 
