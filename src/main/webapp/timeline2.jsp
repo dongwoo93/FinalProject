@@ -164,6 +164,8 @@
     
     function modal(e) {
     	var board_seq = $(e).attr("value");
+    	$("#modalseq").val(board_seq);
+    	
     	$("#changeBoardModal").modal();
     }
 </script>
@@ -349,8 +351,7 @@
 							<div class="crecodiv py-2 navbar-nav">
 
 
-								<input type="hidden" id="board_seq" name="board_seq"
-									value="${tmp.board_seq}"> &nbsp&nbsp&nbsp 
+							
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
@@ -418,7 +419,10 @@
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
    <div class="modal-dialog modal-dialog-centered" role="document">
-       
+  			<input type=hidden id=modalseq>
+  			<script>
+  			alert($("#modalseq").val());  
+  			</script>
             <div class="modal-content">
                <div class="modal-body">
                <div class="dropdown-divider" ></div>   
