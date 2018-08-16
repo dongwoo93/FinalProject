@@ -214,18 +214,6 @@ public class BoardController {
 		return mav;
 	}
 	
-	
-	
-	//search
-//	@RequestMapping("/search2.bo")
-//	public ModelAndView search2(HttpSession session, String search2) throws Exception{
-//		ModelAndView mav = new ModelAndView();
-//		List<Board_MediaDTO> media = boardService.search2(search2);
-//		mav.addObject("media", media);
-//		mav.setViewName("search.jsp");
-//		return mav;
-//	}
-	
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(){
 		ModelAndView mav = new ModelAndView();
@@ -270,10 +258,7 @@ public class BoardController {
 		String[] filterList = null;
 		if(request.getParameter("filters") != null)
 			filterList = request.getParameter("filters").split(";");
-		
-
-		
-		
+	
 		
 		int k = 0;
 		for(MultipartFile mf : mfList) {
