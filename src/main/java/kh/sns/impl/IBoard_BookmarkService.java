@@ -1,5 +1,7 @@
 package kh.sns.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,10 @@ public class IBoard_BookmarkService implements Board_BookmarkService {
 	@Override
 	public int deleteBookmark(Board_BookmarkDTO dto) throws Exception {
 		return bookmarkdao.deleteBookmark(dto);
+	}
+	
+	public List<Integer> searchMark(String id) throws Exception {
+		return bookmarkdao.searchMark(id);
 	}
 	
 	
