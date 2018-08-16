@@ -2,8 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<c:choose>
-<c:when test="${sessionScope.loginId != null}">
+
 <script>
     $(document).ready(function(){
     	$("#modalBoardBtn").click(function(){
@@ -13,8 +12,7 @@
     	});
     	
     })
-    
- 
+
 		  
     AOS.init();
     function likeit(e) {
@@ -170,18 +168,12 @@
                             	$("#commenttxt"+comment_seq).attr("readonly",true);
      		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
      		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-                              }
-                                
+                              }  
                          }); //ajax 
           	})
           
-          	
-           
-
     }
-    
-
-    </script>
+</script>
 <div id="allwrapper">
 	<div class="" id="centerwrapper">
 		<div class="container" id="contents">
@@ -191,8 +183,7 @@
 
 				<c:forEach var="tmp" items="${result}" varStatus="status">
 
-					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
-						id="feed">
+					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"id="feed">
 						<div class="profile-image">
 							<img class="ml-3 mr-2"
 								src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
@@ -298,6 +289,7 @@
 							</nav>
 
 
+
 							<div id="contcenter" class="mt-2 mx-3 pb-2">
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
@@ -357,7 +349,7 @@
 								</div>
 
 
-							</div>
+
 							<!--               -->
 
 
@@ -398,28 +390,22 @@
 								$('#comment${tmp.board_seq}').keypress(function(event){
 	                                var keycode = (event.keyCode ? event.keyCode : event.which);
 	                                if(keycode == '13'){
-	                                   
 	                                   var text = $("#comment${tmp.board_seq}").val();
 	                                   if(text == ""){
 	                                      alert("댓글을 입력해주세요");
 	                                   }
 	                                   else {  
-	                                       
 	                                      $.ajax({
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {
-	                                 
 	                                               $("#comment${tmp.board_seq}").val("");             
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li style='display: inline-block; width:14%'><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li style='display: inline-block; width:61%'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li style='display: inline-block; width:12%'><a id='commentdel"+seq+"'  style='cursor: pointer;'></a> </li><li style='display: inline-block; width:12%'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
 	          							  }
-	                             
-	                                     }) //ajax 
+	                                     }); //ajax 
 	                                   }    
-	                                }
-	                       
-	                           
+	                                }  
 	                            }); 
 							 
 
@@ -491,12 +477,6 @@
 		</c:choose>
 	</div>
 </div>
-</c:when>
-<c:otherwise>
-
-</c:otherwise>
-</c:choose>
-
 
 
 
