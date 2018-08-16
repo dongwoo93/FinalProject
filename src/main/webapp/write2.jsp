@@ -435,7 +435,7 @@
 								<button type="button" id="submitbutton">
 									<i class="fas fa-arrow-right fa-2x"></i>
 								</button>
-								<button type=button id="testButton">테스트</button>
+								<!-- <button type=button id="testButton">테스트</button> -->
 							</div>
 						</div>
 					</div>
