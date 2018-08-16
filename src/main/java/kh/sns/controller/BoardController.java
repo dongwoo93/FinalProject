@@ -214,18 +214,6 @@ public class BoardController {
 		return mav;
 	}
 	
-	
-	
-	//search
-//	@RequestMapping("/search2.bo")
-//	public ModelAndView search2(HttpSession session, String search2) throws Exception{
-//		ModelAndView mav = new ModelAndView();
-//		List<Board_MediaDTO> media = boardService.search2(search2);
-//		mav.addObject("media", media);
-//		mav.setViewName("search.jsp");
-//		return mav;
-//	}
-	
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(){
 		ModelAndView mav = new ModelAndView();
@@ -267,18 +255,10 @@ public class BoardController {
 		
 		System.out.println(request.getParameter("filters"));
 		
-		String[] filterList = request.getParameter("filters").split(";");
-		List<String> orderedFilterList = new ArrayList<>();
-		// ??
-		
-		if(filterList[0] != null) {
-			for(int i = 1; i < filterList.length; i++) {
-				orderedFilterList.add(filterList[i]);
-			}
-			orderedFilterList.add(filterList[0]);
-			orderedFilterList.forEach(System.out::println);
-		}
-		
+		String[] filterList = null;
+		if(request.getParameter("filters") != null)
+			filterList = request.getParameter("filters").split(";");
+	
 		
 		int k = 0;
 		for(MultipartFile mf : mfList) {
@@ -304,7 +284,28 @@ public class BoardController {
 				File serverFile = new File(complexPath + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
-				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName, orderedFilterList.get(k) != null ? orderedFilterList.get(k) : null, null, null));				
+				// 필터가 모든 사진에 하나도 적용이 안됐다면 catch가 실행됨
+			
+					String filter = null;
+					
+					for(String flt : filterList) {
+						System.out.println(flt);
+						
+						if(originalName.equals(flt.split(":")[0])) {
+							try {
+								if(flt.split(":")[1] != null )
+									filter = flt.split(":")[1];
+							} catch(ArrayIndexOutOfBoundsException e) {
+								System.err.println(e);
+							}
+							
+						}
+					}
+					
+					
+					
+					fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName, filter, null, null));
+						
 				k++;
 				
 			} catch (UnsupportedEncodingException e) {
