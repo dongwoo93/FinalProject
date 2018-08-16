@@ -1,4 +1,6 @@
-$(document).ready(function() {		
+/*$(document).ready(function() {		
+	
+	// JS갱신좀..
 		
 		var originalPrivacyTab = $('#privacyTab').html();
 		var newPrivacyTab = $('#tabthree').html();
@@ -45,7 +47,7 @@ $(document).ready(function() {
 	
 	// 비밀번호 형식 확인
 	
-/* 	$('#inputPassword1').keyup(function() { 
+ 	$('#inputPassword1').keyup(function() { 
 		
 		var regex = /^[a-zA-Z0-9!@()_-|]{6,20}$/  
 		var pwd = $('#inputPassword1').val();
@@ -61,7 +63,7 @@ $(document).ready(function() {
 			$('#pwdCheckArea').html("<span class='badge badge-pill badge-danger'>❌</span> 사용하실 수 없는 비밀번호입니다.");
 
 		}			
-	}) */
+	}) 
 	
 	// 비밀번호 재입력 확인
 
@@ -115,16 +117,16 @@ $(document).ready(function() {
 	});
 			
 	
-/* 	// 원래 코드
+ 	// 원래 코드
 	$("a[id *= 'resetOriginalPrivacyTab']").click(function() {
 		console.log(originalPrivacyTab);
 		$('#privacyTab').html(originalPrivacyTab);
-	}) */
+	}) 
 	
 	// 체크박스
 	$("input[id*='chkAllow']").change(toggleCheckAjax);
-	/* $('#chkAllowEmail').change(toggleCheckAjax);
-	$('#chkAllowSms').change(toggleCheckAjax); */
+	 $('#chkAllowEmail').change(toggleCheckAjax);
+	$('#chkAllowSms').change(toggleCheckAjax); 
 	
 
 	function toggleCheckAjax(){		
@@ -140,8 +142,8 @@ $(document).ready(function() {
 			success : function(response) {
 				// console.log("AJAX Request 성공: ");
 				console.log(response)
-				if(response == 1){
-					console.log("1 받았습니다.")
+				if(parseInt(response) >= 1){
+					console.log(response + " 받았습니다.")
 					// 아무것도 안한다.
 				} else {
 					alert('실패');
@@ -158,4 +160,4 @@ $(document).ready(function() {
 		})
 	}
 	
-})
+})*/
