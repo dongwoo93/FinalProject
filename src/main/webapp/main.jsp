@@ -20,7 +20,6 @@
       $(location).attr("href", "feed.bo");
    } 
 </script>
-
 </head>
 <body>
 
@@ -77,7 +76,6 @@
 	      </div> 
 	      </form>
 	   	</div>
-	   	
 <!-- 	 </div> -->
 	
 	

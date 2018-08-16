@@ -267,10 +267,10 @@ public class BoardController {
 		
 		System.out.println(request.getParameter("filters"));
 		
-		String[] filterList = request.getParameter("filters").split(";");
+		String[] filterList = request.getParameter("filters").split(";", -1);
 		List<String> orderedFilterList = new ArrayList<>();
 		// ??
-		
+
 		if(filterList[0] != null) {
 			for(int i = 1; i < filterList.length; i++) {
 				orderedFilterList.add(filterList[i]);
