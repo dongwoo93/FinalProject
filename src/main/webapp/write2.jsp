@@ -44,7 +44,7 @@
         
 
         $(document).ready(function() {
-        	console.log('ㅋㄹㄷㄱ3ㄱ3ㄱ');
+        	console.log('3344433353');
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
               function getCaretPosition(editableDiv) {   
@@ -227,6 +227,9 @@
                    
   
             function readImage(input) {
+            	
+            	var d = new Date();
+            	
                 var files = input.files;
                 console.log(files);
                 for (i = 0; i < files.length; i++) {
@@ -240,29 +243,18 @@
                         var reader = new FileReader();
                         
                         if (i == 0) {
-                            reader.onload = function(e) {
-                            	console.log(files[i])
+                            reader.onload = function(e) {  
                                 $('#attachDivInner').append("<div class='carousel-item active'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");
                                 //alert('fileLength 1')
                             	$("[id*='filterPreviewImg_']").attr("src", e.target.result);
-
+                                
                             }
                             
-                        
                         } else {
                             reader.onload = function(e) {
-                            	console.log(files[i])
+                                
                                 $('#attachDivInner').append("<div class='carousel-item'><img src='" + e.target.result + "' class='imgWidth100' onload='javascript:staticSetMaxImageHeight(this)'></div>");                            
-                                // alert('Final Max Height :' + maxHeight) 
-//                                if (maxHeight > 620){
-//                                    maxHeight = 620;
-//                                } else if (maxHeight < 400){
-//                                    maxHeight = 400;
-//                                } else {
-//                                    maxHeight = maxHeight
-//                                }
-//                             $('#attachDiv').css('height', maxHeight + 'px');
-//                                maxHeight = 0; 
+                             	
                             }                          
                         }   
                         
