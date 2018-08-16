@@ -43,11 +43,17 @@ public class IMemberDAO implements MemberDAO {
 
 
 	@Override
-	public int signUp(MemberDTO dto) {
+	public int signUp(MemberDTO dto)  throws Exception {
 		// TODO Auto-generated method stub
 		String sql = "insert into member values(?,?,?,?,?,?,?) ";
 		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
 				
+	}
+	
+	@Override
+	public int insertProfile(String id) throws Exception {
+		String sql = "insert into profile values(?,'','',default,default,default,default,default,default)";
+		return template.update(sql,id);
 	}
 
 
@@ -167,18 +173,18 @@ public class IMemberDAO implements MemberDAO {
 
 
 	@Override
-	public String findId(String name, String phone) throws Exception{
-		// TODO Auto-generated method stub
-		String sql = "select id from memeber where name = ? phone=? ";
-		
-		List<MemberDTO> temp = template.query(sql, new Object[] {name,phone}, (rs, rowNum) -> {
-			MemberDTO member = new MemberDTO(rs.getString("id"),"","","","","","");
-			
-		
-			return member;			
-		});		
-		return temp.get(0).getId();
-	}
+	public List<MemberDTO> findId(String name, String email) throws Exception{
+		System.out.println(name);
+		String sql = "select id from member where name=? and email=?";
 	
+		return template.query(sql, new String[] {name,email}, new RowMapper<MemberDTO>() {
+			@Override
+			public MemberDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				MemberDTO tmp = new MemberDTO(rs.getString("id"),"","","","","","");
+		
+				return tmp;
+			}
+		});		
+	}
 	
 }

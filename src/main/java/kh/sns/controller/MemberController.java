@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.beans.SendEmail;
-import kh.sns.beans.Sms;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
@@ -35,7 +35,7 @@ public class MemberController {
 	
 	@Autowired
 	private ProfileService profileService;
-
+	
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
 		return "redirect:main.jsp";
@@ -50,7 +50,7 @@ public class MemberController {
 	
 	@RequestMapping("/login.do")
 	public void memberLogin(MemberDTO dto, HttpSession session, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView();
+		
 		response.setCharacterEncoding("UTF-8");
 		System.out.println(dto.getId());
 		System.out.println(dto.getPw());
@@ -59,20 +59,59 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
+			
 		}else {
 			
 		}
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
+
 		
 	}
-	@RequestMapping("/sign.do")
-	public ModelAndView signUp(MemberDTO dto) {
+	
+	@RequestMapping("/logout.do")
+	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		int result = this.memberService.signUp(dto);
-		
-		mav.addObject("result",result);
+		session.invalidate();
+		mav.setViewName("redirect:main.jsp");
+		return mav;
+	}
+	
+	@RequestMapping("/sign.do")
+	public ModelAndView signUp(MemberDTO dto, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		int joinresult = 0;
+		int insertMem = 0 ;
+		int insertProfile = 0;
+		try {
+			insertMem = this.memberService.signUp(dto);
+			insertProfile = this.memberService.insertProfile(dto.getId());
+			
+			 String realPath = request.getSession().getServletContext().getRealPath("/"+dto.getId()+"/");
+	         
+	         File f = new File(realPath);
+	         if(!f.exists()){
+	            f.mkdir();
+	          }
+	         realPath = realPath+"log.txt";
+	         File f1 = new File(realPath);
+	         if(!f1.exists()){
+	            f1.mkdir();
+	          }
+	         
+	         System.out.println(realPath); 
+	         
+	         
+		if(insertMem> 0 && insertProfile > 0) {
+			joinresult = 1;
+		}
+	
+		}catch(Exception e) {  
+			
+			e.printStackTrace();
+		}
+		mav.addObject("result",joinresult);
 		mav.setViewName("join.jsp");
 		return mav;
 	}
@@ -96,6 +135,7 @@ public class MemberController {
 	public void isEmailExist(String email, HttpServletResponse response) throws Exception{
 		
 		int result =this.memberService.isEmailExist(email);
+		System.out.println(result);
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
@@ -160,7 +200,7 @@ public class MemberController {
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			
-			mav.setViewName("mypage.jsp");
+			mav.setViewName("mypage2.jsp");
 			
 		} else {
 			// 작업 추가
@@ -204,7 +244,9 @@ public class MemberController {
 		mav.addObject("result", result);
 		mav.setViewName("findPass.jsp");
 		return mav;		
-	}	
+	}
+	
+	
 	@RequestMapping("/isEmailDuplicated.ajax")
 	public void checkEmailDuplicated(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -226,20 +268,30 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/findId.do")
-	public ModelAndView findId(String name, String phone, HttpServletResponse response, HttpServletRequest request) throws Exception {
+	public ModelAndView findId(String name, String email, HttpServletResponse response) throws Exception {
 
-		String id =this.memberService.findId(name, phone);
+		List<MemberDTO> findId =this.memberService.findId(name, email);
+		
+		
 		int result = 0;
-		System.out.println(id);
-		if(id!=null) {
-			
-			Sms sms = new Sms();
-			String num = sms.sendSMS(phone);
-			
-			result =2;
+	
+		
+		
+		
+		if(findId.size() == 1) {
+			System.out.println("id:"+findId.get(0).getId());
+			SendEmail sendemail = new SendEmail(1,findId.get(0).getId(),email);
+			sendemail.sendEmail();
+			result = 2;
+		}else {
+			result = 0;
 		}
+		
+		
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", result);
+
 		mav.setViewName("findPass.jsp");
 		return mav;	
 		
@@ -249,9 +301,10 @@ public class MemberController {
 	
 	
 	/*1. jsp 이름 폰번호입력
-	2. 인증번호 받기  버튼 - 컨트롤러 - 
+	2. 인증번호 받기  버튼 - 컨트롤러 - //
 	3. 이름 폰번호가 같은 계정정보인지 
-	4. 일치하면 , 인증번호 보내기 , 
+	4. 일치하면 , 인증번호 보내기 , //  
+	
 	5. 인증번호 입력창 생성
 	6. 인증번호 입력. - 컨트롤러
 		

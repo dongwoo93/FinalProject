@@ -450,9 +450,9 @@ $("#sign").click(function(){
 							if(insert==data){
 								$("#certification").css("background-color", "#ccff33");
 								 $("input[name=certification]").attr("readonly",true);
-								같을떄 ? 이메일
+									
 								phoneConfirm=1;		
-								
+								alert("인증 성공");
 							}else{
 								$("#certification").css("background-color", "red");
 								phoneConfirm=0;		
@@ -462,7 +462,7 @@ $("#sign").click(function(){
 							});
 						
 						}else{
-							console.log("응다시 써");
+							alert("올바른 번호를 입력해주세요");
 							$("#certification").remove();
 							$("#phone").val("");
 							$("#phone").focus();
@@ -471,13 +471,13 @@ $("#sign").click(function(){
 					
 				});	
 			}else{
-				console.log("다시 써");
+				alert("올바른 번호를 입력해주세요");
 				$("#phone").val("");
 				$("#phone").focus();
 			}
 			
 		}else{
-			console.log("다시 해");
+			alert("올바른 번호를 입력해주세요");
 			$(this).val("");
 			$(this).focus();
 		}
@@ -570,7 +570,7 @@ $("#sign").click(function(){
 						
 						console.log(idCheck);
 					} else {
-						console.log("떙");
+						console.log("땡");
 						idCheck=0;
 						console.log(idCheck);
 					}
@@ -644,16 +644,17 @@ $("#sign").click(function(){
 					
 					if(color == "rgb(76, 175, 80)" || color=="") {
 						console.log("띵동");
-						emailCheck=1;
-						/*   $.ajax({
-				                url: "emailCheck", // 처리할 페이지(서블릿) 주소
+				
+					   $.ajax({
+				                url: "emailCheck.do", // 처리할 페이지(서블릿) 주소
 				                type: "get",
 				                data: {email: email},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 				                success: function(data) {
 				                    console.log("AJAX Request 성공");
-				                    if(data==1){
-						                
-				                    	emailCheck=0;
+				                    console.log(data);
+				                    if(data==2){
+						              
+				                    		emailCheck=0;
 					                	   var start = $(".email");
 					   						start.after('<div class="mt-2" id="chEmail"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>');
 					                	
@@ -680,7 +681,7 @@ $("#sign").click(function(){
 				                complete: function(){
 				                    console.log("AJAX 종료");
 				                }
-				            });  */
+				            });  
 				          
 			
 						console.log(emailCheck);
@@ -704,7 +705,7 @@ $("#sign").click(function(){
 	 });
 	
 	function timeIsUp() {
-        alert("끝났다");
+        alert("유효시간이 만료 됐습니다");
         $(".phoneinput").remove();
         $("input[name=phone]").attr("readonly",false);
         $("#phone").val("");
@@ -752,7 +753,7 @@ $(location).attr("href", "main.jsp");
 
 								<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id"
 									name="id" onblur="checkId()" type="text" class="validate"
-									required> <label for="id">ID</label>
+									required> <label for="id">ID 4~19자리(영문 숫자 혼합)</label>
 
 
 
@@ -762,7 +763,7 @@ $(location).attr("href", "main.jsp");
 							<div class="input-field col s6 name">
 								<input id="name" name="name" type="text" minlength="2"
 									onblur="checkName()" class="validate" required> <label
-									for="name">Name</label>
+									for="name">Name 한글만 입력 해 주세요</label>
 							</div>
 						</div>
 						<div class="row">
@@ -770,7 +771,7 @@ $(location).attr("href", "main.jsp");
 							<div class="input-field col s6 pw">
 								<input id="pw" name="pw" oninput="checkPwd()" type="password"
 									class="validate" minlength="6" required> <label
-									for="pw">PassWord</label>
+									for="pw">PassWord 6자리 이상</label>
 							</div>
 							<div class="input-field col s6 pw2">
 								<input id="pwCheck" oninput="checkPwd()" type="password"
@@ -796,7 +797,7 @@ $(location).attr("href", "main.jsp");
 							<div class="input-field col s12 nick">
 								<input id="nick" onblur="checkNick()" name="nickname"
 									type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$"
-									class="validate" required> <label for="nick">Nickname</label>
+									class="validate" required> <label for="nick">Nickname 4~19자리(영문 숫자 혼합)</label>
 							</div>
 						</div>
 						<div class="row confirm">

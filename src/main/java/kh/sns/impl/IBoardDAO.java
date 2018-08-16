@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
@@ -28,7 +27,7 @@ public class IBoardDAO implements BoardDAO  {
 	private JdbcTemplate template;
 
 	@Override
-	public List<BoardDTO> getBoard(String id) {		 
+	public List<BoardDTO> getBoard(String id) throws Exception {		 
 		String sql = "select * from board where id = ?";
 		return template.query(sql, new Object[] {id}, new RowMapper<BoardDTO>() {
 
@@ -46,6 +45,41 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
+	public String boardCount(String id) throws Exception {
+		String sql = "select count(*) from board where id = ?";
+		return template.query(sql, new Object[] {id}, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				String tmp = rs.getString(1);
+				return tmp;
+			}
+		}).get(0);
+		
+	}
+	
+	@Override
+	public BoardDTO getBoardModal(String seq) throws Exception {
+		String sql = "select * from board where board_seq=?";
+		
+		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		}).get(0);
+	}
+	
+	
+	
 
 		@Override
 		public int deleteBoard(int seq) {
@@ -53,11 +87,21 @@ public class IBoardDAO implements BoardDAO  {
 			return template.update(sql, seq);
 		}
 	
+		
+
+		@Override
+		public int modifyBoard(BoardDTO dto) throws Exception {
+			String sql = "update board set contents = ? where board_seq = ?";  
+			return template.update(sql, dto.getContents(), dto.getBoard_seq());
+		}
+
+		
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%'))";
-		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
+		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%')) or "
+				+ "(board_seq in (select board_seq from board_location where location_name like '%'||?||'%')) order by board_seq desc";
+		return template.query(sql, new Object[] {keyword, keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -76,7 +120,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<Board_MediaDTO> search2(int seq) throws Exception {
-		String sql = "select * from board_media where board_seq=?";
+		String sql = "select * from board_media where board_seq=? order by media_seq";
 		return template.query(sql, new Object[] {seq}, new RowMapper<Board_MediaDTO>() {
 
 			@Override
@@ -94,8 +138,8 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
-		String sql = "select * from board order by board_seq desc";
-		return template.query(sql, new RowMapper<BoardDTO>() {
+		String sql = "select * from board where (id in (select target_id from member_follow where id=?)) or (id=?) order by board_seq desc";
+		return template.query(sql, new String[] {id,id}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -215,44 +259,5 @@ public class IBoardDAO implements BoardDAO  {
 			return rs.getInt(1);
 		});
 		return temp.get(0);
-	}
-	
-
-	@Override
-	public BoardDTO getBoardModal(String seq) throws Exception {
-		String sql = "select * from board where board_seq=?";
-		
-		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
-
-			@Override
-			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				BoardDTO tmp = new BoardDTO();
-				tmp.setBoard_seq(rs.getInt(1));
-				tmp.setContents(rs.getString(2));
-				tmp.setId(rs.getString(3));
-				tmp.setWritedate(rs.getString(4));
-				tmp.setRead_count(rs.getString(5));
-				tmp.setIs_allow_comments(rs.getString(6));
-				return tmp;
-			}
-		}).get(0);
-	}
-
-	@Override
-	public int selectLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateLike(Board_LikeDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }
