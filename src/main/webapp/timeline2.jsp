@@ -162,8 +162,10 @@
           
     }
     
-    function modal(e) {
+    function modal(e) {  
     	var board_seq = $(e).attr("value");
+    	$("#modalseq").val(board_seq);
+    	
     	$("#changeBoardModal").modal();
     }
 </script>
@@ -349,8 +351,7 @@
 							<div class="crecodiv py-2 navbar-nav">
 
 
-								<input type="hidden" id="board_seq" name="board_seq"
-									value="${tmp.board_seq}"> &nbsp&nbsp&nbsp 
+							
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
@@ -379,11 +380,11 @@
 	                                              success : function(seq) {   
 	                                               $("#comment${tmp.board_seq}").val("");              
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' style='cursor: pointer;'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
-	          							  }
-	                                     }); //ajax 
-	                                   }    
-	                                }  
-	                            }); 
+	                            				  }
+		                                     }); //ajax 
+		                                   }    
+		                                }  
+		                            }); 
 							 
 
 						 		</script>
@@ -418,8 +419,8 @@
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
    <div class="modal-dialog modal-dialog-centered" role="document">
-       
-            <div class="modal-content">
+  			<input type=hidden id=modalseq>
+  			    <div class="modal-content">
                <div class="modal-body">
                <div class="dropdown-divider" ></div>   
                   <a class="dropdown-item" href="#">게시물로 이동</a>
