@@ -27,12 +27,22 @@ public class IBoard_CommentService implements Board_CommentService {
 	public int delComment(int comment_seq) throws Exception {
 		return board_commentdao.delComment(comment_seq);
 	}
+
 	
 	public int getCommentSeq() throws Exception {
 		return board_commentdao.getCommentSeq();
 	}
 	
-	public int modComment(Board_CommentDTO dto) {
+	public int modComment(Board_CommentDTO dto) throws Exception {
 		return board_commentdao.modComment(dto);
+	}
+	
+	public int commentCount(int board_seq) throws Exception {
+		return board_commentdao.commentCount(board_seq);
+	}
+
+	@Override
+	public List<int[]> selectCommentCount() throws Exception {
+		return board_commentdao.selectCommentCount();
 	}
 }

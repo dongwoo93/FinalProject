@@ -41,8 +41,8 @@ public class IBoard_LikeService implements Board_LikeService {
 	}
 
 	@Override
-	public List<int[]> selectLikeAll() throws Exception {
+	public List<int[]> selectLikeCount() throws Exception {
 		// TODO Auto-generated method stub
-		return board_likedao.selectLikeAll();
+		return board_likedao.selectLikeCount();
 	}
 }

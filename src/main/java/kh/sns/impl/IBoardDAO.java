@@ -27,8 +27,8 @@ public class IBoardDAO implements BoardDAO  {
 	private JdbcTemplate template;
 
 	@Override
-	public List<BoardDTO> getBoard(String id) throws Exception {		 
-		String sql = "select * from board where id = ?";
+	public List<BoardDTO> getBoard(String id) throws Exception {	   	 
+		String sql = "select * from board where id = ? order by board_seq desc";
 		return template.query(sql, new Object[] {id}, new RowMapper<BoardDTO>() {
 
 			@Override
@@ -166,13 +166,14 @@ public class IBoardDAO implements BoardDAO  {
 	 * (non-Javadoc)
 	 * @see kh.sns.interfaces.BoardDAO#insertNewMedia(kh.sns.dto.Board_MediaDTO)
 	 * 
-	 * 편의상 여기다 일단 만들고 나중에 필요하면 별도 클래스로 분리합니다.
+	 * �렪�쓽�긽 �뿬湲곕떎 �씪�떒 留뚮뱾怨� �굹以묒뿉 �븘�슂�븯硫� 蹂꾨룄 �겢�옒�뒪濡� 遺꾨━�빀�땲�떎.
 	 */
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
 
-		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?)";
-		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name());
+		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
+		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name(),
+				media.getFilterName(), media.getSoundOriginalFileName(), media.getSoundSystemFileName());
 	}
 
 	public int selectBoardSeqRecentCurrVal() throws Exception {
@@ -189,7 +190,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 
 	@Override
-	public int[] insertHashTags(BoardDTO article) throws Exception {
+	public int[] insertHashTags( BoardDTO article) throws Exception {
 
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
@@ -242,7 +243,7 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
-	@Override	// id가 팔로한 사람들의 수
+	@Override	// id媛� �뙏濡쒗븳 �궗�엺�뱾�쓽 �닔
 	public int getFollowingCount(String id) throws Exception {
 		String sql = "select count(*) from member_follow where id=?";
 		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
@@ -252,7 +253,7 @@ public class IBoardDAO implements BoardDAO  {
 		
 	}
 	
-	@Override	// id를 팔로하는 사람들의 수
+	@Override	// id瑜� �뙏濡쒗븯�뒗 �궗�엺�뱾�쓽 �닔
 	public int getFollowerCount(String id) throws Exception {
 		String sql = "select count(*) from member_follow where target_id=?";
 		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			

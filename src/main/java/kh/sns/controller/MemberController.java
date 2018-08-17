@@ -1,10 +1,14 @@
 package kh.sns.controller;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,21 +92,9 @@ public class MemberController {
 			insertMem = this.memberService.signUp(dto);
 			insertProfile = this.memberService.insertProfile(dto.getId());
 			
-			 String realPath = request.getSession().getServletContext().getRealPath("/"+dto.getId()+"/");
-	         
-	         File f = new File(realPath);
-	         if(!f.exists()){
-	            f.mkdir();
-	          }
-	         realPath = realPath+"log.txt";
-	         File f1 = new File(realPath);
-	         if(!f1.exists()){
-	            f1.mkdir();
-	          }
-	         
-	         System.out.println(realPath); 
-	         
-	         
+
+		String realPath = request.getSession().getServletContext().getRealPath("/"+dto.getId()+"/");
+	    logFile(realPath);   
 		if(insertMem> 0 && insertProfile > 0) {
 			joinresult = 1;
 		}
@@ -114,6 +106,31 @@ public class MemberController {
 		mav.addObject("result",joinresult);
 		mav.setViewName("join.jsp");
 		return mav;
+	}
+	
+	public void logFile(String realPath) throws Exception {
+
+        File f = new File(realPath);
+        if(!f.exists()){
+           f.mkdir();
+         }
+        realPath = realPath+"log.txt";
+        File f1 = new File(realPath);
+        if(!f1.exists()){
+           f1.createNewFile();
+         } 
+        
+        System.out.println(realPath); 
+        
+        BufferedWriter bw = new BufferedWriter(new FileWriter(realPath));
+        bw.write("[join]"); bw.newLine();
+        bw.write("[login]"); bw.newLine();
+        bw.write("[logout]"); bw.newLine();
+        bw.close();
+        Log log = new Log();
+        log.insertLog(realPath, "join");
+       
+   
 	}
 	@RequestMapping("/dupId.do")
 	public void isIdExist(String id, HttpServletResponse response) throws Exception{
@@ -135,7 +152,7 @@ public class MemberController {
 	public void isEmailExist(String email, HttpServletResponse response) throws Exception{
 		
 		int result =this.memberService.isEmailExist(email);
-		System.out.println(result);
+	
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
