@@ -58,13 +58,13 @@ public class Board_CommentController {
    }
    
    @RequestMapping("/commentdel.co")
-   public void delComment(String board_seq, String comment_seq ,HttpServletResponse response)  {
+   public void delComment(int board_seq,int comment_seq ,HttpServletResponse response)  {
       System.out.println(comment_seq);  
       int result = 0; 
       int count = 0;
       try {
-         result = this.boardcommentservice.delComment(Integer.parseInt(comment_seq));
-         count = this.boardcommentservice.commentCount(Integer.parseInt(board_seq));  
+         result = this.boardcommentservice.delComment(comment_seq);
+         count = this.boardcommentservice.commentCount(board_seq);  
          System.out.println(result);   
          if(result > 0 ) {
             System.out.println("del success");   
