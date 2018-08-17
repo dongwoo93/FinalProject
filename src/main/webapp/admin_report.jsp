@@ -283,11 +283,12 @@ html,body {
     	$('#chkAllowSms').change(toggleCheckAjax); */
     	
     	$('[data-toggle="popover"]').popover({container: "body"});
+    	
     	$('a[id*="popBoard"]').focus(function(){
     		var elem = $(this)
     		var seq = $(this).attr('id').replace('popBoard', '').split('_');
-    		console.log(seq[0]);
-    		console.log(seq[1]);
+    		/* console.log(seq[0]);
+    		console.log(seq[1]); */
     		
     		
     		$.ajax({
@@ -297,9 +298,44 @@ html,body {
     				seq : seq[1]
     			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
     			success : function(response) {
-    				console.log(response.contents)
+    				// console.log(response.contents)
     				$(elem).attr('data-original-title', seq[0] + " | " + seq[1] + " | " + response.id + " | " + response.writedate)
     			   	$(elem).attr('data-content', response.contents)
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+    		}) // $AJAX 끝
+    	})
+    	
+    	  $('a[id*="popComment"]').focus(function(){
+    		var elem = $(this)
+    		var seq = $(this).attr('id').replace('popComment', '').split('_');
+    		/* console.log(seq[0]);
+    		console.log(seq[1]);
+    		console.log(seq[2]); */
+    		
+    		
+    		$.ajax({
+    			url : "getOneComment.ajax",
+    			type : "get",
+    			data : {
+    				board_seq : seq[1],
+    				comment_seq : seq[2]
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				console.log(response)
+    				var outputTitle = seq[0] + " | " + seq[2] + " | " + response[1].id + " | " + response[1].writedate;
+    				
+    				var outputText = response[1].comment_contents;
+    				outputText += "<a>ee</a>"
+    				outputText += "링크 안먹힘.."
+    				
+    				$(elem).attr('data-original-title', outputTitle)
+    				$(elem).attr('data-content', outputText)
     			},
     			error : function() {
     				console.log("에러 발생");
@@ -384,7 +420,7 @@ html,body {
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="active nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 현황 관리</a></li>
+							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#reportCode" id="navi">Report Code 관리</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
@@ -393,8 +429,8 @@ html,body {
 							data-toggle="pill" data-target="#resultCode" id="navi">Result Code 관리</a></li>
 <!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
 <!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
-						<li class="nav-item"><a class="nav-link mp " href="#"
-							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li>
+					<!-- 	<li class="nav-item"><a class="nav-link mp " href="#"
+							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li> -->
 					</ul>
 					
 				</div>
@@ -406,7 +442,7 @@ html,body {
 					<div class="tab-content">
 						<div class="tab-pane fade show active" id="reportMain" role="tabpanel">
 						<br>
-							<h3 class="text-center" style="font-weight:bold;">리포트 현황 관리</h3>
+							<h3 class="text-center" style="font-weight:bold;">리포트 통계</h3>
 						
 						</div>
 						
@@ -585,15 +621,23 @@ html,body {
 							  	<tr>
 							      <th scope="row">${ i.reportSeq }</th>
 							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
-							      <td><a href="#" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.boardSeq }</a></td>
-							      <td><a href="">${ i.commentSeq != 0 ? i.commentSeq : '-' }</a></td>
+							      <td><a href="#;return false;" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.boardSeq }</a></td>
+							      <td>
+							      	<c:choose>
+							      		<c:when test="${ i.commentSeq eq 0 }">-</c:when>
+							      		<c:otherwise>
+							      			<a href="#;return false;"  id='popComment${ i.reportSeq }_${ i.boardSeq }_${ i.commentSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.commentSeq }</a>
+							      		</c:otherwise>
+							      	</c:choose>
+							      		
+							      	</td>
 							      <td>${ i.reportedDate }</td>
 							      <td>${ i.reportersComment }</td>
 							      <td>${ i.adminFirstReadDate }</td>
 							      <td>${ i.adminAcceptedDate }</td>
 							      <td>${ i.resultCode }: ${ result[k.index].resultDescription }</td>
 							      <td>${ i.adminComment }</td>
-							      <td><a href="#">삭제</a> | <a href="#">차단</a></td>
+							      <td><a href="#;return false;">처리</a></td>
 							    </tr>
 							  </c:forEach>
 					

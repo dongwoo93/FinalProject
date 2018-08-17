@@ -25,8 +25,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
@@ -369,13 +367,37 @@ public class BoardController {
 			PrintWriter xout = response.getWriter();
 			System.out.println(request.getParameter("seq"));
 			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
-			System.out.println(b);
-			
-			 // 자바용 JSON 객체로 변환하기
-//		    JsonParser parser = new JsonParser();
-//		    JsonObject json = parser.parse(b).getAsJsonObject(); 
-		    
+
 			new Gson().toJson(b, xout);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@RequestMapping("/getOneComment.ajax")
+	public void getOneCommentAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
+		try {
+			PrintWriter xout = response.getWriter();
+			
+			System.out.println(request.getParameter("comment_seq"));
+			System.out.println(request.getParameter("board_seq"));
+			
+			BoardDTO b = boardService.getBoardModal(request.getParameter("board_seq"));
+			Board_CommentDTO c = board_commentService.getOneComment(Integer.parseInt(request.getParameter("comment_seq")));
+			
+			System.out.println(b);
+			System.out.println(c);
+			
+			Object[] output = new Object[2];
+			output[0] = b;
+			output[1] = c;
+
+			new Gson().toJson(output, xout);
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
