@@ -258,10 +258,7 @@ public class BoardController {
 		String[] filterList = null;
 		if(request.getParameter("filters") != null)
 			filterList = request.getParameter("filters").split(";");
-		
-
-		
-		
+	
 		
 		int k = 0;
 		for(MultipartFile mf : mfList) {
