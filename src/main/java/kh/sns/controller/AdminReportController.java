@@ -1,5 +1,8 @@
 package kh.sns.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportOutputSet;
 import kh.sns.interfaces.AdminReportsService;
 
@@ -33,6 +37,27 @@ public class AdminReportController {
 		mav.addObject("code", aros.getCodeList());
 		mav.addObject("result", aros.getResultList());
 		mav.setViewName("admin_report.jsp");
+		return mav;
+	}
+	
+	@RequestMapping("/idunno.test")
+	public ModelAndView writeProcBoard(HttpServletRequest request) {		
+		
+//		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+		
+		try {
+//			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
+//			List<BoardDTO> list = boardService.getBoard("yukirinu");
+//			System.out.println(new Gson().toJson(list));
+						
+			List<AdminReportCode> list = ars.getReportCodeList();
+			System.out.println(list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
 	

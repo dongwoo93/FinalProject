@@ -1,5 +1,8 @@
 package kh.sns.interfaces;
 
+import java.util.List;
+
+import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
 
@@ -11,5 +14,7 @@ public interface AdminReportsService {
 	
 	public AdminReportOutputSet getAllReports() throws Exception;
 	public AdminReportOutputSet getReportsByRange(int start, int end) throws Exception;
+	
+	public List<AdminReportCode> getReportCodeList() throws Exception;
 	
 }

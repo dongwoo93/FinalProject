@@ -57,11 +57,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 		return 0;
 	}
 	
-	@Override
-	public List<AdminReportCode> getAdminReportCodeByRange(int start, int end) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	@Override
 	public List<AdminReportCode> getAllAdminReportCode() throws Exception {
@@ -78,11 +74,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 		});
 	}
 	
-	@Override
-	public List<AdminReportResultCode> getAdminResultCodeByRange(int start, int end) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	@Override
 	public List<AdminReportResultCode> getAllAdminResultCode() throws Exception {
@@ -96,6 +88,18 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 			arr.setResultDescription(rs.getString(1));
 			return arr;
 			
+		});
+	}
+	
+	@Override
+	public List<AdminReportCode> getReportCodeList() throws Exception {
+		String sql = "select * from admin_report_code order by report_code";
+		return t.query(sql, (rs, rowNum) -> {
+			AdminReportCode arc = new AdminReportCode();
+			arc.setAcceptDepartment(rs.getString("report_accept_department"));
+			arc.setReportCode(rs.getInt("report_code"));
+			arc.setReportCodeDescription(rs.getString("report_code_description"));
+			return arc;
 		});
 	}
 	

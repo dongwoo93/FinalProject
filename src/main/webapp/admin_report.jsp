@@ -347,40 +347,54 @@ html,body {
     		}) // $AJAX 끝
     	})
     	
-    	/*파이 차트*/
-    	$("#chartContainer").CanvasJSChart({ 
-		title: { 
-			text: "Worldwide Smartphone sales by brand - 2012",
-			fontSize: 24
-		}, 
-		axisY: { 
-			title: "Products in %" 
-		}, 
-		legend :{ 
-			verticalAlign: "center", 
-			horizontalAlign: "right" 
-		}, 
-		data: [ 
-		{ 
-			type: "pie", 
-			showInLegend: true, 
-			toolTipContent: "{label} <br/> {y} 건", 
-			indexLabel: "{y} 건", 
-			// label: 원 안에서 보이는 것
-			dataPoints: [ 
-				{ label: "스팸",  y: 1, legendText: "1: 스팸"}, 
-				{ label: "음란물",  y: 0, legendText: "2: 나체, 음란물"},
-				{ label: "편파적 발언",    y: 1, legendText: "3: 편파적 발언"  }, 
-				{ label: "폭력",  y: 0, legendText: "4: 폭력, 위협"},
-				{ label: "마약",  y: 1, legendText: "5: 마약"},
-				{ label: "따돌림",  y: 0, legendText: "6: 괴롭힙 및 따돌림"},
-				{ label: "재산권 침해",  y: 0, legendText: "7: 지적재산권 침해"},
-				{ label: "자해",   y: 0, legendText: "8: 자해" } 
-			] 
-		} 
-		] 
-	}); 
+
+			
+		    	/*파이 차트*/
+		    	$("#chartContainer").CanvasJSChart({ 
+				title: { 
+					text: "Worldwide Smartphone sales by brand - 2012",
+					fontSize: 24
+				}, 
+				axisY: { 
+					title: "Products in %" 
+				}, 
+				legend :{ 
+					verticalAlign: "center", 
+					horizontalAlign: "right" 
+				}, 
+				data: [ 
+				{ 
+					type: "pie", 
+					showInLegend: true, 
+					toolTipContent: "{label} <br/> {y} 건", 
+					indexLabel: "{y} 건", 
+					// label: 원 안에서 보이는 것
+					dataPoints: [ 
+						{ label: "스팸",  y: 1, legendText: "1: 스팸"}, 
+						{ label: "음란물",  y: 0, legendText: "2: 나체, 음란물"},
+						{ label: "편파적 발언",    y: 1, legendText: "3: 편파적 발언"  }, 
+						{ label: "폭력",  y: 0, legendText: "4: 폭력, 위협"},
+						{ label: "마약",  y: 1, legendText: "5: 마약"},
+						{ label: "따돌림",  y: 0, legendText: "6: 괴롭힙 및 따돌림"},
+						{ label: "재산권 침해",  y: 0, legendText: "7: 지적재산권 침해"},
+						{ label: "자해",   y: 0, legendText: "8: 자해" } 
+					] 
+				} 
+				] 
+			}); 
     	
+    	setInterval(function(){
+    		var chart = $("#chartContainer").CanvasJSChart(); 
+    		 
+    		chart.options.data[0].dataPoints[0].y += 1;
+    		 
+    		chart.render();
+        	
+    	}, 5000)
+    	
+    	
+	    	
+
 
     	function toggleCheckAjax(){		
     		var fieldName = $(this).attr('name');
