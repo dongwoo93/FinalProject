@@ -166,7 +166,7 @@ public class IBoardDAO implements BoardDAO  {
 	 * (non-Javadoc)
 	 * @see kh.sns.interfaces.BoardDAO#insertNewMedia(kh.sns.dto.Board_MediaDTO)
 	 * 
-	 * �렪�쓽�긽 �뿬湲곕떎 �씪�떒 留뚮뱾怨� �굹以묒뿉 �븘�슂�븯硫� 蹂꾨룄 �겢�옒�뒪濡� 遺꾨━�빀�땲�떎.
+	 * �렪�쓽�긽 �뿬湲곕떎 �씪�떒 留뚮뱾怨� �굹以묒뿉 �븘�슂�븯硫� 蹂꾨룄 �겢�옒�뒪濡� 遺꾨━�빀�땲�떎. // ㅠㅠ ㅂㄷㅂㄷ
 	 */
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {

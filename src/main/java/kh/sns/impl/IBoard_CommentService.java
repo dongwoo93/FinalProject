@@ -51,4 +51,9 @@ public class IBoard_CommentService implements Board_CommentService {
 		// TODO Auto-generated method stub
 		return board_commentdao.getCommentList(board_seq);
 	}
+	
+	@Override
+	public Board_CommentDTO getOneComment(int comment_seq) throws Exception {
+		return board_commentdao.getOneComment(comment_seq);
+	}
 }
