@@ -2,9 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-
+<script> var currentId = "${sessionScope.loginId}"; </script>
+<script src="resources/js/timeline.js"></script>
 <script>
-  
     AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
@@ -162,12 +162,7 @@
           
     }
     
-    function modal(e) {  
-    	var board_seq = $(e).attr("value");
-    	$("#modalseq").val(board_seq);
-    	
-    	$("#changeBoardModal").modal();
-    }
+    
     function goBoard(){
     	var board_seq = $("#modalseq").val();
     	
@@ -359,7 +354,7 @@
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
-											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
+											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}:${tmp.id}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
 												data-toggle="modal"> </i>
 										</div>
 
@@ -422,19 +417,76 @@
 
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
-   <div class="modal-dialog modal-dialog-centered" role="document">
+   <!-- <div class="modal-dialog modal-dialog-centered" role="document">
   			<input type=hidden id=modalseq>
   			    <div class="modal-content">
                <div class="modal-body">
                <div class="dropdown-divider" ></div>   
                   <a class="dropdown-item" onclick="goBoard()">게시물로 이동</a>
                   <div class="dropdown-divider" ></div>
-                  <a class="dropdown-item"  href="#">부적절한 콘텐츠 신고</a>
+                  <a class="dropdown-item" onclick="modal2(this)" style="cursor: pointer;">부적절한 콘텐츠 신고</a>
                   <div class="dropdown-divider" ></div>
                   <a class="dropdown-item" href="#">링크 복사</a>
                   <div class="dropdown-divider" ></div> 
                   <a class="dropdown-item" href="#">팔로우 취소</a>   
                   
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         
+   </div> -->
+</div>
+
+<div class="modal" id="changeBoardModal2" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+  			<input type=hidden id=modalseq>
+  			    <div class="modal-content">
+  			    <div class="modal-header">
+          			<h4 class="modal-title">신고</h4>
+        		</div>
+               <div class="modal-body"> 
+                  <a class="dropdown-item mo" onclick="">폭력 또는 폭력 위협</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item mo" onclick="">마약 판매 및 홍보</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item mo" onclick="">괴롭힘 및 따돌림</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item mo" onclick="">지적 재산권 침해</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item mo" onclick="">스스로 신체적 상해를 입히는 행위</a> 
+                  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div> 
+   </div>
+</div>
+
+<div class="modal" id="reportModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+  			<input type=hidden id=modalid>
+  			    <div class="modal-content">
+  			    <div class="modal-header">
+          			<h4 class="modal-title">신고</h4>
+        		</div>
+               <div class="modal-body">
+                <div style="text-align: left;">
+                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">편파적 발언 또는 상징으로 신고할까요?</p>
+                <p style="margin-bottom: 8px;">삭제 대상:</p>
+                <ul style="list-style-type: disc; margin: 0 0 8px 0;">
+                <li style="margin-bottom: 8px;">나치 상징(하켄크로이츠)이나 백인 우월주의를 나타내는 손 모양 등 편파적 발언 또는 상징에 관한 사진</li>
+                <li style="margin-bottom: 8px;">폭력을 조장하거나 사람의 정체성을 바탕으로 공격하는 내용의 게시물</li>
+                <li style="margin-bottom: 8px;">신체적 상해, 절도 또는 기물 파손에 대한 협박</li>
+                </ul>
+                <p style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>
+                <p style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>
+                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>
+                </div>
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary"
