@@ -2,6 +2,7 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -356,6 +357,53 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		return mav;
+	}
+	
+	// AJAX
+	@RequestMapping("/getOneArticle.ajax")
+	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
+		try {
+			PrintWriter xout = response.getWriter();
+			System.out.println(request.getParameter("seq"));
+			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
+
+			new Gson().toJson(b, xout);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@RequestMapping("/getOneComment.ajax")
+	public void getOneCommentAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
+		try {
+			PrintWriter xout = response.getWriter();
+			
+			System.out.println(request.getParameter("comment_seq"));
+			System.out.println(request.getParameter("board_seq"));
+			
+			BoardDTO b = boardService.getBoardModal(request.getParameter("board_seq"));
+			Board_CommentDTO c = board_commentService.getOneComment(Integer.parseInt(request.getParameter("comment_seq")));
+			
+			System.out.println(b);
+			System.out.println(c);
+			
+			Object[] output = new Object[2];
+			output[0] = b;
+			output[1] = c;
+
+			new Gson().toJson(output, xout);
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 

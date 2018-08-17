@@ -83,7 +83,6 @@
 	display: inline-block
 }
 
-    }
     
     #myComment{
     	font-family: "Open Sans", Arial, sans-serif;
@@ -213,6 +212,11 @@ padding-right:3%;
 
 .dropdown-item:hover{
 	background-color:#E1F5FE;  
+}
+
+.pointer {
+	
+	cursor:pointer;  
 }
 
 

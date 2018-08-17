@@ -61,7 +61,15 @@ public class Board_CommentDTO {
 	public void setWritedate(String writedate) {
 		this.writedate = writedate;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Board_CommentDTO [comment_seq=" + comment_seq + ", board_seq=" + board_seq + ", id=" + id
+				+ ", comment_contents=" + comment_contents + ", writedate=" + writedate + "]";
+	}
 	
 
 }
