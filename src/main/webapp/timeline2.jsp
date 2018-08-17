@@ -441,6 +441,33 @@
    </div> -->
 </div>
 
+<div class="modal" id="changeBoardModal2" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+  			<input type=hidden id=modalseq>
+  			    <div class="modal-content">
+  			    <div class="modal-header">
+          			<h4 class="modal-title">신고</h4>
+        		</div>
+               <div class="modal-body"> 
+                  <a class="dropdown-item mo" onclick="">폭력 또는 폭력 위협</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item mo" onclick="">마약 판매 및 홍보</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item mo" onclick="">괴롭힘 및 따돌림</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item mo" onclick="">지적 재산권 침해</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item mo" onclick="">스스로 신체적 상해를 입히는 행위</a> 
+                  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div> 
+   </div>
+</div>
+
 <div class="modal" id="reportModal" tabindex="-1" role="dialog">
    <div class="modal-dialog modal-dialog-centered" role="document">
   			<input type=hidden id=modalid>

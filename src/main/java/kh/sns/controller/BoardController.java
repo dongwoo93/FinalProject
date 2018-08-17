@@ -386,6 +386,7 @@ public class BoardController {
 	
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
 		int result = boardService.deleteFollowInfo(fi);
 		if(result == 1) {
 			response.getWriter().print("팔로우 취소 완료");
