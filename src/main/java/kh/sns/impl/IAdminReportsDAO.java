@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
+import kh.sns.dto.AdminReportResultCode;
 import kh.sns.interfaces.AdminReportsDAO;
 import kh.sns.util.TextHandler;
 
@@ -73,6 +74,23 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 			AdminReportCode arc = new AdminReportCode();
 			arc.setReportCodeDescription(rs.getString(1));
 			return arc;
+			
+		});
+	}
+	
+	@Override
+	public List<AdminReportResultCode> getAdminResultCodeByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<AdminReportResultCode> getAllAdminResultCode() throws Exception {
+		String sql = "select result_description from admin_reports r, admin_report_result_code c where r.result_code = c.result_code order by r.reported_date desc";
+		return t.query(sql, (rs, rowNum) -> {
+			AdminReportResultCode arr = new AdminReportResultCode();
+			arr.setResultDescription(rs.getString(1));
+			return arr;
 			
 		});
 	}

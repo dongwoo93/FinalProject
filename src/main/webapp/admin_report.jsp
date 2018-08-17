@@ -683,7 +683,7 @@ html,body {
 							      <td>${ i.reportersComment }</td>
 							      <td>${ i.adminFirstReadDate }</td>
 							      <td>${ i.adminAcceptedDate }</td>
-							      <td>${ i.resultCode }: 종류</td>
+							      <td>${ i.resultCode }: ${ result[k.index].resultDescription }</td>
 							      <td>${ i.adminComment }</td>
 							      <td><a href="#">삭제</a> | <a href="#">차단</a></td>
 							    </tr>

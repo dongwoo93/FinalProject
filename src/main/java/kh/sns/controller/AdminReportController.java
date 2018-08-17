@@ -22,14 +22,13 @@ public class AdminReportController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("list", aros.getReportList());
 		mav.addObject("code", aros.getCodeList());
+		mav.addObject("result", aros.getResultList());
 		mav.setViewName("admin_report.jsp");
 		return mav;
 	}
 	
 	@RequestMapping("/report.test")
 	public ModelAndView reportTest() {
-		
-		
 		
 		ModelAndView mav = new ModelAndView();
 	

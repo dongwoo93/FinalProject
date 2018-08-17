@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
+import kh.sns.dto.AdminReportResultCode;
 import kh.sns.interfaces.AdminReportsDAO;
 import kh.sns.interfaces.AdminReportsService;
 
@@ -27,9 +28,11 @@ public class IAdminReportsService implements AdminReportsService {
 	public AdminReportOutputSet getAllReports() throws Exception {
 		List<AdminReportDTO> reportList = ard.getAllReports();
 		List<AdminReportCode> codeList = ard.getAllAdminReportCode();
+		List<AdminReportResultCode> resultList = ard.getAllAdminResultCode();
 		AdminReportOutputSet aros = new AdminReportOutputSet();
 		aros.setReportList(reportList);
 		aros.setCodeList(codeList);
+		aros.setResultList(resultList);
 		return aros;
 	}
 	
