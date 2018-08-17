@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
@@ -359,16 +360,22 @@ public class BoardController {
 	
 
 	@RequestMapping("/oneBoard.do")
-	public ModelAndView oneBoard(String board_seq) {
+	public ModelAndView oneBoard(String board_seq , HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		BoardDTO a =null;
 		List<Board_CommentDTO> result = null;
+		
+		Board_LikeDTO like = null;
+		String id = (String) session.getAttribute("loginId");
+		
 		try {
 		System.out.println(board_seq);
 		
 		a = boardService.oneBoard(board_seq);
 		
 		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
+		
+		like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
 		
 		
 		}catch(Exception e) {
@@ -379,6 +386,7 @@ public class BoardController {
 		mav.setViewName("oneBoard.jsp");
 		mav.addObject("b", a);
 		mav.addObject("result", result);
+		mav.addObject("like", like);
 		return mav;
 		
 	}
