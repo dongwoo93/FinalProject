@@ -31,6 +31,7 @@ public interface BoardDAO {
 	// search
 	public List<BoardDTO> search(String keyword);
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
-	
+	//oneBoard
+	public BoardDTO oneBoard(String board_seq) throws Exception;
 	
 }

@@ -13,5 +13,5 @@ public interface Board_CommentService {
 	public int modComment(Board_CommentDTO dto) throws Exception;
 	public int commentCount(int board_seq) throws Exception;
 	public List<int[]> selectCommentCount() throws Exception;
-
+	public List<Board_CommentDTO> getCommentList(int board_seq) throws Exception;
 }
