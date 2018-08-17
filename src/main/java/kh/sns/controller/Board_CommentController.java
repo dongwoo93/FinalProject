@@ -100,4 +100,29 @@ public class Board_CommentController {
    }
    
    
+   @RequestMapping("/insertComment.co")
+   public void insertComment(HttpServletResponse response, Board_CommentDTO dto, HttpSession session)  {
+	
+	   	int result = 0;
+	   	String id = (String)session.getAttribute("loginId");
+	   	dto.setId(id);
+	   	int comment_seq = 0;
+	   	
+	   	try {
+	   		comment_seq = boardcommentservice.getCommentSeq();
+	   		dto.setComment_seq(comment_seq);	
+			result = boardcommentservice.insertComment(dto);
+			
+			 response.getWriter().print(comment_seq);
+		 		response.getWriter().flush();
+		 		response.getWriter().close();
+		           
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   	
+	   
+	   
+   }
 }

@@ -45,4 +45,10 @@ public class IBoard_CommentService implements Board_CommentService {
 	public List<int[]> selectCommentCount() throws Exception {
 		return board_commentdao.selectCommentCount();
 	}
+
+	@Override
+	public List<Board_CommentDTO> getCommentList(int board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return board_commentdao.getCommentList(board_seq);
+	}
 }

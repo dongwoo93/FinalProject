@@ -1,3 +1,4 @@
+
 #contents {
 	max-width: 1000px;
 	margin-left: auto;
@@ -8,7 +9,7 @@
 #centerwrapper {
 	height: 100%;
 }
-
+ 
 /*컨테이너*/
 .profile-image {
 	width: calc(33.333% - 1rem);
@@ -23,7 +24,7 @@
 }
 
 .cock {
-	float: left;
+	float: left; 
 }
 
 .bookmark {
