@@ -164,6 +164,11 @@
     }
     
     
+    function goBoard(){
+    	var board_seq = $("#modalseq").val();
+    	
+    	$(location).attr('href','oneBoard.do?board_seq='+board_seq);
+    }
 </script>
 <div id="allwrapper">
 	<div class="" id="centerwrapper">
@@ -418,8 +423,8 @@
   			<input type=hidden id=modalseq>
   			    <div class="modal-content">
                <div class="modal-body">
-               <div class="dropdown-divider" ></div>  
-                  <a class="dropdown-item" href="#">게시물로 이동</a>
+               <div class="dropdown-divider" ></div>   
+                  <a class="dropdown-item" onclick="goBoard()">게시물로 이동</a>
                   <div class="dropdown-divider" ></div>
                   <a class="dropdown-item" onclick="modal2(this)" style="cursor: pointer;">부적절한 콘텐츠 신고</a>
                   <div class="dropdown-divider" ></div>
