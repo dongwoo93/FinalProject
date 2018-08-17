@@ -231,7 +231,9 @@ html,body {
 	}
     </style>
     
-    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- <script src="resources/js/mypage.js"></script> -->
     
     
@@ -247,93 +249,7 @@ html,body {
     		// 탭 내용 외부 연결			
     	    $('.nav-item a').filter("[data-target='#${ param.targetTab }']").tab('show');		
     		
-    	// 이메일 중복 확인
 
-    	$('#emailField').focusout(function() {
-    		var email = $('#emailField').val();
-
-    		$.ajax({
-    			url : "isEmailDuplicated.ajax",
-    			type : "get",
-    			data : {
-    				email : email
-    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-    			success : function(response) {
-    				// console.log("AJAX Request 성공: ");
-    				console.log(response)
-    				if (response.indexOf('true') > -1) {
-    					$('#duplResultArea').html(
-    									"<span class='badge badge-pill badge-danger'>❌</span> 이미 존재하는 이메일입니다.");
-    					$('#emailField').val("");
-    					$('#emailField').focus();
-    				} else if (email != "") {
-    					$('#duplResultArea')
-    							.html("<span class='badge badge-pill badge-success'>✔</span> 사용 가능한 이메일입니다.");
-    				} else if (email == "") {
-    					$('#duplResultArea').text("");
-    				}
-
-    			},
-    			error : function() {
-    				console.log("에러 발생");
-    			},
-    			complete : function() {
-    				// console.log("AJAX 종료");
-    			}
-    		})
-    	}) // focustout 끝
-    	
-    	// 비밀번호 형식 확인
-    	
-    /* 	$('#inputPassword1').keyup(function() { 
-    		
-    		var regex = /^[a-zA-Z0-9!@()_-|]{6,20}$/  
-    		var pwd = $('#inputPassword1').val();
-    		// console.log(pwd);
-    		if(pwd == ""){
-    			
-    		}
-    		else if(regex.test(pwd)){
-    			// console.log(true)
-    			$('#pwdCheckArea').html("<span class='badge badge-pill badge-success'>✔</span> 사용하실 수 있습니다.");
-    		} else {
-    			// console.log(false)
-    			$('#pwdCheckArea').html("<span class='badge badge-pill badge-danger'>❌</span> 사용하실 수 없는 비밀번호입니다.");
-
-    		}			
-    	}) */
-    	
-    	// 비밀번호 재입력 확인
-
-    	$('#inputAfterPasswordOneMore').keyup(function() { 
-    		
-    		var pwd1 = $('#inputAfterPassword').val();
-    		var pwd2 = $('#inputAfterPasswordOneMore').val();
-
-    		if(pwd1 == ""){
-    			// 아무것도 안한다.
-    		}
-    		else if(pwd1==pwd2){
-    			$('#pwdRevalArea').html("<span class='badge badge-pill badge-success'>✔</span> 동일한 비밀번호입니다.");
-    		} else {
-    			console.log(false)
-    			$('#pwdRevalArea').html("<span class='badge badge-pill badge-danger'>❌</span> 비밀번호가 다릅니다.");
-
-    		}			
-    	})
-    	
-    	// 변경 버튼
-    	$('#pwdChangeBtn').click(function(){
-    		
-    		var pwd1 = $('#inputAfterPassword').val();
-    		var pwd2 = $('#inputAfterPasswordOneMore').val();		
-    		
-    		if(pwd1 != pwd2){
-    			alert('비밀번호를 동일하게 입력하세요.')
-    		} else {
-    			$('#pwdfrm').submit();
-    		}
-    	})
     	
     	// 탭 내용 외부 연결
     	$('a[data-toggle="tabs"]').click(function (e) {	
@@ -366,6 +282,34 @@ html,body {
     	/* $('#chkAllowEmail').change(toggleCheckAjax);
     	$('#chkAllowSms').change(toggleCheckAjax); */
     	
+    	$('[data-toggle="popover"]').popover({container: "body"});
+    	$('a[id*="popBoard"]').focus(function(){
+    		var elem = $(this)
+    		var seq = $(this).attr('id').replace('popBoard', '').split('_');
+    		console.log(seq[0]);
+    		console.log(seq[1]);
+    		
+    		
+    		$.ajax({
+    			url : "getOneArticle.ajax",
+    			type : "get",
+    			data : {
+    				seq : seq[1]
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				console.log(response.contents)
+    				$(elem).attr('data-original-title', seq[0] + " | " + seq[1] + " | " + response.id + " | " + response.writedate)
+    			   	$(elem).attr('data-content', response.contents)
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+    		}) // $AJAX 끝
+    	})
+    	
 
     	function toggleCheckAjax(){		
     		var fieldName = $(this).attr('name');
@@ -395,7 +339,7 @@ html,body {
     			complete : function() {
     				// console.log("AJAX 종료");
     			}
-    		})
+    		}) // $AJAX 끝
     	}
     	
     })
@@ -532,43 +476,7 @@ html,body {
 						        <br>SMS로 알림을 받아보세요.
 						      </div><br>
 						</div>
-						
-<!-- 						<div class="tab-pane fade" id="tabfive" role="tabpanel"> -->
-<!-- 							<div class=row> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>계정 정보</h1> -->
-<!-- 										<p>가입한 날짜<br><span class="text-muted">1800년 01월 01일</span></p> -->
-<!-- 										<p>계정 공개 범위 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>비밀번호 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이메일 주소 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 전화번호 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>생년월일<br><span class="text-muted">여기에 표시할 정보가 없습니다.</span></p> -->
-<!-- 									<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>프로필 정보</h1> -->
-<!-- 										<p>이전 사용자 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 소개 텍스트 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>소개의 이전 링크 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>연결관계</h1> -->
-<!-- 										<p>현재 팔로우 요청 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님을 팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 해시태그 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님이 차단한 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>활동</h1> -->
-<!-- 										<p>로그인 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>로그아웃 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>검색 내역 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>광고</h1> -->
-<!-- 										<p>광고 관심사 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
-								
-<!-- 							</div> -->
-<!-- 						</div> -->
+					
 						
 						<div class="tab-pane fade" id="reportLog" role="tabpanel">
 							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
@@ -677,7 +585,7 @@ html,body {
 							  	<tr>
 							      <th scope="row">${ i.reportSeq }</th>
 							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
-							      <td><a href="누르면 이 창에서 바로 글, 코멘트 확인 가능하게">${ i.boardSeq }</a></td>
+							      <td><a href="#" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title" aria-describedby="popover371932">${ i.boardSeq }</a></td>
 							      <td><a href="">${ i.commentSeq != 0 ? i.commentSeq : '-' }</a></td>
 							      <td>${ i.reportedDate }</td>
 							      <td>${ i.reportersComment }</td>

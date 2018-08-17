@@ -2,6 +2,7 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
@@ -355,6 +358,29 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		return mav;
+	}
+	
+	// AJAX
+	@RequestMapping("/getOneArticle.ajax")
+	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
+		try {
+			PrintWriter xout = response.getWriter();
+			System.out.println(request.getParameter("seq"));
+			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
+			System.out.println(b);
+			
+			 // 자바용 JSON 객체로 변환하기
+//		    JsonParser parser = new JsonParser();
+//		    JsonObject json = parser.parse(b).getAsJsonObject(); 
+		    
+			new Gson().toJson(b, xout);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 
