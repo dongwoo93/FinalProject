@@ -222,7 +222,7 @@
 							</div>
 
 						</div>
-
+  
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
@@ -230,20 +230,20 @@
 									<a class="navbar-brand"> <c:choose>
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}"
-													style="cursor: pointer; display: none;" id="likeit"
-													class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+													style="display: none;" id="likeit"
+													class="far fa-heart icon mr-1 pointer" onclick="likeit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="font-weight: bold; color: red; cursor: pointer;"
-													id="likecancel" class="far fa-heart icon mr-1"
+													style="font-weight: bold; color: red;"
+													id="likecancel" class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
 											</c:when>
 											<c:otherwise>
-												<i value="${tmp.board_seq}" style="cursor: pointer;"
-													id="likeit" class="far fa-heart icon mr-1"
+												<i value="${tmp.board_seq}"
+													id="likeit" class="far fa-heart icon mr-1 pointer"
 													onclick="likeit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="font-weight: bold; color: red; display: none; cursor: pointer;"
-													id="likecancel" class="far fa-heart icon mr-1"
+													style="font-weight: bold; color: red; display: none; "
+													id="likecancel" class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
@@ -254,23 +254,23 @@
 											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
 
 												<i value="${tmp.board_seq}" id="mark"
-													class="far fa-bookmark icon"
-													style="cursor: pointer; display: none;"
+													class="far fa-bookmark icon pointer"
+													style=" display: none;"
 													onclick="markit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="cursor: pointer; font-weight: bold; color: #00B8D4;"
-													id="markcancel" class="far fa-bookmark icon"
+													style="font-weight: bold; color: #00B8D4;"
+													id="markcancel" class="far fa-bookmark icon pointer"
 													onclick="unmarkit(this)"></i>
 
 											</c:when>
 											<c:otherwise>
 
 												<i value="${tmp.board_seq}" id="mark"
-													style="cursor: pointer;" class="far fa-bookmark icon"
+													 class="far fa-bookmark icon pointer"
 													onclick="markit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="cursor: pointer; font-weight: bold; color: #00B8D4; display: none;"
-													id="markcancel" class="far fa-bookmark icon"
+													style=" font-weight: bold; color: #00B8D4; display: none;"
+													id="markcancel" class="far fa-bookmark icon pointer"
 													onclick="unmarkit(this)"></i>
 
 											</c:otherwise>
@@ -310,8 +310,7 @@
 								<!-- 글내용자리 -->
 
 								<p class="text-info pt-4 mb-1" id="myComment${tmp.board_seq}"></p>
-								<div class="comment-contents"
-									id="comment-contents${tmp.board_seq}">
+								<div class="comment-contents" id="comment-contents${tmp.board_seq}">
 
 									<!-- 댓글자리 -->
 
@@ -331,8 +330,8 @@
 							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>    
 							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents }"  readonly></li> 
 	
-							<li id='li3'><a id='commentdel${comment.comment_seq}' value="${tmp.board_seq}:${comment.comment_seq}" onclick="delComment(this)" style="cursor: pointer;"></a> </li>
-							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" style="cursor: pointer;"></a> </li>    
+							<li id='li3'><a id='commentdel${comment.comment_seq}' value="${tmp.board_seq}:${comment.comment_seq}" onclick="delComment(this)" class="pointer"></a> </li>
+							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" class="pointer"></a> </li>    
   
 							</ul>  
 						</c:forEach>
@@ -379,7 +378,7 @@
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {   
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' style='cursor: pointer;'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
