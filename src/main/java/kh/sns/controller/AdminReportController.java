@@ -1,5 +1,7 @@
 package kh.sns.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,25 +17,23 @@ public class AdminReportController {
 	AdminReportsService ars;
 	
 	@RequestMapping("/report.admin")
-	public ModelAndView reportManagementMain() throws Exception {
+	public ModelAndView reportManagementMain(HttpSession session) throws Exception {
 		
-		AdminReportOutputSet aros = ars.getAllReports();
-						
 		ModelAndView mav = new ModelAndView();
+		
+		// 나중에 관리 권한을 가진 사람들만 접속되도록 변경
+		if(session.getAttribute("loginId") == null) {
+			mav.setViewName("redirect:에러페이지");
+			return mav;
+		}
+		
+		AdminReportOutputSet aros = ars.getAllReports();						
+		
 		mav.addObject("list", aros.getReportList());
 		mav.addObject("code", aros.getCodeList());
 		mav.addObject("result", aros.getResultList());
 		mav.setViewName("admin_report.jsp");
 		return mav;
 	}
-	
-	@RequestMapping("/report.test")
-	public ModelAndView reportTest() {
-		
-		ModelAndView mav = new ModelAndView();
-	
-		return mav;
-	}
-	
 	
 }

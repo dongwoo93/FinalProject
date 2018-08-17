@@ -65,10 +65,10 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public List<AdminReportCode> getAllAdminReportCode() throws Exception {
-		String sql = "select report_code_description "
-				+ "from admin_reports r, admin_report_code c "
-				+ "where r.report_code = c.report_code "
-				+ "order by r.reported_date desc";
+		String sql = "select "
+				+ "(select c.report_code_description from admin_report_code c "
+					+ "where r.report_code = c.report_code) "
+				+ "from admin_reports r order by reported_date desc";
 		
 		return t.query(sql, (rs, rowNum) -> {
 			AdminReportCode arc = new AdminReportCode();
@@ -86,7 +86,11 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public List<AdminReportResultCode> getAllAdminResultCode() throws Exception {
-		String sql = "select result_description from admin_reports r, admin_report_result_code c where r.result_code = c.result_code order by r.reported_date desc";
+		String sql = "select "
+				+ "(select u.result_description from admin_report_result_code u "
+					+ "where r.result_code = u.result_code) "
+				+ "from admin_reports r order by reported_date desc";
+		
 		return t.query(sql, (rs, rowNum) -> {
 			AdminReportResultCode arr = new AdminReportResultCode();
 			arr.setResultDescription(rs.getString(1));
