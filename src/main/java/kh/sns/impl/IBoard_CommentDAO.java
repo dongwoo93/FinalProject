@@ -92,6 +92,28 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		});
 		
 	}
+
+	@Override
+	public List<Board_CommentDTO> getCommentList(int board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "select * from board_comment where board_seq=?";
+		
+		return template.query(sql, new Object[] {board_seq}, new RowMapper<Board_CommentDTO>() {
+
+			@Override
+			public Board_CommentDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
+				Board_CommentDTO result = new Board_CommentDTO();
+				result.setComment_seq(rs.getInt("comment_seq"));
+				result.setId(rs.getString("id"));
+				result.setComment_contents(rs.getString("comment_contents"));
+				result.setBoard_seq(rs.getInt("board_seq"));
+				result.setWritedate(rs.getString("writedate"));
+				return result;
+			}
+	
+		});
+	}
 		
 	@Override
 	public Board_CommentDTO getOneComment(int comment_seq) throws Exception {

@@ -406,4 +406,28 @@ public class BoardController {
 	}
 	
 
+	@RequestMapping("/oneBoard.do")
+	public ModelAndView oneBoard(String board_seq) {
+		ModelAndView mav = new ModelAndView();
+		BoardDTO a =null;
+		List<Board_CommentDTO> result = null;
+		try {
+		System.out.println(board_seq);
+		
+		a = boardService.oneBoard(board_seq);
+		
+		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
+		
+		
+		}catch(Exception e) {
+			System.out.println("oneboard.do");
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("oneBoard.jsp");
+		mav.addObject("b", a);
+		mav.addObject("result", result);
+		return mav;
+		
+	}
 }
