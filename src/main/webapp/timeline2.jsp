@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
+<script src="resources/js/timeline.js"></script>
 
 <script>
   
@@ -162,12 +163,7 @@
           
     }
     
-    function modal(e) {  
-    	var board_seq = $(e).attr("value");
-    	$("#modalseq").val(board_seq);
-    	
-    	$("#changeBoardModal").modal();
-    }
+    
 </script>
 <div id="allwrapper">
 	<div class="" id="centerwrapper">
@@ -355,7 +351,7 @@
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
-											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
+											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}:${tmp.id}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
 												data-toggle="modal"> </i>
 										</div>
 
@@ -418,14 +414,14 @@
 
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
-   <div class="modal-dialog modal-dialog-centered" role="document">
+   <!-- <div class="modal-dialog modal-dialog-centered" role="document">
   			<input type=hidden id=modalseq>
   			    <div class="modal-content">
                <div class="modal-body">
-               <div class="dropdown-divider" ></div>   
+               <div class="dropdown-divider" ></div>  
                   <a class="dropdown-item" href="#">게시물로 이동</a>
                   <div class="dropdown-divider" ></div>
-                  <a class="dropdown-item"  href="#">부적절한 콘텐츠 신고</a>
+                  <a class="dropdown-item" onclick="modal2(this)" style="cursor: pointer;">부적절한 콘텐츠 신고</a>
                   <div class="dropdown-divider" ></div>
                   <a class="dropdown-item" href="#">링크 복사</a>
                   <div class="dropdown-divider" ></div> 
@@ -438,8 +434,37 @@
                </div>
             </div>
          
-   </div>
+   </div> -->
 </div>
+
+<!-- <div class="modal" id="reportModal-0" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+  			<input type=hidden id=modalid>
+  			    <div class="modal-content">
+  			    <div class="modal-header">
+          			<h4 class="modal-title">신고</h4>
+        		</div>
+               <div class="modal-body">
+                <div>
+                <p>이 프로필이 마음에 들지 않으시나요?</p>
+                <p>ws.eui님의 팔로우를 취소하면 상대방의 사진, 동영상 또는 스토리가 회원님의 피드에 더 이상 표시되지 않습니다.</p>
+                </div>
+                <button type="button" class="btn btn-info" style="width: 100%">팔로우 취소</button>
+                <br>
+                <br>
+               <div class="dropdown-divider" ></div>   
+                  <p>ws.eui님이 회원님의 사진, 동영상 또는 스토리를 볼 수 없게 하거나 Instagram에서 회원님을 검색할 수 없도록 하려면 차단하세요.</p>
+                  <button type="button" class="btn btn-info" style="width: 100%">차단</button>
+                  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         
+   </div>
+</div> -->
 												
       <%@ include file="include/bottom.jsp"%>
   

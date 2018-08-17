@@ -212,5 +212,13 @@ padding-right:3%;
 
 .dropdown-item:hover{
 	background-color:#E1F5FE;  
-	
+}
+
+
+.mo1:hover {
+	background-color:transparent;
+}
+
+.mo:hover {
+	background-color:#efefef;
 }
