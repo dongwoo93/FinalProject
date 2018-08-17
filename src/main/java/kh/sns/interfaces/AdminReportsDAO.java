@@ -16,8 +16,9 @@ public interface AdminReportsDAO {
 	public List<AdminReportDTO> getReportsByRange(int start, int end) throws Exception;
 	
 	public List<AdminReportCode> getAllAdminReportCode() throws Exception;
-	public List<AdminReportCode> getAdminReportCodeByRange(int start, int end) throws Exception;
 	
 	public List<AdminReportResultCode> getAllAdminResultCode() throws Exception;
-	public List<AdminReportResultCode> getAdminResultCodeByRange(int start, int end) throws Exception;
+	
+	public List<AdminReportCode> getReportCodeList() throws Exception;
+
 }

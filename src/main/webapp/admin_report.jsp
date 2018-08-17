@@ -234,6 +234,7 @@ html,body {
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
     <!-- <script src="resources/js/mypage.js"></script> -->
     
     
@@ -347,6 +348,54 @@ html,body {
     	})
     	
 
+			
+		    	/*파이 차트*/
+		    	$("#chartContainer").CanvasJSChart({ 
+				title: { 
+					text: "Worldwide Smartphone sales by brand - 2012",
+					fontSize: 24
+				}, 
+				axisY: { 
+					title: "Products in %" 
+				}, 
+				legend :{ 
+					verticalAlign: "center", 
+					horizontalAlign: "right" 
+				}, 
+				data: [ 
+				{ 
+					type: "pie", 
+					showInLegend: true, 
+					toolTipContent: "{label} <br/> {y} 건", 
+					indexLabel: "{y} 건", 
+					// label: 원 안에서 보이는 것
+					dataPoints: [ 
+						{ label: "스팸",  y: 1, legendText: "1: 스팸"}, 
+						{ label: "음란물",  y: 0, legendText: "2: 나체, 음란물"},
+						{ label: "편파적 발언",    y: 1, legendText: "3: 편파적 발언"  }, 
+						{ label: "폭력",  y: 0, legendText: "4: 폭력, 위협"},
+						{ label: "마약",  y: 1, legendText: "5: 마약"},
+						{ label: "따돌림",  y: 0, legendText: "6: 괴롭힙 및 따돌림"},
+						{ label: "재산권 침해",  y: 0, legendText: "7: 지적재산권 침해"},
+						{ label: "자해",   y: 0, legendText: "8: 자해" } 
+					] 
+				} 
+				] 
+			}); 
+    	
+    	setInterval(function(){
+    		var chart = $("#chartContainer").CanvasJSChart(); 
+    		 
+    		chart.options.data[0].dataPoints[0].y += 1;
+    		 
+    		chart.render();
+        	
+    	}, 5000)
+    	
+    	
+	    	
+
+
     	function toggleCheckAjax(){		
     		var fieldName = $(this).attr('name');
     		// alert('chkAllowEmail')
@@ -375,7 +424,7 @@ html,body {
     			complete : function() {
     				// console.log("AJAX 종료");
     			}
-    		}) // $AJAX 끝
+    		}) 
     	}
     	
     })
@@ -420,15 +469,15 @@ html,body {
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="active nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계</a></li>
+							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#reportCode" id="navi">Report Code 관리</a></li>
+							data-toggle="pill" data-target="#reportCode" id="navi">리포트 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#resultCode" id="navi">Result Code 관리</a></li>
-<!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
-<!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
+							data-toggle="pill" data-target="#resultCode" id="navi">리포트 통계 Ⅲ</a></li>
+ 						<li class="nav-item"><a class="nav-link mp" href="#" 
+ 							data-toggle="pill" data-target="#tabfive" id="navi">Code Legends</a></li> 
 					<!-- 	<li class="nav-item"><a class="nav-link mp " href="#"
 							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li> -->
 					</ul>
@@ -442,8 +491,8 @@ html,body {
 					<div class="tab-content">
 						<div class="tab-pane fade show active" id="reportMain" role="tabpanel">
 						<br>
-							<h3 class="text-center" style="font-weight:bold;">리포트 통계</h3>
-						
+							<!-- <h3 class="text-center" style="font-weight:bold;">리포트 통계</h3> -->
+							<div id="chartContainer" style="width: 100%; height: 300px"></div>
 						</div>
 						
 						

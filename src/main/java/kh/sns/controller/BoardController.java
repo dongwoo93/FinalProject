@@ -342,22 +342,8 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:feed.bo");
 		return mav;
-	}
-	
-	@RequestMapping("/idunno.test")
-	public ModelAndView writeProcBoard(HttpServletRequest request) {		
-		
-		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
-		
-		try {
-			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		ModelAndView mav = new ModelAndView();
-		return mav;
-	}
+	}	
+
 	
 	// AJAX
 	@RequestMapping("/getOneArticle.ajax")

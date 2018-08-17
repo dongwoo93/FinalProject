@@ -54,5 +54,10 @@ public class IAdminReportsService implements AdminReportsService {
 		return 0;
 	}
 	
+	@Override
+	public List<AdminReportCode> getReportCodeList() throws Exception {
+		return ard.getReportCodeList();
+	}
+	
 
 }
