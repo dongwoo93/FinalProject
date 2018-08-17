@@ -36,5 +36,8 @@ public interface BoardService {
 	//board_comment
 	
 	
+	//oneBoard
+	public BoardDTO oneBoard(String board_seq) throws Exception;
+	
 
 }
