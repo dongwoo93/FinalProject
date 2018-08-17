@@ -585,7 +585,7 @@ html,body {
 							  	<tr>
 							      <th scope="row">${ i.reportSeq }</th>
 							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
-							      <td><a href="#" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title" aria-describedby="popover371932">${ i.boardSeq }</a></td>
+							      <td><a href="#" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.boardSeq }</a></td>
 							      <td><a href="">${ i.commentSeq != 0 ? i.commentSeq : '-' }</a></td>
 							      <td>${ i.reportedDate }</td>
 							      <td>${ i.reportersComment }</td>
