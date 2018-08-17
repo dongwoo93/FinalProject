@@ -664,56 +664,31 @@ html,body {
 							      <th scope="col">Comment No.</th>
 							      <th scope="col">Reported Date</th>
 							      <th scope="col">Reporter's Comment</th>
-							      <th scope="col">ADMIN_FIRST_READ_DATE</th>
-							      <th scope="col">ADMIN_ACCEPTED_DATE</th>
-							      <th scope="col">RESULT_CODE</th>
-							      <th scope="col">ADMIN_COMMENT </th>
-							      <th scope="col">작업 </th>
+							      <th scope="col">조회일</th>
+							      <th scope="col">처리일</th>
+							      <th scope="col">처리 결과</th>
+							      <th scope="col">관리자 코멘트</th>
+							      <th scope="col">작업</th>
 							    </tr>
 							  </thead>
 							  <tbody>
 							  
-							    <tr>
-							      <th scope="row">1</th>
-							      <td>1: 스팸</td>
-							      <td><a href="누르면 이 창에서 바로 글, 코멘트 확인 가능하게">100</a></td>
-							      <td><a href="">25</a></td>
-							      <td>2014-03-32 12:00:00</td>
-							      <td>-</td>
-							      <td>2014-03-33 12:00:04</td>
-							      <td>2014-03-33 12:03:05</td>
-							      <td>3: 차단</td>
-							      <td>그냥 가벼운 스팸 차단 3일 처리함</td>
+							  <c:forEach var="i" items="${ list }">
+							  	<tr>
+							      <th scope="row">${ i.reportSeq }</th>
+							      <td>${ i.reportCode }: 종류</td>
+							      <td><a href="누르면 이 창에서 바로 글, 코멘트 확인 가능하게">${ i.boardSeq }</a></td>
+							      <td><a href="">${ i.commentSeq != 0 ? i.commentSeq : '-' }</a></td>
+							      <td>${ i.reportedDate }</td>
+							      <td>${ i.reportersComment }</td>
+							      <td>${ i.adminFirstReadDate }</td>
+							      <td>${ i.adminAcceptedDate }</td>
+							      <td>${ i.resultCode }: 종류</td>
+							      <td>${ i.adminComment }</td>
 							      <td><a href="#">삭제</a> | <a href="#">차단</a></td>
 							    </tr>
-							    
-							    <tr>
-							      <th scope="row">2</th>
-							      <td>4: 폭력, 위협</td>
-							      <td>101</td>
-							      <td>-</td>
-							      <td>2014-03-32 12:00:00</td>
-							      <td>-</td>
-							      <td>2014-03-33 12:00:04</td>
-							      <td>2014-03-33 12:03:05</td>
-							      <td>2: 삭제</td>
-							      <td>삭제함</td>
-							      <td>삭제 | 차단</td>
-							    </tr>
-							    
-							    <tr>
-							      <th scope="row">3</th>
-							      <td>5: 마약</td>
-							      <td>102</td>
-							      <td>-</td>
-							      <td>2014-03-33 12:00:00</td>
-							      <td>-</td>
-							      <td>2014-03-34 12:00:04</td>
-							      <td>2014-03-35 12:03:05</td>
-							      <td>1: 허위신고</td>
-							      <td>구라임</td>
-							      <td>삭제 | 차단</td>
-							    </tr>
+							  </c:forEach>
+					
 							 
 							  </tbody>
 							</table>
