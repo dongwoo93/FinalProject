@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<c:choose>
-<c:when test="${sessionScope.loginId != null}">
 <script>
     $(document).ready(function(){
     	$("#modalBoardBtn").click(function(){
@@ -424,7 +422,7 @@
 	                                      $.ajax({
 	                                              type: "POST",  
 	                                              url: "comment.co",    
-	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
+	                                              data: {board_seq:"${tmp.board_seq}", comment_contents : text},
 	                                              success : function(seq) {
 	                                 
 	                                               $("#comment${tmp.board_seq}").val("");            
@@ -573,11 +571,6 @@
 		</c:choose>
 	</div>
 </div>
-</c:when>
-<c:otherwise>
-
-</c:otherwise>
-</c:choose>
 
 
 
