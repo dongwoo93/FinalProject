@@ -437,7 +437,7 @@
    </div> -->
 </div>
 
-<!-- <div class="modal" id="reportModal-0" tabindex="-1" role="dialog">
+<!-- <div class="modal" id="reportModal-2" tabindex="-1" role="dialog">
    <div class="modal-dialog modal-dialog-centered" role="document">
   			<input type=hidden id=modalid>
   			    <div class="modal-content">
@@ -445,17 +445,18 @@
           			<h4 class="modal-title">신고</h4>
         		</div>
                <div class="modal-body">
-                <div>
-                <p>이 프로필이 마음에 들지 않으시나요?</p>
-                <p>ws.eui님의 팔로우를 취소하면 상대방의 사진, 동영상 또는 스토리가 회원님의 피드에 더 이상 표시되지 않습니다.</p>
+                <div style="text-align: left;">
+                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">나체 이미지 또는 음란물로 신고할까요?</p>
+                <p style="margin-bottom: 8px;">삭제 대상:</p>
+                <ul style="list-style-type: disc; margin: 0 0 8px 0;">
+                <li style="margin-bottom: 8px;">성관계가 포함된 사진 또는 동영상</li>
+                <li style="margin-bottom: 8px;">성관계, 성기 또는 완전히 노출된 둔부의 확대 게시물</li>
+                <li style="margin-bottom: 8px;">아동의 나체 또는 부분 나체가 포함된 게시물</li>
+                </ul>
+                <p style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>
+                <p style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>
+                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>
                 </div>
-                <button type="button" class="btn btn-info" style="width: 100%">팔로우 취소</button>
-                <br>
-                <br>
-               <div class="dropdown-divider" ></div>   
-                  <p>ws.eui님이 회원님의 사진, 동영상 또는 스토리를 볼 수 없게 하거나 Instagram에서 회원님을 검색할 수 없도록 하려면 차단하세요.</p>
-                  <button type="button" class="btn btn-info" style="width: 100%">차단</button>
-                  
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary"

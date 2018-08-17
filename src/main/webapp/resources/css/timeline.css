@@ -219,6 +219,13 @@ padding-right:3%;
 	background-color:transparent;
 }
 
+.mo, .mo1 {
+	cursor: pointer;
+}
+
 .mo:hover {
 	background-color:#efefef;
+}
+.p_text {
+	color: #999;
 }
