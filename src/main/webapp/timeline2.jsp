@@ -380,11 +380,11 @@
 	                                              success : function(seq) {   
 	                                               $("#comment${tmp.board_seq}").val("");              
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' style='cursor: pointer;'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
-	          							  }
-	                                     }); //ajax 
-	                                   }    
-	                                }  
-	                            }); 
+	                            				  }
+		                                     }); //ajax 
+		                                   }    
+		                                }  
+		                            }); 
 							 
 
 						 		</script>
