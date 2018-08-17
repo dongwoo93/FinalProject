@@ -231,7 +231,9 @@ html,body {
 	}
     </style>
     
-    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- <script src="resources/js/mypage.js"></script> -->
     
     
@@ -247,93 +249,7 @@ html,body {
     		// 탭 내용 외부 연결			
     	    $('.nav-item a').filter("[data-target='#${ param.targetTab }']").tab('show');		
     		
-    	// 이메일 중복 확인
 
-    	$('#emailField').focusout(function() {
-    		var email = $('#emailField').val();
-
-    		$.ajax({
-    			url : "isEmailDuplicated.ajax",
-    			type : "get",
-    			data : {
-    				email : email
-    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-    			success : function(response) {
-    				// console.log("AJAX Request 성공: ");
-    				console.log(response)
-    				if (response.indexOf('true') > -1) {
-    					$('#duplResultArea').html(
-    									"<span class='badge badge-pill badge-danger'>❌</span> 이미 존재하는 이메일입니다.");
-    					$('#emailField').val("");
-    					$('#emailField').focus();
-    				} else if (email != "") {
-    					$('#duplResultArea')
-    							.html("<span class='badge badge-pill badge-success'>✔</span> 사용 가능한 이메일입니다.");
-    				} else if (email == "") {
-    					$('#duplResultArea').text("");
-    				}
-
-    			},
-    			error : function() {
-    				console.log("에러 발생");
-    			},
-    			complete : function() {
-    				// console.log("AJAX 종료");
-    			}
-    		})
-    	}) // focustout 끝
-    	
-    	// 비밀번호 형식 확인
-    	
-    /* 	$('#inputPassword1').keyup(function() { 
-    		
-    		var regex = /^[a-zA-Z0-9!@()_-|]{6,20}$/  
-    		var pwd = $('#inputPassword1').val();
-    		// console.log(pwd);
-    		if(pwd == ""){
-    			
-    		}
-    		else if(regex.test(pwd)){
-    			// console.log(true)
-    			$('#pwdCheckArea').html("<span class='badge badge-pill badge-success'>✔</span> 사용하실 수 있습니다.");
-    		} else {
-    			// console.log(false)
-    			$('#pwdCheckArea').html("<span class='badge badge-pill badge-danger'>❌</span> 사용하실 수 없는 비밀번호입니다.");
-
-    		}			
-    	}) */
-    	
-    	// 비밀번호 재입력 확인
-
-    	$('#inputAfterPasswordOneMore').keyup(function() { 
-    		
-    		var pwd1 = $('#inputAfterPassword').val();
-    		var pwd2 = $('#inputAfterPasswordOneMore').val();
-
-    		if(pwd1 == ""){
-    			// 아무것도 안한다.
-    		}
-    		else if(pwd1==pwd2){
-    			$('#pwdRevalArea').html("<span class='badge badge-pill badge-success'>✔</span> 동일한 비밀번호입니다.");
-    		} else {
-    			console.log(false)
-    			$('#pwdRevalArea').html("<span class='badge badge-pill badge-danger'>❌</span> 비밀번호가 다릅니다.");
-
-    		}			
-    	})
-    	
-    	// 변경 버튼
-    	$('#pwdChangeBtn').click(function(){
-    		
-    		var pwd1 = $('#inputAfterPassword').val();
-    		var pwd2 = $('#inputAfterPasswordOneMore').val();		
-    		
-    		if(pwd1 != pwd2){
-    			alert('비밀번호를 동일하게 입력하세요.')
-    		} else {
-    			$('#pwdfrm').submit();
-    		}
-    	})
     	
     	// 탭 내용 외부 연결
     	$('a[data-toggle="tabs"]').click(function (e) {	
@@ -366,6 +282,70 @@ html,body {
     	/* $('#chkAllowEmail').change(toggleCheckAjax);
     	$('#chkAllowSms').change(toggleCheckAjax); */
     	
+    	$('[data-toggle="popover"]').popover({container: "body"});
+    	
+    	$('a[id*="popBoard"]').focus(function(){
+    		var elem = $(this)
+    		var seq = $(this).attr('id').replace('popBoard', '').split('_');
+    		/* console.log(seq[0]);
+    		console.log(seq[1]); */
+    		
+    		
+    		$.ajax({
+    			url : "getOneArticle.ajax",
+    			type : "get",
+    			data : {
+    				seq : seq[1]
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				// console.log(response.contents)
+    				$(elem).attr('data-original-title', seq[0] + " | " + seq[1] + " | " + response.id + " | " + response.writedate)
+    			   	$(elem).attr('data-content', response.contents)
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+    		}) // $AJAX 끝
+    	})
+    	
+    	  $('a[id*="popComment"]').focus(function(){
+    		var elem = $(this)
+    		var seq = $(this).attr('id').replace('popComment', '').split('_');
+    		/* console.log(seq[0]);
+    		console.log(seq[1]);
+    		console.log(seq[2]); */
+    		
+    		
+    		$.ajax({
+    			url : "getOneComment.ajax",
+    			type : "get",
+    			data : {
+    				board_seq : seq[1],
+    				comment_seq : seq[2]
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				console.log(response)
+    				var outputTitle = seq[0] + " | " + seq[2] + " | " + response[1].id + " | " + response[1].writedate;
+    				
+    				var outputText = response[1].comment_contents;
+    				outputText += "<a>ee</a>"
+    				outputText += "링크 안먹힘.."
+    				
+    				$(elem).attr('data-original-title', outputTitle)
+    				$(elem).attr('data-content', outputText)
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+    		}) // $AJAX 끝
+    	})
+    	
 
     	function toggleCheckAjax(){		
     		var fieldName = $(this).attr('name');
@@ -395,7 +375,7 @@ html,body {
     			complete : function() {
     				// console.log("AJAX 종료");
     			}
-    		})
+    		}) // $AJAX 끝
     	}
     	
     })
@@ -440,7 +420,7 @@ html,body {
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="active nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 현황 관리</a></li>
+							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#reportCode" id="navi">Report Code 관리</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
@@ -449,8 +429,8 @@ html,body {
 							data-toggle="pill" data-target="#resultCode" id="navi">Result Code 관리</a></li>
 <!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
 <!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
-						<li class="nav-item"><a class="nav-link mp " href="#"
-							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li>
+					<!-- 	<li class="nav-item"><a class="nav-link mp " href="#"
+							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li> -->
 					</ul>
 					
 				</div>
@@ -462,7 +442,7 @@ html,body {
 					<div class="tab-content">
 						<div class="tab-pane fade show active" id="reportMain" role="tabpanel">
 						<br>
-							<h3 class="text-center" style="font-weight:bold;">리포트 현황 관리</h3>
+							<h3 class="text-center" style="font-weight:bold;">리포트 통계</h3>
 						
 						</div>
 						
@@ -532,43 +512,7 @@ html,body {
 						        <br>SMS로 알림을 받아보세요.
 						      </div><br>
 						</div>
-						
-<!-- 						<div class="tab-pane fade" id="tabfive" role="tabpanel"> -->
-<!-- 							<div class=row> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>계정 정보</h1> -->
-<!-- 										<p>가입한 날짜<br><span class="text-muted">1800년 01월 01일</span></p> -->
-<!-- 										<p>계정 공개 범위 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>비밀번호 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이메일 주소 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 전화번호 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>생년월일<br><span class="text-muted">여기에 표시할 정보가 없습니다.</span></p> -->
-<!-- 									<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>프로필 정보</h1> -->
-<!-- 										<p>이전 사용자 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 소개 텍스트 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>소개의 이전 링크 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>연결관계</h1> -->
-<!-- 										<p>현재 팔로우 요청 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님을 팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 해시태그 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님이 차단한 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>활동</h1> -->
-<!-- 										<p>로그인 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>로그아웃 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>검색 내역 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>광고</h1> -->
-<!-- 										<p>광고 관심사 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
-								
-<!-- 							</div> -->
-<!-- 						</div> -->
+					
 						
 						<div class="tab-pane fade" id="reportLog" role="tabpanel">
 							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
@@ -664,56 +608,39 @@ html,body {
 							      <th scope="col">Comment No.</th>
 							      <th scope="col">Reported Date</th>
 							      <th scope="col">Reporter's Comment</th>
-							      <th scope="col">ADMIN_FIRST_READ_DATE</th>
-							      <th scope="col">ADMIN_ACCEPTED_DATE</th>
-							      <th scope="col">RESULT_CODE</th>
-							      <th scope="col">ADMIN_COMMENT </th>
-							      <th scope="col">작업 </th>
+							      <th scope="col">조회일</th>
+							      <th scope="col">처리일</th>
+							      <th scope="col">처리 결과</th>
+							      <th scope="col">관리자 코멘트</th>
+							      <th scope="col">작업</th>
 							    </tr>
 							  </thead>
 							  <tbody>
 							  
-							    <tr>
-							      <th scope="row">1</th>
-							      <td>1: 스팸</td>
-							      <td><a href="누르면 이 창에서 바로 글, 코멘트 확인 가능하게">100</a></td>
-							      <td><a href="">25</a></td>
-							      <td>2014-03-32 12:00:00</td>
-							      <td>-</td>
-							      <td>2014-03-33 12:00:04</td>
-							      <td>2014-03-33 12:03:05</td>
-							      <td>3: 차단</td>
-							      <td>그냥 가벼운 스팸 차단 3일 처리함</td>
-							      <td><a href="#">삭제</a> | <a href="#">차단</a></td>
+							  <c:forEach var="i" items="${ list }" varStatus="k">
+							  	<tr>
+							      <th scope="row">${ i.reportSeq }</th>
+							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
+							      <td><a href="#;return false;" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.boardSeq }</a></td>
+							      <td>
+							      	<c:choose>
+							      		<c:when test="${ i.commentSeq eq 0 }">-</c:when>
+							      		<c:otherwise>
+							      			<a href="#;return false;"  id='popComment${ i.reportSeq }_${ i.boardSeq }_${ i.commentSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.commentSeq }</a>
+							      		</c:otherwise>
+							      	</c:choose>
+							      		
+							      	</td>
+							      <td>${ i.reportedDate }</td>
+							      <td>${ i.reportersComment }</td>
+							      <td>${ i.adminFirstReadDate }</td>
+							      <td>${ i.adminAcceptedDate }</td>
+							      <td>${ i.resultCode }: ${ result[k.index].resultDescription }</td>
+							      <td>${ i.adminComment }</td>
+							      <td><a href="#;return false;">처리</a></td>
 							    </tr>
-							    
-							    <tr>
-							      <th scope="row">2</th>
-							      <td>4: 폭력, 위협</td>
-							      <td>101</td>
-							      <td>-</td>
-							      <td>2014-03-32 12:00:00</td>
-							      <td>-</td>
-							      <td>2014-03-33 12:00:04</td>
-							      <td>2014-03-33 12:03:05</td>
-							      <td>2: 삭제</td>
-							      <td>삭제함</td>
-							      <td>삭제 | 차단</td>
-							    </tr>
-							    
-							    <tr>
-							      <th scope="row">3</th>
-							      <td>5: 마약</td>
-							      <td>102</td>
-							      <td>-</td>
-							      <td>2014-03-33 12:00:00</td>
-							      <td>-</td>
-							      <td>2014-03-34 12:00:04</td>
-							      <td>2014-03-35 12:03:05</td>
-							      <td>1: 허위신고</td>
-							      <td>구라임</td>
-							      <td>삭제 | 차단</td>
-							    </tr>
+							  </c:forEach>
+					
 							 
 							  </tbody>
 							</table>
