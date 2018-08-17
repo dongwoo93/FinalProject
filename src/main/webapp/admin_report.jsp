@@ -673,10 +673,10 @@ html,body {
 							  </thead>
 							  <tbody>
 							  
-							  <c:forEach var="i" items="${ list }">
+							  <c:forEach var="i" items="${ list }" varStatus="k">
 							  	<tr>
 							      <th scope="row">${ i.reportSeq }</th>
-							      <td>${ i.reportCode }: 종류</td>
+							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
 							      <td><a href="누르면 이 창에서 바로 글, 코멘트 확인 가능하게">${ i.boardSeq }</a></td>
 							      <td><a href="">${ i.commentSeq != 0 ? i.commentSeq : '-' }</a></td>
 							      <td>${ i.reportedDate }</td>

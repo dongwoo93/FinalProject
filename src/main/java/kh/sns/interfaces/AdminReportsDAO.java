@@ -2,6 +2,7 @@ package kh.sns.interfaces;
 
 import java.util.List;
 
+import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 
 public interface AdminReportsDAO {
@@ -12,4 +13,7 @@ public interface AdminReportsDAO {
 	
 	public List<AdminReportDTO> getAllReports() throws Exception;
 	public List<AdminReportDTO> getReportsByRange(int start, int end) throws Exception;
+	
+	public List<AdminReportCode> getAllAdminReportCode() throws Exception;
+	public List<AdminReportCode> getAdminReportCodeByRange(int start, int end) throws Exception;
 }

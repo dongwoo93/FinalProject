@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.interfaces.AdminReportsDAO;
-import kh.sns.interfaces.AdminReportsService;
 import kh.sns.util.TextHandler;
 
 @Repository
@@ -54,6 +54,27 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	public int updateAnReport(AdminReportDTO ard) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public List<AdminReportCode> getAdminReportCodeByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<AdminReportCode> getAllAdminReportCode() throws Exception {
+		String sql = "select report_code_description "
+				+ "from admin_reports r, admin_report_code c "
+				+ "where r.report_code = c.report_code "
+				+ "order by r.reported_date desc";
+		
+		return t.query(sql, (rs, rowNum) -> {
+			AdminReportCode arc = new AdminReportCode();
+			arc.setReportCodeDescription(rs.getString(1));
+			return arc;
+			
+		});
 	}
 	
 }
