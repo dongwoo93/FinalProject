@@ -2,9 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-
+<script> var currentId = "${sessionScope.loginId}"; </script>
+<script src="resources/js/timeline.js"></script>
 <script>
-  
     AOS.init();
     function likeit(e) {
     	var board_seq = $(e).attr("value");
@@ -162,12 +162,7 @@
           
     }
     
-    function modal(e) {  
-    	var board_seq = $(e).attr("value");
-    	$("#modalseq").val(board_seq);
-    	
-    	$("#changeBoardModal").modal();
-    }
+    
     function goBoard(){
     	var board_seq = $("#modalseq").val();
     	
@@ -227,7 +222,7 @@
 							</div>
 
 						</div>
-
+  
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
@@ -235,20 +230,20 @@
 									<a class="navbar-brand"> <c:choose>
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}"
-													style="cursor: pointer; display: none;" id="likeit"
-													class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
+													style="display: none;" id="likeit"
+													class="far fa-heart icon mr-1 pointer" onclick="likeit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="font-weight: bold; color: red; cursor: pointer;"
-													id="likecancel" class="far fa-heart icon mr-1"
+													style="font-weight: bold; color: red;"
+													id="likecancel" class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
 											</c:when>
 											<c:otherwise>
-												<i value="${tmp.board_seq}" style="cursor: pointer;"
-													id="likeit" class="far fa-heart icon mr-1"
+												<i value="${tmp.board_seq}"
+													id="likeit" class="far fa-heart icon mr-1 pointer"
 													onclick="likeit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="font-weight: bold; color: red; display: none; cursor: pointer;"
-													id="likecancel" class="far fa-heart icon mr-1"
+													style="font-weight: bold; color: red; display: none; "
+													id="likecancel" class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
@@ -259,23 +254,23 @@
 											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
 
 												<i value="${tmp.board_seq}" id="mark"
-													class="far fa-bookmark icon"
-													style="cursor: pointer; display: none;"
+													class="far fa-bookmark icon pointer"
+													style=" display: none;"
 													onclick="markit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="cursor: pointer; font-weight: bold; color: #00B8D4;"
-													id="markcancel" class="far fa-bookmark icon"
+													style="font-weight: bold; color: #00B8D4;"
+													id="markcancel" class="far fa-bookmark icon pointer"
 													onclick="unmarkit(this)"></i>
 
 											</c:when>
 											<c:otherwise>
 
 												<i value="${tmp.board_seq}" id="mark"
-													style="cursor: pointer;" class="far fa-bookmark icon"
+													 class="far fa-bookmark icon pointer"
 													onclick="markit(this)"></i>
 												<i value="${tmp.board_seq}"
-													style="cursor: pointer; font-weight: bold; color: #00B8D4; display: none;"
-													id="markcancel" class="far fa-bookmark icon"
+													style=" font-weight: bold; color: #00B8D4; display: none;"
+													id="markcancel" class="far fa-bookmark icon pointer"
 													onclick="unmarkit(this)"></i>
 
 											</c:otherwise>
@@ -315,8 +310,7 @@
 								<!-- 글내용자리 -->
 
 								<p class="text-info pt-4 mb-1" id="myComment${tmp.board_seq}"></p>
-								<div class="comment-contents"
-									id="comment-contents${tmp.board_seq}">
+								<div class="comment-contents" id="comment-contents${tmp.board_seq}">
 
 									<!-- 댓글자리 -->
 
@@ -336,8 +330,8 @@
 							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>    
 							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents }"  readonly></li> 
 	
-							<li id='li3'><a id='commentdel${comment.comment_seq}' value="${tmp.board_seq}:${comment.comment_seq}" onclick="delComment(this)" style="cursor: pointer;"></a> </li>
-							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" style="cursor: pointer;"></a> </li>    
+							<li id='li3'><a id='commentdel${comment.comment_seq}' value="${tmp.board_seq}:${comment.comment_seq}" onclick="delComment(this)" class="pointer"></a> </li>
+							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" class="pointer"></a> </li>    
   
 							</ul>  
 						</c:forEach>
@@ -360,7 +354,7 @@
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
 										<div class="btn-group bg-white">
-											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
+											<i id="modalBoardBtn${tmp.board_seq}" value="${tmp.board_seq}:${tmp.id}" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
 												data-toggle="modal"> </i>
 										</div>
 
@@ -384,7 +378,7 @@
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {   
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' style='cursor: pointer;'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  style='cursor: pointer;'></a></li></ul>");
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
@@ -423,19 +417,76 @@
 
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
-   <div class="modal-dialog modal-dialog-centered" role="document">
+   <!-- <div class="modal-dialog modal-dialog-centered" role="document">
   			<input type=hidden id=modalseq>
   			    <div class="modal-content">
                <div class="modal-body">
                <div class="dropdown-divider" ></div>   
                   <a class="dropdown-item" onclick="goBoard()">게시물로 이동</a>
                   <div class="dropdown-divider" ></div>
-                  <a class="dropdown-item"  href="#">부적절한 콘텐츠 신고</a>
+                  <a class="dropdown-item" onclick="modal2(this)" style="cursor: pointer;">부적절한 콘텐츠 신고</a>
                   <div class="dropdown-divider" ></div>
                   <a class="dropdown-item" href="#">링크 복사</a>
                   <div class="dropdown-divider" ></div> 
                   <a class="dropdown-item" href="#">팔로우 취소</a>   
                   
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         
+   </div> -->
+</div>
+
+<div class="modal" id="changeBoardModal2" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+  			<input type=hidden id=modalseq>
+  			    <div class="modal-content">
+  			    <div class="modal-header">
+          			<h4 class="modal-title">신고</h4>
+        		</div>
+               <div class="modal-body"> 
+                  <a class="dropdown-item mo" onclick="">폭력 또는 폭력 위협</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item mo" onclick="">마약 판매 및 홍보</a>
+                  <div class="dropdown-divider" ></div>
+                  <a class="dropdown-item mo" onclick="">괴롭힘 및 따돌림</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item mo" onclick="">지적 재산권 침해</a>
+                  <div class="dropdown-divider" ></div> 
+                  <a class="dropdown-item mo" onclick="">스스로 신체적 상해를 입히는 행위</a> 
+                  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                     data-dismiss="modal">Close</button>
+               </div>
+            </div> 
+   </div>
+</div>
+
+<div class="modal" id="reportModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+  			<input type=hidden id=modalid>
+  			    <div class="modal-content">
+  			    <div class="modal-header">
+          			<h4 class="modal-title">신고</h4>
+        		</div>
+               <div class="modal-body">
+                <div style="text-align: left;">
+                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">편파적 발언 또는 상징으로 신고할까요?</p>
+                <p style="margin-bottom: 8px;">삭제 대상:</p>
+                <ul style="list-style-type: disc; margin: 0 0 8px 0;">
+                <li style="margin-bottom: 8px;">나치 상징(하켄크로이츠)이나 백인 우월주의를 나타내는 손 모양 등 편파적 발언 또는 상징에 관한 사진</li>
+                <li style="margin-bottom: 8px;">폭력을 조장하거나 사람의 정체성을 바탕으로 공격하는 내용의 게시물</li>
+                <li style="margin-bottom: 8px;">신체적 상해, 절도 또는 기물 파손에 대한 협박</li>
+                </ul>
+                <p style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>
+                <p style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>
+                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>
+                </div>
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary"

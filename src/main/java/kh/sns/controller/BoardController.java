@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.JQueryPieChartVO;
+import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -415,6 +415,21 @@ public class BoardController {
 		mav.addObject("b", a);
 		mav.addObject("result", result);
 		return mav;
+		
+	}
+	
+	@RequestMapping("/deletefollow.do")
+	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int result = boardService.deleteFollowInfo(fi);
+		if(result == 1) {
+			response.getWriter().print("팔로우 취소 완료");
+		}else {
+			response.getWriter().print("팔로우 취소 실패");
+		}
+		
+		response.getWriter().flush();
+		response.getWriter().close();
 		
 	}
 }
