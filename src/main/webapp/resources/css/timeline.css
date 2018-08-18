@@ -174,9 +174,9 @@ padding-right:3%;
    
 }  
   
-.creco {  
+.creco {   
 	border:none;   
-	width:80%;    
+	width:83%;    
 	  
 }
  
@@ -184,11 +184,11 @@ padding-right:3%;
 	border:0.5px solid lightgray;  
 	}
 	
-.commentline {  
+.commentline {   
 	padding-left: 0px;   
 	margin-left: 1%;   
 	margin-bottom:0px;
-}
+} 
 
 .carousel-indicators li {
   width: 10px;
@@ -207,7 +207,7 @@ padding-right:3%;
 }
 
 .modal-content {
-	width:70%;  
+	width:70%;   
 }
 
 .dropdown-item:hover{
@@ -233,4 +233,6 @@ padding-right:3%;
 }
 .p_text {
 	color: #999;
-}
+}  
+
+

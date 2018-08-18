@@ -97,7 +97,7 @@
 	var boardid = $("#boardid").val();  
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","border:none; width:100%; background-color:#E1F5FE"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; background-color:#E1F5FE"); 
 		
 		if(sessionid == boardid) {      
 		$("#commentdel"+seq).html("삭제");   
@@ -108,9 +108,9 @@
     
     function commentleave(e) {
     	var seq = $(e).attr("value"); 
-		
-		$("#ul"+seq).attr("style",false);      
-		$("#commenttxt"+seq).attr("style","border:none; width:100%"); 
+		 
+		$("#ul"+seq).attr("style",false);            
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word;"); 
 		$("#commentdel"+seq).html("");  
 		$("#commentmod"+seq).html("");
   
@@ -141,7 +141,7 @@
       	 var comment_seq = $(e).attr("value");
     
       		 
-      		 $("#commenttxt"+comment_seq).attr("readonly",false);
+      		 $("#commenttxt"+comment_seq).attr("contentEditable",true);
           	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
           	 $("#commenttxt"+comment_seq).focus();  
         
@@ -151,9 +151,9 @@
                     	$.ajax({    
                               type: "POST",    
                               url: "commentmod.co",    
-                              data: {comment_seq:comment_seq, comment_contents:txt},  
+                              data: {comment_seq:comment_seq, comment_contents:txt},   
                               success : function() {
-                            	$("#commenttxt"+comment_seq).attr("readonly",true);
+                            	$("#commenttxt"+comment_seq).attr("contentEditable",false);
      		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
      		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
                               }  
@@ -167,6 +167,19 @@
     	var board_seq = $("#modalseq").val();
     	
     	$(location).attr('href','oneBoard.do?board_seq='+board_seq);
+    }
+    	
+    function commentdisplay(e) {   
+    	var board_seq = $(e).next().val(); 
+    	$(".co"+board_seq).attr("style",false);      
+    	$("#commenthide"+board_seq).html("접기");    
+     
+    }
+    
+    function commenthide(e) {  
+    	var board_seq = $(e).next().val(); 
+    	$(".co"+board_seq).attr("style","display:none;");    
+    	$("#commenthide"+board_seq).html("");
     }
 </script>
 <div id="allwrapper">
@@ -199,10 +212,8 @@
 								</ul>
 								<div id="carousel-inner" class="carousel-inner" style="height: 600px;">
 									<div id="firstItem" class="carousel-item active">
-										<img class='boardimg' width='100%'
-											src='AttachedMedia/${result2[status.index][0].system_file_name}'
-											alt=''>
-									</div>
+										<img class='boardimg' width='100%' src='AttachedMedia/${result2[status.index][0].system_file_name}' alt=''>
+									</div> 
 									<c:forEach begin="1" var="media"
 										items="${result2[status.index]}">
 										<div class="carousel-item">
@@ -309,47 +320,58 @@
 								</div>
 								<!-- 글내용자리 -->
 
-								<p class="text-info pt-4 mb-1" id="myComment${tmp.board_seq}"></p>
-								<div class="comment-contents" id="comment-contents${tmp.board_seq}">
+								<p class="text-info pointer pt-4 mb-1" id="myComment${tmp.board_seq}" onclick="commentdisplay(this)"></p>
+								<input type=hidden  value="${tmp.board_seq}">  
+								<div class="comment-contents" id="comment-contents${tmp.board_seq}" >  
 
 									<!-- 댓글자리 -->
 
 									<c:forEach var="commenttmp" items="${commentresult}">
 										<c:choose>
 											<c:when test="${commenttmp.key == tmp.board_seq}">
-												<c:forEach var="comment" items="${commenttmp.value}">
-
+											
 													<c:if test="${commenttmp.value.size() > 2 }">
 														<script>    
                      $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
-                     </script>   
-                     </c:if> 
-						  
-						   
-							<ul id="ul${comment.comment_seq}" value="${comment.comment_seq}" onmouseover="commentover(this)" onmouseleave="commentleave(this)" class="commentline navbar-nav">       
-							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>    
-							<li id='li2'><input type=text id='commenttxt${comment.comment_seq}' class='commenttxt' value="${comment.comment_contents }"  readonly></li> 
+                     var num = 0;
+                     </script>    
+                     </c:if>    
+											
+												<c:forEach var="comment" items="${commenttmp.value}">
+  
+							<ul id="ul${comment.comment_seq}" style="display:none"  value="${comment.comment_seq}" onmouseover="commentover(this)" onmouseleave="commentleave(this)" class='commentline navbar-nav co${tmp.board_seq}'>       
+							<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>     
+							<li id='li2'><div id='commenttxt${comment.comment_seq}' class='commenttxt txt${tmp.board_seq}' style='word-wrap: break-word;'>${comment.comment_contents }</div></li> 
 	
 							<li id='li3'><a id='commentdel${comment.comment_seq}' value="${tmp.board_seq}:${comment.comment_seq}" onclick="delComment(this)" class="pointer"></a> </li>
 							<li id='li4'><a id='commentmod${comment.comment_seq}' value="${comment.comment_seq}" onclick="modComment(this)" class="pointer"></a> </li>    
   
 							</ul>  
+							  
+							<script>
+							$("#ul${commenttmp.value[0].comment_seq}").attr("style",false);
+							$("#ul${commenttmp.value[1].comment_seq}").attr("style",false);
+							</script>
+							 
 						</c:forEach>
+						
 							</c:when>  
 								</c:choose>
 							
 						</c:forEach>
-						</div>
+						</div>       
+						<p class="text-info pointer pt-3 pl-1" id="commenthide${tmp.board_seq}" onclick="commenthide(this)"></p>
+						<input type=hidden  value="${tmp.board_seq}">  
 								</div>
 
 
  
 							<!--               -->
 
+        
+							<div class="crecodiv pl-2 py-2 navbar-nav">
 
-							<div class="crecodiv py-2 navbar-nav">
-
-
+  
 							
 									<input type="text" placeholder="댓글 달기..." name="comment_contents${tmp.board_seq}" class="creco  ml-2 " id="comment${tmp.board_seq}">
 
@@ -376,9 +398,9 @@
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {   
+	                                              success : function(seq) {     
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><input type=text id='commenttxt"+seq+"' style='border:none; width:100%' value='"+text+"' readonly></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word;' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
