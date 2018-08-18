@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +26,7 @@ import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
+import kh.sns.util.EncryptUtils;
 
 @Controller
 public class MemberController {
@@ -335,6 +334,9 @@ public class MemberController {
 		
 		String id = request.getSession().getAttribute("loginId").toString();
 		String beforePassword = request.getParameter("beforePassword");
+		
+		EncryptUtils encrypt = new EncryptUtils(); 
+		beforePassword = encrypt.getSha256(beforePassword);
 		
 		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
 		if(isBeforePasswordCorrect) {

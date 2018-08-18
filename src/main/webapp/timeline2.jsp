@@ -320,7 +320,7 @@
 								</div>
 								<!-- 글내용자리 -->
 
-								<p class="text-info pt-4 mb-1" id="myComment${tmp.board_seq}" onclick="commentdisplay(this)"></p>
+								<p class="text-info pointer pt-4 mb-1" id="myComment${tmp.board_seq}" onclick="commentdisplay(this)"></p>
 								<input type=hidden  value="${tmp.board_seq}">  
 								<div class="comment-contents" id="comment-contents${tmp.board_seq}" >  
 
@@ -359,8 +359,8 @@
 								</c:choose>
 							
 						</c:forEach>
-						</div>    
-						<p class="text-info pt-3 pl-1" id="commenthide${tmp.board_seq}" onclick="commenthide(this)"></p>
+						</div>       
+						<p class="text-info pointer pt-3 pl-1" id="commenthide${tmp.board_seq}" onclick="commenthide(this)"></p>
 						<input type=hidden  value="${tmp.board_seq}">  
 								</div>
 
