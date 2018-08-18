@@ -2,6 +2,7 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -50,53 +52,63 @@ public class BoardController {
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
-
-		List<BoardDTO> list = new ArrayList<BoardDTO>();
-		List<Board_CommentDTO> list1 = new ArrayList<>();
-		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
-		List<Integer> like = new ArrayList<>();
-		Map<Integer,String> maplike = new HashMap<>();
-		List<Integer> mark = new ArrayList<>();
-		Map<Integer,String> mapmark = new HashMap<>();
-		String id = (String) seesion.getAttribute("loginId"); 
-		try {
-			list = boardService.getFeed(id);
-			list1 = board_commentService.getFeedComment(id);
-			like = board_likeService.searchLike(id);
-			mark = board_bookmarkService.searchMark(id);
-			
-			Set<Integer> seqlist = new HashSet<>();
-		for(Board_CommentDTO dto : list1) {	
-			seqlist.add(dto.getBoard_seq());
-			commentlist.put(dto.getBoard_seq(), new ArrayList<>());
-	
-		}  
-		for(Board_CommentDTO dto : list1) {
-			for(int seq : seqlist) {
-				if(dto.getBoard_seq() == seq ) {
-					commentlist.get(seq).add(dto);  
-				} 
+		ModelAndView mav = new ModelAndView();
+		String id = (String) seesion.getAttribute("loginId");
+		if(id != null) {
+			List<BoardDTO> list = new ArrayList<BoardDTO>();
+			List<Board_CommentDTO> list1 = new ArrayList<>();
+			Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+			List<Integer> like = new ArrayList<>();
+			Map<Integer,String> maplike = new HashMap<>();
+			List<Integer> mark = new ArrayList<>();
+			Map<Integer,String> mapmark = new HashMap<>();
+			List<List<Board_MediaDTO>> media = new ArrayList<>();
+			 
+			try {
+				list = boardService.getFeed(id);
+				for(int i = 0; i < list.size(); i++) {
+					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				}
+				list1 = board_commentService.getFeedComment(id);
+				like = board_likeService.searchLike(id);
+				mark = board_bookmarkService.searchMark(id);
+				
+				Set<Integer> seqlist = new HashSet<>();
+			for(Board_CommentDTO dto : list1) {	
+				seqlist.add(dto.getBoard_seq());
+				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
+		
+			}  
+			for(Board_CommentDTO dto : list1) {
+				for(int seq : seqlist) {
+					if(dto.getBoard_seq() == seq ) {
+						commentlist.get(seq).add(dto);  
+					} 
+				}
 			}
-		}
-		
-		
-		for(int tmp : like) {
-			maplike.put(tmp, "y");
-		}
-		
-		for(int tmp : mark) {
-			mapmark.put(tmp, "y");
-		}
+			
+			
+			for(int tmp : like) {
+				maplike.put(tmp, "y");
+			}
+			
+			for(int tmp : mark) {
+				mapmark.put(tmp, "y");
+			}
 
-		}catch(Exception e) {
-			e.printStackTrace();
-		}	
-		ModelAndView mav = new ModelAndView();  
-		mav.addObject("result", list);
-		mav.addObject("like", maplike);
-		mav.addObject("bookmark", mapmark);
-		mav.addObject("commentresult",commentlist);
-		mav.setViewName("timeline2.jsp");	
+			}catch(Exception e) {
+				e.printStackTrace();
+			}	  
+			mav.addObject("result", list);
+			mav.addObject("result2", media);
+			mav.addObject("like", maplike);
+			mav.addObject("bookmark", mapmark);
+			mav.addObject("commentresult",commentlist);
+			mav.setViewName("timeline2.jsp");
+		}else {
+			mav.setViewName("redirect:main.jsp");
+		}
+			
 		return mav;
 	}
 	
@@ -204,18 +216,6 @@ public class BoardController {
 		return mav;
 	}
 	
-	
-	
-	//search
-//	@RequestMapping("/search2.bo")
-//	public ModelAndView search2(HttpSession session, String search2) throws Exception{
-//		ModelAndView mav = new ModelAndView();
-//		List<Board_MediaDTO> media = boardService.search2(search2);
-//		mav.addObject("media", media);
-//		mav.setViewName("search.jsp");
-//		return mav;
-//	}
-	
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(){
 		ModelAndView mav = new ModelAndView();
@@ -257,12 +257,12 @@ public class BoardController {
 		
 		System.out.println(request.getParameter("filters"));
 		
-		String[] filterList = request.getParameter("filters").split(";");
+		String[] filterList = null;
+		if(request.getParameter("filters") != null)
+			filterList = request.getParameter("filters").split(";");
+	
 		
-		for(String s : filterList) {
-			System.out.println(s);
-		}
-		
+		int k = 0;
 		for(MultipartFile mf : mfList) {
 			try {
 				
@@ -279,9 +279,6 @@ public class BoardController {
                    f.mkdir();
                 }
           
-				
-				
-				
 				// 설정한 path에 파일저장(임시)
 				// D:\Spring\workspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\FinalProject\AttachedMedia				
 				String complexPath = request.getSession().getServletContext().getRealPath("AttachedMedia");
@@ -289,7 +286,29 @@ public class BoardController {
 				File serverFile = new File(complexPath + File.separator + saveFileName); 
 				mf.transferTo(serverFile);	// HDD에 전송
 				
-				fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName));				
+				// 필터가 모든 사진에 하나도 적용이 안됐다면 catch가 실행됨
+			
+					String filter = null;
+					
+					for(String flt : filterList) {
+						System.out.println(flt);
+						
+						if(originalName.equals(flt.split(":")[0])) {
+							try {
+								if(flt.split(":")[1] != null )
+									filter = flt.split(":")[1];
+							} catch(ArrayIndexOutOfBoundsException e) {
+								System.err.println(e);
+							}
+							
+						}
+					}
+					
+					
+					
+					fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName, filter, null, null));
+						
+				k++;
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -307,6 +326,7 @@ public class BoardController {
 			if(request.getSession().getAttribute("loginId") != null) {
 				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
 			} else {
+				// 잘못된 접근
 				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
 			}
 			
@@ -320,24 +340,96 @@ public class BoardController {
 		}		
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("feed.bo");
+		mav.setViewName("redirect:feed.bo");
 		return mav;
-	}
+	}	
+
 	
-	@RequestMapping("/idunno.test")
-	public ModelAndView writeProcBoard(HttpServletRequest request) {		
-		
-		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
-		
+	// AJAX
+	@RequestMapping("/getOneArticle.ajax")
+	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
 		try {
-			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
-		} catch (Exception e) {
+			PrintWriter xout = response.getWriter();
+			System.out.println(request.getParameter("seq"));
+			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
+
+			new Gson().toJson(b, xout);
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		ModelAndView mav = new ModelAndView();
-		return mav;
+	}
+	
+	@RequestMapping("/getOneComment.ajax")
+	public void getOneCommentAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
+		try {
+			PrintWriter xout = response.getWriter();
+			
+			System.out.println(request.getParameter("comment_seq"));
+			System.out.println(request.getParameter("board_seq"));
+			
+			BoardDTO b = boardService.getBoardModal(request.getParameter("board_seq"));
+			Board_CommentDTO c = board_commentService.getOneComment(Integer.parseInt(request.getParameter("comment_seq")));
+			
+			System.out.println(b);
+			System.out.println(c);
+			
+			Object[] output = new Object[2];
+			output[0] = b;
+			output[1] = c;
+
+			new Gson().toJson(output, xout);
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 
+	@RequestMapping("/oneBoard.do")
+	public ModelAndView oneBoard(String board_seq) {
+		ModelAndView mav = new ModelAndView();
+		BoardDTO a =null;
+		List<Board_CommentDTO> result = null;
+		try {
+		System.out.println(board_seq);
+		
+		a = boardService.oneBoard(board_seq);
+		
+		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
+		
+		
+		}catch(Exception e) {
+			System.out.println("oneboard.do");
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("oneBoard.jsp");
+		mav.addObject("b", a);
+		mav.addObject("result", result);
+		return mav;
+		
+	}
+	
+	@RequestMapping("/deletefollow.do")
+	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int result = boardService.deleteFollowInfo(fi);
+		if(result == 1) {
+			response.getWriter().print("팔로우 취소 완료");
+		}else {
+			response.getWriter().print("팔로우 취소 실패");
+		}
+		
+		response.getWriter().flush();
+		response.getWriter().close();
+		
+	}
 }

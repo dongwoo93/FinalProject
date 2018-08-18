@@ -166,13 +166,14 @@ public class IBoardDAO implements BoardDAO  {
 	 * (non-Javadoc)
 	 * @see kh.sns.interfaces.BoardDAO#insertNewMedia(kh.sns.dto.Board_MediaDTO)
 	 * 
-	 * �렪�쓽�긽 �뿬湲곕떎 �씪�떒 留뚮뱾怨� �굹以묒뿉 �븘�슂�븯硫� 蹂꾨룄 �겢�옒�뒪濡� 遺꾨━�빀�땲�떎.
+	 * �렪�쓽�긽 �뿬湲곕떎 �씪�떒 留뚮뱾怨� �굹以묒뿉 �븘�슂�븯硫� 蹂꾨룄 �겢�옒�뒪濡� 遺꾨━�빀�땲�떎. // ㅠㅠ ㅂㄷㅂㄷ
 	 */
 	@Override
 	public int insertNewMedia(Board_MediaDTO media) throws Exception {
 
-		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?)";
-		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name());
+		String sql = "insert into board_media values(board_media_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
+		return template.update(sql, media.getBoard_seq(), media.getMedia_type(), media.getOriginal_file_name(), media.getSystem_file_name(),
+				media.getFilterName(), media.getSoundOriginalFileName(), media.getSoundSystemFileName());
 	}
 
 	public int selectBoardSeqRecentCurrVal() throws Exception {
@@ -260,4 +261,28 @@ public class IBoardDAO implements BoardDAO  {
 		});
 		return temp.get(0);
 	}
+
+	@Override
+	public BoardDTO  oneBoard(String board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "select * from board where board_seq = ?";
+		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				BoardDTO article = new BoardDTO();
+				article.setBoard_seq(rs.getInt(1));
+				article.setContents(rs.getString(2));
+				article.setId(rs.getString(3));
+				article.setWritedate(rs.getString(4));
+				article.setRead_count(rs.getString(5));
+				article.setIs_allow_comments(rs.getString(6));
+				return article;
+			}
+		});
+		
+		return result.get(0);
+		}
+		
 }
