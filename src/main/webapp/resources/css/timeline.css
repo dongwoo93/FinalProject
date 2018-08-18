@@ -212,10 +212,25 @@ padding-right:3%;
 
 .dropdown-item:hover{
 	background-color:#E1F5FE;  
-	
 }
 
 .pointer {
 	
 	cursor:pointer;  
+}
+
+
+.mo1:hover {
+	background-color:transparent;
+}
+
+.mo, .mo1 {
+	cursor: pointer;
+}
+
+.mo:hover {
+	background-color:#efefef;
+}
+.p_text {
+	color: #999;
 }
