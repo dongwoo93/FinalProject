@@ -19,6 +19,9 @@ public class MemberAspect {
    @Pointcut("execution(* kh.sns.impl.*Service.loginMem(..))")  
    public void loginEncrypt() {}
    
+   @Pointcut("execution(* kh.sns.impl.*Service.findPw(..))")  
+   public void newPwEncrypt() {}
+   
    @Before("insertEncrypt()")
    public void insertEncrypt(JoinPoint jp) {
       MemberDTO dto = (MemberDTO)jp.getArgs()[0];
@@ -29,6 +32,13 @@ public class MemberAspect {
    @Before("loginEncrypt()") 
    public void loginEncrypt(JoinPoint jp) {
 	   MemberDTO dto = (MemberDTO)jp.getArgs()[0];
+	   dto.setPw(EncryptUtils.getSha256(dto.getPw()));
+   }
+   
+   @Before("newPwEncrypt()") 
+   public void newPwEncrypt(JoinPoint jp) {  
+
+	   MemberDTO dto = (MemberDTO)jp.getArgs()[0]; 
 	   dto.setPw(EncryptUtils.getSha256(dto.getPw()));
    }
 }

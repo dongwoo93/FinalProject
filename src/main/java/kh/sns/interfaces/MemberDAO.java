@@ -12,7 +12,7 @@ public interface MemberDAO {
 	public int isIdExist(String id);
 	public int isNickExist(String nick);
 	public int isEmailExist(String email);
-	public int findPw(String id,String email);
+	public int findPw(MemberDTO dto);
 	public List<MemberDTO> findId(String name, String email) throws Exception;
 	
 	public String changePass(String id) throws Exception;

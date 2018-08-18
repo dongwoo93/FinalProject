@@ -102,10 +102,10 @@ $(location).attr('href',"main.do");
 										<label>Finding Password</label>
 									</div>
 									<div class="form-group">
-										<input type="text" name="cId" id="id" tabindex="1" class="form-control" placeholder="User Id" >
+										<input type="text" name="id" id="id" tabindex="1" class="form-control" placeholder="User Id" >
 									</div>
 									<div class="form-group">
-										<input type="text" name="cEmail" id="Cemail" tabindex="2" class="form-control" placeholder="Input Email Address">
+										<input type="text" name="email" id="Cemail" tabindex="2" class="form-control" placeholder="Input Email Address">
 									</div>
 									
 									<div class="form-group">

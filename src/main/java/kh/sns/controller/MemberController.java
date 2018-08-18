@@ -244,17 +244,16 @@ public class MemberController {
 	
 	
 	@RequestMapping("/findPw.do")
-	public ModelAndView findPw(String cId, String cEmail, HttpServletResponse response) throws Exception {
+	public ModelAndView findPw(MemberDTO dto, HttpServletResponse response) throws Exception {
 		
 		
-		System.out.println(cId);
-		System.out.println(cEmail);
-		int result =this.memberService.findPw(cId,cEmail);
+		 String certification = Integer.toString((int)(Math.random() * 9000 + 1000));
+		 dto.setPw(certification);
+		int result =this.memberService.findPw(dto);
 		System.out.println(result);
 		if(result==1) {
 			
-			String certification = memberService.changePass(cId);
-			SendEmail send = new SendEmail(cEmail,certification);
+			SendEmail send = new SendEmail(dto.getEmail(),dto.getPw());
 			send.sendEmail();
 		}
 		ModelAndView mav = new ModelAndView();
