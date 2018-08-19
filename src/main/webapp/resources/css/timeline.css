@@ -208,6 +208,7 @@ padding-right:3%;
 
 .modal-content {
 	width:70%;   
+	border-radius: 1.5rem;
 }
 
 .dropdown-item:hover{
@@ -233,6 +234,16 @@ padding-right:3%;
 }
 .p_text {
 	color: #999;
-}  
-
-
+}
+.modal-header {
+    display: block;
+}
+.modal-title {
+    text-align: center;
+}
+.headbtn {
+    position: absolute;
+}
+.footertbtn {
+	width: 100%;
+}

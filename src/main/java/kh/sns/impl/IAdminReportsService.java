@@ -44,8 +44,7 @@ public class IAdminReportsService implements AdminReportsService {
 	
 	@Override
 	public int insertAnReport(AdminReportDTO ard) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.ard.insertAnReport(ard);
 	}
 	
 	@Override

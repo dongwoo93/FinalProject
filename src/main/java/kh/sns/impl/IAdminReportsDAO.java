@@ -47,8 +47,13 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public int insertAnReport(AdminReportDTO ard) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "insert into admin_reports values (report_seq.nextval,?,?,?,sysdate,?,null,null,101,null)";
+		if(ard.getCommentSeq() == 0) {
+			return t.update(sql, ard.getReportCode(), ard.getBoardSeq(), null, ard.getReportersComment());
+		}else {
+			return t.update(sql, ard.getReportCode(), ard.getBoardSeq(), ard.getCommentSeq(), ard.getReportersComment());
+		}
+		
 	}
 	
 	@Override
