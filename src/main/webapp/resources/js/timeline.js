@@ -57,18 +57,37 @@
 	    			}
 	    		})
 	}
+	
+	function blockMember(id1, id2) {
+		var id = id1;
+		var targetId = id2;
+		$.ajax({
+    		url : "block.mem",
+    		type : "post",
+    		data : {
+    			id : id,
+    			target_id : targetId
+    		},
+    		success : function(resp) {
+    			alert(resp);
+    			$("#changeBoardModal").modal("hide");
+    			
+    		},
+    		error : function() {
+    			console.log("에러 발생!");
+    		}
+		})
+    			
+	}
 
 	var board_seq;
     var board_id;
     
-    function modal(e) {
-    	board_seq = $(e).attr("value").split(":")[0];
-		board_id = $(e).attr("value").split(":")[1];
+    function modal0(e) {
     	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
     	'  			<input type=hidden id=modalseq>'+
     	'  			    <div class="modal-content">'+
     	'               <div class="modal-body">'+
-    	'               <div class="dropdown-divider" ></div>'+
     	'                  <a class="dropdown-item mo1" onclick="goBoard()">게시물로 이동</a>'+
     	'                  <div class="dropdown-divider" ></div>'+
     	'                  <a class="dropdown-item mo1" onclick="modal2(this)">부적절한 컨텐츠 신고</a>'+
@@ -79,7 +98,37 @@
     	'                  '+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
+    	'                     data-dismiss="modal">Close</button>'+
+    	'               </div>'+
+    	'            </div>'+
+    	'         '+
+    	'   </div>';
+    	
+    	$("#changeBoardModal").html(myvar);
+    	
+    	$("#modalseq").val(board_seq);
+    	$("#modalid").val(board_id);
+    }
+    
+    function modal(e) {
+    	board_seq = $(e).attr("value").split(":")[0];
+		board_id = $(e).attr("value").split(":")[1];
+    	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+    	'  			<input type=hidden id=modalseq>'+
+    	'  			    <div class="modal-content">'+
+    	'               <div class="modal-body">'+
+    	'                  <a class="dropdown-item mo1" onclick="goBoard()">게시물로 이동</a>'+
+    	'                  <div class="dropdown-divider" ></div>'+
+    	'                  <a class="dropdown-item mo1" onclick="modal2(this)">부적절한 컨텐츠 신고</a>'+
+    	'                  <div class="dropdown-divider" ></div>'+
+    	'                  <a class="dropdown-item mo1" onclick="copyToClipboard(&#34;http://localhost:8080/controller/oneBoard.do?board_seq='+board_seq+'&#34;)">링크 복사</a>'+
+    	'                  <div class="dropdown-divider" ></div> '+
+    	'                  <a class="dropdown-item mo1" onclick="unFollow(&#34;'+currentId+'&#34;,&#34;'+board_id+'&#34;)">팔로우 취소</a>   '+
+    	'                  '+
+    	'               </div>'+
+    	'               <div class="modal-footer">'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -98,6 +147,7 @@
     	'               <input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal0(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -115,7 +165,7 @@
     	'                  '+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -130,6 +180,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -142,11 +193,11 @@
     	'                <br>'+
     	'               <div class="dropdown-divider" ></div>   '+
     	'                  <p class="p_text"><span style="color: #000; font-weight: 600;">'+board_id+'</span>님이 회원님의 사진, 동영상 또는 스토리를 볼 수 없게 하거나 Instagram에서 회원님을 검색할 수 없도록 하려면 차단하세요.</p>'+
-    	'                  <button type="button" class="btn btn-primary" style="width: 100%">차단</button>'+
+    	'                  <button type="button" class="btn btn-primary" style="width: 100%" onclick="blockMember(&#34;'+currentId+'&#34;,&#34;'+board_id+'&#34;)">차단</button>'+
     	'                  '+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -163,6 +214,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -182,7 +234,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -198,6 +250,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -217,7 +270,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -234,6 +287,7 @@
     	'  			<input type=hidden id=modalseq>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body"> '+
@@ -249,7 +303,7 @@
     	'                  '+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div> '+
@@ -263,6 +317,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -282,7 +337,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -298,6 +353,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -316,7 +372,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -332,6 +388,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -351,7 +408,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -367,6 +424,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -379,7 +437,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
@@ -395,6 +453,7 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content">'+
     	'  			    <div class="modal-header">'+
+    	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h4 class="modal-title">신고</h4>'+
     	'        		</div>'+
     	'               <div class="modal-body">'+
@@ -409,7 +468,7 @@
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-secondary"'+
+    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
     	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
