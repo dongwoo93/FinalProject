@@ -36,8 +36,26 @@
 	    alert("링크를 클립보드에 복사했습니다.");
 	}
 	
-	function reportToAdmin() {
-		
+	function reportToAdmin(seq, code) {
+		var b_seq = seq;
+		var report_code = code;
+		var comment = $("#reportcomment").val();
+	    	$.ajax({
+	    		url : "send.admin",
+	    		type : "post",
+	    		data : {
+	    			boardSeq : b_seq,
+	    			reportCode : report_code,
+	    			reportersComment : comment
+	    		},
+	    		success : function(resp) {
+	    			alert(resp);
+	    			$("#changeBoardModal").modal("hide");
+	    		},
+	    		error : function() {
+	    			console.log("에러 발생!");
+	    			}
+	    		})
 	}
 
 	var board_seq;
@@ -87,7 +105,7 @@
     	'               <div class="dropdown-divider" ></div>   '+
     	'                  <a class="dropdown-item mo" onclick="modal3(this)">그냥 마음에 들지 않습니다</a>'+
     	'                  <div class="dropdown-divider" ></div>'+
-    	'                  <a class="dropdown-item mo"  href="#">스팸입니다</a>'+
+    	'                  <a class="dropdown-item mo"  onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;1&#34;)">스팸입니다</a>'+
     	'                  <div class="dropdown-divider" ></div>'+
     	'                  <a class="dropdown-item mo" onclick="modal4(this)">신체 노출, 나체 게시물 및 음란물</a>'+
     	'                  <div class="dropdown-divider" ></div> '+
@@ -158,7 +176,9 @@
     	'                </ul>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;2&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
@@ -191,7 +211,9 @@
     	'                </ul>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;3&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
@@ -254,7 +276,9 @@
     	'                </ul>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;4&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
@@ -286,7 +310,9 @@
     	'                </ul>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;5&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
@@ -319,7 +345,9 @@
     	'                </ul>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;6&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
@@ -345,7 +373,9 @@
     	'                <div style="text-align: left;">'+
     	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">지적 재산권 침해로 신고할까요?</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">저작권 및 상표권을 침해하는 게시물은 삭제됩니다. 만약 누군가 자신의 허가 없이 사진을 도용하거나 사칭하는 경우에도 해당 콘텐츠는 삭제되며, 도용 및 사칭한 계정은 비활성화될 수 있습니다. 지적 재산권 침해 신고에 대한 자세한 정보는 고객 센터를 방문하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">더 알아보기</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;7&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
@@ -373,7 +403,9 @@
     	'                <p class="p_text" style="margin-bottom: 8px;">자살, 자해, 섭식 장애를 포함하여 스스로 신체적 상해를 입히는 행위를 유도하거나 조장하는 게시물은 삭제됩니다. 또한 스스로 신체적 상해를 입히는 당사자의 신분을 노출하여 공격하거나 조롱하는 게시물도 삭제될 수 있습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
     	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
-    	'                <button type="button" class="btn btn-primary" style="width: 100%">제출</button>'+
+    	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+    	'                <br>'+
+    	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;8&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
     	'               <div class="modal-footer">'+
