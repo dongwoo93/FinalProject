@@ -423,7 +423,35 @@ html,body {
 					]  */
 				} 
 				] 
-			});     	
+			});     
+    	
+    	/*파이 차트 2*/
+    	$("#chartContainer2").CanvasJSChart({ 
+    		title: { 
+    			text: "Top Companies By Revenue - 2013" 
+    		}, 
+    		axisY: { 
+    			title: "In Billions (USD)" 
+    		}, 
+    		data: [ 
+    		{ 
+    			type: "bar", 
+    			toolTipContent: "{label}: US$ {y} billion",
+    			dataPoints: [ 
+    				{ label: "Apple",             y: 198  }, 
+    				{ label: "Toyota",            y: 250.1}, 
+    				{ label: "ConocoPhillips",    y: 248  }, 
+    				{ label: "Chevron",           y: 270.1}, 
+    				{ label: "Sinopec",           y: 290.5}, 
+    				{ label: "Vitol",             y: 320.2}, 
+    				{ label: "British Petroleum", y: 410  }, 
+    				{ label: "WalMart",           y: 464  }, 
+    				{ label: "Royal Dutch Shell", y: 492  }, 
+    				{ label: "Exxon Mobil",       y: 502.3} 
+    			] 
+    		} 
+    		] 
+    	});   
     	
     	
 		setInterval(function(){			
@@ -447,7 +475,7 @@ html,body {
     				// console.log("AJAX 종료");
     			}
 			})
-    	}, 3000)
+    	}, 30000)
     	
     	
     })
@@ -494,7 +522,7 @@ html,body {
 							class="active nav-link mp " data-toggle="pill"
 							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#reportCode" id="navi">리포트 통계 Ⅱ</a></li>
+							data-toggle="pill" data-target="#reportMain" id="navi">리포트 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
 						<li class="nav-item"><a href="#" class="nav-link mp "
@@ -520,7 +548,7 @@ html,body {
 						
 						
 						<div class="tab-pane fade" id="reportCode" role="tabpanel">
-							<div></div>
+							<div id="chartContainer2" style="width: 100%; height: 100%"></div>
 						</div>
 						
 						
