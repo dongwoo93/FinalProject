@@ -353,15 +353,16 @@ public class BoardController {
 	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF8");
 		response.setContentType("application/json");
-		try {
-			PrintWriter xout = response.getWriter();
+		PrintWriter xout = response.getWriter();
+		try {			
 			System.out.println(request.getParameter("seq"));
 			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
 
-			new Gson().toJson(b, xout);
-			
+			new Gson().toJson(b, xout);			
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			xout.print("해당 글은 삭제됨");
 		}
 		
 	}
