@@ -400,8 +400,9 @@ public class BoardController {
 	@RequestMapping("/oneBoard.do")
 	public ModelAndView oneBoard(String board_seq , HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		BoardDTO a =null;
+		BoardDTO a = null;
 		List<Board_CommentDTO> result = null;
+		List<List<Board_MediaDTO>> media = new ArrayList<>();
 		
 		Board_LikeDTO like = null;
 		Board_BookmarkDTO bookmark = null;
@@ -412,6 +413,8 @@ public class BoardController {
 		System.out.println(board_seq);
 		
 		a = boardService.oneBoard(board_seq);
+		media.add(boardService.search2(a.getBoard_seq()));
+
 		
 		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
 		
@@ -427,9 +430,25 @@ public class BoardController {
 		mav.setViewName("oneBoard.jsp");
 		mav.addObject("b", a);
 		mav.addObject("result", result);
+		mav.addObject("result2", media);
 		mav.addObject("like", like);
 		mav.addObject("bookmark", bookmark);
 		return mav;
+		
+	}
+	
+	@RequestMapping("/follow.do")
+	public void insertFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int result = boardService.insertFollowInfo(fi);
+		if(result == 1) {
+			response.getWriter().print("팔로우 완료");
+		}else {
+			response.getWriter().print("팔로우 실패");
+		}
+		
+		response.getWriter().flush();
+		response.getWriter().close();
 		
 	}
 	
