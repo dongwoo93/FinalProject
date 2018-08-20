@@ -206,8 +206,8 @@ padding-right:3%;
 	text-align: center;  
 }
 
-.modal-content {
-	width:70%;   
+.cons{
+	width: 485px;   
 	border-radius: 1.5rem;
 }
 
@@ -240,10 +240,28 @@ padding-right:3%;
 }
 .modal-title {
     text-align: center;
+    font-weight: bold;
 }
 .headbtn {
     position: absolute;
+    top : 2.5%
 }
 .footertbtn {
 	width: 100%;
+}
+.item {
+	margin-top: 10px;
+	font-size: x-medium;
+}
+#report-head{
+	font-size: small;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.mbody {
+	text-align: left;
+}
+.close{
+   	 top : 2.5%;
+   	 font-size: 25px;
 }
