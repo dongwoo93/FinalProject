@@ -47,8 +47,13 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public int insertAnReport(AdminReportDTO ard) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "insert into admin_reports values (report_seq.nextval,?,?,?,sysdate,?,null,null,101,null)";
+		if(ard.getCommentSeq() == 0) {
+			return t.update(sql, ard.getReportCode(), ard.getBoardSeq(), null, ard.getReportersComment());
+		}else {
+			return t.update(sql, ard.getReportCode(), ard.getBoardSeq(), ard.getCommentSeq(), ard.getReportersComment());
+		}
+		
 	}
 	
 	@Override
@@ -57,18 +62,14 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 		return 0;
 	}
 	
-	@Override
-	public List<AdminReportCode> getAdminReportCodeByRange(int start, int end) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	@Override
 	public List<AdminReportCode> getAllAdminReportCode() throws Exception {
-		String sql = "select report_code_description "
-				+ "from admin_reports r, admin_report_code c "
-				+ "where r.report_code = c.report_code "
-				+ "order by r.reported_date desc";
+		String sql = "select "
+				+ "(select c.report_code_description from admin_report_code c "
+					+ "where r.report_code = c.report_code) "
+				+ "from admin_reports r order by reported_date desc";
 		
 		return t.query(sql, (rs, rowNum) -> {
 			AdminReportCode arc = new AdminReportCode();
@@ -78,20 +79,32 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 		});
 	}
 	
-	@Override
-	public List<AdminReportResultCode> getAdminResultCodeByRange(int start, int end) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	@Override
 	public List<AdminReportResultCode> getAllAdminResultCode() throws Exception {
-		String sql = "select result_description from admin_reports r, admin_report_result_code c where r.result_code = c.result_code order by r.reported_date desc";
+		String sql = "select "
+				+ "(select u.result_description from admin_report_result_code u "
+					+ "where r.result_code = u.result_code) "
+				+ "from admin_reports r order by reported_date desc";
+		
 		return t.query(sql, (rs, rowNum) -> {
 			AdminReportResultCode arr = new AdminReportResultCode();
 			arr.setResultDescription(rs.getString(1));
 			return arr;
 			
+		});
+	}
+	
+	@Override
+	public List<AdminReportCode> getReportCodeList() throws Exception {
+		String sql = "select * from admin_report_code order by report_code";
+		return t.query(sql, (rs, rowNum) -> {
+			AdminReportCode arc = new AdminReportCode();
+			arc.setAcceptDepartment(rs.getString("report_accept_department"));
+			arc.setReportCode(rs.getInt("report_code"));
+			arc.setReportCodeDescription(rs.getString("report_code_description"));
+			return arc;
 		});
 	}
 	
