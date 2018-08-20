@@ -27,14 +27,37 @@
 				<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 			</div>
 
+
+			<c:choose>
+				<c:when test="${result[0].id == sessionScope.loginId}">
+
 			<div class="profile-user-settings">
 				<h2 class="profile-user-name">${result[0].id}</h2>
-				<div class="profile-edit-btn" id="toMy">프로필편집</div>
+				<div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
 				<div class="profile-settings-btn">
 					<i class="far fa-times-circle" id="logout"></i>
 				</div>
 				<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
 			</div>
+			
+			</c:when>
+		<c:otherwise>
+						
+				<div class="profile-user-settings">
+					<h2 class="profile-user-name">${result[0].id}</h2>
+					<div class="profile-edit-btn" id="toMy" style="height:40px;">팔로잉</div>
+					<div class="profile-settings-btn">
+						<i class="fas fa-undo-alt"></i>
+					</div>
+			
+				</div>
+			
+						
+						
+		</c:otherwise>
+	</c:choose>
+
+						
 
 			<div class="profile-stats">
 				<ul>
