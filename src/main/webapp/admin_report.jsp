@@ -379,7 +379,7 @@ html,body {
 				}, 
 				data: [ 
 				{ 
-					type: "pie", 
+					type: "doughnut", 
 					showInLegend: true, 
 					toolTipContent: "{label} <br/> {y} 건", 
 					indexLabel: "{y} 건", 
