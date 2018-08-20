@@ -31,16 +31,30 @@
  </c:if>
     
     <div id="allwrapper">
-	  <div class="container my">
-			<div class="profile">
-				<div class="profile-image">
-					<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;"><img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"></a>
-<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
-				</div>
-				<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
-			</div>
-			
-			</c:when>
+
+
+   <div class="container my">
+      <div class="profile">
+         <div class="profile-image">
+            <a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;"><img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"></a>
+            <!--                  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
+         </div>
+
+
+         <c:choose>
+            <c:when test="${result[0].id == sessionScope.loginId}">
+
+         <div class="profile-user-settings">
+            <h2 class="profile-user-name">${result[0].id}</h2>
+            <div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
+            <div class="profile-settings-btn">
+               <i class="far fa-times-circle" id="logout"></i>
+            </div>
+            <!--                <button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
+         </div>
+         
+         </c:when>
+
 		<c:otherwise>
 						
 				<div class="profile-user-settings">
