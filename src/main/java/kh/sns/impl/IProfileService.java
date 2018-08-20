@@ -37,4 +37,8 @@ public class IProfileService implements ProfileService {
 		System.out.println(targetValue + " : " + !targetValue);
 		return pdao.updateProfileCheckbox(profile, fieldName, !targetValue);
 	}
+	
+	public boolean isNotPublic(String id) throws Exception{
+		return pdao.isNotPublic(id);
+	}
 }

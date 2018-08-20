@@ -212,55 +212,6 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 	
-	@Override
-	public int insertFollowInfo(FollowInfo fi) throws Exception {
-		String sql = "insert into member_follow values(?, ?, sysdate)";
-		return template.update(sql, fi.getId(), fi.getTargetId());
-	}
-	
-	@Override
-	public int deleteFollowInfo(FollowInfo fi) throws Exception {
-		String sql = "delete from member_follow where id=? and target_id=?";
-		return template.update(sql, fi.getId(), fi.getTargetId());
-	}
-	
-	@Override
-	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
-		
-		String sql = "select * from board where id "
-				+ "in (select target_id from member_follow where id=?) "
-				+ "order by writedate desc";
-		
-		return template.query(sql, new Object[] {id}, (rs, rowNum) -> {
-			BoardDTO article = new BoardDTO();
-			article.setBoard_seq(rs.getInt(1));
-			article.setContents(rs.getString(2));
-			article.setId(rs.getString(3));
-			article.setWritedate(rs.getString(4));
-			article.setRead_count(rs.getString(5));
-			article.setIs_allow_comments(rs.getString(6));
-			return article;
-		});
-	}
-	
-	@Override	// id媛� �뙏濡쒗븳 �궗�엺�뱾�쓽 �닔
-	public int getFollowingCount(String id) throws Exception {
-		String sql = "select count(*) from member_follow where id=?";
-		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
-			return rs.getInt(1);
-		});
-		return temp.get(0);
-		
-	}
-	
-	@Override	// id瑜� �뙏濡쒗븯�뒗 �궗�엺�뱾�쓽 �닔
-	public int getFollowerCount(String id) throws Exception {
-		String sql = "select count(*) from member_follow where target_id=?";
-		List<Integer> temp = template.query(sql, new Object[] {id}, (rs, rowNum)->{			
-			return rs.getInt(1);
-		});
-		return temp.get(0);
-	}
 
 	@Override
 	public BoardDTO  oneBoard(String board_seq) throws Exception {

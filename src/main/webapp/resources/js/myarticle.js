@@ -169,6 +169,10 @@ $(document).ready(function() {
 			}
 		});
 	})
+	
+	("#follow").click(function() {
+		
+	})
 
 
 })

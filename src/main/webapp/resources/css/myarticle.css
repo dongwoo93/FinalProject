@@ -333,6 +333,13 @@
  		border : 3px solid white; 
 	}
 	
+	      
+ .block {     
+ 	border : 0.5px solid lightgray;   
+ 	text-align:center;  
+ 	  
+ }  
+	
     #comment {
       width: 85%;  
       height: 5%;
@@ -354,7 +361,6 @@
     max-height: 494px;
     object-fit: contain;
  	 
- 	}
- 
- 
+ 	}    
+ 	
  

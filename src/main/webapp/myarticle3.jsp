@@ -41,19 +41,30 @@
 			</div>
 			
 			</c:when>
-		<c:otherwise>
-						
+			<c:when test="${isFollow}">
+			
 				<div class="profile-user-settings">
 					<h2 class="profile-user-name">${result[0].id}</h2>
-					<div class="profile-edit-btn" id="toMy" style="height:40px;">팔로잉</div>
+					<div class="profile-edit-btn" id="cancelFollow" style="height:40px;">팔로잉</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
 			
 				</div>
 			
-						
-						
+			</c:when>
+		
+		<c:otherwise>
+			
+				<div class="profile-user-settings">
+					<h2 class="profile-user-name">${result[0].id}</h2>        
+					<div class="profile-edit-btn" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
+					<div class="profile-settings-btn">
+						<i class="fas fa-undo-alt"></i>
+					</div>
+			
+				</div>
+			
 		</c:otherwise>
 	</c:choose>
 
@@ -78,7 +89,23 @@
 		</div>
 	</div>
 
-
+  
+<c:choose> 
+	<c:when test="${(result[0].id != sessionScope.loginId) && isBlock || isNotPublic}">     
+			<div class="block container">
+			<br><br>  
+			<br><br>  
+			<h2>비공개 계정입니다</h2>
+			<br>   
+			<h4>사진 및 동영상을 보려면 팔로우하세요</h4>
+			<br><br>  
+			<br><br> 
+			</div>
+			
+			
+			</c:when>
+		
+<c:otherwise>
 
 	<div class="tagmenu">
 		<div class="row">
@@ -215,6 +242,8 @@
 		<!-- 			<div class="spinner"></div> -->
 
 	</div>
+</c:otherwise>
+</c:choose>
 
 
 </div>

@@ -32,11 +32,12 @@ import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
-import kh.sns.dto.Member_BlockDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
+import kh.sns.interfaces.Member_BlockService;
+import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -52,6 +53,13 @@ public class BoardController {
 	private Board_LikeService board_likeService;
 	@Autowired
 	private Board_BookmarkService board_bookmarkService;
+	@Autowired
+	private Member_BlockService member_blockService;
+	
+	@Autowired
+	private Member_FollowService member_followService;
+	@Autowired
+	private ProfileService profileservice;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -119,16 +127,21 @@ public class BoardController {
 	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
+		String sessionid= (String)session.getAttribute("loginId");
 		
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
+		
+		boolean isBlock = member_blockService.isBlock(sessionid,id);
+		boolean isFollow = member_followService.isFollow(sessionid,id);
+		boolean isNotPublic = profileservice.isNotPublic(id);
 		List<Board_MediaDTO> result2 = new ArrayList<>();
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 		}
 		String boardCount = boardService.boardCount(id);
-		int followerCount = boardService.getFollowerCount(id);
-		int followingCount = boardService.getFollowingCount(id);
+		int followerCount = member_followService.getFollowerCount(id);
+		int followingCount = member_followService.getFollowingCount(id);
 		List<int[]> likecnt = board_likeService.selectLikeCount();
 		Map<Integer, Integer> likecount = new HashMap<>();
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
@@ -147,7 +160,10 @@ public class BoardController {
 		mav.addObject("followerCount", followerCount);
 		mav.addObject("followingCount", followingCount);
 		mav.addObject("likecount", likecount); 
-		mav.addObject("commentcount", commentcount);  
+		mav.addObject("commentcount", commentcount); 
+		mav.addObject("isBlock", isBlock); 
+		mav.addObject("isFollow", isFollow);
+		mav.addObject("isNotPublic", isNotPublic);  
 		mav.setViewName("myarticle3.jsp");
 		return mav;
 	}
@@ -435,7 +451,7 @@ public class BoardController {
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
-		int result = boardService.deleteFollowInfo(fi);
+		int result = member_followService.deleteFollowInfo(fi);
 		if(result == 1) {
 			response.getWriter().print("팔로우 취소 완료");
 		}else {
