@@ -52,7 +52,6 @@ public class IMemberService implements MemberService{
 	}
 
 
-
 	@Override
 	public int signUp(MemberDTO dto) throws Exception {
 		// TODO Auto-generated method stub

@@ -30,6 +30,7 @@ public class MemberAspect {
    
    @Before("insertEncrypt()")
    public void insertEncrypt(JoinPoint jp) {
+	   
       MemberDTO dto = (MemberDTO)jp.getArgs()[0];
       String pw = EncryptUtils.getSha256(dto.getPw());
       dto.setPw(pw);
