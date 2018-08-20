@@ -32,7 +32,7 @@ public class MemberAspect {
    public void updatePwEncrypt() {}
    //마이페이지에서 비밀번호 변경
    
-   @Before("insertEncrypt()")
+   @Around("insertEncrypt()")
    public int insertEncrypt(ProceedingJoinPoint pjp) {
 	   
       MemberDTO dto = (MemberDTO)pjp.getArgs()[0];
