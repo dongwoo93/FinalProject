@@ -190,10 +190,10 @@ public class BoardController {
 		String id = (String)session.getAttribute("loginId");
 		ModelAndView mav = new ModelAndView();
 		System.out.println(search);
-		List<BoardDTO> result = boardService.search(search);
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();
-		List<Integer> result3 = board_likeService.searchLike(id);
-		List<int[]> result4 = board_likeService.selectLikeCount();
+		List<BoardDTO> result = boardService.search(search); 		// 검색어 띄우기
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 띄우기
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 누를때
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 좋아요 조회
 		Map<Integer,String> map = new HashMap<>();
 		Map<Integer,Integer> countlike = new HashMap<>();
 		
@@ -209,19 +209,32 @@ public class BoardController {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
 		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result);
-		mav.addObject("result2", result2);
-		mav.addObject("result3", map);
-		mav.addObject("result4",countlike);
+		mav.addObject("result", result);		// 검색어 띄우기
+		mav.addObject("result2", result2);		// 사진 띄우기
+		mav.addObject("result3", map);			// 좋아요 누를때
+		mav.addObject("result4",countlike);		// 좋아요 조회
 		mav.setViewName("search2.jsp");
 		return mav;
 	}
 	
+	//tour
+		@RequestMapping("/tour.bo")
+		public ModelAndView goTour() throws Exception {
+			ModelAndView mav = new ModelAndView();
+			List<BoardDTO> result = boardService.getAllBoard();		 // 전체 띄우기
+			List<List<Board_MediaDTO>> result2 = new ArrayList<>();	// 사진 띄우기
+			for(int i = 0;i < result.size(); i++) {
+				result2.add(boardService.search2(result.get(i).getBoard_seq()));
+			}
+			mav.addObject("result", result);	// 전체 띄우기
+			mav.addObject("result2", result2);	// 사진 띄우기
+			mav.setViewName("tour.jsp");
+			return mav;
+		}
+	
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(){
 		ModelAndView mav = new ModelAndView();
-		
-		
 		return mav;
 	}
 	

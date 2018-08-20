@@ -111,7 +111,8 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
 		return dao.getBoardFromFollowingList(id);
 	}
-
+	
+	//search
 	@Override
 	public List<BoardDTO> search(String keyword) throws Exception {
 		// TODO Auto-generated method stub
@@ -122,6 +123,17 @@ public class IBoardService implements BoardService {
 	public BoardDTO  oneBoard(String board_seq) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.oneBoard(board_seq);
+	}
+	
+	//tour
+	@Override
+	public List<BoardDTO> getAllBoard() throws Exception {
+		return dao.getAllBoard();
+	}
+
+	@Override
+	public List<Board_MediaDTO> getAllBoard2() throws Exception {
+		return dao.getAllBoard2();
 	}
 
 	

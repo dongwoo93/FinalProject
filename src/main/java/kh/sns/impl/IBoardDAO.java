@@ -284,5 +284,44 @@ public class IBoardDAO implements BoardDAO  {
 		
 		return result.get(0);
 		}
+	
+	//tour
+	@Override
+	public List<BoardDTO> getAllBoard() throws Exception {
+		String sql = "select * from board order by board_seq desc";
+		return template.query(sql, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		});
+		
+	}
+
+	@Override
+	public List<Board_MediaDTO> getAllBoard2() throws Exception {
+		String sql = "select * from board_media where boa";
+		return template.query(sql, new RowMapper<Board_MediaDTO>() {
+
+			@Override
+			public Board_MediaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_MediaDTO media = new Board_MediaDTO();
+				media.setMedia_seq(rs.getInt(1));
+				media.setBoard_seq(rs.getInt(2));
+				media.setMedia_type(rs.getString(3));
+				media.setOriginal_file_name(rs.getString(4));
+				media.setSystem_file_name(rs.getString(5));
+				return media;
+			}
+		});
+	}
 		
 }
