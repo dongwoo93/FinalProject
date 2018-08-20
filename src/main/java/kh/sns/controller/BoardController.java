@@ -27,7 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.Member_BlockDTO;
@@ -351,15 +353,16 @@ public class BoardController {
 	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF8");
 		response.setContentType("application/json");
-		try {
-			PrintWriter xout = response.getWriter();
+		PrintWriter xout = response.getWriter();
+		try {			
 			System.out.println(request.getParameter("seq"));
 			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
 
-			new Gson().toJson(b, xout);
-			
+			new Gson().toJson(b, xout);			
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			xout.print("해당 글은 삭제됨");
 		}
 		
 	}
@@ -395,11 +398,17 @@ public class BoardController {
 	
 
 	@RequestMapping("/oneBoard.do")
-	public ModelAndView oneBoard(String board_seq) {
+	public ModelAndView oneBoard(String board_seq , HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		BoardDTO a = null;
 		List<Board_CommentDTO> result = null;
 		List<List<Board_MediaDTO>> media = new ArrayList<>();
+		
+		Board_LikeDTO like = null;
+		Board_BookmarkDTO bookmark = null;
+		String id = (String) session.getAttribute("loginId");
+		
+		
 		try {
 		System.out.println(board_seq);
 		
@@ -409,6 +418,9 @@ public class BoardController {
 		
 		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
 		
+		like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
+		
+		bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
 		
 		}catch(Exception e) {
 			System.out.println("oneboard.do");
@@ -419,6 +431,8 @@ public class BoardController {
 		mav.addObject("b", a);
 		mav.addObject("result", result);
 		mav.addObject("result2", media);
+		mav.addObject("like", like);
+		mav.addObject("bookmark", bookmark);
 		return mav;
 		
 	}
