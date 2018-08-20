@@ -352,7 +352,7 @@ html,body {
 		    	/*파이 차트*/
 		    	$("#chartContainer").CanvasJSChart({ 
 				title: { 
-					text: "Worldwide Smartphone sales by brand - 2012",
+					text: "리포트 통계 I: 리포트 종류",
 					fontSize: 24
 				}, 
 				axisY: { 
@@ -369,7 +369,7 @@ html,body {
 					toolTipContent: "{label} <br/> {y} 건", 
 					indexLabel: "{y} 건", 
 					// label: 원 안에서 보이는 것
-					dataPoints: [ 
+					dataPoints: ${pieChartObject}/* [ 
 						{ label: "스팸",  y: 1, legendText: "1: 스팸"}, 
 						{ label: "음란물",  y: 0, legendText: "2: 나체, 음란물"},
 						{ label: "편파적 발언",    y: 1, legendText: "3: 편파적 발언"  }, 
@@ -378,19 +378,34 @@ html,body {
 						{ label: "따돌림",  y: 0, legendText: "6: 괴롭힙 및 따돌림"},
 						{ label: "재산권 침해",  y: 0, legendText: "7: 지적재산권 침해"},
 						{ label: "자해",   y: 0, legendText: "8: 자해" } 
-					] 
+					]  */
 				} 
 				] 
-			}); 
+			});     	
     	
-    	setInterval(function(){
-    		var chart = $("#chartContainer").CanvasJSChart(); 
-    		 
-    		chart.options.data[0].dataPoints[0].y += 1;
-    		 
-    		chart.render();
-        	
-    	}, 5000)
+    	
+		setInterval(function(){			
+			$.ajax({
+    			url : "chartRenew.ajax",
+    			type : "get",
+    			data : {
+    				
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				// console.log(response)
+    				var chart = $("#chartContainer").CanvasJSChart();     		 
+    	    		chart.options.data[0].dataPoints = response;    		 
+    	    		chart.render();
+    				
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+			})
+    	}, 1000)
     	
     	
 	    	

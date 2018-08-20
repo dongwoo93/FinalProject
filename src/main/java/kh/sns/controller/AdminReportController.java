@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import kh.sns.dto.AdminReportCode;
+import com.google.gson.Gson;
+
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
+import kh.sns.dto.JQueryPieChartVO;
 import kh.sns.interfaces.AdminReportsService;
 
 @Controller
@@ -33,13 +35,26 @@ public class AdminReportController {
 			return mav;
 		}
 		
-		AdminReportOutputSet aros = ars.getAllReports();						
+		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
+		list.forEach(System.out::println);
+		
+		AdminReportOutputSet aros = ars.getAllReports();
 		
 		mav.addObject("list", aros.getReportList());
 		mav.addObject("code", aros.getCodeList());
 		mav.addObject("result", aros.getResultList());
+		mav.addObject("pieChartObject", new Gson().toJson(list));
 		mav.setViewName("admin_report.jsp");
 		return mav;
+	}
+	
+	@RequestMapping("/chartRenew.ajax")
+	public void reportManagementMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
+		new Gson().toJson(list, response.getWriter());
+		
 	}
 	
 	@RequestMapping("/idunno.test")
@@ -52,8 +67,9 @@ public class AdminReportController {
 //			List<BoardDTO> list = boardService.getBoard("yukirinu");
 //			System.out.println(new Gson().toJson(list));
 						
-			List<AdminReportCode> list = ars.getReportCodeList();
-			System.out.println(list);
+			List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
+			list.forEach(System.out::println);
+			System.out.println(new Gson().toJson(list));
 
 		} catch (Exception e) {
 			e.printStackTrace();

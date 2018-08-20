@@ -5,6 +5,7 @@ import java.util.List;
 import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
+import kh.sns.dto.JQueryPieChartVO;
 
 public interface AdminReportsService {
 	
@@ -16,5 +17,6 @@ public interface AdminReportsService {
 	public AdminReportOutputSet getReportsByRange(int start, int end) throws Exception;
 	
 	public List<AdminReportCode> getReportCodeList() throws Exception;
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception;
 	
 }

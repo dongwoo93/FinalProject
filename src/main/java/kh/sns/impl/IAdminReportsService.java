@@ -9,6 +9,7 @@ import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
 import kh.sns.dto.AdminReportResultCode;
+import kh.sns.dto.JQueryPieChartVO;
 import kh.sns.interfaces.AdminReportsDAO;
 import kh.sns.interfaces.AdminReportsService;
 
@@ -56,6 +57,11 @@ public class IAdminReportsService implements AdminReportsService {
 	@Override
 	public List<AdminReportCode> getReportCodeList() throws Exception {
 		return ard.getReportCodeList();
+	}
+	
+	@Override
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception {
+		return ard.getAdminReportProcessedForPieChartVO();
 	}
 	
 

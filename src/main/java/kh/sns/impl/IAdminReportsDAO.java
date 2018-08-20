@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportResultCode;
+import kh.sns.dto.JQueryPieChartVO;
 import kh.sns.interfaces.AdminReportsDAO;
 import kh.sns.util.TextHandler;
 
@@ -105,6 +106,20 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 			arc.setReportCode(rs.getInt("report_code"));
 			arc.setReportCodeDescription(rs.getString("report_code_description"));
 			return arc;
+		});
+	}
+	
+	@Override
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception {
+		String sql = "select report_code, REPORT_CODE_DESCRIPTION as label, "
+				+ "(select count(*) from admin_reports where c.report_code = report_code) as y "
+				+ "from admin_report_code c";
+		return t.query(sql, (rs, rowNum) -> {
+			JQueryPieChartVO pcvo = new JQueryPieChartVO();
+			pcvo.setLabel(rs.getString("label"));
+			pcvo.setY(rs.getDouble("y"));
+			pcvo.setLegendText(rs.getString("report_code") + ". " + rs.getString("label"));			
+			return pcvo;
 		});
 	}
 	
