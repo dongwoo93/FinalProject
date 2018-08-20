@@ -14,7 +14,7 @@
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#profileimage')
+                $('#profileimg')
                     .attr('src', e.target.result);
             };
 
@@ -36,8 +36,8 @@
 	<div class="container my">
 		<div class="profile">
 			<div class="profile-image">
-				<img
-					src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+				<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;"><img
+					src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"></a>
 				<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 			</div>
 
