@@ -5,9 +5,41 @@
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 <script>
+
+// 	window.onload = function(){
+// 		if("WebSocket" in window){
+// 			var ws = new WebSocket("ws://192.168.120.102/websocket");
+			
+// 			document.getElementById("sendbt").onclick = function(){
+// 				var msg = document.getElementById("input").value;
+// 				document.getElementById("input").value = "";
+// 				ws.send(nickname + " : " + msg);
+// 			};
+			
+// 			ws.onopen = function(){
+
+// 			};
+			
+// 			ws.onmessage = function(msg){
+// 				document.getElementById("chat").innerHTML += msg.data;
+// 			};
+			
+// 			ws.onclose = function(){
+				
+// 			};
+			
+// 		}
+// 		else{
+// 			alert("브라우저가 웹소켓을 지원 하지 않습니다.")
+// 		}
+// 	}
 	
 	$(document).ready(function(){
 		$('.chatbox').hide();
+		
+		$("#allwrapper").click(function(){
+			closeDm();
+		});
 	});
   
     AOS.init();
@@ -609,7 +641,7 @@
   <div class="chatbox group-chat">
     <div class="chatbox-top">
       <div class="chatbox-avatar">
-        <a target="_blank" href="https://www.facebook.com/mfreak"><img src="루이.jpg" /></a>
+        <a target="_blank" href=""><img src="루이.jpg" /></a>
       </div>
       
       <div class="chat-group-name" id="dmnickname">
@@ -690,7 +722,6 @@
     
     <div class="chat-input-holder">
       <textarea class="chat-input"></textarea>
-      <input type="submit" value="Send" class="message-send" />
     </div>
     
     <div class="attachment-panel">

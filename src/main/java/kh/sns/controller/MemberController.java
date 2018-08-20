@@ -62,7 +62,8 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
-			
+			WebSocket ws = new WebSocket();
+			ws.setId(sessionId);
 		}else {
 			
 		}
@@ -76,6 +77,7 @@ public class MemberController {
 	@RequestMapping("/logout.do")
 	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		WebSocket.onlineUser.remove((String)session.getAttribute("loginId"));
 		session.invalidate();
 		mav.setViewName("redirect:main.jsp");
 		return mav;
