@@ -349,8 +349,6 @@ html,body {
     				var outputTitle = seq[0] + " | " + seq[2] + " | " + response[1].id + " | " + response[1].writedate;
     				
     				var outputText = response[1].comment_contents;
-    				outputText += "<a>ee</a>"
-    				outputText += "링크 안먹힘.."
     				
     				$(elem).attr('data-original-title', outputTitle)
     				$(elem).attr('data-content', outputText)
@@ -422,42 +420,8 @@ html,body {
     				// console.log("AJAX 종료");
     			}
 			})
-    	}, 10000)
+    	}, 30000)
     	
-    	
-	    	
-
-
-    	function toggleCheckAjax(){		
-    		var fieldName = $(this).attr('name');
-    		// alert('chkAllowEmail')
-    		
-    		$.ajax({
-    			url : "toggleProfileCheckbox.ajax",
-    			type : "get",
-    			data : {
-    				fieldName : fieldName
-    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-    			success : function(response) {
-    				// console.log("AJAX Request 성공: ");
-    				console.log(response)
-    				if(parseInt(response) >= 1){
-    					console.log(response + " 받았습니다.")
-    					// 아무것도 안한다.
-    				} else {
-    					alert('실패');
-    					// 체크박스 액션 취소하기 코드를 넣는다./
-    				}
-    				
-    			},
-    			error : function() {
-    				console.log("에러 발생");
-    			},
-    			complete : function() {
-    				// console.log("AJAX 종료");
-    			}
-    		}) 
-    	}
     	
     })
     </script>
@@ -716,7 +680,9 @@ html,body {
 							      <td>${ i.reportersComment }</td>
 							      <td>${ i.adminFirstReadDate }</td>
 							      <td>${ i.adminAcceptedDate }</td>
-							      <td><c:if test="${i.resultCode ne '0'}">${ i.resultCode }: </c:if>${ result[k.index].resultDescription }</td>
+							      <td>
+							      	<c:if test="${i.resultCode ne '0'}">${ i.resultCode }: </c:if>${ result[k.index].resultDescription }
+							      </td>
 							      <td>${ i.adminComment }</td>
 							      <td>
 						      		<c:choose>
