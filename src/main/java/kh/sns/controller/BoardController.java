@@ -456,7 +456,7 @@ public class BoardController {
 	@RequestMapping("/follow.do")
 	public void insertFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
-		int result = boardService.insertFollowInfo(fi);
+		int result = member_followService.insertFollowInfo(fi);
 		if(result == 1) {
 			response.getWriter().print("팔로우 완료");
 		}else {

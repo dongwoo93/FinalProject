@@ -1,8 +1,5 @@
 package kh.sns.aspect;
 
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -36,9 +33,9 @@ public class MemberAspect {
    //마이페이지에서 비밀번호 변경
    
    @Before("insertEncrypt()")
-   public void insertEncrypt(JoinPoint jp) {
+   public int insertEncrypt(ProceedingJoinPoint pjp) {
 	   
-      MemberDTO dto = (MemberDTO)jp.getArgs()[0];
+      MemberDTO dto = (MemberDTO)pjp.getArgs()[0];
       String pw = EncryptUtils.getSha256(dto.getPw());
       dto.setPw(pw);
       int result = 0;
