@@ -49,6 +49,35 @@ function delComment(e){
 	
 }
 
+function markit(e){
+	$.ajax({
+		
+		type: "post",
+		data: { board_seq:${b.board_seq} , is_marked : "y" },
+		url : "bookmark.bo",
+		success: function(resp){
+			$("#markcancel").show();
+			$("#mark").hide();
+		}
+		
+	});
+}
+
+function unmarkit(e){
+	$.ajax({
+		
+		type: "post",
+		data: { board_seq:${b.board_seq} , is_marked : "n" },
+		url : "bookmark.bo",
+		success: function(resp){
+			$("#markcancel").hide();
+			$("#mark").show();
+		}
+		
+	});
+}
+  
+
 function likeit(e){
 	$.ajax({
 		
@@ -213,7 +242,7 @@ $("#comment").keypress(function(event){
                            <a class="navbar0-brand"> 
                            <c:choose>
                            <c:when test="${not empty like}">
-                           <i 
+                         			  <i 
                                        style="cursor: pointer; display: none; " id="likeit"
                                        class="far fa-heart icon mr-1"  onclick="likeit(this)"></i>
                                     <i 
@@ -222,7 +251,7 @@ $("#comment").keypress(function(event){
                                        onclick="unlikeit(this)"></i>
                            </c:when>
                            <c:otherwise>
-                           <i 
+                           			<i 
                                        style="cursor: pointer; " id="likeit"
                                        class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
                                     <i 
@@ -234,17 +263,33 @@ $("#comment").keypress(function(event){
                                     
                                  <i class="far fa-comment icon"></i>
                            </a>
-                           
-                           <a class="btn navbar-btn ml-2 text-white "> 
+                           <c:choose>
+                             <c:when test="${not empty bookmark}">
+                           <a class="btn navbar-btn ml-2 text-white ">                                                    
+                                    <i  id="mark"
+                                       class="far fa-bookmark icon"
+                                       style="cursor: pointer; display: none;"
+                                       onclick="markit(this)"></i>
+                                    <i 
+                                       style="cursor: pointer;  font-weight: bold; color: #00B8D4;"
+                                       id="markcancel"  class="far fa-bookmark icon"
+                                       onclick="unmarkit(this)"></i>                                      
+                           </a>            
+                             </c:when>
+                              <c:otherwise>
+                           			 <a class="btn navbar-btn ml-2 text-white "> 
+                           			 
                                     <i  id="mark"
                                        class="far fa-bookmark icon"
                                        style="cursor: pointer; "
                                        onclick="markit(this)"></i>
                                     <i 
-                                       style="cursor: pointer; display: none; font-weight: bold; color: #00B8D4;"
+                                       style="cursor: pointer; display: none;  font-weight: bold; color: #00B8D4;"
                                        id="markcancel"  class="far fa-bookmark icon"
-                                       onclick="unmarkit(this)"></i>
+                                       onclick="unmarkit(this)"></i>                       
                            </a>
+                            </c:otherwise>
+                           </c:choose>
                         </div>
                      </nav>
 				
