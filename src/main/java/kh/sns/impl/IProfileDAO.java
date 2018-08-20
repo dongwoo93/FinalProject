@@ -1,9 +1,12 @@
 package kh.sns.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.ProfileDTO;
@@ -48,5 +51,22 @@ public class IProfileDAO implements ProfileDAO {
 	public int updateProfileCheckbox(ProfileDTO profile, String fieldName, boolean isYes) throws Exception {
 		String sql = "update profile set " + fieldName + " = ?";
 		return template.update(sql, isYes ? "y" : "n");
+	}
+	
+	public boolean isNotPublic(String id) throws Exception {
+		String sql = "select is_allow_public from profile where id=?";
+		boolean result =false;
+		String is_allow_public = template.query(sql, new String[] {id}, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString("is_allow_public");
+			}
+		}).get(0);
+		
+		if(is_allow_public.equals("n")) {    
+			result = true;
+		}
+		return result;
 	}
 }

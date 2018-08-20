@@ -10,6 +10,8 @@ public interface ProfileDAO {
 	
 	public int updateProfileCheckbox(ProfileDTO profile, String fieldName, boolean isYes) throws Exception;
 	
+	public boolean isNotPublic(String id) throws Exception;
+	
 	
 
 }
