@@ -5,7 +5,31 @@
 <link rel="stylesheet" type="text/css"
 	href="resources/css/myarticle.css">
 <script src="resources/js/myarticle.js"></script>
+<script>
 
+$(document).ready(function(){
+	$("#follow").click(function({
+	/* $.ajax({
+		type:"post",
+		data: {},
+		url :"",
+		success :
+			
+			 
+	}); */
+	
+	$("#follow").css("background-color","none"); 
+	$('#follow').attr('id','cancelFollow');
+		var id = $("#follow").val();
+	console.log(id)
+		
+				
+		 
+
+	});
+	
+})
+</script>
 <c:if test="${result.size() > 0}">
 	<script> var list= []; </script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
@@ -58,7 +82,7 @@
 			
 				<div class="profile-user-settings">
 					<h2 class="profile-user-name">${result[0].id}</h2>        
-					<div class="profile-edit-btn" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
+					<div class="profile-edit-btn" id="follow" value = "${sessionScope.loginId}" style="height:40px; background-color:#35e0db;">팔로우</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
