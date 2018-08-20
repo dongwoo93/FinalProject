@@ -169,6 +169,5 @@ $(document).ready(function() {
 			}
 		});
 	})
-
-
+	
 })

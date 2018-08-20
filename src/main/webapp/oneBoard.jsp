@@ -230,10 +230,39 @@ $("#comment").keypress(function(event){
                   
 		
 		<div class="mt-2" id="boardimg">
-		
-		
-		
-		</div>
+							<div id="myCarousel0" class="carousel slide" data-ride="carousel"
+								data-interval="false" style="height: 600px;">
+								<ul id="carousel-indicators" class="carousel-indicators">
+									<li id="firstli" data-target="#myCarousel0" data-slide-to="0"
+										class="active"></li>
+									<c:forEach begin="1" var="media"
+										items="${result2[0]}" varStatus="status2">
+										<li data-target="#myCarousel0" data-slide-to="${status2.index}"></li>
+									</c:forEach>
+								</ul>
+								<div id="carousel-inner" class="carousel-inner" style="height: 600px;">
+									<div id="firstItem" class="carousel-item active">
+										<img class='boardimg' width='100%' src='AttachedMedia/${result2[0][0].system_file_name}' alt=''>
+									</div> 
+									<c:forEach begin="1" var="media"
+										items="${result2[0]}">
+										<div class="carousel-item">
+											<img class='boardimg' width='100%'
+												src="AttachedMedia/${media.system_file_name}" alt="">
+										</div>
+									</c:forEach>
+
+								</div>
+
+								<a id="carousel-prev0" class="carousel-control-prev" href="#myCarousel0"
+									data-slide="prev"> <span class="carousel-control-prev-icon"></span>
+								</a> <a id="carousel-next0" class="carousel-control-next"
+									href="#myCarousel0" data-slide="next"> <span
+									class="carousel-control-next-icon"></span>
+								</a>
+							</div>
+
+						</div>
 		
 		<div id="cont">
 		
