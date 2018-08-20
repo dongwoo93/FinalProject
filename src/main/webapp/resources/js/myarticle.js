@@ -71,6 +71,32 @@ $(document).ready(function() {
 					$("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");
 
 				}
+				   
+                $(".commentline").remove();     
+                for(var i =0; i<data[2].length; i++){         
+              	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>");
+                }
+                
+
+                
+                $("#likeit").attr("style", "display:none;");
+                $("#likecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
+                if(data[3] != null) { 
+              	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
+                }else {
+              	  $("#likeit").attr("style", false);
+                }
+                
+                
+                $("#mark").attr("style", "display:none;");
+                $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4; display:none; "); 
+                if(data[4] != null) { 
+              	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
+                }else {
+              	  $("#mark").attr("style", false);
+                }
+                   
+                 
 
 
 			}
@@ -132,6 +158,30 @@ $(document).ready(function() {
 					$("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");
 
 				}
+				   
+                $(".commentline").remove();     
+                for(var i =0; i<data[2].length; i++){         
+              	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>");
+                }
+                   
+                $("#likeit").attr("style", "display:none;");
+                $("#likecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
+                if(data[3] != null) { 
+              	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
+                }else {
+              	  $("#likeit").attr("style", false);
+                }
+                
+                
+                $("#mark").attr("style", "display:none;");
+                $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4; display:none; "); 
+                if(data[4] != null) { 
+              	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
+                }else {
+              	  $("#mark").attr("style", false);
+                }
+                   
+                 
 
 			}
 		});
@@ -170,4 +220,33 @@ $(document).ready(function() {
 		});
 	})
 	
+
 })
+
+	function commentover(e) {    
+    	
+	var comment_seq = $(e).attr("value");           
+	var sessionid = $("#sessionid").val();
+	var commentid = $(e).children().children().html();    
+	     
+	
+		$(e).attr("style","background-color:#E1F5FE");
+		$("#commenttxt"+comment_seq).attr("style","word-wrap: break-word; background-color:#E1F5FE"); 
+		 
+		if(sessionid == commentid) {      
+		//삭제수정
+		}  
+	
+    }
+
+function commentleave(e) {   
+	var comment_seq = $(e).attr("value"); 
+	 
+	$("#ul"+comment_seq).attr("style",false);            
+	$("#commenttxt"+comment_seq).attr("style","word-wrap: break-word;"); 
+	  
+
+}
+	
+ 
+	 

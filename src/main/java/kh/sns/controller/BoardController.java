@@ -47,8 +47,7 @@ public class BoardController {
 	private BoardService boardService;
 	@Autowired
 	private Board_CommentService board_commentService;
-	@Autowired
-	private ProfileService profileService;
+
 	@Autowired
 	private Board_LikeService board_likeService;
 	@Autowired
@@ -169,14 +168,23 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/boardView.bo")
-	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+	public void getBoardModal(HttpSession session, HttpServletResponse response, String seq) throws Exception{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
+		String id = (String)session.getAttribute("loginId");  
 		BoardDTO result = boardService.getBoardModal(seq);
-		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));
+		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
+		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
+	
 		List<Object> result3 = new ArrayList<>();
+		Board_LikeDTO like = board_likeService.isLiked(id,Integer.parseInt(seq));
+		Board_BookmarkDTO bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(seq));
 		result3.add(result);
 		result3.add(result2);
+		result3.add(commentlist); 
+		
+		result3.add(like);
+		result3.add(bookmark);
 		new Gson().toJson(result3,response.getWriter());
 
 	}

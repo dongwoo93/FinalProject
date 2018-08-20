@@ -6,7 +6,11 @@
    href="resources/css/myarticle.css">
 <script src="resources/js/myarticle.js"></script>
 
+
+  
+
 <c:if test="${result.size() > 0}">
+<input type=hidden id='sessionid' value="${sessionScope.loginId}">  
    <script> var list= []; </script>
    <c:forEach var="tmp" items="${result}" varStatus="status">
       <script>    
@@ -29,9 +33,11 @@
 
 
 			<c:choose>
-				<c:when test="${result[0].id == sessionScope.loginId}">
-
-			<div class="profile-user-settings">
+				<c:when test="${result[0].id == sessionScope.loginId}">   
+				 
+ 					 
+			<div class="profile-user-settings">  
+			
 				<h2 class="profile-user-name">${result[0].id}</h2>
 				<div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
 				<div class="profile-settings-btn">
@@ -71,6 +77,7 @@
                   
 
          <div class="profile-stats">
+         
             <ul>
                <li><span class="profile-stat-count">${boardCount}</span> 게시글</li>
                <li><span class="profile-stat-count">${followerCount}</span>
@@ -133,7 +140,7 @@
 
 
             <c:forEach var="tmp" items="${result}" varStatus="status">
-
+				
 
                <div class="gallery-item" id="${tmp.board_seq}">
                   <%--             <img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">    --%>
@@ -157,6 +164,7 @@
                
   
                        $("#${tmp.board_seq}").click(function() {
+                    	 
                           var seq = "${tmp.board_seq}";
                           $("#prev").val(${result[status.index-1].board_seq}); 
                           $("#next").val(${result[status.index+1].board_seq}); 
@@ -188,6 +196,7 @@
                               data: {seq:seq},
                               success: function(data)
                               {
+                            	
                                  if(data[1].length == 1) {
                                  $("#carousel-prev").hide();
                               $("#carousel-next").hide();
@@ -204,17 +213,36 @@
                                   $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
                                   for(var i = 1; i < data[1].length; i++) {
                                      $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
-                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");
-                                     
+                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
+                                       
                                   }
                                   
+                                  $(".commentline").remove();     
+                                  for(var i =0; i<data[2].length; i++){         
+                                	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>");
+                                  }  
+                                 
+                                  if(data[3] != null) { 
+                                	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
+                                  }else {
+                                	  $("#likeit").attr("style", false);
+                                  }
+                                  
+                                  if(data[4] != null) { 
+                                	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
+                                  }else {
+                                	  $("#mark").attr("style", false);
+                                  }
+                                    
+                                    
                                  }
                             });
                           
                              $("#boardmodal").modal();                      
                        });
 
-                        
+                     
+                       
 //                        $("#modify${tmp.board_seq}").click(function() {
 //                           $("#seq").val(${tmp.board_seq});  
 //                              $("#boardmodal").modal();                             
@@ -304,7 +332,8 @@
          </div>
       </div>   
       <br>
-      
+        
+  
       <div class="modal-content" style="flex-direction: row;width:1000px;height:auto;">
          
          <div class="modal-content" style="width:70%;height:auto;">
@@ -347,9 +376,13 @@
                
                
 
-               <br> <br> <input id="seq" type=hidden name=board_seq>
+               <br> <br> <input id="seq" type=hidden name=board_seq>  
                <div id="articlecontents" class="mt-2 mx-3 pb-2">
                   <div class="bg-black" id="modalcontents"></div>
+               </div>   
+                
+               <div id="articlecomment"  class="mt-2 mx-3">  
+               
                </div>
 
             </div>
@@ -357,12 +390,30 @@
 
 
             <div class="bg-white" id="a">
-               <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="navbar-brand "
-                  href="#"> <i class="far fa-heart icon"></i>
+               <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="navbar-brand "  
+                  href="#">  
+                  
+                  		
+												<i value="${tmp.board_seq}" id="likeit" style="display: none;" class="far fa-heart icon mr-1 pointer" onclick="likeit(this)"></i>
+												<i value="${tmp.board_seq}"  
+													style="font-weight: bold; color: red; display: none;"  id="likecancel"
+													class="far fa-heart icon mr-1 pointer"
+													onclick="unlikeit(this)"></i>
+					  						
+                  
                </a> <a class="navbar-brand " href="#"> <i
                   class="far fa-comment icon"></i>
-               </a> <a class="navbar-brand " href="#"> <i
-                  class="far fa-bookmark icon"></i>
+               </a> <a class="navbar-brand " href="#"> 
+                  
+                  	<i value="${tmp.board_seq}" id="mark"
+													class="far fa-bookmark icon pointer" style="display: none;"
+													onclick="markit(this)"></i>
+												<i value="${tmp.board_seq}"
+													style="font-weight: bold; color: #00B8D4; display: none;" id="markcancel"
+													class="far fa-bookmark icon pointer"
+													onclick="unmarkit(this)"></i>
+                  
+                  
                </a>
             </div>
 
@@ -370,10 +421,9 @@
             
 
 
-            <div class="py-2 bg-white text-right">
+            <div class="py-2 bg-white text-right">    
 
-               <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2"
-                  id="comment">
+               <input type="text" placeholder="댓글 달기..." class="creco" id="comment">  
 
                <script>
                 $('#comment').keypress(function(event){
@@ -386,7 +436,7 @@
                        var text = $("#comment${tmp.board_seq}").val();
                        if(text == ""){
                           alert("댓글을 입력해주세요");
-                       }
+                       }  
                        else {
                            
                           $.ajax({
@@ -395,7 +445,8 @@
                                data: {board_seq:seq, comment_contents : comment_contents},
                                success : function(seq) {
                   
-                                $("#comment").val("");            
+                                $("#comment").val("");   
+                                $("#articlecomment:last-child").append("<ul class='commentline navbar-nav'><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div class='commenttxt txt' style='word-wrap:break-word'>"+comment_contents+"</div></li><li id='li3'><a id='commentdel' class='pointer'></a></li><li id='li4'><a id='commentmod'class='pointer></a></li></ul>");           
                               
                        }
                     })
