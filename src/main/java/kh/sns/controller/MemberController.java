@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +26,7 @@ import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
+import kh.sns.util.EncryptUtils;
 
 @Controller
 public class MemberController {
@@ -244,17 +243,16 @@ public class MemberController {
 	
 	
 	@RequestMapping("/findPw.do")
-	public ModelAndView findPw(String cId, String cEmail, HttpServletResponse response) throws Exception {
+	public ModelAndView findPw(MemberDTO dto, HttpServletResponse response) throws Exception {
 		
 		
-		System.out.println(cId);
-		System.out.println(cEmail);
-		int result =this.memberService.findPw(cId,cEmail);
+		 String certification = Integer.toString((int)(Math.random() * 9000 + 1000));
+		 dto.setPw(certification);
+		int result =this.memberService.findPw(dto);
 		System.out.println(result);
 		if(result==1) {
 			
-			String certification = memberService.changePass(cId);
-			SendEmail send = new SendEmail(cEmail,certification);
+			SendEmail send = new SendEmail(dto.getEmail(),dto.getPw());
 			send.sendEmail();
 		}
 		ModelAndView mav = new ModelAndView();
@@ -336,6 +334,9 @@ public class MemberController {
 		
 		String id = request.getSession().getAttribute("loginId").toString();
 		String beforePassword = request.getParameter("beforePassword");
+		
+		EncryptUtils encrypt = new EncryptUtils(); 
+		beforePassword = encrypt.getSha256(beforePassword);
 		
 		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
 		if(isBeforePasswordCorrect) {

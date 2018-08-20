@@ -83,7 +83,6 @@
 	display: inline-block
 }
 
-    }
     
     #myComment{
     	font-family: "Open Sans", Arial, sans-serif;
@@ -175,9 +174,9 @@ padding-right:3%;
    
 }  
   
-.creco {  
+.creco {   
 	border:none;   
-	width:80%;    
+	width:83%;    
 	  
 }
  
@@ -185,11 +184,11 @@ padding-right:3%;
 	border:0.5px solid lightgray;  
 	}
 	
-.commentline {  
+.commentline {   
 	padding-left: 0px;   
 	margin-left: 1%;   
 	margin-bottom:0px;
-}
+} 
 
 .carousel-indicators li {
   width: 10px;
@@ -208,10 +207,43 @@ padding-right:3%;
 }
 
 .modal-content {
-	width:70%;  
+	width:70%;   
+	border-radius: 1.5rem;
 }
 
 .dropdown-item:hover{
 	background-color:#E1F5FE;  
+}
+
+.pointer {
 	
+	cursor:pointer;  
+}
+
+
+.mo1:hover {
+	background-color:transparent;
+}
+
+.mo, .mo1 {
+	cursor: pointer;
+}
+
+.mo:hover {
+	background-color:#efefef;
+}
+.p_text {
+	color: #999;
+}
+.modal-header {
+    display: block;
+}
+.modal-title {
+    text-align: center;
+}
+.headbtn {
+    position: absolute;
+}
+.footertbtn {
+	width: 100%;
 }
