@@ -45,4 +45,16 @@ public class IBoard_LikeService implements Board_LikeService {
 		// TODO Auto-generated method stub
 		return board_likedao.selectLikeCount();
 	}
+
+	@Override
+	public int insertLiko(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return board_likedao.insertLiko(dto);
+	}
+
+	@Override
+	public Board_LikeDTO isLiked(String id, int board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return board_likedao.isLiked(id, board_seq);
+	}
 }
