@@ -1,5 +1,8 @@
 package kh.sns.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -8,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.gson.Gson;
+
+import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.interfaces.Board_CommentService;
 
@@ -52,13 +58,13 @@ public class Board_CommentController {
    }
    
    @RequestMapping("/commentdel.co")
-   public void delComment(String board_seq, String comment_seq ,HttpServletResponse response)  {
+   public void delComment(int board_seq,int comment_seq ,HttpServletResponse response)  {
       System.out.println(comment_seq);  
       int result = 0; 
       int count = 0;
       try {
-         result = this.boardcommentservice.delComment(Integer.parseInt(comment_seq));
-         count = this.boardcommentservice.commentCount(Integer.parseInt(board_seq));  
+         result = this.boardcommentservice.delComment(comment_seq);
+         count = this.boardcommentservice.commentCount(board_seq);  
          System.out.println(result);   
          if(result > 0 ) {
             System.out.println("del success");   
@@ -100,4 +106,29 @@ public class Board_CommentController {
    }
    
    
+   @RequestMapping("/insertComment.co")
+   public void insertComment(HttpServletResponse response, Board_CommentDTO dto, HttpSession session)  {
+	
+	   	int result = 0;
+	   	String id = (String)session.getAttribute("loginId");
+	   	dto.setId(id);
+	   	int comment_seq = 0;
+	   	
+	   	try {
+	   		comment_seq = boardcommentservice.getCommentSeq();
+	   		dto.setComment_seq(comment_seq);	
+			result = boardcommentservice.insertComment(dto);
+			
+			 response.getWriter().print(comment_seq);
+		 		response.getWriter().flush();
+		 		response.getWriter().close();
+		           
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   	
+	   
+	   
+   }
 }

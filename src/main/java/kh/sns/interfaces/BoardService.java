@@ -11,7 +11,7 @@ import kh.sns.dto.FollowInfo;
 	
 public interface BoardService {
 	
-	public List<BoardDTO> getFeed(String id) throws Exception ;
+	public List<BoardDTO> getFeed(String id) throws Exception;
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
@@ -35,6 +35,9 @@ public interface BoardService {
 	
 	//board_comment
 	
+	
+	//oneBoard
+	public BoardDTO oneBoard(String board_seq) throws Exception;
 	
 
 }
