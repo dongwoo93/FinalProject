@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import com.google.gson.Gson;
 
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
+import kh.sns.dto.AdminReportResultCode;
 import kh.sns.dto.JQueryPieChartVO;
 import kh.sns.interfaces.AdminReportsService;
 
@@ -35,15 +37,22 @@ public class AdminReportController {
 			return mav;
 		}
 		
-		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
-		list.forEach(System.out::println);
+		List<JQueryPieChartVO> pieList = ars.getAdminReportProcessedForPieChartVO();
+		pieList.forEach(System.out::println);
+		
+		List<AdminReportResultCode> resultList = ars.getResultCodeList();
+		resultList.forEach(System.out::println);
+		
+		List<Integer> acceptedCounts = ars.getAllAcceptedCounts();
 		
 		AdminReportOutputSet aros = ars.getAllReports();
 		
 		mav.addObject("list", aros.getReportList());
 		mav.addObject("code", aros.getCodeList());
 		mav.addObject("result", aros.getResultList());
-		mav.addObject("pieChartObject", new Gson().toJson(list));
+		mav.addObject("pieChartObject", new Gson().toJson(pieList));
+		mav.addObject("resultList", resultList);
+		mav.addObject("acceptedCounts", acceptedCounts);
 		mav.setViewName("admin_report.jsp");
 		return mav;
 	}
@@ -57,6 +66,27 @@ public class AdminReportController {
 		
 	}
 	
+	@RequestMapping("/manageAnReport.ajax")
+	public void manageAnReportAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		
+		int reportSeq = Integer.parseInt(request.getParameter("reportSeq"));
+		int resultCode = Integer.parseInt(request.getParameter("resultCode"));
+		String managerComment = request.getParameter("managerComment");
+		
+		AdminReportDTO report = ars.getOneReport(reportSeq);
+		report.setResultCode(resultCode);
+		report.setAdminComment(managerComment);
+		
+		System.out.println(reportSeq + "(" + resultCode + "): "  + managerComment);
+		System.out.println(report);		
+		
+		PrintWriter xout = response.getWriter();
+		xout.print(ars.manageAnReport(report));
+		
+	}
+	
 	@RequestMapping("/idunno.test")
 	public ModelAndView writeProcBoard(HttpServletRequest request) {		
 		
@@ -67,9 +97,15 @@ public class AdminReportController {
 //			List<BoardDTO> list = boardService.getBoard("yukirinu");
 //			System.out.println(new Gson().toJson(list));
 						
-			List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
+/*			List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
+			System.out.println(new Gson().toJson(list));*/
+			
+/*			List<AdminReportResultCode> list = ars.getResultCodeList();
+			*/
+			
+			List<Integer> list = ars.getAllAcceptedCounts();
+			
 			list.forEach(System.out::println);
-			System.out.println(new Gson().toJson(list));
 
 		} catch (Exception e) {
 			e.printStackTrace();

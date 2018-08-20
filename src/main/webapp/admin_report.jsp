@@ -269,19 +269,36 @@ html,body {
     	$('#editPersonalLogPane').click(function(){
     		alert('editPersonalLogPane')
     		$('#privacyTab').html(newPrivacyTab2);
+    	});    			
+    	
+
+    	// 작업 처리
+    	$("a[id*='dealReport_']").click(function(){
+    		var managerComment = prompt($(this).attr('title') + " | " + "처리 코멘트 입력(없을 경우 확인 버튼 클릭) ");
+    		var reportSeq = $(this).attr('id').replace("dealReport_", "");
+    		var resultCode = $(this).attr('title').split(":")[0]
+    		console.log( reportSeq + managerComment + resultCode );
+    		
+    		$.ajax({
+    			url : "manageAnReport.ajax",
+    			type : "post",
+    			data : {
+    				reportSeq : reportSeq,
+    				managerComment : managerComment,
+    				resultCode : resultCode
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				console.log(response)
+    				location.reload();
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+    		}) // $AJAX 끝
     	});
-    			
-    	
-    /* 	// 원래 코드
-    	$("a[id *= 'resetOriginalPrivacyTab']").click(function() {
-    		console.log(originalPrivacyTab);
-    		$('#privacyTab').html(originalPrivacyTab);
-    	}) */
-    	
-    	// 체크박스
-    	$("input[id*='chkAllow']").change(toggleCheckAjax);
-    	/* $('#chkAllowEmail').change(toggleCheckAjax);
-    	$('#chkAllowSms').change(toggleCheckAjax); */
     	
     	$('[data-toggle="popover"]').popover({container: "body"});
     	
@@ -682,15 +699,15 @@ html,body {
 							  <tbody>
 							  
 							  <c:forEach var="i" items="${ list }" varStatus="k">
-							  	<tr>
+							  	<tr ${ acceptedCounts[k.index] eq '0' ? '' : 'class=table-light'}>
 							      <th scope="row">${ i.reportSeq }</th>
 							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
-							      <td><a href="#;return false;" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.boardSeq }</a></td>
+							      <td><a href="#;return false;" id='popBoard${ i.reportSeq }_${ i.boardSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="해당 글은 삭제됨" data-original-title="글 삭제됨" aria-describedby="popover371932">${ i.boardSeq }</a></td>
 							      <td>
 							      	<c:choose>
 							      		<c:when test="${ i.commentSeq eq 0 }">-</c:when>
 							      		<c:otherwise>
-							      			<a href="#;return false;"  id='popComment${ i.reportSeq }_${ i.boardSeq }_${ i.commentSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="내용 표시" data-original-title="타이틀 표시" aria-describedby="popover371932">${ i.commentSeq }</a>
+							      			<a href="#;return false;"  id='popComment${ i.reportSeq }_${ i.boardSeq }_${ i.commentSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="코멘트 삭제됨" data-original-title="코멘트 삭제됨" aria-describedby="popover371932">${ i.commentSeq }</a>
 							      		</c:otherwise>
 							      	</c:choose>
 							      		
@@ -699,9 +716,21 @@ html,body {
 							      <td>${ i.reportersComment }</td>
 							      <td>${ i.adminFirstReadDate }</td>
 							      <td>${ i.adminAcceptedDate }</td>
-							      <td><c:if test="${i.resultCode ne '0'}">${ i.reportCode }: </c:if>${ result[k.index].resultDescription }</td>
+							      <td><c:if test="${i.resultCode ne '0'}">${ i.resultCode }: </c:if>${ result[k.index].resultDescription }</td>
 							      <td>${ i.adminComment }</td>
-							      <td><a href="#;return false;">처리</a></td>
+							      <td>
+						      		<c:choose>
+						      			<c:when test="${ acceptedCounts[k.index] eq '0' }">
+						      				<c:forEach var="j" items="${ resultList }" varStatus="l">
+							      				<a href='#;return false;' id="dealReport_${ i.reportSeq }" title="${ j.resultCode }: ${ j.resultDescription }">${ j.resultCode }</a><br>
+							      			</c:forEach>
+						      			</c:when>
+						      			<c:otherwise>
+						      				처리됨
+						      			</c:otherwise>
+						      		</c:choose>
+							      	
+								  </td>
 							    </tr>
 							  </c:forEach>
 					
