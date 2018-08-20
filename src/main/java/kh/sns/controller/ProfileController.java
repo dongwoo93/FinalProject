@@ -17,8 +17,6 @@ import kh.sns.interfaces.ProfileService;
 public class ProfileController {
 	
 	@Autowired
-	private BoardService boardService;
-	@Autowired
 	private ProfileService profileService;
 	
 	@RequestMapping("/toggleProfileCheckbox.ajax")
@@ -33,6 +31,8 @@ public class ProfileController {
 					, fieldName);
 			System.out.println("@@result: " + result);
 			xout.print(result);
+			xout.flush();
+			xout.close();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
