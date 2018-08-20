@@ -147,6 +147,11 @@
     	'               <input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal0(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -175,6 +180,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -191,10 +201,6 @@
     	'                  <button type="button" class="btn btn-primary" style="width: 100%" onclick="blockMember(&#34;'+currentId+'&#34;,&#34;'+board_id+'&#34;)">차단</button>'+
     	'                  '+
     	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
-    	'               </div>'+
     	'            </div>'+
     	'         '+
     	'   </div>';
@@ -209,6 +215,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -228,10 +239,6 @@
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;2&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
-    	'               </div>'+
     	'            </div>'+
     	'         '+
     	'   </div>';
@@ -245,6 +252,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -264,10 +276,6 @@
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;3&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
-    	'               </div>'+
     	'            </div>'+
     	'         '+
     	'   </div>';
@@ -282,6 +290,11 @@
     	'  			<input type=hidden id=modalseq>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -312,6 +325,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -331,10 +349,6 @@
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;4&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
-    	'               </div>'+
     	'            </div>'+
     	'         '+
     	'   </div>';
@@ -348,6 +362,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header mbody">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -366,10 +385,6 @@
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;5&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
-    	'               </div>'+
     	'            </div>'+
     	'         '+
     	'   </div>';
@@ -383,6 +398,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -402,10 +422,6 @@
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;6&#34;)">제출</button>'+
     	'                </div>'+
     	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
-    	'               </div>'+
     	'            </div>'+
     	'         '+
     	'   </div>';
@@ -419,6 +435,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -430,10 +451,6 @@
     	'                <br>'+
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;7&#34;)">제출</button>'+
     	'                </div>'+
-    	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
     	'         '+
@@ -448,6 +465,11 @@
     	'  			<input type=hidden id=modalid>'+
     	'  			    <div class="modal-content cons">'+
     	'  			    <div class="modal-header">'+
+    	'				<div id="closebtn">'+
+    	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+    	'					 <span aria-hidden="true">&times;</span>'+
+    	'				</button>'+
+    	'				</div>'+
     	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
     	'          			<h5 class="modal-title titletext">신고</h4>'+
     	'        		</div>'+
@@ -461,10 +483,6 @@
     	'                <br>'+
     	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq+'&#34;,&#34;8&#34;)">제출</button>'+
     	'                </div>'+
-    	'               </div>'+
-    	'               <div class="modal-footer">'+
-    	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
-    	'                     data-dismiss="modal">Close</button>'+
     	'               </div>'+
     	'            </div>'+
     	'         '+
