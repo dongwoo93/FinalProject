@@ -347,11 +347,16 @@
     }
    
    	#picture{
-   		 border : 3px solid white; 
+   	  border : 3px solid white; 
    	}
    	
    	.carousel-inner img {
-      width: 100%;
+    width: 100%;
     max-height: 494px;
     object-fit: contain;
-  }
+ 	 
+ 	}
+ 	
+ 	
+ 
+ 

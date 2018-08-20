@@ -185,56 +185,53 @@
 	
 	<div class="modal fade" id="boardmodal" role="dialog"> 
 		    <div class="modal-dialog" role="document">
-		    
-		    <div id="modalbtn" class="modal-content">
-<!--   				 &nbsp;&nbsp; <i class="fas fa-angle-double-left text-black" id="hidden" style="font-size:40px;"></i> -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--   				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				 -->
-<!--   				 <i class="fas fa-angle-double-right text-black"  style="font-size:40px;"></i> -->
+		  	    	   				
+<!-- 				<button id="goNext" class="btn btn-outline-primary">&#62;</button> -->
+<!-- 				<button id="goPrev" class="btn btn-outline-primary">&#60;</button> -->
 
-
-				<button id="goNext" class="btn btn-outline-primary">&#62;</button>
-				<button id="goPrev" class="btn btn-outline-primary">&#60;</button>
- 			</div>
-		
-		  	 
-		  	 
-		  	  <br><br>
-		      <div class="modal-content">
-		    
+<!-- 				<div class="bg-white" id="goNext">&#62;</div> -->
+<!-- 		        <div class="bg-white" id="goPrev">&#60;</div> -->
+ 			  <div class="modal-content bg-light" style="opacity:0.9;">  
+				<p class="text-center" >
+				    <i class="fas fa-angle-double-left " id="goPrev" style="font-size:25px;"></i>
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    <i class="fas fa-angle-double-right text-right" id="goNext" style="font-size:25px;"></i>
+				  </p>
+				</div>  
+		     	<div class="modal-content">
+		          
 		        	<div class="gallery-item" id="picture">  
 		       		  <div id="demo" class="carousel slide" data-ride="carousel" data-interval="false">
-  <ul id="carousel-indicators" class="carousel-indicators">
-    <li id="firstli" data-target="#demo" data-slide-to="0" class="active"></li>
-  </ul>
-  <div id="carousel-inner" class="carousel-inner">
-    <div id="firstItem" class="carousel-item active">
-    </div>
-  </div>
-  <a id="carousel-prev" class="carousel-control-prev" href="#demo" data-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </a>
-  <a id="carousel-next" class="carousel-control-next" href="#demo" data-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </a>
-</div>
-		        	</div>
+					  <ul id="carousel-indicators" class="carousel-indicators">
+					    <li id="firstli" data-target="#demo" data-slide-to="0" class="active"></li>
+					  </ul>
+					  <div id="carousel-inner" class="carousel-inner">
+					    <div id="firstItem" class="carousel-item active">
+					    </div>
+					  </div>
+					  <a id="carousel-prev" class="carousel-control-prev" href="#demo" data-slide="prev">
+					    <span class="carousel-control-prev-icon"></span>
+					  </a>
+					  <a id="carousel-next" class="carousel-control-next" href="#demo" data-slide="next">
+					    <span class="carousel-control-next-icon"></span>
+					  </a>
+					</div>
+		        </div>
 		        	
 		      </div>
 		      
 		      <div class="modal-content">
 		    
-<!-- 		        	<div class="bg-white" id="seq"></div> -->
-<!-- 		        	<div class="bg-white" id="seq1"></div> -->
+
 		        	
 		    		 <div class="hidden" id="hidden"></div>
 		    		 <div class="hidden" id="prev"></div>
