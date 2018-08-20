@@ -355,4 +355,11 @@
     max-height: 494px;
     object-fit: contain;
   }
+  
+#profileimg {
+  max-width: 300px;
+}
+input[type=file]{
+padding: 10px;
+}
    
