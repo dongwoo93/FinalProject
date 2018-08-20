@@ -12,7 +12,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#profileimage').on('hidden.bs.modal', function (e) {
+	/*$('#profileimage').on('hidden.bs.modal', function (e) {
 
 		var myvar = '<div class="modal-dialog modal-lg">'+
 		'      <div class="modal-content">'+
@@ -33,7 +33,7 @@ $(document).ready(function() {
 			
 		$("#profileimage").html(myvar);
 
-		})
+		})*/
 
 	$("#toMy").click(function() {
 		$(location).attr("href", "profile.member");
@@ -190,6 +190,25 @@ $(document).ready(function() {
 				}
 
 			}
+		});
+	})
+	
+	$("#savebtn").click(function() {
+		var formData = new FormData($("#fileForm")[0]);
+		$.ajax({
+			type:"POST",
+			url:"uploadImg.profile",
+			data: formData,
+			processData : false,
+            contentType : false,
+			success: function(data) {
+				alert(data);
+				location.reload();
+			},
+			error : function(error) {
+                console.log(error);
+                console.log(error.status);
+            }
 		});
 	})
 	

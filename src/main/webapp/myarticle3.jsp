@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css"
    href="resources/css/myarticle.css">
 <script src="resources/js/myarticle.js"></script>
-
 <c:if test="${result.size() > 0}">
 	<script> var list= []; </script>
 	<script>
@@ -36,8 +35,13 @@
 	<div class="container my">
 		<div class="profile">
 			<div class="profile-image">
-				<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;"><img
-					src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"></a>
+				<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;">
+				<c:forEach items="${profileImg}" var="proimg">
+				<c:if test="${proimg.is_selected eq 'y'}">
+				<img src="AttachedMedia/${proimg.system_file_name}" width="152px" height="152px" style="object-fit: cover;"></a>
+				</c:if>
+				</c:forEach>
+				
 				<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 			</div>
 
@@ -265,7 +269,7 @@
 </div>
 
    <div class="modal fade" id="boardmodal" role="dialog">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog bo" role="document">
 
       <!--             <button id="goNext" class="btn btn-outline-primary">&#62;</button> -->
       <!--             <button id="goPrev" class="btn btn-outline-primary">&#60;</button> -->
@@ -306,7 +310,7 @@
 <!--          </p> -->
 <!--       </div> -->
 
-      <div class="modal-content" style="flex-direction:row;width:60px;height:auto;opacity:0.5;">
+      <div class="modal-content view" style="flex-direction:row;width:60px;height:auto;opacity:0.5;">
          <div class="" style="width:30px;;height:auto;">
             <i class="fas fa-angle-double-left " id="goPrev" 
                 style="font-size: 25px;"></i>
@@ -319,9 +323,9 @@
       </div>   
       <br>
       
-      <div class="modal-content" style="flex-direction: row;width:1000px;height:auto;">
+      <div class="modal-content view" style="flex-direction: row;width:1000px;height:auto;">
          
-         <div class="modal-content" style="width:70%;height:auto;">
+         <div class="modal-content view" style="width:70%;height:auto;">
             <div class="gallery-item" id="picture">
                <div id="demo" class="carousel slide" data-ride="carousel"
                   data-interval="false">
@@ -342,7 +346,7 @@
 
          </div>
 
-         <div class="modal-content" style="width:30%;height:auto;">
+         <div class="modal-content view" style="width:30%;height:auto;">
 
 
 
@@ -473,8 +477,9 @@
 
    </div>
 </div>
-<div class="modal fade" id="profileimage">
-<div class="modal-dialog modal-lg">
+<form id="fileForm">
+<div class="modal fade" id="profileimage" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
       
         <!-- Modal Header -->
@@ -484,18 +489,35 @@
         </div>
         
         <!-- Modal body -->
+         
         <div class="modal-body">
-          <input type='file' onchange="readURL(this);" />
+        <div>
+          <input name="inputimg" type='file' onchange="readURL(this);"/>
 			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />
-        </div>
-        
+		</div>
+		<div class="dropdown-divider" ></div>
+		
+		<c:if test="${profileImg.size() > 1}">
+		<div class="alert alert-success">
+    		<strong>최근 프로필 사진</strong>
+  		</div>
+  		<div style="overflow-x: scroll; max-height:300px; display: flex;">
+		<c:forEach items="${profileImg}" var="proimg">
+		<c:if test="${proimg.is_selected eq 'n'}">
+		<img id="profileimg" src="AttachedMedia/${proimg.system_file_name}" style="object-fit: cover;">
+		</c:if>
+		</c:forEach>
+		</div>
+		</c:if>
+		</div>
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">저장</button>
+          <button id="savebtn" type="button" class="btn btn-primary">저장</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
         </div>
         
       </div>
     </div>
          </div>
+             </form>
 <%@ include file="include/bottom.jsp"%>
