@@ -7,10 +7,21 @@
 
 function commentover(e){   
 	var comment_seq = $(e).attr("value");
+	var writerId = $("#writerId"+comment_seq).html();
+	
+	console.log(writerId);
 	$(e).attr("style","background-color:#E1F5FE");
 	$("#commentSection"+comment_seq).attr("style","background-color:#E1F5FE");
+	var id = $("#sessionid").val();  
+	if(id==writerId){  
+	
 	$("#commentdel"+comment_seq).html("삭제");
-	$("#commentmod"+comment_seq).html("수정");
+	
+	
+	$("#commentmod"+comment_seq).html("수정");           
+	
+	} 
+	
 }
 function commentleave(e){
 	var comment_seq = $(e).attr("value");
@@ -20,15 +31,159 @@ function commentleave(e){
 	$("#commentmod"+comment_seq).html("");
 } 
 
+
+function delComment(e){
+	
+	var comment_seq = $(e).parent().parent().attr("value"); 
+	
+	$.ajax({
+		type : "post",
+		data : { board_seq:${b.board_seq} , comment_seq : comment_seq },
+		url : "commentdel.co",
+		success: function(resp){
+			$(e).parent().parent().remove();
+		}
+			
+		
+	});
+	
+}
+
+function markit(e){
+	$.ajax({
+		
+		type: "post",
+		data: { board_seq:${b.board_seq} , is_marked : "y" },
+		url : "bookmark.bo",
+		success: function(resp){
+			$("#markcancel").show();
+			$("#mark").hide();
+		}
+		
+	});
+}
+
+function unmarkit(e){
+	$.ajax({
+		
+		type: "post",
+		data: { board_seq:${b.board_seq} , is_marked : "n" },
+		url : "bookmark.bo",
+		success: function(resp){
+			$("#markcancel").hide();
+			$("#mark").show();
+		}
+		
+	});
+}
+  
+
+function likeit(e){
+	$.ajax({
+		
+		type : "post",
+		data : { board_seq:${b.board_seq} , is_liked : "y" },
+		url : "like.bo",
+		success: function(resp){
+			$("#likecancel").show();
+			$("#likeit").hide();   
+			
+		}
+	});
+	
+	   
+} 
+function unlikeit(e){
+	$.ajax({
+		
+		type : "post",
+		data : { board_seq:${b.board_seq} , is_liked : "n" },
+		url : "like.bo",
+		success: function(resp){
+			$("#likecancel").hide();
+			$("#likeit").show();   
+			
+		}
+	});
+	
+	
+}
+
+
+function modComment(e){   
+	
+	var comment_seq = $(e).parent().parent().attr("value"); 
+	$("#commentSection"+comment_seq).prop('readonly', false);
+	$("#commentSection"+comment_seq).focus();
+	
+	$("#commentmod"+comment_seq).click(function(){
+		var comment = $("#commentSection"+comment_seq).val();
+		
+		if(comment==""){
+			alert("댓글을 입력해 주세요");
+			comment.focus();
+			
+		}else{
+
+			$.ajax({
+				type : "post",
+				data : { comment_contents : comment , comment_seq : comment_seq },
+				url : "commentmod.co",
+				success: function(resp){
+					
+					$("#commentSection"+comment_seq).prop('readonly', true);
+					
+				}
+					
+				
+			});
+		}
+		
+	});
+	
+	$("#commentSection"+comment_seq).keypress(function(event){
+  
+		var keycode=(event.keyCode ? event.keyCode : event.which);
+		if(keycode=='13'){
+			var comment = $("#commentSection"+comment_seq).val();
+			
+			if(comment==""){
+				alert("댓글을 입력해 주세요");
+				comment.focus();
+				
+			}else{
+
+				$.ajax({
+					type : "post",
+					data : { comment_contents : comment , comment_seq : comment_seq },
+					url : "commentmod.co",
+					success: function(resp){
+						
+						$("#commentSection"+comment_seq).prop('readonly', true);
+						
+					}
+						
+					
+				});
+			}
+		}
+		
+	});
+	
+
+	
+}
+
 $(document).ready(function(){
 		
 
 $("#comment").keypress(function(event){
 
 	var keycode=(event.keyCode ? event.keyCode : event.which);
+	
 	if(keycode=='13'){
 		var comment = $("#comment").val();
-		
+		var session = $("#sessionid").val();	
 		if(comment==""){
 			alert("댓글을 입력해 주세요");
 			comment.focus();
@@ -38,17 +193,17 @@ $("#comment").keypress(function(event){
 				type : "post",
 				data : {board_seq : ${b.board_seq}, comment_contents : comment },
 				url : "insertComment.co",
-				success: function(resp){
-								
+				success: function(seq){
+					    
 					$("#comment").val("");
-					
-				}
-					
-				
+					var start = $("#comment-contents");					
+					start.append('<ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="'+seq+'" onmouseleave="commentleave(this)"><li id="li1"><a href="#" id="writerId'+seq+'">'+session+'</a></li><li id="li2"><input type=text id="commentSection'+seq+'" value="'+comment+'" readonly class="commenttxt"></li><li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel'+seq+'"></a></li><li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id="commentmod'+seq+'"></a></li></ul>');
+				}   
+
 			});
-		}
+		}  
 	}
-	
+	  
 });
 })
 </script>
@@ -84,27 +239,57 @@ $("#comment").keypress(function(event){
 		
 		<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
                         <div class="container">
-                           <a class="navbar-brand"> 
+                           <a class="navbar0-brand"> 
+                           <c:choose>
+                           <c:when test="${not empty like}">
+                         			  <i 
+                                       style="cursor: pointer; display: none; " id="likeit"
+                                       class="far fa-heart icon mr-1"  onclick="likeit(this)"></i>
                                     <i 
+                                       style="font-weight: bold;  color: red; cursor: pointer;"
+                                       id="likecancel" class="far fa-heart icon mr-1"
+                                       onclick="unlikeit(this)"></i>
+                           </c:when>
+                           <c:otherwise>
+                           			<i 
                                        style="cursor: pointer; " id="likeit"
                                        class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
                                     <i 
                                        style="font-weight: bold; display: none; color: red; cursor: pointer;"
                                        id="likecancel" class="far fa-heart icon mr-1"
                                        onclick="unlikeit(this)"></i>
+                           </c:otherwise>
+                           </c:choose>
+                                    
                                  <i class="far fa-comment icon"></i>
                            </a>
-                           
-                           <a class="btn navbar-btn ml-2 text-white "> 
+                           <c:choose>
+                             <c:when test="${not empty bookmark}">
+                           <a class="btn navbar-btn ml-2 text-white ">                                                    
+                                    <i  id="mark"
+                                       class="far fa-bookmark icon"
+                                       style="cursor: pointer; display: none;"
+                                       onclick="markit(this)"></i>
+                                    <i 
+                                       style="cursor: pointer;  font-weight: bold; color: #00B8D4;"
+                                       id="markcancel"  class="far fa-bookmark icon"
+                                       onclick="unmarkit(this)"></i>                                      
+                           </a>            
+                             </c:when>
+                              <c:otherwise>
+                           			 <a class="btn navbar-btn ml-2 text-white "> 
+                           			 
                                     <i  id="mark"
                                        class="far fa-bookmark icon"
                                        style="cursor: pointer; "
                                        onclick="markit(this)"></i>
                                     <i 
-                                       style="cursor: pointer; display: none; font-weight: bold; color: #00B8D4;"
+                                       style="cursor: pointer; display: none;  font-weight: bold; color: #00B8D4;"
                                        id="markcancel"  class="far fa-bookmark icon"
-                                       onclick="unmarkit(this)"></i>
+                                       onclick="unmarkit(this)"></i>                       
                            </a>
+                            </c:otherwise>
+                           </c:choose>
                         </div>
                      </nav>
 				
@@ -143,14 +328,15 @@ $("#comment").keypress(function(event){
                         <c:forEach var="item" items="${result}">
                           
                         <ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="${item.comment_seq}" onmouseleave="commentleave(this)">
-                        <li id="li1"><a href="#">${item.id}</a></li>
+                        <li id="li1"><a href="#" id="writerId${item.comment_seq}">${item.id}</a></li>
                         <li id="li2"><input type=text id="commentSection${item.comment_seq}" value="${item.comment_contents}" readonly="readonly" class='commenttxt'></li>
-                        <li id="li3"><a href="" id="commentdel${item.comment_seq}"></a></li>
-                        <li id="li4"><a href="" id="commentmod${item.comment_seq}"></a></li>
+                       			
+                        <li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel${item.comment_seq}"></a></li>     
+                        <li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id='commentmod${item.comment_seq}'></a></li>
                         
                         </ul>                       
                         </c:forEach>
-                        
+            				<input type=hidden id='sessionid' value="${sessionScope.loginId}">            
                         
                         </div>
                         
@@ -185,5 +371,5 @@ $("#comment").keypress(function(event){
    
 </div>
 <!--  allwrapper-->
-												
+										
       <%@ include file="include/bottom.jsp"%>
