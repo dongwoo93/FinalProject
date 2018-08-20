@@ -90,10 +90,10 @@ public class IMemberService implements MemberService{
 	}
 
 	@Override
-	public int findPw(String id, String email) {
+	public int findPw(MemberDTO dto) {
 		// TODO Auto-generated method stub
 		
-		return dao.findPw(id, email);
+		return dao.findPw(dto);
 	}
 
 	@Override

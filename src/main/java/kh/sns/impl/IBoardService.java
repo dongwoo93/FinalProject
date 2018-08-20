@@ -118,6 +118,12 @@ public class IBoardService implements BoardService {
 		return dao.search(keyword);
 	}
 
+	@Override
+	public BoardDTO  oneBoard(String board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.oneBoard(board_seq);
+	}
+
 	
 	
 	

@@ -161,15 +161,13 @@ public class IMemberDAO implements MemberDAO {
 
 
 	@Override
-	public int findPw(String id, String email) {
+	public int findPw(MemberDTO dto) {
 		// TODO Auto-generated method stub
 		
-	     String certification = Integer.toString((int)(Math.random() * 9000 + 1000));               
-	 
 	     String sql = "update member set pw=? where id=? and email=?";
 
 		
-		return template.update(sql, certification, id, email);
+		return template.update(sql, dto.getPw(), dto.getId(), dto.getEmail());
 	}
 
 

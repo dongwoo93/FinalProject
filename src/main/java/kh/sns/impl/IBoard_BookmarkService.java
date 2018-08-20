@@ -29,7 +29,7 @@ public class IBoard_BookmarkService implements Board_BookmarkService {
 	public int deleteBookmark(Board_BookmarkDTO dto) throws Exception {
 		return bookmarkdao.deleteBookmark(dto);
 	}
-	
+	@Override
 	public List<Integer> searchMark(String id) throws Exception {
 		return bookmarkdao.searchMark(id);
 	}

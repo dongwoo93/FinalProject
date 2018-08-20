@@ -2,6 +2,7 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,8 @@ import com.google.gson.Gson;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Member_BlockDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -340,22 +343,95 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:feed.bo");
 		return mav;
-	}
+	}	
+
 	
-	@RequestMapping("/idunno.test")
-	public ModelAndView writeProcBoard(HttpServletRequest request) {		
-		
-		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
-		
+	// AJAX
+	@RequestMapping("/getOneArticle.ajax")
+	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
 		try {
-			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
-		} catch (Exception e) {
+			PrintWriter xout = response.getWriter();
+			System.out.println(request.getParameter("seq"));
+			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
+
+			new Gson().toJson(b, xout);
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		ModelAndView mav = new ModelAndView();
-		return mav;
+	}
+	
+	@RequestMapping("/getOneComment.ajax")
+	public void getOneCommentAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF8");
+		response.setContentType("application/json");
+		try {
+			PrintWriter xout = response.getWriter();
+			
+			System.out.println(request.getParameter("comment_seq"));
+			System.out.println(request.getParameter("board_seq"));
+			
+			BoardDTO b = boardService.getBoardModal(request.getParameter("board_seq"));
+			Board_CommentDTO c = board_commentService.getOneComment(Integer.parseInt(request.getParameter("comment_seq")));
+			
+			System.out.println(b);
+			System.out.println(c);
+			
+			Object[] output = new Object[2];
+			output[0] = b;
+			output[1] = c;
+
+			new Gson().toJson(output, xout);
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 
+	@RequestMapping("/oneBoard.do")
+	public ModelAndView oneBoard(String board_seq) {
+		ModelAndView mav = new ModelAndView();
+		BoardDTO a =null;
+		List<Board_CommentDTO> result = null;
+		try {
+		System.out.println(board_seq);
+		
+		a = boardService.oneBoard(board_seq);
+		
+		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
+		
+		
+		}catch(Exception e) {
+			System.out.println("oneboard.do");
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("oneBoard.jsp");
+		mav.addObject("b", a);
+		mav.addObject("result", result);
+		return mav;
+		
+	}
+	
+	@RequestMapping("/deletefollow.do")
+	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int result = boardService.deleteFollowInfo(fi);
+		if(result == 1) {
+			response.getWriter().print("팔로우 취소 완료");
+		}else {
+			response.getWriter().print("팔로우 취소 실패");
+		}
+		
+		response.getWriter().flush();
+		response.getWriter().close();
+		
+	}
+	
 }

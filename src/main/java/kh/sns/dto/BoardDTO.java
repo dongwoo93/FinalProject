@@ -72,4 +72,15 @@ public class BoardDTO {
 		this.is_allow_comments = is_allow_comments;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BoardDTO [board_seq=" + board_seq + ", contents=" + contents + ", id=" + id + ", writedate=" + writedate
+				+ ", read_count=" + read_count + ", is_allow_comments=" + is_allow_comments + "]";
+	}
+	
+	
+
 }
