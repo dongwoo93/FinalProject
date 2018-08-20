@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.Board_BookmarkDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.interfaces.Board_BookmarkDAO;
 
 @Repository	
@@ -48,5 +49,28 @@ public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
 			}
 	});
 	}
+	
+	@Override
+	public Board_BookmarkDTO isBookmarked(String id, int board_seq) throws Exception {
+		
+				Board_BookmarkDTO result = null;
+				
+				String sql = "select * from board_bookmark where id=? and board_seq=?";
+				List<Board_BookmarkDTO> an = template.query(sql, new Object[] {id , board_seq}, new RowMapper<Board_BookmarkDTO>() {
 
-}
+					@Override
+					public Board_BookmarkDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+						// TODO Auto-generated method stub
+						Board_BookmarkDTO isBookmarked= new Board_BookmarkDTO();
+					
+						isBookmarked.setBoard_seq(rs.getInt("board_seq"));
+						isBookmarked.setId(rs.getString("id"));
+						isBookmarked.setIs_marked(rs.getString("is_marked"));
+						return isBookmarked;
+					}} );	
+				
+				return an.get(0);
+			}
+	}
+
+

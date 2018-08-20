@@ -74,4 +74,36 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 		
 	
 	}
+
+	@Override
+	public int insertLiko(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		int result = 0;
+		
+		String sql = "insert into board_like values(?,?,?)";
+		result =template.update(sql, dto.getBoard_seq(), dto.getId() , dto.getIs_liked());
+		return result;
+	}
+
+	@Override
+	public Board_LikeDTO isLiked(String id, int board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		Board_LikeDTO result = null;
+		
+		String sql = "select * from board_like where id=? and board_seq=?";
+		List<Board_LikeDTO> an = template.query(sql, new Object[] {id , board_seq}, new RowMapper<Board_LikeDTO>() {
+
+			@Override
+			public Board_LikeDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Board_LikeDTO isLiked = new Board_LikeDTO();
+			
+				isLiked.setBoard_seq(rs.getInt("board_seq"));
+				isLiked.setId(rs.getString("id"));
+				isLiked.setIs_liked(rs.getString("is_liked"));
+				return isLiked;
+			}} );	
+		
+		return an.get(0);
+	}
 }
