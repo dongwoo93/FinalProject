@@ -27,33 +27,34 @@ import kh.sns.dto.ProfileDTO;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
 import kh.sns.util.EncryptUtils;
+import kh.sns.util.LogUtil;
 
 @Controller
 public class MemberController {
-	
+
 	@Autowired
 	private MemberService memberService;
-	
-	
-	
+
+
+
 	@Autowired
 	private ProfileService profileService;
-	
+
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
 		return "redirect:main.jsp";
 
 	}
-	
+
 	@RequestMapping("/join.do")
 	public String toInput() throws Exception {
 		return "redirect:join.jsp";
 	}
-	
-	
+
+
 	@RequestMapping("/login.do")
 	public void memberLogin(MemberDTO dto, HttpSession session, HttpServletResponse response) throws Exception {
-		
+
 		response.setCharacterEncoding("UTF-8");
 		System.out.println(dto.getId());
 		System.out.println(dto.getPw());
@@ -62,25 +63,26 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
-			
+
 		}else {
-			
+
 		}
 		response.getWriter().print(result);
 		response.getWriter().flush();
-		response.getWriter().close();
-
-		
+		response.getWriter().close();	
 	}
-	
+
 	@RequestMapping("/logout.do")
 	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		session.invalidate();
+		String id= (String)session.getAttribute("loginId");
+		session.invalidate(); 
+		LogUtil log = new LogUtil(); 
+		log.insertLog(id,"logout");   
 		mav.setViewName("redirect:main.jsp");
 		return mav;
 	}
-	
+
 	@RequestMapping("/sign.do")
 	public ModelAndView signUp(MemberDTO dto, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
@@ -90,50 +92,23 @@ public class MemberController {
 		try {
 			insertMem = this.memberService.signUp(dto);
 			insertProfile = this.memberService.insertProfile(dto.getId());
-			
 
-		String realPath = request.getSession().getServletContext().getRealPath("/"+dto.getId()+"/");
-	    logFile(realPath);   
-		if(insertMem> 0 && insertProfile > 0) {
-			joinresult = 1;
-		}
-	
+			if(insertMem> 0 && insertProfile > 0) {
+				joinresult = 1;
+			}
+
 		}catch(Exception e) {  
-			
+
 			e.printStackTrace();
 		}
 		mav.addObject("result",joinresult);
 		mav.setViewName("join.jsp");
 		return mav;
 	}
-	
-	public void logFile(String realPath) throws Exception {
 
-        File f = new File(realPath);
-        if(!f.exists()){
-           f.mkdir();
-         }
-        realPath = realPath+"log.txt";
-        File f1 = new File(realPath);
-        if(!f1.exists()){
-           f1.createNewFile();
-         } 
-        
-        System.out.println(realPath); 
-        
-        BufferedWriter bw = new BufferedWriter(new FileWriter(realPath));
-        bw.write("[join]"); bw.newLine();
-        bw.write("[login]"); bw.newLine();
-        bw.write("[logout]"); bw.newLine();
-        bw.close();
-        Log log = new Log();
-        log.insertLog(realPath, "join");
-       
-   
-	}
 	@RequestMapping("/dupId.do")
 	public void isIdExist(String id, HttpServletResponse response) throws Exception{
-	
+
 		int result =this.memberService.isIdExist(id);
 		response.getWriter().print(result);
 		response.getWriter().flush();
@@ -149,99 +124,99 @@ public class MemberController {
 	}
 	@RequestMapping("/emailCheck.do")
 	public void isEmailExist(String email, HttpServletResponse response) throws Exception{
-		
+
 		int result =this.memberService.isEmailExist(email);
-	
+
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
 	@RequestMapping("/sms.do")
 	public void sms(String phone, HttpServletResponse response,HttpServletRequest request) throws Exception{
-			String  pswd = "";
-            StringBuffer sb1 = new StringBuffer();
-            // 占쏙옙占쏙옙 5占쏙옙占?
-            for( int i = 0; i<5; i++) {
-  
-                sb1.append((char)((Math.random() * 10)+48)); //占싣쏙옙키占쏙옙호 48(1) 占쏙옙占쏙옙 10占?
-            }
+		String  pswd = "";
+		StringBuffer sb1 = new StringBuffer();
+		// 占쏙옙占쏙옙 5占쏙옙占?
+		for( int i = 0; i<5; i++) {
 
-            pswd = sb1.toString();
+			sb1.append((char)((Math.random() * 10)+48)); //占싣쏙옙키占쏙옙호 48(1) 占쏙옙占쏙옙 10占?
+		}
 
-         String to = "82"+request.getParameter("phone");
-         String from="33644643087";
-         String message = pswd;  
-         String sendUrl = "https://www.proovl.com/api/send.php?user=6394162&token=mZJb0hlGqKxlgbpx4GqNTH4lX0aNAQ04";
-  
-         StringBuilder sb = new StringBuilder();
-  
-         sb.append(sendUrl);
-  
-         sb.append("&to="+to);
-  
-         sb.append("&from="+from);
-  
-         sb.append("&text="+message);
-  
-         
-  
-         System.out.println(sb.toString());
-  
-         URL url = new URL(sb.toString());
-  
-         HttpURLConnection con = (HttpURLConnection)url.openConnection();
-  
-         int result = con.getResponseCode();
-  
-         System.out.println(result);
-  
-         con.disconnect();
-         response.getWriter().print(message);
-     	response.getWriter().flush();
- 		response.getWriter().close();
-         
-  
-       }
+		pswd = sb1.toString();
+
+		String to = "82"+request.getParameter("phone");
+		String from="33644643087";
+		String message = pswd;  
+		String sendUrl = "https://www.proovl.com/api/send.php?user=6394162&token=mZJb0hlGqKxlgbpx4GqNTH4lX0aNAQ04";
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(sendUrl);
+
+		sb.append("&to="+to);
+
+		sb.append("&from="+from);
+
+		sb.append("&text="+message);
+
+
+
+		System.out.println(sb.toString());
+
+		URL url = new URL(sb.toString());
+
+		HttpURLConnection con = (HttpURLConnection)url.openConnection();
+
+		int result = con.getResponseCode();
+
+		System.out.println(result);
+
+		con.disconnect();
+		response.getWriter().print(message);
+		response.getWriter().flush();
+		response.getWriter().close();
+
+
+	}
 	/*======*/
 	@RequestMapping("/profile.member")
 	public ModelAndView editProfile(HttpSession session) throws Exception {
-		
+
 		ModelAndView mav = new ModelAndView();
-		
+
 		if(session.getAttribute("loginId") != null) {
 			System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
 			MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
 			ProfileDTO profile = profileService.getOneProfile(session.getAttribute("loginId").toString());
-			
+
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
-			
+
 			mav.setViewName("mypage2.jsp");
-			
+
 		} else {
 			// 작업 추가
 		}		
-		
+
 		return mav;		
-		
+
 	}
-	
+
 	@RequestMapping("/editProfileProc.member")
 	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpServletRequest request) throws Exception {
-		
+
 		member.setId(request.getSession().getAttribute("loginId").toString());
 		profile.setId(request.getSession().getAttribute("loginId").toString());
 		System.out.println(member);
-		
+
 		int result = memberService.updateOneMemberProfile(member, profile);
-		
+
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("editProfileResult", result);
 		mav.setViewName("redirect:profile.member?targetTab=profileTab");	// 리다이렉트? 포워드?
 		return mav;		
 	}
-	
-	
+
+
 	@RequestMapping("/findPw.do")
 	public ModelAndView findPw(MemberDTO dto, HttpServletResponse response) throws Exception {
 		
@@ -261,16 +236,16 @@ public class MemberController {
 		mav.setViewName("findPass.jsp");
 		return mav;		
 	}
-	
-	
+
+
 	@RequestMapping("/isEmailDuplicated.ajax")
 	public void checkEmailDuplicated(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+
 		request.setCharacterEncoding("UTF8");
 		// PrintWriter를 꺼내기 전에 response의 인코딩을 설정
 		response.setCharacterEncoding("UTF8");
 		PrintWriter xout = response.getWriter();   
-		
+
 		boolean isEmailDuplicated = false;
 		int result = memberService.checkEmailDuplicated(request.getParameter("email"), 
 				request.getSession().getAttribute("loginId").toString());
@@ -279,21 +254,21 @@ public class MemberController {
 		} else {
 			isEmailDuplicated = false;
 		}
-		
+
 		xout.println(isEmailDuplicated);
 	}
-	
+
 	@RequestMapping("/findId.do")
 	public ModelAndView findId(String name, String email, HttpServletResponse response) throws Exception {
 
 		List<MemberDTO> findId =this.memberService.findId(name, email);
-		
-		
+
+
 		int result = 0;
-	
-		
-		
-		
+
+
+
+
 		if(findId.size() == 1) {
 			System.out.println("id:"+findId.get(0).getId());
 			SendEmail sendemail = new SendEmail(1,findId.get(0).getId(),email);
@@ -302,50 +277,50 @@ public class MemberController {
 		}else {
 			result = 0;
 		}
-		
-		
-		
+
+
+
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", result);
 
 		mav.setViewName("findPass.jsp");
 		return mav;	
-		
-		
+
+
 	}
-	
-	
-	
+
+
+
 	/*1. jsp 이름 폰번호입력
 	2. 인증번호 받기  버튼 - 컨트롤러 - //
 	3. 이름 폰번호가 같은 계정정보인지 
 	4. 일치하면 , 인증번호 보내기 , //  
-	
+
 	5. 인증번호 입력창 생성
 	6. 인증번호 입력. - 컨트롤러
-		
+
 		(쿼리에 이메일을뽑)이메일이잖아*/
 
 
-	
+
 	@RequestMapping("/passwordChangeProc.member")
 	public ModelAndView passwordChange(MemberDTO member, HttpServletRequest request) throws Exception {
-		
+
 		ModelAndView mav = new ModelAndView();
-		
+
 		String id = request.getSession().getAttribute("loginId").toString();
 		String beforePassword = request.getParameter("beforePassword");
-		
+
 		EncryptUtils encrypt = new EncryptUtils(); 
 		beforePassword = encrypt.getSha256(beforePassword);
-		
+
 		boolean isBeforePasswordCorrect = memberService.getOneMember(id).getPw().equals(beforePassword);
 		if(isBeforePasswordCorrect) {
 			member.setId(request.getSession().getAttribute("loginId").toString());
 			System.out.println(member);
-			
+
 			int result = memberService.updateOneMemberPassword(member);
-			
+
 			mav.addObject("pwdChangeResult", result);
 		} else {
 			// 이전 패스워드 입력이 틀렸을 때
@@ -353,10 +328,10 @@ public class MemberController {
 			System.out.println("이전 패스워드 입력이 틀림");
 		}
 		mav.setViewName("redirect:profile.member?targetTab=passwordTab");
-		
+
 		return mav;		
 	}
-	
+
 	@RequestMapping("/searchfriend.do")
 	public void searchFriend(HttpServletResponse response, @RequestParam("searchtext") String searchtext, HttpSession session) {
 		response.setCharacterEncoding("UTF-8");
@@ -367,22 +342,22 @@ public class MemberController {
 		System.out.println("검색어 : " + searchtext);
 		List<MemberDTO> list = null;
 		List<String> friendlist = new ArrayList<>();
-		
+
 		try {
 			list = memberService.selectfriendlist(id,searchtext);
 			System.out.println("해당하는거잘찾았냐");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		for(MemberDTO tmp : list) {
 			System.out.println(tmp.getNickname());
 			friendlist.add(tmp.getNickname());
 		}
-		
+
 		try {
 			new Gson().toJson(friendlist, response.getWriter());
-			
+
 		}catch(Exception e1) {
 			e1.printStackTrace();
 		}

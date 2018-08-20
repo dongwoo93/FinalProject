@@ -8,5 +8,6 @@ public interface Member_BlockService {
 	public int insertBlock(Member_BlockDTO dto) throws Exception;
 	public int deleteBlock(Member_BlockDTO dto) throws Exception;
 	public List<Member_BlockDTO> selectBlock(String id) throws Exception;
+	public boolean isBlock(String sessionid, String id) throws Exception;
 
 }

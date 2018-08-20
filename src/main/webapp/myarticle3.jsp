@@ -8,66 +8,63 @@
 
 <c:if test="${result.size() > 0}">
 	<script> var list= []; </script>
-	<script>
-	function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#profileimg')
-                    .attr('src', e.target.result);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-	</script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<script>    
 			list.push("${tmp.board_seq}");    
 			
 			</script>
-		</c:forEach>
- </c:if>
-    
-    <div id="allwrapper">
+	</c:forEach>
+</c:if>
+
+<div id="allwrapper">
 
 
-   <div class="container my">
-      <div class="profile">
-         <div class="profile-image">
-            <a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;"><img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"></a>
-            <!--                  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
-         </div>
+	<div class="container my">
+		<div class="profile">
+			<div class="profile-image">
+				<img
+					src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+				<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
+			</div>
 
 
-         <c:choose>
-            <c:when test="${result[0].id == sessionScope.loginId}">
+			<c:choose>
+				<c:when test="${result[0].id == sessionScope.loginId}">
 
-         <div class="profile-user-settings">
-            <h2 class="profile-user-name">${result[0].id}</h2>
-            <div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
-            <div class="profile-settings-btn">
-               <i class="far fa-times-circle" id="logout"></i>
-            </div>
-            <!--                <button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
-         </div>
-         
-         </c:when>
-
-		<c:otherwise>
-						
+			<div class="profile-user-settings">
+				<h2 class="profile-user-name">${result[0].id}</h2>
+				<div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
+				<div class="profile-settings-btn">
+					<i class="far fa-times-circle" id="logout"></i>
+				</div>
+				<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
+			</div>
+			
+			</c:when> 
+			<c:when test="${isFollow}">
+			
 				<div class="profile-user-settings">
 					<h2 class="profile-user-name">${result[0].id}</h2>
-					<div class="profile-edit-btn" id="toMy" style="height:40px;">팔로잉</div>
+					<div class="profile-edit-btn" id="cancelFollow" style="height:40px;">팔로잉</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
 			
 				</div>
 			
-						
-						
+			</c:when>
+		
+		<c:otherwise>
+			
+				<div class="profile-user-settings">
+					<h2 class="profile-user-name">${result[0].id}</h2>        
+					<div class="profile-edit-btn" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
+					<div class="profile-settings-btn">
+						<i class="fas fa-undo-alt"></i>
+					</div>
+			
+				</div>
+			
 		</c:otherwise>
 	</c:choose>
 
@@ -92,7 +89,23 @@
 		</div>
 	</div>
 
-
+  
+<c:choose> 
+	<c:when test="${(result[0].id != sessionScope.loginId) && isBlock || isNotPublic}">     
+			<div class="block container">
+			<br><br>  
+			<br><br>  
+			<h2>비공개 계정입니다</h2>
+			<br>   
+			<h4>사진 및 동영상을 보려면 팔로우하세요</h4>
+			<br><br>  
+			<br><br> 
+			</div>
+			
+			
+			</c:when>
+		
+<c:otherwise>
 
 	<div class="tagmenu">
 		<div class="row">
@@ -123,8 +136,9 @@
 
 					<div class="gallery-item" id="${tmp.board_seq}">
 						<%-- 				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">    --%>
-						<img src="AttachedMedia/${result2[status.index].system_file_name}" class="img-fluid">
-							
+						<img src="AttachedMedia/${result2[status.index].system_file_name}"
+							class="img-fluid">
+
 
 						<%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
 						<div class="gallery-item-info">
@@ -179,7 +193,7 @@
                 	        		   $("#carousel-prev").show();
                 	        		   $("#carousel-next").show();
                 	        	   }
-                	        	   $("#modalid1").text(data.id);	
+                	        	   $("#modalid").text(data.id);	        	   
 //                 	               $("#modalcontents").text(data.contents);       
                 				   $("#modalcontents").html(data[0].contents);
                 	               $("#seq").val(data[0].board_seq);
@@ -228,12 +242,14 @@
 		<!-- 			<div class="spinner"></div> -->
 
 	</div>
+</c:otherwise>
+</c:choose>
 
 
 </div>
 
-	<div class="modal fade" id="boardmodal" role="dialog">
-		<div class="modal-dialog" role="document">
+<div class="modal fade" id="boardmodal" role="dialog">
+	<div class="modal-dialog" role="document">
 
 		<!-- 				<button id="goNext" class="btn btn-outline-primary">&#62;</button> -->
 		<!-- 				<button id="goPrev" class="btn btn-outline-primary">&#60;</button> -->
@@ -273,23 +289,14 @@
 <!-- 				<i class="fas fa-angle-double-right text-right" id="goNext" style="font-size: 25px;"></i> -->
 <!-- 			</p> -->
 <!-- 		</div> -->
-
-		<div class="modal-content" style="flex-direction:row;width:60px;height:auto;opacity:0.5;">
-			<div class="" style="width:30px;;height:auto;">
-				<i class="fas fa-angle-double-left " id="goPrev" 
- 					style="font-size: 25px;"></i>
-			</div>
-			
-			
-			<div class="" id="connect" style="width:30px;height:auto;">
-				<i class="fas fa-angle-double-right text-right" id="goNext" style="font-size: 25px;"></i>
-			</div>
-		</div>	
-		<br>
 		
 		<div class="modal-content" style="flex-direction: row;width:1000px;height:auto;">
 			
-			<div class="modal-content" style="width:70%;height:auto;">
+			<div class="modal-content" style="width:3%;height:auto;">
+				<i class="fas fa-angle-double-left " id="goPrev" 
+ 					style="font-size: 25px;"></i>
+			</div>
+			<div class="modal-content" style="width:64%;height:auto;">
 				<div class="gallery-item" id="picture">
 					<div id="demo" class="carousel slide" data-ride="carousel"
 						data-interval="false">
@@ -324,10 +331,8 @@
 					<div class="profile-image">
 						<img class="ml-3 mr-2"
 							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-						<div class="" id="modalid2" style="font-size:16px;"></div>
+						<div id="modalid"></div>
 					</div>
-					
-					
 
 					<br> <br> <input id="seq" type=hidden name=board_seq>
 					<div id="articlecontents" class="mt-2 mx-3 pb-2">
@@ -352,7 +357,7 @@
 				
 
 
-				<div class="py-2 bg-white text-right">
+				<div class="py-2 bg-white">
 
 					<input type="text" placeholder="댓글 달기..." class="ml-2 pl-2"
 						id="comment">
@@ -389,8 +394,7 @@
 
 					<c:choose>
 						<c:when test="${result[0].id == sessionScope.loginId}">
-							<br>
-							<br>
+
 							<div class="btn-group bg-white">
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown"></button>
@@ -413,8 +417,6 @@
 
 						</c:when>
 						<c:otherwise>
-						<br>
-						<br>
 							<div class="btn-group bg-white">
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown"></button>
@@ -433,43 +435,15 @@
 
 				</div>
 			</div>
-				
+			
+			<div class="modal-content" id="connect" style="width:3%;height:auto;">
+				<i class="fas fa-angle-double-right text-right" id="goNext" style="font-size: 25px;"></i>
+			</div>
+			
 		</div>
 	
-	
-	
 
-              		</div>
-		         </div>	
-		       
-		     
-		              
-		      </div>
-		    </div>
-		    <!-- The Modal -->
-  <div class="modal fade" id="profileimage">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">프로필 이미지</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          <input type='file' onchange="readURL(this);" />
-			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">저장</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-	<%@ include file="include/bottom.jsp"%>
+
+	</div>
+</div>
+<%@ include file="include/bottom.jsp"%>

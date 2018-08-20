@@ -439,27 +439,7 @@
 
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1" role="dialog">
-   <!-- <div class="modal-dialog modal-dialog-centered" role="document">
-  			<input type=hidden id=modalseq>
-  			    <div class="modal-content">
-               <div class="modal-body">
-               <div class="dropdown-divider" ></div>   
-                  <a class="dropdown-item" onclick="goBoard()">게시물로 이동</a>
-                  <div class="dropdown-divider" ></div>
-                  <a class="dropdown-item" onclick="modal2(this)" style="cursor: pointer;">부적절한 콘텐츠 신고</a>
-                  <div class="dropdown-divider" ></div>
-                  <a class="dropdown-item" href="#">링크 복사</a>
-                  <div class="dropdown-divider" ></div> 
-                  <a class="dropdown-item" href="#">팔로우 취소</a>   
-                  
-               </div>
-               <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary"
-                     data-dismiss="modal">Close</button>
-               </div>
-            </div>
-         
-   </div> -->
+
 </div>
 
 <div class="modal" id="changeBoardModal2" tabindex="-1" role="dialog">
