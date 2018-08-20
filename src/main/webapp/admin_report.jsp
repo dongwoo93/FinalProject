@@ -405,7 +405,7 @@ html,body {
     				// console.log("AJAX 종료");
     			}
 			})
-    	}, 1000)
+    	}, 10000)
     	
     	
 	    	
@@ -699,7 +699,7 @@ html,body {
 							      <td>${ i.reportersComment }</td>
 							      <td>${ i.adminFirstReadDate }</td>
 							      <td>${ i.adminAcceptedDate }</td>
-							      <td>${ i.resultCode }: ${ result[k.index].resultDescription }</td>
+							      <td><c:if test="${i.resultCode ne '0'}">${ i.reportCode }: </c:if>${ result[k.index].resultDescription }</td>
 							      <td>${ i.adminComment }</td>
 							      <td><a href="#;return false;">처리</a></td>
 							    </tr>
