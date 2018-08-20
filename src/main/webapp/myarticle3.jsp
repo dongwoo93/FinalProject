@@ -8,6 +8,20 @@
 
 <c:if test="${result.size() > 0}">
 	<script> var list= []; </script>
+	<script>
+	function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#profileimage')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+	</script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<script>    
 			list.push("${tmp.board_seq}");    
@@ -446,4 +460,29 @@
 
 	</div>
 </div>
+<div class="modal fade" id="profileimage">
+<div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">프로필 이미지</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <input type='file' onchange="readURL(this);" />
+			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">저장</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+         </div>
 <%@ include file="include/bottom.jsp"%>
