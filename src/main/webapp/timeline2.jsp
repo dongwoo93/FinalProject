@@ -300,7 +300,7 @@
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}" style="font-size:14px;">${tmp.id}</a>
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}"></div>
 									<script>

@@ -35,11 +35,10 @@ public class MemberAspect {
    public void updatePwEncrypt() {}
    //마이페이지에서 비밀번호 변경
    
-
-
-   @Around("insertEncrypt()")
-   public int insertEncrypt(ProceedingJoinPoint pjp) {
-      MemberDTO dto = (MemberDTO)pjp.getArgs()[0];
+   @Before("insertEncrypt()")
+   public void insertEncrypt(JoinPoint jp) {
+	   
+      MemberDTO dto = (MemberDTO)jp.getArgs()[0];
       String pw = EncryptUtils.getSha256(dto.getPw());
       dto.setPw(pw);
       int result = 0;

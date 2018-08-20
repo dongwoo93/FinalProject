@@ -9,16 +9,15 @@ import org.springframework.stereotype.Repository;
 import kh.sns.dto.AdminReportCode;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportResultCode;
+import kh.sns.dto.JQueryPieChartVO;
 import kh.sns.interfaces.AdminReportsDAO;
 import kh.sns.util.TextHandler;
 
 @Repository
 public class IAdminReportsDAO implements AdminReportsDAO {
 	
-	@Autowired
-	JdbcTemplate t;
-	@Autowired
-	TextHandler th;
+	@Autowired	JdbcTemplate t;
+	@Autowired	TextHandler th;
 	
 	@Override
 	public List<AdminReportDTO> getAllReports() throws Exception {
@@ -47,7 +46,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public int insertAnReport(AdminReportDTO ard) throws Exception {
-		String sql = "insert into admin_reports values (report_seq.nextval,?,?,?,sysdate,?,null,null,101,null)";
+		String sql = "insert into admin_reports values (report_seq.nextval,?,?,?,sysdate,?,null,null,null,null)";
 		if(ard.getCommentSeq() == 0) {
 			return t.update(sql, ard.getReportCode(), ard.getBoardSeq(), null, ard.getReportersComment());
 		}else {
@@ -57,9 +56,9 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	}
 	
 	@Override
-	public int updateAnReport(AdminReportDTO ard) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateAnReport(AdminReportDTO report) throws Exception {
+		String sql = "update admin_reports set admin_first_read_date = sysdate, admin_accepted_date = sysdate, result_code = ?, admin_comment = ? where report_seq = ?";
+		return t.update(sql, report.getResultCode(), report.getAdminComment(), report.getReportSeq());
 	}
 	
 
@@ -106,6 +105,91 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 			arc.setReportCodeDescription(rs.getString("report_code_description"));
 			return arc;
 		});
+	}
+	
+	@Override
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception {
+		String sql = "select report_code, REPORT_CODE_DESCRIPTION as label, "
+				+ "(select count(*) from admin_reports where c.report_code = report_code) as y "
+				+ "from admin_report_code c";
+		return t.query(sql, (rs, rowNum) -> {
+			JQueryPieChartVO pcvo = new JQueryPieChartVO();
+			pcvo.setLabel(rs.getString("label"));
+			pcvo.setY(rs.getDouble("y"));
+			pcvo.setLegendText(rs.getString("report_code") + ". " + rs.getString("label"));			
+			return pcvo;
+		});
+	}
+	
+	@Override
+	public List<AdminReportResultCode> getResultCodeList() throws Exception {
+		String sql = "select * from admin_report_result_code order by result_code";
+		return t.query(sql, (rs, rowNum) -> {
+			AdminReportResultCode arrc = new AdminReportResultCode();
+			arrc.setBlockedDay(rs.getInt("blocked_day"));
+			arrc.setIsDelete(rs.getString("is_delete"));
+			arrc.setIsExternalNotify(rs.getString("is_external_notify"));
+			arrc.setIsMemberBlocked(rs.getString("is_member_blocked"));
+			arrc.setResultCode(rs.getInt("result_code"));
+			arrc.setResultDescription(rs.getString("result_description"));
+			return arrc;
+		});
+	}
+	
+	@Override
+	public List<Integer> getAllAcceptedCounts() throws Exception {
+		String sql = "select (select count(result_code) from admin_reports where board_seq = r.board_seq) as count from admin_reports r order by report_seq desc";
+		return t.query(sql, (rs, rowNum) -> {			
+			return rs.getInt(1);
+		});
+	}
+	
+	@Override
+	public List<Integer> getAcceptedCountsByRange() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	@Override
+	public int blockAnMemberByAdmin(String id, int day) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public AdminReportDTO getOneReport(int reportSeq) throws Exception {
+		String sql = "select * from admin_reports where report_seq = ?";
+		return t.query(sql, new Object[] {reportSeq}, (rs, rowNum) -> {
+			AdminReportDTO ard = new AdminReportDTO();
+			ard.setAdminAcceptedDate(rs.getString("admin_accepted_date"));
+			ard.setAdminComment(rs.getString("admin_comment"));
+			ard.setAdminFirstReadDate(rs.getString("admin_first_read_date"));
+			ard.setBoardSeq(rs.getInt("board_seq"));
+			ard.setCommentSeq(rs.getInt("comment_seq"));
+			ard.setReportCode(rs.getInt("report_code"));
+			ard.setReportedDate(rs.getString("reported_date"));
+			ard.setReportersComment(rs.getString("reporters_comment"));
+			ard.setReportSeq(rs.getInt("report_seq"));
+			ard.setResultCode(rs.getInt("result_code"));
+			return ard;
+		}).get(0);
+	}
+	
+	@Override
+	public AdminReportResultCode getOneResultCode(int resultCode) throws Exception {
+		String sql = "select * from admin_report_result_code where result_code = ?";
+		
+		return t.query(sql, new Object[] {resultCode}, (rs, rowNum) -> {
+			AdminReportResultCode arrc = new AdminReportResultCode();
+			arrc.setBlockedDay(rs.getInt("blocked_day"));
+			arrc.setIsDelete(rs.getString("is_delete"));
+			arrc.setIsExternalNotify(rs.getString("is_external_notify"));
+			arrc.setIsMemberBlocked(rs.getString("is_member_blocked"));
+			arrc.setResultCode(rs.getInt("result_code"));
+			arrc.setResultDescription(rs.getString("result_description"));
+			return arrc;			
+		}).get(0);
 	}
 	
 }
