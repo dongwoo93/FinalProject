@@ -6,30 +6,17 @@
 	href="resources/css/myarticle.css">
 <script src="resources/js/myarticle.js"></script>
 <script>
-
 $(document).ready(function(){
-	$("#follow").click(function({
-	/* $.ajax({
-		type:"post",
-		data: {},
-		url :"",
-		success :
-			
-			 
-	}); */
-	
-	$("#follow").css("background-color","none"); 
-	$('#follow').attr('id','cancelFollow');
-		var id = $("#follow").val();
-	console.log(id)
-		
-				
-		 
 
-	});
-	
+    $("#cancelFollow").click(function() {
+
+      $("#exampleModalCenter").modal();                             
+                    });
 })
+
+
 </script>
+
 <c:if test="${result.size() > 0}">
 	<script> var list= []; </script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
@@ -65,24 +52,27 @@ $(document).ready(function(){
 			</div>
 			
 			</c:when> 
+			
 			<c:when test="${isFollow}">
 			
 				<div class="profile-user-settings">
 					<h2 class="profile-user-name">${result[0].id}</h2>
-					<div class="profile-edit-btn" id="cancelFollow" style="height:40px;">팔로잉</div>
+					<div class="profile-edit-btn"  id="cancelFollow" style="height:40px;">팔로잉</div>
+					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${result[0].id}')" id="follow" style="height:40px; background-color:#35e0db;display: none;">팔로우</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
 			
 				</div>
-			
+			  
 			</c:when>
 		
 		<c:otherwise>
 			
 				<div class="profile-user-settings">
-					<h2 class="profile-user-name">${result[0].id}</h2>        
-					<div class="profile-edit-btn" id="follow" value = "${sessionScope.loginId}" style="height:40px; background-color:#35e0db;">팔로우</div>
+					<h2 class="profile-user-name">${result[0].id}</h2>       
+					<div class="profile-edit-btn"  id="cancelFollow" data-toggle="modal" data-target="#exampleModalCenter" style="height:40px; display: none;">팔로잉</div> 
+					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${result[0].id}')" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
@@ -91,8 +81,32 @@ $(document).ready(function(){
 			
 		</c:otherwise>
 	</c:choose>
+	
+	
 
+  
 						
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+    
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<h2>정말 팔로우를 취소하시겠습니까?</h2>    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="yes" onclick="unfollow('${sessionScope.loginId}', '${result[0].id}')" >YES</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
 
 			<div class="profile-stats">
 				<ul>
@@ -273,7 +287,7 @@ $(document).ready(function(){
 </div>
 
 <div class="modal fade" id="boardmodal" role="dialog">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog bo" role="document">
 
 		<!-- 				<button id="goNext" class="btn btn-outline-primary">&#62;</button> -->
 		<!-- 				<button id="goPrev" class="btn btn-outline-primary">&#60;</button> -->
@@ -314,13 +328,13 @@ $(document).ready(function(){
 <!-- 			</p> -->
 <!-- 		</div> -->
 		
-		<div class="modal-content" style="flex-direction: row;width:1000px;height:auto;">
+		<div class="modal-content view" style="flex-direction: row;width:1000px;height:auto;">
 			
-			<div class="modal-content" style="width:3%;height:auto;">
+			<div class="modal-content view" style="width:3%;height:auto;">
 				<i class="fas fa-angle-double-left " id="goPrev" 
  					style="font-size: 25px;"></i>
 			</div>
-			<div class="modal-content" style="width:64%;height:auto;">
+			<div class="modal-content view" style="width:64%;height:auto;">
 				<div class="gallery-item" id="picture">
 					<div id="demo" class="carousel slide" data-ride="carousel"
 						data-interval="false">
@@ -341,7 +355,7 @@ $(document).ready(function(){
 
 			</div>
 
-			<div class="modal-content" style="width:30%;height:auto;">
+			<div class="modal-content view" style="width:30%;height:auto;">
 
 
 
@@ -460,7 +474,7 @@ $(document).ready(function(){
 				</div>
 			</div>
 			
-			<div class="modal-content" id="connect" style="width:3%;height:auto;">
+			<div class="modal-content view" id="connect" style="width:3%;height:auto;">
 				<i class="fas fa-angle-double-right text-right" id="goNext" style="font-size: 25px;"></i>
 			</div>
 			

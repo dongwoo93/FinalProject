@@ -1,4 +1,54 @@
+function follow(id1, id2) {
+	var id = id1;
+	var targetId = id2;
+	$.ajax({
+		url : "follow.do",
+		type : "post",
+		data : {
+			id : id,
+			targetId : targetId,
+		},
+		success : function(resp) {
+			$("#cancelFollow").show();
+			$("#follow").hide();
+			
+		},
+		error : function() {
+			console.log("에러 발생!");
+			}
+		})
+}
+ 
+    
+
 $(document).ready(function() {
+	
+	$("#yes").click(function(){
+		function unfollow(id1, id2) {
+	    	var id = id1;
+	    	var targetId = id2;
+	    	$.ajax({
+	    		url : "deletefollow.do",
+	    		type : "post",
+	    		data : {
+	    			id : id,
+	    			targetId : targetId,
+	    		},
+	    		success : function(resp) {
+	    			$("#follow").show();
+	    			$("#cancelFollow").hide();
+	    			
+	    		},
+	    		error : function() {
+	    			console.log("에러 발생!");
+	    			}
+	    		})
+	    }
+		
+		
+	});
+	
+	
 	$("#logout").click(function() {
 		$(location).attr("href", "logout.do");
 	})
