@@ -70,4 +70,12 @@ public class IProfileService implements ProfileService {
 		return pdao.getAllProfileImage();
 	}
 
+	@Override
+	public List<Profile_ImageDTO> getPic(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return pdao.getPic(id);
+	}
+
+	
+
 }

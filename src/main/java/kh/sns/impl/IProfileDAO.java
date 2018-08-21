@@ -128,5 +128,28 @@ public class IProfileDAO implements ProfileDAO {
 		});
 	}
 
+	@Override
+	public List<Profile_ImageDTO> getPic(String id) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "select system_file_name from profile_image where id=? and is_selected='y'";
+		return template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
+
+			@Override
+			public Profile_ImageDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Profile_ImageDTO tmp = new Profile_ImageDTO();
+				tmp.setId("");
+				tmp.setOriginal_file_name("");
+				tmp.setIs_selected("");
+				tmp.setApply_date("");
+				tmp.setSystem_file_name(rs.getString("system_file_name"));
+				
+				return tmp;
+			}
+			
+		});
+		
+	}
+
 	
 }

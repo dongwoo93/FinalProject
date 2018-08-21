@@ -205,14 +205,13 @@
 			<script>alert('회원 정보 변경에 실패했습니다.')</script>
 		</c:otherwise>
 	</c:choose>
-</c:if>
+</c:if>    
 	<div class="py-5">
 		<div class="container mywrap">
-		<br>
-			<div class="row">
+		<br>    
+			<div class="row"> 
 				<div class="col-4">
-				<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
-								class="rounded-circle" alt="Cinque Terre" width="40" height="35">
+				<img class="rounded-circle" alt="Cinque Terre" width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
 								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">
