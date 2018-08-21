@@ -11,6 +11,29 @@ $(document).ready(function() {
 			$(".element").remove();
 		}
 	});
+	
+	/*$('#profileimage').on('hidden.bs.modal', function (e) {
+
+		var myvar = '<div class="modal-dialog modal-lg">'+
+		'      <div class="modal-content">'+
+		'        <div class="modal-header">'+
+		'          <h4 class="modal-title">프로필 이미지</h4>'+
+		'          <button type="button" class="close" data-dismiss="modal">×</button>'+
+		'        </div>'+
+		'        <div class="modal-body">'+
+		'          <input type=\'file\' onchange="readURL(this);" />'+
+		'			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />'+
+		'        </div>'+
+		'        <div class="modal-footer">'+
+		'          <button type="button" class="btn btn-primary" data-dismiss="modal">적용</button>'+
+		'          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>'+
+		'        </div>'+
+		'      </div>'+
+		'    </div>';
+			
+		$("#profileimage").html(myvar);
+
+		})*/
 
 	$("#toMy").click(function() {
 		$(location).attr("href", "profile.member");
@@ -208,11 +231,12 @@ $(document).ready(function() {
 			}
 		});
 	})
-
-	document.getElementById("delete").onclick = function() {
+	
+	$("#delete").click(function(){
 		var seq = document.getElementById("hidden").value;
 		location.href = "boardDelete.bo?seq="+seq;
-	}	
+
+	})
 
 	$("#modify").click(function(){
 		$("#modalcontents").attr("contentEditable","true");
@@ -240,6 +264,44 @@ $(document).ready(function() {
 
 			}
 		});
+	})
+	
+	$("#savebtn").click(function() {
+		if($('#inputimg').get(0).files.length != 0) {
+			var formData = new FormData($("#fileForm")[0]);
+			$.ajax({
+				type:"POST",
+				url:"uploadImg.profile",
+				data: formData,
+				processData : false,
+	            contentType : false,
+				success: function(data) {
+					alert(data);
+					location.reload();
+				},
+				error : function(error) {
+	                console.log(error);
+	                console.log(error.status);
+	            }
+			});
+		}else {
+			var fileName = $("#hiddenimgname").val();
+			var id = $("#hiddenid").val();
+			$.ajax({
+				type:"POST",
+				url:"updateImg.profile",
+				data: {system_file_name:fileName, id:id},
+				success: function(data) {
+					alert(data);
+					location.reload();
+				},
+				error : function(error) {
+	                console.log(error);
+	                console.log(error.status);
+	            }
+			});
+		}
+		
 	})
 	
 

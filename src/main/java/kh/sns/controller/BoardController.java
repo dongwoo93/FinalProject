@@ -32,6 +32,7 @@ import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -57,8 +58,9 @@ public class BoardController {
 	
 	@Autowired
 	private Member_FollowService member_followService;
+	
 	@Autowired
-	private ProfileService profileservice;
+	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -133,7 +135,7 @@ public class BoardController {
 		
 		boolean isBlock = member_blockService.isBlock(sessionid,id);
 		boolean isFollow = member_followService.isFollow(sessionid,id);
-		boolean isNotPublic = profileservice.isNotPublic(id);
+		boolean isNotPublic = profileService.isNotPublic(id);
 		List<Board_MediaDTO> result2 = new ArrayList<>();
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
@@ -145,6 +147,7 @@ public class BoardController {
 		Map<Integer, Integer> likecount = new HashMap<>();
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
 		Map<Integer, Integer> commentcount = new HashMap<>();
+		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
 		
 		for(int[] tmp : likecnt) {
 			likecount.put(tmp[0],tmp[1]);
@@ -163,7 +166,9 @@ public class BoardController {
 		mav.addObject("isBlock", isBlock); 
 		mav.addObject("isFollow", isFollow);
 		mav.addObject("isNotPublic", isNotPublic);  
+		mav.addObject("profileImg", profileImg);
 		mav.setViewName("myarticle3.jsp");
+		mav.addObject("profileImg", profileImg);
 		return mav;
 	}
 	
