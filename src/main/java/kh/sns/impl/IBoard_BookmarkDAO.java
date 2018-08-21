@@ -69,7 +69,10 @@ public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
 						return isBookmarked;
 					}} );	
 				
-				return an.get(0);
+				if(an.size()>0) { 
+					return an.get(0);
+				}
+				return result;
 			}
 	}
 
