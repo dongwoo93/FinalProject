@@ -59,6 +59,9 @@ public class BoardController {
 	@Autowired
 	private Member_FollowService member_followService;
 	
+	@Autowired
+	private ProfileService profileService;
+	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
