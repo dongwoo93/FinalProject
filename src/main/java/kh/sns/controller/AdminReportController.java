@@ -18,13 +18,15 @@ import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
 import kh.sns.dto.AdminReportResultCode;
 import kh.sns.dto.JQueryPieChartVO;
+import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.interfaces.AdminReportsService;
+import kh.sns.interfaces.MemberBusinessService;
 
 @Controller
 public class AdminReportController {
 	
-	@Autowired
-	AdminReportsService ars;
+	@Autowired	AdminReportsService ars;
+	@Autowired MemberBusinessService mbs;
 	
 	@RequestMapping("/report.admin")
 	public ModelAndView reportManagementMain(HttpSession session) throws Exception {
@@ -61,7 +63,7 @@ public class AdminReportController {
 	public void reportManagementMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO(1);
+		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO(Integer.parseInt(request.getParameter("chart")));
 		new Gson().toJson(list, response.getWriter());
 		
 	}
@@ -88,31 +90,18 @@ public class AdminReportController {
 	}
 	
 	@RequestMapping("/idunno.test")
-	public ModelAndView writeProcBoard(HttpServletRequest request) {		
-		
-//		System.out.println(request.getSession().getServletContext().getRealPath("AttachedMedia"));
+	public void writeProcBoard(HttpServletRequest request, HttpServletResponse response) {			
 		
 		try {
-//			profileService.toggleProfileCheckbox(profileService.getOneProfile("yukirinu"), "is_allow_sms");
-//			List<BoardDTO> list = boardService.getBoard("yukirinu");
-//			System.out.println(new Gson().toJson(list));
-						
-/*			List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO();
-			System.out.println(new Gson().toJson(list));*/
+			PrintWriter out = response.getWriter(); 
+			List<MemberBusinessDTO> list = mbs.getAllMemberBiz();
 			
-/*			List<AdminReportResultCode> list = ars.getResultCodeList();
-			*/
-			
-			List<Integer> list = ars.getAllAcceptedCounts();
-			
-			list.forEach(System.out::println);
+			list.forEach(out::println);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ModelAndView mav = new ModelAndView();
-		return mav;
 	}
 	
 	@RequestMapping("/send.admin")
