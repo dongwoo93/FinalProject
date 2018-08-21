@@ -469,7 +469,7 @@ $(document).ready(function(){
 
 
 
-					<br> <br> <input id="seq" type=hidden name=board_seq>
+					<br> <br> <input id="seq" type=hidden name=board_seq style="word-wrap: break-word; word-break:break-all">    
 
 
 					<div id="articlecomment"

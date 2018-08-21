@@ -97,7 +97,7 @@
 	var boardid = $("#boardid").val();  
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; background-color:#E1F5FE"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all background-color:#E1F5FE"); 
 		
 		if(sessionid == boardid) {      
 		$("#commentdel"+seq).html("삭제");   
@@ -110,8 +110,8 @@
     	var seq = $(e).attr("value"); 
 		 
 		$("#ul"+seq).attr("style",false);            
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word;"); 
-		$("#commentdel"+seq).html("");  
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all"); 
+		$("#commentdel"+seq).html("");   
 		$("#commentmod"+seq).html("");
   
     }
@@ -139,15 +139,17 @@
     function modComment(e) { 
        
       	 var comment_seq = $(e).attr("value");
-    
-      		 
+		
       		 $("#commenttxt"+comment_seq).attr("contentEditable",true);
           	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
           	 $("#commenttxt"+comment_seq).focus();  
-        
-          	$(e).click(function() {
-          			 var txt = $("#commenttxt"+comment_seq).val();
-             	 	  
+
+          	$(e).click(function() {      
+          			 var txt = $("#commenttxt"+comment_seq).html();
+          			 if(txt == ""){
+                         alert("댓글을 입력해주세요");
+                      }
+                      else {  
                     	$.ajax({    
                               type: "POST",    
                               url: "commentmod.co",    
@@ -158,6 +160,7 @@
      		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
                               }  
                          }); //ajax 
+                         }
           	})
           
     }
@@ -304,10 +307,10 @@
 							<div id="contcenter" class="mt-2 mx-3 pb-2">
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
-									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}" style="font-size: 14px;">${tmp.id}</a>
+									<a class="ml-1 idtxt" id="con${tmp.board_seq}" 
+										href="board.bo?id=${tmp.id}" style="font-size: 14px; ">${tmp.id}</a>
 
-									<div class='pl-3' id="contdiv${tmp.board_seq}"></div>
+									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
 			 var regex = /(#[^#\s,;]+)/gi  ;            
 		  var txt = "${tmp.contents}";                    
@@ -353,9 +356,9 @@
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>
 														<li id='li2'><div
-																id='commenttxt${comment.comment_seq}'
-																class='commenttxt txt${tmp.board_seq}'
-																style='word-wrap: break-word;'>${comment.comment_contents}</div></li>
+																id='commenttxt${comment.comment_seq}'  
+																class='commenttxt txt${tmp.board_seq}'   
+																style='word-wrap: break-word; word-break:break-all'>${comment.comment_contents}</div></li>
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
@@ -422,7 +425,7 @@
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {     
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word;' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
@@ -430,7 +433,7 @@
 		                            }); 
 							 
 
-						 		</script>
+						 		</script>    
 						</div>
 						<!--cont  -->
 					</div>
