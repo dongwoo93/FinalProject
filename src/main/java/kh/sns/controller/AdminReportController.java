@@ -61,7 +61,7 @@ public class AdminReportController {
 	public void reportManagementMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO(1);
+		List<JQueryPieChartVO> list = ars.getAdminReportProcessedForPieChartVO(Integer.parseInt(request.getParameter("chart")));
 		new Gson().toJson(list, response.getWriter());
 		
 	}
