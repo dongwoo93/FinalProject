@@ -18,6 +18,7 @@ public interface ProfileDAO {
 	public List<Profile_ImageDTO> selectProfileImage(String id) throws Exception;
 	public int insertProfileImage(Profile_ImageDTO dto) throws Exception;
 	public int updateProfileImages(String id) throws Exception;
+	public int updateProfileImages2(String systemFileName) throws Exception;
 	
 	
 

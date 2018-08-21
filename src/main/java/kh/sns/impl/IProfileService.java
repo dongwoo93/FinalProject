@@ -59,4 +59,9 @@ public class IProfileService implements ProfileService {
 		return pdao.updateProfileImages(id);
 	}
 
+	@Override
+	public int updateProfileImages2(String systemFileName) throws Exception {
+		return pdao.updateProfileImages2(systemFileName);
+	}
+
 }

@@ -21,6 +21,12 @@
         }
     }
 	</script>
+	<script>
+	function updateImg(name) {
+		 $('#profileimg').attr('src', "AttachedMedia/"+name);
+		 $("#hiddenimgname").val(name);
+	}
+	</script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<script>    
 			list.push("${tmp.board_seq}");    
@@ -36,11 +42,24 @@
 		<div class="profile">
 			<div class="profile-image">
 				<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;">
+				<c:choose>
+				
+				<c:when test="${profileImg.size() > 0}">
 				<c:forEach items="${profileImg}" var="proimg">
 				<c:if test="${proimg.is_selected eq 'y'}">
 				<img src="AttachedMedia/${proimg.system_file_name}" width="152px" height="152px" style="object-fit: cover;"></a>
 				</c:if>
 				</c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+				<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces" width="152px" height="152px" style="object-fit: cover;"></a>
+				</c:otherwise>
+				</c:choose>
+				
+				
+				
+				
 				
 				<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 			</div>
@@ -491,8 +510,8 @@
         <!-- Modal body -->
          
         <div class="modal-body">
-        <div>
-          <input name="inputimg" type='file' onchange="readURL(this);"/>
+        <div style="max-height: 300px;">
+          <input id="inputimg" name="inputimg" type='file' onchange="readURL(this);"/>
 			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />
 		</div>
 		<div class="dropdown-divider" ></div>
@@ -504,7 +523,7 @@
   		<div style="overflow-x: scroll; max-height:300px; display: flex;">
 		<c:forEach items="${profileImg}" var="proimg">
 		<c:if test="${proimg.is_selected eq 'n'}">
-		<img id="profileimg" src="AttachedMedia/${proimg.system_file_name}" style="object-fit: cover;">
+		<img onclick="updateImg('${proimg.system_file_name}')" id="profileimg" src="AttachedMedia/${proimg.system_file_name}" style="object-fit: cover; cursor: pointer;">
 		</c:if>
 		</c:forEach>
 		</div>
@@ -515,6 +534,8 @@
           <button id="savebtn" type="button" class="btn btn-primary">저장</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
         </div>
+        <input id="hiddenimgname" type="hidden">
+        <input id="hiddenid" type="hidden" value="${sessionScope.loginId}">
         
       </div>
     </div>

@@ -90,5 +90,21 @@ public class ProfileController {
             
         
 	}
+	
+	@RequestMapping("/updateImg.profile")
+	public void updateProfileImage(HttpServletResponse response, Profile_ImageDTO dto) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int setImg = profileService.updateProfileImages(dto.getId());
+		int updateImg = profileService.updateProfileImages2(dto.getSystem_file_name());
+		System.out.println(setImg +":"+updateImg);
+		if(setImg > 0 && updateImg > 0) {
+			response.getWriter().print("적용 완료");
+		}else {
+			response.getWriter().print("적용 실패");
+		}
+		
+		response.getWriter().flush();
+        response.getWriter().close();
+	}
 
 }

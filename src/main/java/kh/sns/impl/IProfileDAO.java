@@ -73,7 +73,7 @@ public class IProfileDAO implements ProfileDAO {
 	
 	@Override
 	public List<Profile_ImageDTO> selectProfileImage(String id) throws Exception {
-		String sql = "select * from profile_image where id=?";
+		String sql = "select * from profile_image where id=? order by apply_date desc";
 		return template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
 
 			@Override
@@ -90,7 +90,7 @@ public class IProfileDAO implements ProfileDAO {
 
 	@Override
 	public int insertProfileImage(Profile_ImageDTO dto) throws Exception {
-		String sql = "insert into profile_image values(?,?,?,?)";
+		String sql = "insert into profile_image values(?,?,?,?,sysdate)";
 		return template.update(sql, dto.getId(), dto.getOriginal_file_name(), dto.getSystem_file_name(), dto.getIs_selected());
 	}
 
@@ -98,6 +98,12 @@ public class IProfileDAO implements ProfileDAO {
 	public int updateProfileImages(String id) throws Exception {
 		String sql = "update profile_image set is_selected='n' where id=?";
 		return template.update(sql, id);
+	}
+
+	@Override
+	public int updateProfileImages2(String systemFileName) throws Exception {
+		String sql = "update profile_image set is_selected='y', apply_date=sysdate where system_file_name=?";
+		return template.update(sql, systemFileName);
 	}
 
 	
