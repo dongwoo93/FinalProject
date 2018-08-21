@@ -16,26 +16,15 @@
 		width:120px;
 	}
 	
-	.itemMenu:hover{
+	.itemMenu{
 		color:white;
 		background-color: gray;
+		cursor: pointer;
 	}
 	
-	.itemMenu::after {
-		position: absolute;
-		content: '';
-		top:0;
-		left: 0;
-		width: 0;
-		height: 100%;
-		background-color: gray;
-		transform-origin:left;
-		transition:width 0.25s ease;
-		z-index:-1;
-	}
-	
-	.itemMenu:hover::after{
-		width:100%;
+	.itemMenu:hover{
+		color:black;
+		cursor: pointer;
 	}
 	 
 	#contents {

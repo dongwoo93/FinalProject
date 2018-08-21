@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.Board_Tags2DTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
@@ -88,7 +89,7 @@ public class IBoardService implements BoardService {
 	}
 	
 
-
+	//Search(검색)
 	@Override
 	public List<BoardDTO> search(String keyword) throws Exception {
 		// TODO Auto-generated method stub
@@ -101,7 +102,7 @@ public class IBoardService implements BoardService {
 		return dao.oneBoard(board_seq);
 	}
 	
-	//tour
+	//tour(둘러보기)
 	@Override
 	public List<BoardDTO> getAllBoard() throws Exception {
 		return dao.getAllBoard();
@@ -111,6 +112,13 @@ public class IBoardService implements BoardService {
 	public List<Board_MediaDTO> getAllBoard2() throws Exception {
 		return dao.getAllBoard2();
 	}
+
+	@Override
+	public List<Board_Tags2DTO> selectTagCount() throws Exception {
+		return dao.selectTagCount();
+	}
+	
+	
 
 	
 	

@@ -1,10 +1,14 @@
 package kh.sns.impl;
 
+import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.aspectj.weaver.TemporaryTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-
+import kh.sns.dto.Board_Tags2DTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
@@ -214,7 +218,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 
 	@Override
-	public BoardDTO  oneBoard(String board_seq) throws Exception {
+	public BoardDTO oneBoard(String board_seq) throws Exception {
 		// TODO Auto-generated method stub
 		String sql = "select * from board where board_seq = ?";
 		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
@@ -235,6 +239,7 @@ public class IBoardDAO implements BoardDAO  {
 		
 		return result.get(0);
 		}
+	
 	
 	//tour
 	@Override
@@ -259,7 +264,7 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Override
 	public List<Board_MediaDTO> getAllBoard2() throws Exception {
-		String sql = "select * from board_media where boa";
+		String sql = "select * from board_media where board_seq";
 		return template.query(sql, new RowMapper<Board_MediaDTO>() {
 
 			@Override
@@ -274,5 +279,26 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
+
+	@Override
+	public List<Board_Tags2DTO> selectTagCount() throws Exception {
+		String sql ="select tags,count(*),LISTAGG(board_seq,',') within group (order by board_seq) from board_tags group by tags order by count(*) desc";
+		return  template.query(sql, new RowMapper<Board_Tags2DTO>() {
+
+			@Override
+			public Board_Tags2DTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_Tags2DTO tmp = new Board_Tags2DTO();
+				List<String> tmp2 = new ArrayList<>();
+				tmp.setTag(rs.getString(1));
+				tmp.setCount(rs.getString(2));
+				tmp2 = Arrays.asList(rs.getString(3).split("\\s*,\\s*"));
+				tmp.setSeqArr(tmp2);
+				return tmp;
+			}
+			
+		});
+	}
+
+	
 		
 }

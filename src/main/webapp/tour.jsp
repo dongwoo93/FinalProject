@@ -102,18 +102,6 @@ function unmarkit(e) {
     			}
     		})
     }
-    
-    /* 인기태그순 Script */
-    function tagBest(e) {
-    	
-    	$.ajax({
-    		url : "tagBest.bo",
-    		data : {
-    			
-    			
-    		}
-    	})
-    }
 
 </script>
 
@@ -121,11 +109,12 @@ function unmarkit(e) {
 	<div class="dropdown-divider" id="tagmenu"></div>
 		<label class="top">둘러보기</label>
 			<button class="btn btn-outline-primary dropdown-toggle down" type="button" id="dropdownMenuButton" 
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 최신순 </button>
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${category}</button>
 			<div class="dropdown-divider" id="tagmenu"></div>
 				<div class="dropdown-menu itemMenu" aria-labelledby="dropdownMenuButton">
-				    <a class="dropdown-item" onclick="tagBest(this)">인기 태그순</a>
-				    <a class="dropdown-item" onclick="likeBest(this)">좋아요 순</a>
+				<a href="tour.bo?cat=1" class="dropdown-item" style="cursor: pointer;">최신글</a>
+				    <a href="tour.bo?cat=2" class="dropdown-item" style="cursor: pointer;">좋아요</a>
+				    <a href="tour.bo?cat=3" class="dropdown-item" style="cursor: pointer;">인기 태그 순</a>
 				</div>
 </div>
 
@@ -138,34 +127,60 @@ function unmarkit(e) {
 			<h4 class="card-title" id="tourTop">
 				<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
 					<a id="ids" href="board.bo?id=${result.id}">${result.id}</a>
-						<!-- 북마크 -->
-						<i value="${result.board_seq}" style="cursor: pointer;" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
-						<i value="${result.board_seq}" style="font-weight: bold; cursor: pointer; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+					<!-- 북마크 -->
+						<i value="${result.board_seq}" style="cursor: pointer;" 
+							id="mark" class="far fa-bookmark icon" onclick="markit(this)">
+						</i>
+						<i value="${result.board_seq}" style="font-weight: bold; cursor: pointer; color: #28a745; display: none;" 
+							id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)">
+						</i>
 						<!-- 좋아요 -->
 							<c:choose>
 								<c:when test="${result3.containsKey(result.board_seq)}">
-									<i value="${result.board_seq}" style="cursor: pointer; display: none;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
-									<i value="${result.board_seq}" style="color: red; cursor: pointer;" id="likecancel" class="fas fa-heart" onclick="unlikeit(this)"></i>
+									<i value="${result.board_seq}" style="cursor: pointer; display: none;" 
+										id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)">
+									</i>
+									<i value="${result.board_seq}" style="color: red; cursor: pointer;" 
+										id="likecancel" class="fas fa-heart" onclick="unlikeit(this)">
+									</i>
 									<!-- 좋아요 카운트 -->
 									<c:choose>
 										<c:when test="${result4[result.board_seq] != null}">
-											<p id="p"><i value="${result.board_seq}" id="count${result.board_seq}"><c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i></p>
+											<p id="p">
+												<i value="${result.board_seq}" id="count${result.board_seq}">
+												<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i>
+											</p>
 										</c:when>
 											<c:otherwise>
-												<p id="p"><i value="${result.board_seq}" id="count${result.board_seq}"><c:out value="${result4[result.board_seq]}"/></i></p>
+												<p id="p">
+													<i value="${result.board_seq}" id="count${result.board_seq}">
+													<c:out value="${result4[result.board_seq]}"/></i>
+												</p>
 											</c:otherwise>
 									</c:choose>
 								</c:when>
 									<c:otherwise>   
-										<i value="${result.board_seq}" style="cursor: pointer;" id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)"></i>
-			                   			<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" id="likecancel" class="fas fa-heart" onclick="unlikeit(this)"></i>
+										<i value="${result.board_seq}" style="cursor: pointer;" 
+											id="likeit" class="far fa-heart icon mr-1" 
+											onclick="likeit(this)">
+										</i>
+			                   			<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" 
+			                   				id="likecancel" class="fas fa-heart" 
+			                   				onclick="unlikeit(this)">
+			                   			</i>
 										<!-- 좋아요 카운트 -->
 										<c:choose>
 											<c:when test="${result4[result.board_seq] != null}">
-												<p id="p"><i value="${result.board_seq}" id="count${result.board_seq}"><c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i></p>
+												<p id="p">
+													<i value="${result.board_seq}" id="count${result.board_seq}">
+													<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i>
+												</p>
 											</c:when>
 												<c:otherwise>
-													<p id="p"><i value="${result.board_seq}" id="count${result.board_seq}"><c:out value="${result4[result.board_seq]}"/></i></p>
+													<p id="p">
+														<i value="${result.board_seq}" id="count${result.board_seq}">
+														<c:out value="${result4[result.board_seq]}"/></i>
+													</p>
 												</c:otherwise>
 										</c:choose>
 									</c:otherwise>
@@ -190,7 +205,10 @@ function unmarkit(e) {
 			<!-- 이미지 -->
 			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 				<a href="#" > <!--src='AttachedMedia/${media.system_file_name}'-->
-					<img class="card-img-top" id="card" src='AttachedMedia/${media.system_file_name}' alt="Card image cap"></a>
+					<img class="card-img-top" 
+						id="card" src='AttachedMedia/${media.system_file_name}'
+						alt="Card image cap">
+				</a>
 			</c:forEach>
 		</div>
 	</c:forEach>

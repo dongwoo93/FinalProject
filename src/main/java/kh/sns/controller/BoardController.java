@@ -31,6 +31,7 @@ import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
+import kh.sns.dto.Board_Tags2DTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
@@ -202,50 +203,104 @@ public class BoardController {
 	}
 	
 	
-	//search
+	//Search(검색)
 	@RequestMapping("/search.bo")
 	public ModelAndView search(HttpSession session, String search) throws Exception{
-		String id = (String)session.getAttribute("loginId");
 		ModelAndView mav = new ModelAndView();
-		System.out.println(search);
-		List<BoardDTO> result = boardService.search(search); 		// 검색어 띄우기
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 띄우기
-		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 누를때
-		List<int[]> result4 = board_likeService.selectLikeCount();	// 좋아요 조회
-		Map<Integer,String> map = new HashMap<>();
-		Map<Integer,Integer> countlike = new HashMap<>();
+		String id = (String)session.getAttribute("loginId");
 		
-		for(int[] list : result4) {
-			countlike.put(list[0], list[1]);
+		List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+		
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+		
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
-	
+		
+		// 누를때
 		for(int tmp : result3) {
 			map.put(tmp, "y");
 		}
-		
-		for(int i = 0; i < result.size(); i++) {
-			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+	 	
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
 		}
+		
 		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result);		// 검색어 띄우기
-		mav.addObject("result2", result2);		// 사진 띄우기
-		mav.addObject("result3", map);			// 좋아요 누를때
-		mav.addObject("result4",countlike);		// 좋아요 조회
+		mav.addObject("result", result);		// 검색어
+		mav.addObject("result2", result2);		// 사진
+		mav.addObject("result3", map);			// 누를때
+		mav.addObject("result4",countlike);		// 조회
 		mav.setViewName("search2.jsp");
 		return mav;
 	}
 	
-	//tour
+		//tour
 		@RequestMapping("/tour.bo")
-		public ModelAndView goTour() throws Exception {
+		public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 			ModelAndView mav = new ModelAndView();
-			List<BoardDTO> result = boardService.getAllBoard();		 // 전체 띄우기
-			List<List<Board_MediaDTO>> result2 = new ArrayList<>();	// 사진 띄우기
-			for(int i = 0;i < result.size(); i++) {
+			String id = (String)session.getAttribute("loginId");
+			String category = null;
+			
+			List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+			List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+			List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+			List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+			
+			Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+			Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+
+			// 최신글
+			if(cat.equals("1")) {
+				result = boardService.getAllBoard();
+				category = "최신글";
+			}
+			// 좋아요 
+			else if(cat.equals("2")) {
+				category = "좋아요 순";
+				List<int[]> seqArr = board_likeService.bestLike();
+				for(int i = 0; seqArr.size() > i; i++) {
+					result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+				}
+			}
+			// 인기 태그
+			else if(cat.equals("3")) {
+				category = "인기 태그 순";
+				List<Board_Tags2DTO> tag = boardService.selectTagCount();
+				for(int i = 0; tag.size() > i; i++) {
+					for(int j = 0; tag.get(i).getSeqArr().size() > j; j++) {
+						result.add(boardService.oneBoard(tag.get(i).getSeqArr().get(j)));
+					}
+					
+				}
+			}
+			
+			// 사진
+			for(int i = 0;i < result.size(); i++) { 
 				result2.add(boardService.search2(result.get(i).getBoard_seq()));
 			}
-			mav.addObject("result", result);	// 전체 띄우기
-			mav.addObject("result2", result2);	// 사진 띄우기
+			
+			// 누를때
+			for(int tmp : result3) {
+				map.put(tmp, "y");
+			}
+		 	
+			// 조회
+			for(int[] list : result4) {
+				countlike.put(list[0], list[1]);
+			}
+			
+			mav.addObject("category", category);	// 카테고리
+			mav.addObject("result", result);		// 전체 
+			mav.addObject("result2", result2);		// 사진 
+			mav.addObject("result3", map);			// 누를때
+			mav.addObject("result4",countlike);		// 조회
 			mav.setViewName("tour.jsp");
 			return mav;
 		}
