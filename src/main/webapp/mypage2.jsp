@@ -418,8 +418,8 @@
 							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
 							<br><div class="form-check">&nbsp;&nbsp;
 						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_public value="y" id=chkAllowPublic
-						          ${ profile.is_allow_public eq 'y' ? 'checked' : '' }>
+						          <input class="form-check-input" type="checkbox" name=is_allow_public value="n" id=chkAllowPublic
+						          ${ profile.is_allow_public eq 'n' ? 'checked' : '' }>
 						           <strong style="font-weight:bold;">비공개 계정</strong>
 						        </label>
 						        <p id="p"><small>계정이 비공개 상태인 경우 회원님이 승인한 사람만 SocialWired에서 회원님의 사진과 동영상을 볼 수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</small></p>
