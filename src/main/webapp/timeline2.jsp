@@ -182,9 +182,11 @@
     	$("#commenthide"+board_seq).html("");
     }
 </script>
-<div id="allwrapper">
+<div class="" id="allwrapper">
 	<div class="" id="centerwrapper">
-		<div class="container" id="contents">
+	
+		<div class="container " id="contents">
+		
 			<div id="board">
 
 				<script>var num = 1;</script>
@@ -425,13 +427,44 @@
 				</c:forEach>
 			</div>
 			<!-- board -->
+			
+			
+		
+				<div id="float" style="position:fixed;">	
+				
+				  <div class="container" style="width:300px;margin-top:55px;margin-left:30px;"> 
+				  <hr class="_5mToa">
+					    <h2 class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;">추천 Follow</h2>
+					    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;">추천 Follow를 추가하세요!!</p>
+					    <table class="table table-striped">					      
+					      <tbody class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:1 8px;">
+					        <tr>
+					          <td>John</td>
+					        </tr>
+					         <tr>
+					          <td>John</td>
+					        </tr>
+					         <tr>
+					          <td>John</td>
+					        </tr>
+					        <tr>
+					          <td>John</td>
+					        </tr>
+					      </tbody>
+					    </table>
+					    <hr class="_5mToa">
+					</div>
+				</div>	 
+						
+							
+				
+			
+				
 
 
 		</div>
 		<!-- container -->
-		<div class="col-md-6 align-self-center" id="side">
-			<br>
-		</div>
+		
 	</div>
 	<!-- centerwrapper -->
 </div>

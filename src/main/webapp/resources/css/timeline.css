@@ -4,10 +4,12 @@
 	margin-left: auto;
 	margin-right: auto;
 	display: -webkit-box;
+	
 }
 
 #centerwrapper {
 	height: 100%;
+	
 }
  
 /*컨테이너*/
@@ -265,3 +267,11 @@ padding-right:3%;
    	 top : 2.5%;
    	 font-size: 25px;
 }
+
+._5mToa {
+    border-top: 2px solid #efefef;
+    height: 2px;
+    margin: 0 0 12px;
+    width: 100%;
+}
+

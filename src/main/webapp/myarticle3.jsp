@@ -24,7 +24,6 @@
 			<div class="profile-image">
 				<img
 					src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
-				<!-- 					  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 			</div>
 
 
@@ -108,11 +107,8 @@
 
 
 					<div class="gallery-item" id="${tmp.board_seq}">
-						<%-- 				<img src='https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop' class='gallery-image' id="${tmp.board_seq}">    --%>
 						<img src="AttachedMedia/${result2[status.index].system_file_name}" class="img-fluid">
 							
-
-						<%-- 					<div class="gallery-item-info" id="item${tmp.board_seq}"> --%>
 						<div class="gallery-item-info">
 							<ul>
 								<li class="gallery-item-likes"><i class="fas fa-heart"></i>
@@ -221,48 +217,9 @@
 </div>
 
 	<div class="modal fade" id="boardmodal" role="dialog">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog bo" role="document">
 
-		<!-- 				<button id="goNext" class="btn btn-outline-primary">&#62;</button> -->
-		<!-- 				<button id="goPrev" class="btn btn-outline-primary">&#60;</button> -->
-
-		<!-- 				<div class="bg-white" id="goNext">&#62;</div> -->
-		<!-- 		        <div class="bg-white" id="goPrev">&#60;</div> -->
-
-<!-- 		<div class="modal-content" style="width:1000px;"> -->
-<!-- 			<p class="text-center"> -->
-<!-- 				<i class="fas fa-angle-double-left " id="goPrev" -->
-<!-- 					style="font-size: 25px;"></i> -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-						
-<!-- 				<i class="fas fa-angle-double-right text-right" id="goNext" style="font-size: 25px;"></i> -->
-<!-- 			</p> -->
-<!-- 		</div> -->
-
-		<div class="modal-content" style="flex-direction:row;width:60px;height:auto;opacity:0.5;">
+		<div class="modal-content view" style="flex-direction:row;width:60px;height:auto;opacity:0.5;">
 			<div class="" style="width:30px;;height:auto;">
 				<i class="fas fa-angle-double-left " id="goPrev" 
  					style="font-size: 25px;"></i>
@@ -275,9 +232,9 @@
 		</div>	
 		<br>
 		
-		<div class="modal-content" style="flex-direction: row;width:1000px;height:auto;">
+		<div class="modal-content view" style="flex-direction: row;width:1000px;height:auto;">
 			
-			<div class="modal-content" style="width:70%;height:auto;">
+			<div class="modal-content view" style="width:70%;height:auto;">
 				<div class="gallery-item" id="picture">
 					<div id="demo" class="carousel slide" data-ride="carousel"
 						data-interval="false">
@@ -298,7 +255,7 @@
 
 			</div>
 
-			<div class="modal-content" style="width:30%;height:auto;">
+			<div class="modal-content view" style="width:30%;height:auto;">
 
 
 
