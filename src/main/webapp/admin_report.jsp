@@ -242,6 +242,8 @@ html,body {
     <!-- 스크립트 외부 파일로 빼는건 나중에 고칠 부분이 없을 정도로 완성되었을 때 하는걸로 부탁드립니다. 외부 파일로 빼면 갱신이 너무 느려서요.. -->
     <script>
     $(document).ready(function() {	
+    	
+    		var globalChartNumber = 1;
     		
     		var originalPrivacyTab = $('#privacyTab').html();
     		var newPrivacyTab = $('#tabthree').html();
@@ -362,12 +364,67 @@ html,body {
     		}) // $AJAX 끝
     	})
     	
-
-			
+    	// 보드 더블클릭
+    	$('a[id*="popBoard"]').dblclick(function(){
+    		var seq = $(this).attr('id').replace('popComment', '').split('_');
+    		$.ajax({
+    			type: "get",
+                url: "boardView.bo",
+                data: {seq : seq[1]},
+                success: function(response) {
+                	console.log(response[0])
+                	$(".modal-title").text(seq[0] + " | " + seq[1] + " | " + response[0].id + " | " + response[0].writedate)
+                	var bodyStr = "<p>" + response[0].contents + "</p>";
+                	for(item in response[1]){
+                		bodyStr += "<img src='AttachedMedia/" + response[1][item].system_file_name + "' style='width: 400px;'>";
+                	}                	
+                	$(".modal-body").html(bodyStr)
+                	console.log(response[1])
+                },
+                error : function() {
+                	$(".modal-title").text("삭제된 것 같습니다.");
+                	$(".modal-body").text("글을 찾을 수 없습니다.")
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+    		});
+    		$("#boardmodal").modal();
+    	})
+    	
+    	$('a[id*=stat]').click(function(){
+    		/* alert($(this).attr("id")) */
+    		globalChartNumber = $(this).attr("id").replace("stat", "");    		
+    		
+    		$.ajax({
+    			url : "chartRenew.ajax",
+    			type : "get",
+    			data : {
+    				chart: globalChartNumber
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				// console.log(response)
+    				var chart = $("#chartContainer").CanvasJSChart(); 
+    			
+    	    		chart.options.data[0].dataPoints = response;    		 
+    	    		chart.render();
+    				
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+			})
+    		
+    	})
+    	
+	
 		    	/*파이 차트*/
-		    	$("#chartContainer").CanvasJSChart({ 
+		    $("#chartContainer").CanvasJSChart({ 
 				title: { 
-					text: "리포트 통계 I: 리포트 종류",
+					text: "Reports Stats",
 					fontSize: 24
 				}, 
 				axisY: { 
@@ -396,15 +453,18 @@ html,body {
 					]  */
 				} 
 				] 
-			});     	
+			});     
+    	
+
     	
     	
+    	// chartRenew
 		setInterval(function(){			
 			$.ajax({
     			url : "chartRenew.ajax",
     			type : "get",
     			data : {
-    				
+    				chart: globalChartNumber
     			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
     			success : function(response) {
     				// console.log(response)
@@ -464,16 +524,16 @@ html,body {
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span>
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
-							class="active nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계 Ⅰ</a></li>
+							class="nav-link mp " data-toggle="pill"
+							data-target="#reportMain" style="font-weight:bold;" id="stat1">리포트 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#reportCode" id="navi">리포트 통계 Ⅱ</a></li>
+							data-toggle="pill" data-target="#reportMain" id="stat2">리포트 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
-						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#resultCode" id="navi">리포트 통계 Ⅲ</a></li>
+<!-- 						<li class="nav-item"><a href="#" class="nav-link mp "
+							data-toggle="pill" data-target="#resultCode" id="stat3">리포트 통계 Ⅲ</a></li>
  						<li class="nav-item"><a class="nav-link mp" href="#" 
- 							data-toggle="pill" data-target="#tabfive" id="navi">Code Legends</a></li> 
+ 							data-toggle="pill" data-target="#tabfive" id="stat4">Code Legends</a></li>  -->
 					<!-- 	<li class="nav-item"><a class="nav-link mp " href="#"
 							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li> -->
 					</ul>
@@ -493,147 +553,24 @@ html,body {
 						
 						
 						<div class="tab-pane fade" id="reportCode" role="tabpanel">
-							<h3 class="text-center" style="font-weight:bold;">비밀번호 변경</h3>
-							<div class="form-group">
-								<form action='passwordChangeProc.member' method=post id=pwdfrm>
-									<label for="inputBeforePassword" style="font-weight:bold;">이전 비밀번호</label> 
-									<input type="password" class="form-control" id="inputBeforePassword" placeholder="Password" name=beforePassword>
-									<br>
-									<label for="inputAfterPassword" style="font-weight:bold;">새 비밀번호</label> 
-									<input type="password" class="form-control" id="inputAfterPassword" placeholder="Password">
-									<br>
-									<label for="inputAfterPasswordOneMore" style="font-weight:bold;">새 비밀번호 확인</label> 
-									<input type="password" class="form-control" id="inputAfterPasswordOneMore" placeholder="Password" name=pw>
-									<div id=pwdRevalArea></div>
-									<br>
-									<div class="form-group text-center "> 
-										<button type=submit class="btn btn-light text-dark" id="pwdChangeBtn" style="font-weight:bold;">비밀번호 변경</button>
-									</div>		
-								</form>
-							</div>
-							
+							<div id="chartContainer2" style="width: 100%; height: 100%"></div>
 						</div>
 						
 						
 						
-						<!-- 코멘트 설정 수정란 -->
 						<div class="tab-pane fade" id="tabthree" role="tabpanel">
-							<h3 style="font-weight:bold;">댓글 필터링</h3>
-							<p id="p"><strong style="font-weight:bold;">키워드 필터</strong></p>
-							<form>
-							 	<div class="form-group">
-							      <label for="exampleTextarea" style="font-weight:bold;">게시물에서 위에 입력한 단어나 문구가 포함된 댓글을 숨깁니다.</label>
-							      <textarea placeholder="쉼표(,)로 구분하여 키워드를 추가하세요." class="form-control" id="exampleTextarea" rows="5" ></textarea>
-							    </div>
-							</form>
-							 <div class="form-check">
-						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
-						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">기본 키워드 사용</strong>
-						        </label>
-						        <p id="p"><small>게시물에서 자주 신고된 키워드가 포함된 댓글을 숨깁니다.</small></p>
-						    </div>
+							<div></div>
 						</div>
 						<!-- -- -->
 						
 						
 						<div class="tab-pane fade" id="resultCode" role="tabpanel">
-							<h2 class="" style="font-weight:bold;">받아보기:</h2><br>
-							 <div class="form-check">
-						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y" 
-									${ profile.is_allow_email eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">뉴스 이메일</strong>
-						        </label>
-						        <br>유용한 최신 정보를 빠짐없이 받아보세요.
-						      </div><br>
-						      <div class="form-check">
-						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_sms value="y"  id=chkAllowSms
-						          ${ profile.is_allow_sms eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">SMS 메시지</strong>
-						        </label>
-						        <br>SMS로 알림을 받아보세요.
-						      </div><br>
+							<div></div>
 						</div>
 					
 						
 						<div class="tab-pane fade" id="reportLog" role="tabpanel">
-							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
-							<br><div class="form-check">&nbsp;&nbsp;
-						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_public value="y" id=chkAllowPublic
-						          ${ profile.is_allow_public eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">비공개 계정</strong>
-						        </label>
-						        <p id="p"><small>계정이 비공개 상태인 경우 회원님이 승인한 사람만 SocialWired에서 회원님의 사진과 동영상을 볼 수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</small></p>
-						    </div>
-						    <hr>
-						    <h3 style="font-weight:bold;">활동 상태: </h3>
-						    <br><div class="form-check">&nbsp;&nbsp;
-						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_status value="y" id=chkAllowStatus
-						          ${ profile.is_allow_status eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">활동 상태 표시</strong>
-						        </label>
-						        <p id="p"><small>SocialWired 앱에서 최근 활동한 시간 정보가 회원님이 팔로우하는 계정 및 메시지를 보낸 모든 사람에게 표시됩니다. 이 설정을 해제하면 다른 계정의 활동 상태를 볼 수 없습니다.</small></p>
-						    </div>
-						    <hr>
-						    <h3 style="font-weight:bold;">스토리 공유: </h3>
-						   <br><div class="form-check">&nbsp;&nbsp;
-						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
-						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">공유 허용</strong>
-						        </label>
-						        <p id="p"><small>사람들이 회원님의 스토리를 메시지로 공유할 수 있습니다.</small></p>
-						    </div>
-						    <hr>
-						    <!-- 댓글 설정 -->
-						    <div>
-						    	<h3 style="font-weight:bold;">댓글:</h3>
-						    	<a class="nav-link mp text-muted" href="#" id="editCommentPane">댓글 설정 수정</a>
-						    </div>
-						    <!-- -- -->
-						    <hr>
-						     <!-- 내가 나온 사진 -->
-						    <fieldset class="form-group">
-						      <!-- <legend>Radio buttons</legend> -->
-						      <h3 style="font-weight:bold;">내가 나온 사진: </h3>
-						     <br> <div class="form-check">&nbsp;&nbsp;
-						        <label class="form-check-label">
-						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-						          	자동으로 추가
-						        </label>
-						      </div>
-						      <div class="form-check">
-						      <label class="form-check-label">&nbsp;&nbsp;
-						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
-						          	수동으로 추가
-						        </label>
-						      </div>
-						      
-						    </fieldset>
-						    <!-- -- -->
-						    <hr>
-						      <!-- 계정 데이터 설정 -->
-						    <div>
-						    	<h3 style="font-weight:bold;">계정 데이터: </h3>
-						    	<a href="#" class="nav-link mp text-muted" href="#" id="editPersonalLogPane">계정 데이터 보기</a>
-						    </div>
-						    <!-- -- -->
-						    <hr>
-						 <h3 style="font-weight:bold;">2단계 인증: </h3>
-						<div class="form-check">							
-					        <br><label class="form-check-label">&nbsp;&nbsp;    
-					          <input class="form-check-input" type="checkbox" name=is_allow_login2 value="y" id=chkAllowLogin2
-					          ${ profile.is_allow_login2 eq 'y' ? 'checked' : '' }>
-					           <strong style="font-weight:bold;">보안 코드 필요</strong>
-					        </label>
-					        <p id="p"><small>이 옵션을 설정하면 회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드가 전송됩니다.</small></p>
-						  </div>
-						 <hr>
+							<div></div>
 						 
 						</div>
 						
@@ -704,6 +641,25 @@ html,body {
 							  </tbody>
 							</table>
 			</div>
+											<div class="modal" id=boardmodal>
+											  <div class="modal-dialog" role="document" >
+											    <div class="modal-content">
+											      <div class="modal-header">
+											        <h5 class="modal-title">Modal title</h5>
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span>
+											        </button>
+											      </div>
+											      <div class="modal-body">
+											        <p>Modal body text goes here.</p>
+											      </div>
+											      <div class="modal-footer">
+											        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+											        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											      </div>
+											    </div>
+											  </div>
+											</div>
 		</div>
 		<br>
 	</div>

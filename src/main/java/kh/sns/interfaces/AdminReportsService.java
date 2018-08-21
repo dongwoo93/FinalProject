@@ -20,7 +20,7 @@ public interface AdminReportsService {
 	public AdminReportDTO getOneReport(int reportSeq) throws Exception;
 	
 	public List<AdminReportCode> getReportCodeList() throws Exception;
-	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception;
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO(int category) throws Exception;
 	
 	public List<AdminReportResultCode> getResultCodeList() throws Exception;	
 	
