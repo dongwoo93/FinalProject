@@ -141,21 +141,6 @@ $(document).ready(function(){
   </div>
 </div>
 
-				<c:otherwise>
-
-					<div class="profile-user-settings">
-						<h2 class="profile-user-name">${result[0].id}</h2>
-						<div class="profile-edit-btn" id="follow"
-							style="height: 40px; background-color: #35e0db;">팔로우</div>
-						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
-						</div>
-
-					</div>
-
-				</c:otherwise>
-			</c:choose>
-
 
 
 			<div class="profile-stats">
