@@ -470,8 +470,8 @@ function modComment(e) {
   	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
   	 $("#commenttxt"+comment_seq).focus();  
 
-  	$(e).click(function() {    
-  			 var txt = $("#commenttxt"+comment_seq).val();     
+  	$(e).click(function() {       
+  			 var txt = $("#commenttxt"+comment_seq).html();     
      	 	 
             	$.ajax({    
                       type: "POST",    

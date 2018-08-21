@@ -3,12 +3,18 @@
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/myarticle.css">
-<script src="resources/js/myarticle.js">
+<script src="resources/js/myarticle.js"></script>
+<script>
+$(document).ready(function(){
+
+    $("#cancelFollow").click(function() {
+
+      $("#exampleModalCenter").modal();                             
+                    });
+})
 
 
 </script>
-
-
 
 <c:if test="${result.size() > 0}">
 	<input type=hidden id='sessionid' value="${sessionScope.loginId}">
@@ -69,46 +75,71 @@
 			<c:choose>
 				<c:when test="${result[0].id == sessionScope.loginId}">
 
-
-					<div class="profile-user-settings">
-
-						<h2 class="profile-user-name">${result[0].id}</h2>
-						<div class="profile-edit-btn" id="toMy" style="height: 40px;">프로필편집</div>
-						<div class="profile-settings-btn">
-							<i class="far fa-times-circle" id="logout"></i>
-						</div>
-						<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
+			<div class="profile-user-settings">
+				<h2 class="profile-user-name">${result[0].id}</h2>
+				<div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
+				<div class="profile-settings-btn">
+					<i class="far fa-times-circle" id="logout"></i>
+				</div>
+				<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
+			</div>
+			
+			</c:when> 
+			
+			<c:when test="${isFollow}">
+			
+				<div class="profile-user-settings">
+					<h2 class="profile-user-name">${result[0].id}</h2>
+					<div class="profile-edit-btn"  id="cancelFollow" style="height:40px;">팔로잉</div>
+					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${result[0].id}')" id="follow" style="height:40px; background-color:#35e0db;display: none;">팔로우</div>
+					<div class="profile-settings-btn">
+						<i class="fas fa-undo-alt"></i>
 					</div>
-
-				</c:when>
-				<c:when test="${isFollow}">
-
-					<div class="profile-user-settings">
-						<h2 class="profile-user-name">${result[0].id}</h2>
-						<div class="profile-edit-btn" id="cancelFollow"
-							style="height: 40px;">팔로잉</div>
-						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
-						</div>
-
+			
+				</div>
+			  
+			</c:when>
+		
+		<c:otherwise>
+			
+				<div class="profile-user-settings">
+					<h2 class="profile-user-name">${result[0].id}</h2>       
+					<div class="profile-edit-btn"  id="cancelFollow" data-toggle="modal" data-target="#exampleModalCenter" style="height:40px; display: none;">팔로잉</div> 
+					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${result[0].id}')" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
+					<div class="profile-settings-btn">
+						<i class="fas fa-undo-alt"></i>
 					</div>
+			
+				</div>
+			
+		</c:otherwise>
+	</c:choose>
+	
+	
 
-				</c:when>
-
-				<c:otherwise>
-
-					<div class="profile-user-settings">
-						<h2 class="profile-user-name">${result[0].id}</h2>
-						<div class="profile-edit-btn" id="follow"
-							style="height: 40px; background-color: #35e0db;">팔로우</div>
-						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
-						</div>
-
-					</div>
-
-				</c:otherwise>
-			</c:choose>
+  
+						
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+    
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<h2>정말 팔로우를 취소하시겠습니까?</h2>    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="yes" onclick="unfollow('${sessionScope.loginId}', '${result[0].id}')" >YES</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -438,7 +469,7 @@
 
 
 
-					<br> <br> <input id="seq" type=hidden name=board_seq>
+					<br> <br> <input id="seq" type=hidden name=board_seq style="word-wrap: break-word; word-break:break-all">    
 
 
 					<div id="articlecomment"
