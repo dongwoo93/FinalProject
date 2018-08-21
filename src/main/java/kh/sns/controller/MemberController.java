@@ -172,52 +172,7 @@ public class MemberController {
 
 
 	}
-	/*======*/
-	@RequestMapping("/profile.member")
-	public ModelAndView editProfile(HttpSession session) throws Exception {
 
-		ModelAndView mav = new ModelAndView();
-
-		if(session.getAttribute("loginId") != null) {
-			String memberId = session.getAttribute("loginId").toString();
-			System.out.println("currentLoginId: " + memberId);
-			MemberDTO member = memberService.getOneMember(memberId);
-			ProfileDTO profile = profileService.getOneProfile(memberId);
-			MemberBusinessDTO memberBiz = null;
-			try {
-				memberBiz = mBizService.selectAnMemberBiz(memberId);
-			} catch(IndexOutOfBoundsException e) {
-				System.err.println("This is not business account!!");
-			}
-			
-			mav.addObject("member", member);
-			mav.addObject("profile", profile);
-			mav.addObject("memberBiz", memberBiz);
-
-			mav.setViewName("mypage2.jsp");
-
-		} else {
-			// 작업 추가
-		}		
-
-		return mav;		
-
-	}
-
-	@RequestMapping("/editProfileProc.member")
-	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpServletRequest request) throws Exception {
-
-		member.setId(request.getSession().getAttribute("loginId").toString());
-		profile.setId(request.getSession().getAttribute("loginId").toString());
-		System.out.println(member);
-
-		int result = memberService.updateOneMemberProfile(member, profile);
-
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("editProfileResult", result);
-		mav.setViewName("redirect:profile.member?targetTab=profileTab");	// 리다이렉트? 포워드?
-		return mav;		
-	}
 
 
 	@RequestMapping("/findPw.do")
