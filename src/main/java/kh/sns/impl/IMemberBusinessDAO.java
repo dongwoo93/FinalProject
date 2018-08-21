@@ -28,8 +28,8 @@ public class IMemberBusinessDAO implements MemberBusinessDAO {
 
 	@Override
 	public int updateAnMemberBiz(MemberBusinessDTO mbiz) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "update member_business set biz_website = ?, biz_email = ?, biz_phone = ?, IS_ALLOW_ENTER_PROFILE = ? where id=?";
+		return template.update(sql, mbiz.getBizWebsite(), mbiz.getBizEmail(), mbiz.getBizPhone(), mbiz.getIsAllowEnterProfile(), mbiz.getId());
 	}
 
 	@Override

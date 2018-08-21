@@ -1,18 +1,19 @@
 package kh.sns.dto;
 
 public class Profile_ImageDTO {
-	private String id, original_file_name, system_file_name, is_selected;
+	private String id, original_file_name, system_file_name, is_selected , apply_date;
 
 	public Profile_ImageDTO() {
 		super();
 	}
 
-	public Profile_ImageDTO(String id, String original_file_name, String system_file_name, String is_selected) {
+	public Profile_ImageDTO(String id, String original_file_name, String system_file_name, String is_selected, String apply_date) {
 		super();
 		this.id = id;
 		this.original_file_name = original_file_name;
 		this.system_file_name = system_file_name;
 		this.is_selected = is_selected;
+		this.apply_date = apply_date;
 	}
 
 	public String getId() {
@@ -45,6 +46,14 @@ public class Profile_ImageDTO {
 
 	public void setIs_selected(String is_selected) {
 		this.is_selected = is_selected;
+	}
+
+	public String getApply_date() {
+		return apply_date;
+	}
+
+	public void setApply_date(String apply_date) {
+		this.apply_date = apply_date;
 	}
 
 	
