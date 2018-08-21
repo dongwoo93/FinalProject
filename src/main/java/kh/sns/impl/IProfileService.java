@@ -1,11 +1,13 @@
 package kh.sns.impl;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.sns.dto.ProfileDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.ProfileDAO;
 import kh.sns.interfaces.ProfileService;
 
@@ -37,4 +39,29 @@ public class IProfileService implements ProfileService {
 		System.out.println(targetValue + " : " + !targetValue);
 		return pdao.updateProfileCheckbox(profile, fieldName, !targetValue);
 	}
+	
+	public boolean isNotPublic(String id) throws Exception{
+		return pdao.isNotPublic(id);
+	}
+	
+	@Override
+	public List<Profile_ImageDTO> selectProfileImage(String id) throws Exception {
+		return pdao.selectProfileImage(id);
+	}
+
+	@Override
+	public int insertProfileImage(Profile_ImageDTO dto) throws Exception {
+		return pdao.insertProfileImage(dto);
+	}
+
+	@Override
+	public int updateProfileImages(String id) throws Exception {
+		return pdao.updateProfileImages(id);
+	}
+
+	@Override
+	public int updateProfileImages2(String systemFileName) throws Exception {
+		return pdao.updateProfileImages2(systemFileName);
+	}
+
 }

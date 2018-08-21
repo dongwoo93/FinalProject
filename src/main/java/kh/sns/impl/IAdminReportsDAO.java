@@ -46,7 +46,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public int insertAnReport(AdminReportDTO ard) throws Exception {
-		String sql = "insert into admin_reports values (report_seq.nextval,?,?,?,sysdate,?,null,null,101,null)";
+		String sql = "insert into admin_reports values (report_seq.nextval,?,?,?,sysdate,?,null,null,null,null)";
 		if(ard.getCommentSeq() == 0) {
 			return t.update(sql, ard.getReportCode(), ard.getBoardSeq(), null, ard.getReportersComment());
 		}else {
@@ -108,15 +108,24 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	}
 	
 	@Override
-	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception {
-		String sql = "select report_code, REPORT_CODE_DESCRIPTION as label, "
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO(int category) throws Exception {
+		String sql = "select report_code as code, REPORT_CODE_DESCRIPTION as label, "
 				+ "(select count(*) from admin_reports where c.report_code = report_code) as y "
 				+ "from admin_report_code c";
+		switch(category) {
+		case 1:
+			
+			break;
+		case 2:
+			sql = "select result_code as code, result_description as label, (select count(*) from admin_reports where c.result_code = result_code) as y from admin_report_result_code c order by code";
+			break;
+		}
+		
 		return t.query(sql, (rs, rowNum) -> {
 			JQueryPieChartVO pcvo = new JQueryPieChartVO();
 			pcvo.setLabel(rs.getString("label"));
 			pcvo.setY(rs.getDouble("y"));
-			pcvo.setLegendText(rs.getString("report_code") + ". " + rs.getString("label"));			
+			pcvo.setLegendText(rs.getString("code") + ". " + rs.getString("label"));			
 			return pcvo;
 		});
 	}

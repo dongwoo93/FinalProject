@@ -60,8 +60,8 @@ public class IAdminReportsService implements AdminReportsService {
 	}
 	
 	@Override
-	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO() throws Exception {
-		return ard.getAdminReportProcessedForPieChartVO();
+	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO(int category) throws Exception {
+		return ard.getAdminReportProcessedForPieChartVO(category);
 	}
 	
 	@Override
