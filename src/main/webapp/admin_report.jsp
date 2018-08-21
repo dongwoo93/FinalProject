@@ -524,16 +524,16 @@ html,body {
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span>
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
-							class="active nav-link mp " data-toggle="pill"
+							class="nav-link mp " data-toggle="pill"
 							data-target="#reportMain" style="font-weight:bold;" id="stat1">리포트 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#reportMain" id="stat2">리포트 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
-						<li class="nav-item"><a href="#" class="nav-link mp "
+<!-- 						<li class="nav-item"><a href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#resultCode" id="stat3">리포트 통계 Ⅲ</a></li>
  						<li class="nav-item"><a class="nav-link mp" href="#" 
- 							data-toggle="pill" data-target="#tabfive" id="stat4">Code Legends</a></li> 
+ 							data-toggle="pill" data-target="#tabfive" id="stat4">Code Legends</a></li>  -->
 					<!-- 	<li class="nav-item"><a class="nav-link mp " href="#"
 							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li> -->
 					</ul>

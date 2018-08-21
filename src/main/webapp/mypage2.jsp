@@ -206,7 +206,10 @@
 				<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
 								class="rounded-circle" alt="Cinque Terre" width="40" height="35">
 								&nbsp;&nbsp;&nbsp;
-								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span>
+								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
+								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">
+									<span class="badge badge-pill badge-warning">biz</span>
+								</c:if>
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="active nav-link mp " data-toggle="pill"
