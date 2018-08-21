@@ -242,6 +242,44 @@ $(document).ready(function() {
 		});
 	})
 	
+	$("#savebtn").click(function() {
+		if($('#inputimg').get(0).files.length != 0) {
+			var formData = new FormData($("#fileForm")[0]);
+			$.ajax({
+				type:"POST",
+				url:"uploadImg.profile",
+				data: formData,
+				processData : false,
+	            contentType : false,
+				success: function(data) {
+					alert(data);
+					location.reload();
+				},
+				error : function(error) {
+	                console.log(error);
+	                console.log(error.status);
+	            }
+			});
+		}else {
+			var fileName = $("#hiddenimgname").val();
+			var id = $("#hiddenid").val();
+			$.ajax({
+				type:"POST",
+				url:"updateImg.profile",
+				data: {system_file_name:fileName, id:id},
+				success: function(data) {
+					alert(data);
+					location.reload();
+				},
+				error : function(error) {
+	                console.log(error);
+	                console.log(error.status);
+	            }
+			});
+		}
+		
+	})
+	
 
 })
 

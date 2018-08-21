@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
@@ -14,6 +13,26 @@
 <c:if test="${result.size() > 0}">
 	<input type=hidden id='sessionid' value="${sessionScope.loginId}">
 	<script> var list= []; </script>
+	<script>
+	function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#profileimg')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+	</script>
+	<script>
+	function updateImg(name) {
+		 $('#profileimg').attr('src', "AttachedMedia/"+name);
+		 $("#hiddenimgname").val(name);
+	}
+	</script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<script>    
          list.push("${tmp.board_seq}");    
@@ -28,8 +47,21 @@
 	<div class="container my">
 		<div class="profile">
 			<div class="profile-image">
-				<img
-					src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+				<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;">
+				<c:choose>
+				
+				<c:when test="${profileImg.size() > 0}">
+				<c:forEach items="${profileImg}" var="proimg">
+				<c:if test="${proimg.is_selected eq 'y'}">
+				<img src="AttachedMedia/${proimg.system_file_name}" width="152px" height="152px" style="object-fit: cover;"></a>
+				</c:if>
+				</c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+				<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces" width="152px" height="152px" style="object-fit: cover;"></a>
+				</c:otherwise>
+				</c:choose>
 				<!--                  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
 			</div>
 
@@ -542,4 +574,49 @@
 
 	</div>
 </div>
+<form id="fileForm">
+<div class="modal fade" id="profileimage" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">프로필 이미지</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+         
+        <div class="modal-body">
+        <div style="max-height: 300px;">
+          <input id="inputimg" name="inputimg" type='file' onchange="readURL(this);"/>
+			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />
+		</div>
+		<div class="dropdown-divider" ></div>
+		
+		<c:if test="${profileImg.size() > 1}">
+		<div class="alert alert-success">
+    		<strong>최근 프로필 사진</strong>
+  		</div>
+  		<div style="overflow-x: scroll; max-height:300px; display: flex;">
+		<c:forEach items="${profileImg}" var="proimg">
+		<c:if test="${proimg.is_selected eq 'n'}">
+		<img onclick="updateImg('${proimg.system_file_name}')" id="profileimg" src="AttachedMedia/${proimg.system_file_name}" style="object-fit: cover; cursor: pointer;">
+		</c:if>
+		</c:forEach>
+		</div>
+		</c:if>
+		</div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button id="savebtn" type="button" class="btn btn-primary">저장</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        </div>
+        <input id="hiddenimgname" type="hidden">
+        <input id="hiddenid" type="hidden" value="${sessionScope.loginId}">
+        
+      </div>
+    </div>
+         </div>
+             </form>
 <%@ include file="include/bottom.jsp"%>
