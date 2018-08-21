@@ -124,7 +124,7 @@ public class ProfileController {
             newFileName = System.currentTimeMillis()+"."
                     +fileName.substring(fileName.lastIndexOf(".")+1);
             // System.out.println("시스템 파일 이름 : " +newFileName);
-            Profile_ImageDTO dto = new Profile_ImageDTO(id, fileName, newFileName, "y");
+            Profile_ImageDTO dto = new Profile_ImageDTO(id, fileName, newFileName, "y", "");
             setImg = profileService.updateProfileImages(id);
             result = profileService.insertProfileImage(dto);
             if(result == 1) {
