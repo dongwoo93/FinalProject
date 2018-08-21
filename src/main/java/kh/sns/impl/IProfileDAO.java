@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.ProfileDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.ProfileDAO;
 
 @Repository
@@ -69,4 +70,41 @@ public class IProfileDAO implements ProfileDAO {
 		}
 		return result;
 	}
+	
+	@Override
+	public List<Profile_ImageDTO> selectProfileImage(String id) throws Exception {
+		String sql = "select * from profile_image where id=? order by apply_date desc";
+		return template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
+
+			@Override
+			public Profile_ImageDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Profile_ImageDTO tmp = new Profile_ImageDTO();
+				tmp.setId(rs.getString(1));
+				tmp.setOriginal_file_name(rs.getString(2));
+				tmp.setSystem_file_name(rs.getString(3));
+				tmp.setIs_selected(rs.getString(4));
+				return tmp;
+			}
+		});
+	}
+
+	@Override
+	public int insertProfileImage(Profile_ImageDTO dto) throws Exception {
+		String sql = "insert into profile_image values(?,?,?,?,sysdate)";
+		return template.update(sql, dto.getId(), dto.getOriginal_file_name(), dto.getSystem_file_name(), dto.getIs_selected());
+	}
+
+	@Override
+	public int updateProfileImages(String id) throws Exception {
+		String sql = "update profile_image set is_selected='n' where id=?";
+		return template.update(sql, id);
+	}
+
+	@Override
+	public int updateProfileImages2(String systemFileName) throws Exception {
+		String sql = "update profile_image set is_selected='y', apply_date=sysdate where system_file_name=?";
+		return template.update(sql, systemFileName);
+	}
+
+	
 }
