@@ -145,6 +145,7 @@ public class BoardController {
 		Map<Integer, Integer> likecount = new HashMap<>();
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
 		Map<Integer, Integer> commentcount = new HashMap<>();
+		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
 		
 		for(int[] tmp : likecnt) {
 			likecount.put(tmp[0],tmp[1]);
@@ -164,6 +165,7 @@ public class BoardController {
 		mav.addObject("isFollow", isFollow);
 		mav.addObject("isNotPublic", isNotPublic);  
 		mav.setViewName("myarticle3.jsp");
+		mav.addObject("profileImg", profileImg);
 		return mav;
 	}
 	
