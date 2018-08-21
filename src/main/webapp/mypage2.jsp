@@ -303,6 +303,7 @@
 							<div class="form-group text-center "> 
 								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;">제출</button>
 								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">계정을 일시적으로 비활성화</button>
+								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">비즈니스 계정으로 전환</button>
 							</div>		
 									
 						</form>
