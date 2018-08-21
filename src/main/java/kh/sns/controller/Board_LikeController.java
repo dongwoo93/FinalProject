@@ -1,6 +1,8 @@
 package kh.sns.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,21 +17,26 @@ public class Board_LikeController {
 	@Autowired
 	private Board_LikeService board_likeservice;
 	
-	@RequestMapping("/like.bo")
-	public void doLike(HttpServletResponse response, Board_LikeDTO dto, String likecount) throws Exception{
-		int likeResult = 0;
-		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_liked());
 	
-		response.setCharacterEncoding("UTF-8");
-		if(dto.getIs_liked().equals("y")) {
-			board_likeservice.insertLike(dto);
-		}
-		else if(dto.getIs_liked().equals("n")) {
-			board_likeservice.deleteLike(dto);
-		}
+	@RequestMapping("/like.bo")
+	public void boardLike(Board_LikeDTO dto, HttpServletResponse res,  HttpSession session) {
+		System.out.println(dto.getBoard_seq() + dto.getIs_liked());   
+		String id = (String) session.getAttribute("loginId");
+		dto.setId(id);
 		
-		int likeCount = board_likeservice.selectLike(dto);
-		response.getWriter().println(likeCount);
+		
+		int result = 0;
+		try {
+			if(dto.getIs_liked().equals("y")) {
+			
+			result = board_likeservice.insertLiko(dto);
+			}else if(dto.getIs_liked().equals("n")) {
+				board_likeservice.deleteLike(dto);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}

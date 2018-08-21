@@ -1,7 +1,6 @@
 package kh.sns.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +43,17 @@ public class IBoard_LikeService implements Board_LikeService {
 	public List<int[]> selectLikeCount() throws Exception {
 		// TODO Auto-generated method stub
 		return board_likedao.selectLikeCount();
+	}
+
+	@Override
+	public int insertLiko(Board_LikeDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return board_likedao.insertLiko(dto);
+	}
+
+	@Override
+	public Board_LikeDTO isLiked(String id, int board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return board_likedao.isLiked(id, board_seq);
 	}
 }

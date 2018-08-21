@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.sns.dto.Board_BookmarkDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.interfaces.Board_BookmarkDAO;
 import kh.sns.interfaces.Board_BookmarkService;
 
@@ -32,6 +33,12 @@ public class IBoard_BookmarkService implements Board_BookmarkService {
 	@Override
 	public List<Integer> searchMark(String id) throws Exception {
 		return bookmarkdao.searchMark(id);
+	}
+
+	@Override
+	public Board_BookmarkDTO isBookmarked(String id, int board_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return bookmarkdao.isBookmarked(id, board_seq);
 	}
 	
 	

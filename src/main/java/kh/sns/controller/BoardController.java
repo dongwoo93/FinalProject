@@ -27,14 +27,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
+import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
-import kh.sns.dto.Member_BlockDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
+import kh.sns.interfaces.Member_BlockService;
+import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -50,6 +53,13 @@ public class BoardController {
 	private Board_LikeService board_likeService;
 	@Autowired
 	private Board_BookmarkService board_bookmarkService;
+	@Autowired
+	private Member_BlockService member_blockService;
+	
+	@Autowired
+	private Member_FollowService member_followService;
+	@Autowired
+	private ProfileService profileservice;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -117,16 +127,21 @@ public class BoardController {
 	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
+		String sessionid= (String)session.getAttribute("loginId");
 		
 //		String id = (String) session.getAttribute("loginId");
 		List<BoardDTO> result = boardService.getBoard(id);
+		
+		boolean isBlock = member_blockService.isBlock(sessionid,id);
+		boolean isFollow = member_followService.isFollow(sessionid,id);
+		boolean isNotPublic = profileservice.isNotPublic(id);
 		List<Board_MediaDTO> result2 = new ArrayList<>();
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 		}
 		String boardCount = boardService.boardCount(id);
-		int followerCount = boardService.getFollowerCount(id);
-		int followingCount = boardService.getFollowingCount(id);
+		int followerCount = member_followService.getFollowerCount(id);
+		int followingCount = member_followService.getFollowingCount(id);
 		List<int[]> likecnt = board_likeService.selectLikeCount();
 		Map<Integer, Integer> likecount = new HashMap<>();
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
@@ -145,7 +160,10 @@ public class BoardController {
 		mav.addObject("followerCount", followerCount);
 		mav.addObject("followingCount", followingCount);
 		mav.addObject("likecount", likecount); 
-		mav.addObject("commentcount", commentcount);  
+		mav.addObject("commentcount", commentcount); 
+		mav.addObject("isBlock", isBlock); 
+		mav.addObject("isFollow", isFollow);
+		mav.addObject("isNotPublic", isNotPublic);  
 		mav.setViewName("myarticle3.jsp");
 		return mav;
 	}
@@ -364,15 +382,16 @@ public class BoardController {
 	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF8");
 		response.setContentType("application/json");
-		try {
-			PrintWriter xout = response.getWriter();
+		PrintWriter xout = response.getWriter();
+		try {			
 			System.out.println(request.getParameter("seq"));
 			BoardDTO b = boardService.getBoardModal(request.getParameter("seq"));
 
-			new Gson().toJson(b, xout);
-			
+			new Gson().toJson(b, xout);			
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			xout.print("해당 글은 삭제됨");
 		}
 		
 	}
@@ -408,17 +427,29 @@ public class BoardController {
 	
 
 	@RequestMapping("/oneBoard.do")
-	public ModelAndView oneBoard(String board_seq) {
+	public ModelAndView oneBoard(String board_seq , HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		BoardDTO a =null;
+		BoardDTO a = null;
 		List<Board_CommentDTO> result = null;
+		List<List<Board_MediaDTO>> media = new ArrayList<>();
+		
+		Board_LikeDTO like = null;
+		Board_BookmarkDTO bookmark = null;
+		String id = (String) session.getAttribute("loginId");
+		
+		
 		try {
 		System.out.println(board_seq);
 		
 		a = boardService.oneBoard(board_seq);
+		media.add(boardService.search2(a.getBoard_seq()));
+
 		
 		result = board_commentService.getCommentList(Integer.parseInt(board_seq));
 		
+		like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
+		
+		bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
 		
 		}catch(Exception e) {
 			System.out.println("oneboard.do");
@@ -428,14 +459,32 @@ public class BoardController {
 		mav.setViewName("oneBoard.jsp");
 		mav.addObject("b", a);
 		mav.addObject("result", result);
+		mav.addObject("result2", media);
+		mav.addObject("like", like);
+		mav.addObject("bookmark", bookmark);
 		return mav;
+		
+	}
+	
+	@RequestMapping("/follow.do")
+	public void insertFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int result = member_followService.insertFollowInfo(fi);
+		if(result == 1) {
+			response.getWriter().print("팔로우 완료");
+		}else {
+			response.getWriter().print("팔로우 실패");
+		}
+		
+		response.getWriter().flush();
+		response.getWriter().close();
 		
 	}
 	
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
-		int result = boardService.deleteFollowInfo(fi);
+		int result = member_followService.deleteFollowInfo(fi);
 		if(result == 1) {
 			response.getWriter().print("팔로우 취소 완료");
 		}else {

@@ -87,32 +87,8 @@ public class IBoardService implements BoardService {
 		return dao.getBoardModal(seq);
 	}
 	
-	@Override
-	public int insertFollowInfo(FollowInfo fi) throws Exception {
-		return dao.insertFollowInfo(fi);
-	}
-	
-	@Override
-	public int deleteFollowInfo(FollowInfo fi) throws Exception {
-		return dao.deleteFollowInfo(fi);
-	}
-	
-	@Override
-	public int getFollowingCount(String id) throws Exception {
-		return dao.getFollowingCount(id);
-	}
-	
-	@Override
-	public int getFollowerCount(String id) throws Exception {
-		return dao.getFollowerCount(id);
-	}
-	
-	@Override
-	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
-		return dao.getBoardFromFollowingList(id);
-	}
-	
-	//search
+
+
 	@Override
 	public List<BoardDTO> search(String keyword) throws Exception {
 		// TODO Auto-generated method stub
