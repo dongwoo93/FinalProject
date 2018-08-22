@@ -464,13 +464,20 @@ function modComment(e) {
 
 	 var comment_seq = $(e).attr("value");
 	 var board_seq = $(e).parent().attr("value");
-
+	 var modstate = $("#modstate"+comment_seq).val();
+	   
+	 if(modstate == "1") {
+		
 		 
 	$("#commenttxt"+comment_seq).attr("contentEditable",true);
   	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
   	 $("#commenttxt"+comment_seq).focus();  
-
-  	$(e).click(function() {       
+  	 $("#modstate"+comment_seq).val("2");  
+	 }
+	 
+	 
+	 else if(modstate=="2") {      
+		 
   			 var txt = $("#commenttxt"+comment_seq).html();     
      	 	 
             	$.ajax({    
@@ -481,11 +488,14 @@ function modComment(e) {
                     	$("#commenttxt"+comment_seq).attr("contentEditable",false);
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
+		                   $("#modstate"+comment_seq).val("1");  
                       }  
                  }); //ajax 
-  	})
+	 }
   
 }
+
+
 	
  
 	   

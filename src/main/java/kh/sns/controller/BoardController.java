@@ -168,6 +168,7 @@ public class BoardController {
 		for(int[] tmp : commentcnt) {
 			commentcount.put(tmp[0],tmp[1]);
 		}
+		mav.addObject("pageid", id);
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
