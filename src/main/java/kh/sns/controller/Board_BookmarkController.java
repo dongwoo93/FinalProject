@@ -22,6 +22,9 @@ public class Board_BookmarkController {
 		response.setCharacterEncoding("UTF-8");
 		
 		String id = (String) session.getAttribute("loginId");
+		if(id != null) {
+			
+		}
 		dto.setId(id);
 		System.out.println(dto.getBoard_seq() + ":" + dto.getId() + ":" + dto.getIs_marked());
 
