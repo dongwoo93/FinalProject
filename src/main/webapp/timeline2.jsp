@@ -332,17 +332,17 @@
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
-			 var regex = /(#[^#\s,;]+)/gi  ;            
-		  var txt = "${tmp.contents}";                    
-          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
-          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-		$("#contdiv${tmp.board_seq}").html(newtxt);    
-		  
-		function tag(e) {
-			var search = $(e).html().split("#")[1]; 
-			$(location).attr("href","search.bo?search="+search); 
-
-		}
+							var regex = /(#[^#\s,;]+)/gi  ;            
+							  var txt = "${tmp.contents}";                    
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
+							$("#contdiv${tmp.board_seq}").html(newtxt);    
+							  
+							function tag(e) {
+								var search = $(e).html().split("#")[1]; 
+								$(location).attr("href","search.bo?search="+search); 
+					
+							}
 
 		</script>
 								</div>
@@ -474,35 +474,40 @@
 			<!-- board -->
 			
 			
+	
+			
 		
+			<c:forEach var="tmp" items="${result}" varStatus="status" begin="1" end="1">
 				<div id="float" style="position:fixed;">	
 				
 				  <div class="container" style="width:300px;margin-top:55px;margin-left:30px;"> 
-				  <hr class="_5mToa">
-					    <h2 class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;">추천 Follow</h2>
-					    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;">추천 Follow를 추가하세요!!</p>
+				  
+				  <div class="profile-image"> 
+						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">					
+						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
+				 </div>		
+		    </c:forEach>						
+				  
+			  
+				  <hr class="_5mToa">					    
+				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;">추천 Follow를 추가하세요!!</p>
+				    	<c:forEach var="followtmp" items="${result3}" varStatus="status">
 					    <table class="table table-striped">					      
-					      <tbody class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:1 8px;">
+					      <tbody class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;">
 					        <tr>
-					          <td>John</td>
+					          <td>${followtmp.id}</td>
 					        </tr>
-					         <tr>
-					          <td>John</td>
-					        </tr>
-					         <tr>
-					          <td>John</td>
-					        </tr>
-					        <tr>
-					          <td>John</td>
-					        </tr>
+					         
 					      </tbody>
 					    </table>
-					    <hr class="_5mToa">
+					   </c:forEach>
+					<hr class="_5mToa">
+					
 					</div>
 				</div>	 
-						
+		
 							
-				
+			
 			
 				
 

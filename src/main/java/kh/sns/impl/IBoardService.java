@@ -101,6 +101,12 @@ public class IBoardService implements BoardService {
 		return dao.oneBoard(board_seq);
 	}
 
+	@Override
+	public List<FollowInfo> toFeed(String id) throws Exception {
+		
+		return dao.toFeed(id);
+	}
+
 	
 	
 	

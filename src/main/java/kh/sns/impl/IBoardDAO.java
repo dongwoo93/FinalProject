@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-
+import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
@@ -25,6 +25,23 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Autowired
 	private JdbcTemplate template;
+	
+	
+	@Override
+	public List<FollowInfo> toFeed(String id) throws Exception{
+		String sql = "select target_id from member_follow where id in(select target_id from member_follow where id= ?) and (target_id not in(?)) and (target_id not in (select target_id from member_follow where id= ?)) group by target_id order by count(target_id)";
+		return template.query(sql, new Object[] {id,id,id}, new RowMapper<FollowInfo>() {
+			
+			@Override
+			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+				FollowInfo followtmp = new FollowInfo();
+					followtmp.setId(rs.getString(1));
+					return followtmp;
+				}	
+			});
+		}
+
+	
 
 	@Override
 	public List<BoardDTO> getBoard(String id) throws Exception {	   	 
@@ -190,7 +207,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 
 	@Override
-	public int[] insertHashTags( BoardDTO article) throws Exception {
+	public int[] insertHashTags(BoardDTO article) throws Exception {
 
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
@@ -214,8 +231,8 @@ public class IBoardDAO implements BoardDAO  {
 	
 
 	@Override
-	public BoardDTO  oneBoard(String board_seq) throws Exception {
-		// TODO Auto-generated method stub
+	public BoardDTO oneBoard(String board_seq) throws Exception {
+		
 		String sql = "select * from board where board_seq = ?";
 		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
 

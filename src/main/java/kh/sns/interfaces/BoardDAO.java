@@ -8,6 +8,7 @@ import kh.sns.dto.FollowInfo;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
+	public List<FollowInfo> toFeed(String id) throws Exception;
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
@@ -26,5 +27,6 @@ public interface BoardDAO {
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
 	//oneBoard
 	public BoardDTO oneBoard(String board_seq) throws Exception;
+	
 	
 }
