@@ -297,12 +297,10 @@ public class BoardController {
 			}
 			
 			// 인기 태그
-				
 			else if(cat.equals("3")) {
 				category = "인기 태그 순";
 				List<String[]> tagArr = boardService.selectTagCount();
 				for(int i = 0; i < tagArr.size(); i++) {
-				
 					for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
 					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
 					System.out.println(tagArr.get(i)[2].split(",")[j]);
