@@ -11,6 +11,8 @@ $(document).ready(function(){
 
       $("#exampleModalCenter").modal();                             
                     });
+      
+  
 })
 
 
@@ -53,45 +55,47 @@ $(document).ready(function(){
 	<div class="container my">
 		<div class="profile">
 			<div class="profile-image">
-				<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;">
-				<c:choose>
+			
 				
+				<c:choose>
 				<c:when test="${profileImg.size() > 0}">
 				<c:forEach items="${profileImg}" var="proimg">
 				<c:if test="${proimg.is_selected eq 'y'}">
+					<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;">
 				<img src="AttachedMedia/${proimg.system_file_name}" width="152px" height="152px" style="object-fit: cover;"></a>
 				</c:if>
 				</c:forEach>
 				</c:when>
 				
-				<c:otherwise>
+				<c:otherwise> 
+					<a data-target="#profileimage" data-toggle="modal" style="cursor: pointer;">
 				<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces" width="152px" height="152px" style="object-fit: cover;"></a>
 				</c:otherwise>
 				</c:choose>
-				<!--                  <img src="http://lorempixel.com/150/150/people/" class="hoverZoomLink"> -->
+			
 			</div>
 
 
 			<c:choose>
-				<c:when test="${result[0].id == sessionScope.loginId}">
+				<c:when test="${pageid == sessionScope.loginId}">
 
 			<div class="profile-user-settings">
-				<h2 class="profile-user-name">${result[0].id}</h2>
+				<h2 class="profile-user-name">${pageid}</h2>
 				<div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
 				<div class="profile-settings-btn">
 					<i class="far fa-times-circle" id="logout"></i>
 				</div>
-				<!-- 					<button id="logout" type="button" class="btn btn-outline-danger">로그아웃</button> -->
-			</div>
-			
+				
+			</div>  
+			  
 			</c:when> 
 			
 			<c:when test="${isFollow}">
 			
 				<div class="profile-user-settings">
-					<h2 class="profile-user-name">${result[0].id}</h2>
+					<h2 class="profile-user-name">${pageid}</h2>
 					<div class="profile-edit-btn"  id="cancelFollow" style="height:40px;">팔로잉</div>
-					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${result[0].id}')" id="follow" style="height:40px; background-color:#35e0db;display: none;">팔로우</div>
+					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${pageid}')" id="follow" style="height:40px; background-color:#35e0db;display: none;">팔로우</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
@@ -103,9 +107,9 @@ $(document).ready(function(){
 		<c:otherwise>
 			
 				<div class="profile-user-settings">
-					<h2 class="profile-user-name">${result[0].id}</h2>       
+					<h2 class="profile-user-name">${pageid}</h2>       
 					<div class="profile-edit-btn"  id="cancelFollow" data-toggle="modal" data-target="#exampleModalCenter" style="height:40px; display: none;">팔로잉</div> 
-					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${result[0].id}')" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
+					<div class="profile-edit-btn" onclick="follow('${sessionScope.loginId}', '${pageid}')" id="follow" style="height:40px; background-color:#35e0db;">팔로우</div>
 					<div class="profile-settings-btn">
 						<i class="fas fa-undo-alt"></i>
 					</div>
@@ -133,7 +137,7 @@ $(document).ready(function(){
       	<h2>정말 팔로우를 취소하시겠습니까?</h2>    
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="yes" onclick="unfollow('${sessionScope.loginId}', '${result[0].id}')" >YES</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="yes" onclick="unfollow('${sessionScope.loginId}', '${pageid}')" >YES</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
        
       </div>
@@ -165,8 +169,7 @@ $(document).ready(function(){
 
 
 	<c:choose>
-		<c:when
-			test="${(result[0].id != sessionScope.loginId) && isBlock || isNotPublic}">
+		<c:when test="${(pageid != sessionScope.loginId) && isBlock || isNotPublic}">
 			<div class="block container">
 				<br>
 				<br> <br>
@@ -301,7 +304,8 @@ $(document).ready(function(){
                                   $(".commentline").remove();          
                                   for(var i =0; i<data[2].length; i++){                
                                 	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>"
-                                			  +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>");      
+                                			  +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>"
+                                			  +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
                                   }
                                            
                                  
@@ -309,7 +313,7 @@ $(document).ready(function(){
                                   
                                   $("#likeit").attr("style", "display:none;");
                                   $("#likecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
-                                  if(data[3] != null) { 
+                                  if(data[3] != null) {   
                                 	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
                                   }else {
                                 	  $("#likeit").attr("style", false);
@@ -534,11 +538,14 @@ $(document).ready(function(){
                                type: "POST",  
                                url: "comment.co",    
                                data: {board_seq:seq, comment_contents : comment_contents},
-                               success : function(seq) {
-                      
+                               success : function(comment_seq) {
+                            	   var board_seq = $("#seq").val();
                                 $("#comment").val("");         
-                                $("#articlecomment:last-child").append("<ul id='ul"+seq+"' value='"+seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+comment_contents+"</div></li></ul>");           
-                                
+                                $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+comment_contents+"</div></li></ul>"
+                                		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
+                          			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
+                                  
+                                $("#ul"+comment_seq).hide().fadeIn(500);     
   
                                 var objDiv = document.getElementById("articlecomment");
                                 objDiv.scrollTop = objDiv.scrollHeight;    
@@ -552,7 +559,7 @@ $(document).ready(function(){
                 </script>
 
 					<c:choose>
-						<c:when test="${result[0].id == sessionScope.loginId}">
+						<c:when test="${pageid == sessionScope.loginId}">
 							<br>
 							<br>
 							<div class="btn-group bg-white">
@@ -620,7 +627,7 @@ $(document).ready(function(){
          
         <div class="modal-body">
         <div style="max-height: 300px;">
-          <input id="inputimg" name="inputimg" type='file' onchange="readURL(this);"/>
+          <input id="inputimg" name="inputimg" type='file' onchange="readURL(this);">  
 			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />
 		</div>
 		<div class="dropdown-divider" ></div>

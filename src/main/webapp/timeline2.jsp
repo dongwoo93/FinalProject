@@ -94,14 +94,22 @@
     	
 	var seq = $(e).attr("value"); 
     var sessionid = $("#sessionid").val();
-	var boardid = $("#boardid").val();  
+	var boardid = $("#boardid").val(); 
+	var modstate = $("#modstate"+seq).val();    
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
 		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all background-color:#E1F5FE"); 
 		
-		if(sessionid == boardid) {      
-		$("#commentdel"+seq).html("삭제");   
-		$("#commentmod"+seq).html("수정");
+		if(sessionid == boardid) {       
+		$("#commentdel"+seq).html("삭제"); 
+		
+		if(modstate == "1") {
+			$("#commentmod"+seq).html("수정");
+		} 
+		else if(modstate =="2") {  
+			$("#commentmod"+seq).html("완료");
+		}
+		
 		}  
 	
     }
@@ -124,8 +132,8 @@
                   url: "commentdel.co",      
                   data: {board_seq:board_seq,comment_seq:comment_seq},
                   success : function(cnt) {
-                	  console.log(cnt);
-                   $("#ul"+comment_seq).remove();    
+                	console.log(cnt);    
+                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
                    if(cnt>2){ 
                        $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
                        else {
@@ -137,32 +145,43 @@
     }
 
     function modComment(e) { 
-       
-      	 var comment_seq = $(e).attr("value");
+      	 var comment_seq = $(e).attr("value");  
+      	 var modstate = $("#modstate"+comment_seq).val();   
 		
-      		 $("#commenttxt"+comment_seq).attr("contentEditable",true);
+		
+		if(modstate == "1") {
+			$("#commentmod"+comment_seq).html("완료");
+			 $("#commenttxt"+comment_seq).attr("contentEditable",true);
           	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
           	 $("#commenttxt"+comment_seq).focus();  
+          	
+          	 $("#modstate"+comment_seq).val("2");    
 
-          	$(e).click(function() {      
-          			 var txt = $("#commenttxt"+comment_seq).html();
-          			 if(txt == ""){
-                         alert("댓글을 입력해주세요");
-                      }
-                      else {  
-                    	$.ajax({    
-                              type: "POST",    
-                              url: "commentmod.co",    
-                              data: {comment_seq:comment_seq, comment_contents:txt},   
-                              success : function() {
-                            	$("#commenttxt"+comment_seq).attr("contentEditable",false);
-     		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
-     		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-                              }  
-                         }); //ajax 
-                         }
-          	})
-          
+		}
+		else if(modstate=="2") {
+			$("#commentmod"+comment_seq).html("수정");   
+			 var txt = $("#commenttxt"+comment_seq).html();
+  			 if(txt == ""){
+                 alert("댓글을 입력해주세요");
+              }
+              else {  
+            	$.ajax({    
+                      type: "POST",    
+                      url: "commentmod.co",    
+                      data: {comment_seq:comment_seq, comment_contents:txt},   
+                      success : function() {
+                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
+		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
+		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
+		                   $("#modstate"+comment_seq).val("1");    
+		                   $("#ul"+comment_seq).hide().fadeIn(500);  
+		                   
+                      }  
+                 }); //ajax 
+                 }
+			
+		}
+      
     }
     
     
@@ -367,7 +386,7 @@
 															class="pointer"></a></li>
 
 													</ul>
-
+													<input type=hidden id='modstate${comment.comment_seq}' value="1">
 													<script>
 							$("#ul${commenttmp.value[0].comment_seq}").attr("style",false);
 							$("#ul${commenttmp.value[1].comment_seq}").attr("style",false);
@@ -397,7 +416,7 @@
 								<input type="text" placeholder="댓글 달기..."
 									name="comment_contents${tmp.board_seq}" class="creco ml-2 "
 									id="comment${tmp.board_seq}">
-
+								
 								<div class="btn-group bg-white">
 									<i id="modalBoardBtn${tmp.board_seq}"
 										value="${tmp.board_seq}:${tmp.id}" onclick="modal(this)"
@@ -422,9 +441,11 @@
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {     
+	                                              success : function(seq) {       
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
@@ -509,7 +530,7 @@
 						<li style="margin-bottom: 8px;">폭력을 조장하거나 사람의 정체성을 바탕으로 공격하는
 							내용의 게시물</li>
 						<li style="margin-bottom: 8px;">신체적 상해, 절도 또는 기물 파손에 대한 협박</li>
-					</ul>
+					</ul> 
 					<p style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는
 						공개되지 않습니다.</p>
 					<p style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급
