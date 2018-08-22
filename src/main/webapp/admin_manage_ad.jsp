@@ -275,31 +275,18 @@ html,body {
     	
 
     	// 작업 처리
-    	$("a[id*='dealReport_']").click(function(){
-    		var managerComment = prompt($(this).attr('title') + " | " + "처리 코멘트 입력(없을 경우 확인 버튼 클릭) ");
-    		var reportSeq = $(this).attr('id').replace("dealReport_", "");
-    		var resultCode = $(this).attr('title').split(":")[0]
-    		console.log( reportSeq + managerComment + resultCode );
+    	$("a[id*='dealAd_']").click(function(){
+    		var boardBizSeq = $(this).attr('id').replace("dealAd_", "").split("_")[1];
+    		var managerComment = prompt(boardBizSeq + " | " + "처리 코멘트 입력(없을 경우 확인 버튼 클릭)");
+    		var evalResult = $(this).attr('id').replace("dealAd_", "").split("_")[0];
+    		console.log( boardBizSeq + managerComment + evalResult );
+    		if(managerComment != null){
+    			location.href = "evaluateAnAd.admin?boardBizSeq=" 
+    				+ boardBizSeq + "&evalMessage=" + managerComment + "&isAllowed=" + evalResult;
+    		}
     		
-    		$.ajax({
-    			url : "manageAnReport.ajax",
-    			type : "post",
-    			data : {
-    				reportSeq : reportSeq,
-    				managerComment : managerComment,
-    				resultCode : resultCode
-    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-    			success : function(response) {
-    				console.log(response)
-    				location.reload();
-    			},
-    			error : function() {
-    				console.log("에러 발생");
-    			},
-    			complete : function() {
-    				// console.log("AJAX 종료");
-    			}
-    		}) // $AJAX 끝
+    		
+    		
     	});
     	
     	$('[data-toggle="popover"]').popover({container: "body"});
@@ -584,9 +571,14 @@ html,body {
 							      <td>${ i.costPerMille }</td>
 							      <td>${ i.costPerClick }</td>
 							      <td>${ i.remainedPublicExposureCount }</td>
-							      <td>${ i.isAllowed }</td>
+							      <td>
+							      	<c:choose>
+							      		<c:when test="${ i.isAllowed eq 'y' }">허용됨</c:when>
+							      		<c:when test="${ i.isAllowed eq 'n' }">거부됨</c:when>
+							      	</c:choose>							   
+							      </td>
 							      <td>${ i.rejectedMessage }</td>						      
-							      <td><a href='#'>허용</a> | <a href='#'>거부</a></td>
+							      <td><a href='#' id='dealAd_y_${ i.boardBizSeq }'>허용</a> | <a href='#' id='dealAd_n_${ i.boardBizSeq }'>거부</a></td>
 							    </tr>
 							  </c:forEach>
 					
