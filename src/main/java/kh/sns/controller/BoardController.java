@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -61,7 +63,7 @@ public class BoardController {
 	@Autowired	private MemberBusinessService mBizService;
 
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed(HttpServletResponse response, HttpSession seesion) {
+	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
 		String id = (String) seesion.getAttribute("loginId");
 
@@ -75,11 +77,32 @@ public class BoardController {
 			List<List<Board_MediaDTO>> media = new ArrayList<>();
 			List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 			Map<String, String> getAllProfilePic = new HashMap<>();
+			List<Integer> maxImgHeight = new ArrayList<>();
+			String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+			
 			try {
 				list = boardService.getFeed(id);
 				for(int i = 0; i < list.size(); i++) {
 					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				} 
+				
+				for(List<Board_MediaDTO> mlist : media) {
+					int max = 0;
+					for(Board_MediaDTO dto : mlist) {
+						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+						int height = bimg.getHeight();
+						System.out.println("height : " + height);
+						if(max<height) { 
+							max = height;
+						}
+						
+					}
+					maxImgHeight.add(max);  
+					System.out.println("max:" + max);     
 				}
+				
+				
+				
 				list1 = board_commentService.getFeedComment(id);
 				like = board_likeService.searchLike(id);
 				mark = board_bookmarkService.searchMark(id);
@@ -124,6 +147,7 @@ public class BoardController {
 			mav.addObject("bookmark", mapmark);
 			mav.addObject("commentresult",commentlist);
 			mav.addObject("profile_pic",getAllProfilePic);
+			mav.addObject("maxImgHeight",maxImgHeight);
 			mav.setViewName("timeline2.jsp");
 			
 		return mav;

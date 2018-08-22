@@ -211,7 +211,7 @@
 
 				<script>var num = 1;</script>
 
-				<c:forEach var="tmp" items="${result}" varStatus="status">
+				<c:forEach var="tmp" items="${result}" varStatus="status"> 
 
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
@@ -223,10 +223,42 @@
 								Korea
 							</a>
 						</div>
-						<div class="mt-2" id="boardimg">
+						<div class="mt-2" id="boardimg" style="height:${maxImgHeight[status.index]}px; max-height:600px">   
+<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>    
+						  	
+						  	   
+<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
+										
+<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
+<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
+										 
+										<script>      
+										
+// 										var height= $("#feedimg${status.index}a${status3.index}").height()
+										
+// 										var maxheight = $("#maxheight${status.index}").val();
+										
+										
+// 										if(parseInt(maxheight) < height){
+											
+// 										$("#maxheight${status.index}").val(height);
+  
+// 										var realmax= $("#maxheight${status.index}").val();   
+										 
+										
+// 										}     
+										
+// 										var realmax= $("#maxheight${status.index}").val(); 
+// 										$("#myCarousel${status.index}").attr("style"," height:"+realmax+"px;");  
+										
+										</script>
+<%-- 									</c:forEach> --%>
+									 
+						
+									
 							<div id="myCarousel${status.index}" class="carousel slide"
 								data-ride="carousel" data-interval="false"
-								style="height: 600px;">
+								style="height:${maxImgHeight[status.index]}px; max-height:600px"> 
 								<ul id="carousel-indicators" class="carousel-indicators">
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
@@ -236,19 +268,20 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"
-									style="height: 600px;">
+								<div id="carousel-inner" class="carousel-inner"   
+									style="height:${maxImgHeight[status.index]}px; max-height:600px">
 									<div id="firstItem" class="carousel-item active">
-										<img class='boardimg' width='100%'
+										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
 											alt=''>
 									</div>
-									<c:forEach begin="1" var="media"
-										items="${result2[status.index]}">
+									<c:forEach begin="1" var="media" 
+										items="${result2[status.index]}" varStatus="status3">
 										<div class="carousel-item">
-											<img class='boardimg' width='100%'
+											<img class='boardimg'  width='100%'  
 												src="AttachedMedia/${media.system_file_name}" alt="">
-										</div>
+										</div>  
+										
 									</c:forEach>
 
 								</div>
