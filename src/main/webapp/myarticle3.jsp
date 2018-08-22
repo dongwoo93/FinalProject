@@ -160,8 +160,8 @@ $(document).ready(function(){
 
 			<div class="profile-bio">
 				<p>
-					<span class="profile-real-name">멋쟁이</span>&nbsp;&nbsp;난 오늘도 고독을
-					즐긴다..
+					<span class="profile-real-name">${memNick}</span>&nbsp;&nbsp;${memIntro}
+					
 				</p>
 			</div>
 		</div>
