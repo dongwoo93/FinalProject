@@ -15,18 +15,21 @@
 	}
 	
 	body{
-/*   		 border : 1px solid black;   */
+/*    		 border : 1px solid black;    */
 		 height:auto;
 		 font-family: "Open Sans", Arial, sans-serif;
 		 min-height: 100vh;
 		 padding-bottom: 3rem;  
-		  
+		background-color:#F5F4F4;
 		 
 	 
 	 } 
+	 
+	
 
     #allwrapper{
       height:auto;
+     
    	}
     
     #navbar{
