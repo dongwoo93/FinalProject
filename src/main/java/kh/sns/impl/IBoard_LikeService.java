@@ -32,13 +32,15 @@ public class IBoard_LikeService implements Board_LikeService {
 		// TODO Auto-generated method stub
 		return board_likedao.deleteLike(dto);
 	}
-
+	
+	//Search 좋아요 
 	@Override
 	public List<Integer> searchLike(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return board_likedao.searchLike(id);
 	}
-
+	
+	//Search 좋아요 카운트
 	@Override
 	public List<int[]> selectLikeCount() throws Exception {
 		// TODO Auto-generated method stub
@@ -55,5 +57,11 @@ public class IBoard_LikeService implements Board_LikeService {
 	public Board_LikeDTO isLiked(String id, int board_seq) throws Exception {
 		// TODO Auto-generated method stub
 		return board_likedao.isLiked(id, board_seq);
+	}
+	
+	// 좋아요 많은 순서
+	@Override
+	public List<int[]> bestLike() throws Exception{
+		return board_likedao.bestLike();
 	}
 }

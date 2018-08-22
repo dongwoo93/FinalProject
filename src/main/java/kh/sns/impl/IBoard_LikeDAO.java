@@ -109,4 +109,20 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 		}
 		return result; 
 	}
+	
+	//BestLike
+	@Override
+	public List<int[]> bestLike() throws Exception {
+		String sql = "SELECT BOARD_SEQ, COUNT(*) FROM BOARD_LIKE GROUP BY BOARD_SEQ ORDER BY 2 DESC";
+		
+		return template.query(sql,new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int[] list = {rs.getInt("board_seq"), rs.getInt("count(*)")};
+				return list;
+			}
+			
+		});
+	}
 }
