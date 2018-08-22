@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
@@ -317,6 +318,16 @@ public class BoardController {
 		System.out.println("costPerClick: " + costPerClick);*/
 		
 		boolean isBizEnabled = enableBiz.equalsIgnoreCase("y") ? true : false;
+		BoardBusinessDTO bbiz = null;
+		if(isBizEnabled) {
+			bbiz = new BoardBusinessDTO();
+			bbiz.setCostPerClick(Integer.parseInt(costPerClick));
+			bbiz.setCostPerMille(Integer.parseInt(costPerMille));
+			bbiz.setIsWebsitePurposeOfPurchase(isWebsitePurposeOfPurchase);
+			bbiz.setMoreInfoWebsite(moreInfoWebsite);
+			bbiz.setRemainedPublicExposureCount(Integer.parseInt(remainedPublicExposureCount.replace(",", "")));			
+			
+		}
 		
 				
 		String[] filterList = null;
@@ -378,14 +389,11 @@ public class BoardController {
 		
 		// 테스트용 (else는 나중에 삭제)
 		try {
-			if(request.getSession().getAttribute("loginId") != null) {
-				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
-				if(isBizEnabled) {
-					// 비즈 인서트
-				}
+			if(request.getSession().getAttribute("loginId") != null) {				
+				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList, bbiz);
 			} else {
 				// 잘못된 접근
-				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+				// boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
 			}
 			
 		} catch (Exception e) {

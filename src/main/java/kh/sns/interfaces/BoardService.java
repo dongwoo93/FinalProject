@@ -2,6 +2,7 @@ package kh.sns.interfaces;
 
 import java.util.List;
 
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
@@ -18,7 +19,7 @@ public interface BoardService {
 	public int modifyBoard(BoardDTO dto) throws Exception;
 
 
-	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception;
+	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList, BoardBusinessDTO bbiz) throws Exception;
 	public BoardDTO getBoardModal(String seq) throws Exception;
 	
 	
