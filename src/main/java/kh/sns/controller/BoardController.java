@@ -180,6 +180,7 @@ public class BoardController {
 		
 //		String id = (String) session.getAttribute("loginId");
 		
+		mav.addObject("pageid", id);
 		return mav;
 	}
 	
