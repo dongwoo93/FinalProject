@@ -392,8 +392,7 @@ public class BoardController {
 			if(request.getSession().getAttribute("loginId") != null) {				
 				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList, bbiz);
 			} else {
-				// 잘못된 접근
-				// boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
+				// 잘못된 접근과 관련된 코드..
 			}
 			
 		} catch (Exception e) {
