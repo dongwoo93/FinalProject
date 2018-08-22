@@ -15,7 +15,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.parser.DTD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,11 +32,13 @@ import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
+import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.Member_BlockService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
@@ -45,23 +46,17 @@ import kh.sns.interfaces.ProfileService;
 @Controller
 public class BoardController {
 
-	@Autowired
-	private BoardService boardService;
-	@Autowired
-	private Board_CommentService board_commentService;
+	@Autowired	private BoardService boardService;
+	@Autowired	private Board_CommentService board_commentService;
 
-	@Autowired
-	private Board_LikeService board_likeService;
-	@Autowired
-	private Board_BookmarkService board_bookmarkService;
-	@Autowired
-	private Member_BlockService member_blockService;
+	@Autowired	private Board_LikeService board_likeService;
+	@Autowired	private Board_BookmarkService board_bookmarkService;
+	@Autowired	private Member_BlockService member_blockService;
 	
-	@Autowired
-	private Member_FollowService member_followService;
+	@Autowired	private Member_FollowService member_followService;
 	
-	@Autowired
-	private ProfileService profileService;
+	@Autowired	private ProfileService profileService;
+	@Autowired	private MemberBusinessService mBizService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -269,7 +264,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/write.board")
-	   public ModelAndView writeBoard() {
+	   public ModelAndView writeBoard(HttpSession session) {
 	      System.out.println("@@WRITE BOARD");
 	      
 	      List<String> filter = new ArrayList<>(Arrays.asList("filter-1977","filter-aden","filter-amaro","filter-ashby","filter-brannan",
@@ -279,9 +274,20 @@ public class BoardController {
           		"filter-maven","filter-mayfair","filter-moon","filter-nashville","filter-perpetua","filter-poprocket",
           		"filter-reyes","filter-rise","filter-sierra","filter-skyline","filter-slumber","filter-stinson",
           		"filter-sutro","filter-toaster","filter-valencia","filter-vesper","filter-walden","filter-willow","filter-xpro-ii"));
-	      ModelAndView mav = new ModelAndView();
-	      mav.addObject("filter", filter);
+	      
+	      MemberBusinessDTO memberBiz = null;
+			try {
+				memberBiz = mBizService.selectAnMemberBiz(session.getAttribute("loginId").toString());
+			} catch(IndexOutOfBoundsException e) {
+				System.err.println("This is not business account!!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+	      
+	      ModelAndView mav = new ModelAndView();	     
 	      mav.setViewName("write2.jsp"); 
+	      mav.addObject("memberBiz", memberBiz);
+	      mav.addObject("filter", filter);
 	      return mav;
 	   }
 
@@ -305,8 +311,7 @@ public class BoardController {
 		if(request.getParameter("filters") != null)
 			filterList = request.getParameter("filters").split(";");
 	
-		
-		int k = 0;
+
 		for(MultipartFile mf : mfList) {
 			try {
 				
@@ -348,11 +353,8 @@ public class BoardController {
 						}
 					}
 					
-					
-					
+
 					fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName, filter, null, null));
-						
-				k++;
 				
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
