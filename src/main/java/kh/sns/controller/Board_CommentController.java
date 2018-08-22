@@ -58,7 +58,7 @@ public class Board_CommentController {
    }
    
    @RequestMapping("/commentdel.co")
-   public void delComment(int board_seq,int comment_seq ,HttpServletResponse response)  {
+   public void delComment(int board_seq,int comment_seq, HttpSession session, HttpServletResponse response)  {
       System.out.println(comment_seq);  
       int result = 0; 
       int count = 0;
@@ -85,7 +85,7 @@ public class Board_CommentController {
    }
    
    @RequestMapping("/commentmod.co")
-   public void modComment(Board_CommentDTO dto, HttpServletResponse response)  {
+   public void modComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response)  {
       System.out.println(dto.getComment_seq() + " : " + dto.getComment_contents());  
       int result = 0; 
       try {
