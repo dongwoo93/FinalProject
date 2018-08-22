@@ -4,7 +4,8 @@ import java.util.List;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_Tags2DTO;
+
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
 public interface BoardDAO {
 	
@@ -25,11 +26,12 @@ public interface BoardDAO {
 	// search
 	public List<BoardDTO> search(String keyword);
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
+	
 	//oneBoard
 	public BoardDTO oneBoard(String board_seq) throws Exception;
 	
 	//tour
 	public List<BoardDTO> getAllBoard() throws Exception;
 	public List<Board_MediaDTO> getAllBoard2() throws Exception;
-	public List<Board_Tags2DTO> selectTagCount() throws Exception;
+	public List<String[]> selectTagCount() throws Exception;
 }

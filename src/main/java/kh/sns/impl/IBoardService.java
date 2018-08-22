@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_Tags2DTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
@@ -114,7 +113,7 @@ public class IBoardService implements BoardService {
 	}
 
 	@Override
-	public List<Board_Tags2DTO> selectTagCount() throws Exception {
+	public List<String[]> selectTagCount() throws Exception {
 		return dao.selectTagCount();
 	}
 	

@@ -32,7 +32,7 @@ import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_Tags2DTO;
+
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
@@ -297,13 +297,16 @@ public class BoardController {
 			}
 			
 			// 인기 태그
+				
 			else if(cat.equals("3")) {
 				category = "인기 태그 순";
-				List<Board_Tags2DTO> tag = boardService.selectTagCount();
-				for(int i = 0; tag.size() > i; i++) {
-					for(int j = 0; tag.get(i).getSeqArr().size() > j; j++) {
-						result.add(boardService.oneBoard(tag.get(i).getSeqArr().get(j)));
-					}	
+				List<String[]> tagArr = boardService.selectTagCount();
+				for(int i = 0; i < tagArr.size(); i++) {
+				
+					for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
+					System.out.println(tagArr.get(i)[2].split(",")[j]);
+					}
 				}
 			}
 			

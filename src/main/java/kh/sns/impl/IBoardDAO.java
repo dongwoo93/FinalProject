@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.Board_Tags2DTO;
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
@@ -261,7 +261,8 @@ public class IBoardDAO implements BoardDAO  {
 		});
 		
 	}
-
+	
+	// tour 사진
 	@Override
 	public List<Board_MediaDTO> getAllBoard2() throws Exception {
 		String sql = "select * from board_media where board_seq";
@@ -279,26 +280,40 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
-
+	
+	// TOUR TAG 인기순 
 	@Override
-	public List<Board_Tags2DTO> selectTagCount() throws Exception {
-		String sql ="select tags,count(*),LISTAGG(board_seq,',') within group (order by board_seq) from board_tags group by tags order by count(*) desc";
-		return  template.query(sql, new RowMapper<Board_Tags2DTO>() {
+	public List<String[]> selectTagCount() throws Exception {
+		String sql = "SELECT T10.TAGS"  			// STEP03 : 여러개의 ROW를 1개의 셀로 합치기
+				   + "     , T10.CNT"  
+				   + "     , LISTAGG(T10.BOARD_SEQ,',') WITHIN GROUP (ORDER BY T10.BOARD_SEQ)" 
+				   + " FROM ("  					// STEP02 : TAGS별 건수가 많은 순으로 임의 번호 지정
+				   + "       SELECT T20.BOARD_SEQ" 
+				   + "			  , T20.TAGS" 
+				   + "			  , T20.CNT" 
+				   + "			  , ROW_NUMBER() OVER(PARTITION BY T20.BOARD_SEQ ORDER BY CNT DESC) AS SEQ"
+				   + "		   FROM (" 				// STEP01 - TAGS 별 건수 조회
+				   + "				 SELECT T30.BOARD_SEQ"
+				   + "					  , T30.TAGS" 
+				   + "					  , COUNT(1) OVER(PARTITION BY T30.TAGS) AS CNT"  // TAG별건수
+				   + "				   FROM BOARD_TAGS T30" 
+				   + "				) T20"
+				   + "					  ) T10"
+				   + "				WHERE T10.SEQ = 1"		// TAG별 건수가 가장 많은 TAG만 뽑기위한 조건(중복제거용)
+				   + "				GROUP BY " 
+				   + "					  T10.TAGS" 
+				   + "					, T10.CNT" 
+				   + "				ORDER BY " 
+				   + "					  2 DESC";
+		return template.query(sql, new RowMapper<String[]>() {
 
 			@Override
-			public Board_Tags2DTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Board_Tags2DTO tmp = new Board_Tags2DTO();
-				List<String> tmp2 = new ArrayList<>();
-				tmp.setTag(rs.getString(1));
-				tmp.setCount(rs.getString(2));
-				tmp2 = Arrays.asList(rs.getString(3).split("\\s*,\\s*"));
-				tmp.setSeqArr(tmp2);
-				return tmp;
+			public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				String[] list = {rs.getString(1), rs.getString(2), rs.getString(3)};
+				System.out.println(list[2]);
+				return list;
 			}
 			
 		});
 	}
-
-	
-		
 }
