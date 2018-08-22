@@ -233,7 +233,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 		
-		List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+		List<BoardDTO> result = boardService.search(search);		// 전체 글
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
 		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
