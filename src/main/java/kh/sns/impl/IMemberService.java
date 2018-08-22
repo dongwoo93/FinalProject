@@ -125,5 +125,11 @@ public class IMemberService implements MemberService{
 //		return this.isIdExist(id);
 //	}
 	
+	@Override
+	public MemberDTO selectUserId(String nickname) throws Exception {
+		
+		return dao.selectUserId(nickname);
+	}
+	
 }
 

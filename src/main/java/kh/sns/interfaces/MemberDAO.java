@@ -25,6 +25,7 @@ public interface MemberDAO {
 	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception;
 
 	public int checkEmailDuplicated(String email, String currentUserId) throws Exception;
+	public MemberDTO selectUserId(String nickname) throws Exception;
 
 //	boolean isIdExist(String id);
 }

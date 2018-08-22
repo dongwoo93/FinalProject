@@ -357,6 +357,7 @@ ul {
   border: 2px solid rgba(100, 170, 0, .1);
   color: #6c6c6c;
   font-size: 12px;
+  max-width:250px;
 }
 
 .message-box:after {
@@ -440,7 +441,10 @@ ul {
 
 .chatbox-min {
   margin-bottom: -362px;
-/*   height: 46px; */
+}
+
+.chatbox-max {
+  margin-bottom: 0px;
 }
 
 .chatbox-min .chatbox-avatar {

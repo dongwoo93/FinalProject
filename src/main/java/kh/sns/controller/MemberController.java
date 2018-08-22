@@ -29,13 +29,12 @@ import kh.sns.interfaces.ProfileService;
 import kh.sns.util.EncryptUtils;
 
 @Controller
+
 public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
-	
-	
+
 	@Autowired
 	private ProfileService profileService;
 	
@@ -62,8 +61,6 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
-			WebSocket ws = new WebSocket();
-			ws.setId(sessionId);
 		}else {
 			
 		}
@@ -77,7 +74,8 @@ public class MemberController {
 	@RequestMapping("/logout.do")
 	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		WebSocket.onlineUser.remove((String)session.getAttribute("loginId"));
+//		WebSocket.onlineUser.remove((String)session.getAttribute("loginId"));
+		System.out.println("로그아웃: " + session);
 		session.invalidate();
 		mav.setViewName("redirect:main.jsp");
 		return mav;
@@ -388,4 +386,5 @@ public class MemberController {
 			e1.printStackTrace();
 		}
 	}
+		
 }

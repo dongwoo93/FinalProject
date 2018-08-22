@@ -5,34 +5,53 @@
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 <script>
+	
+	$(function () {
 
-// 	window.onload = function(){
-// 		if("WebSocket" in window){
-// 			var ws = new WebSocket("ws://192.168.120.102/websocket");
-			
-// 			document.getElementById("sendbt").onclick = function(){
-// 				var msg = document.getElementById("input").value;
-// 				document.getElementById("input").value = "";
-// 				ws.send(nickname + " : " + msg);
-// 			};
-			
-// 			ws.onopen = function(){
+		var ws = new WebSocket("ws://192.168.120.102/websocket?loginId=${sessionScope.loginId}");
+		
+		ws.onopen = function () {
 
-// 			};
-			
-// 			ws.onmessage = function(msg){
-// 				document.getElementById("chat").innerHTML += msg.data;
-// 			};
-			
-// 			ws.onclose = function(){
+		};
+		
+		ws.onmessage = function (msg) {
+			var receivernickname = $("#dmnickname").text();
+			$("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+msg.data+"</div></div>");
+	    };
+		
+	    ws.onclose = function (event) {
+
+	    };
+	    
+	    $("#sendDm").keydown(function(key) {
+			var message = $("#sendDm").val(); 
+			var receiver = $("#userId").val();
+			if (key.keyCode == 13) {
+				$("#sendDm").val("");
+				$.ajax({
+	                url: "insertMessage.do", // 처리할 페이지(서블릿) 주소
+	                type: "get",
+	                data: {message:message,receiver:receiver,sender:"${sessionScope.loginId}"}, 
+	                success: function(response) {
+	                	console.log(response);
+	                	if(response == "전송성공"){
+	                		ws.send(receiver+":"+message);
+		                	$("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+message+"</div></div>");
+		                	var objDiv = document.getElementById("messagebox");
+                            objDiv.scrollTop = objDiv.scrollHeight;   
+	                	}
+	                },
+	                error: function() {
+	                    console.log("에러");
+	                },
+	                complete: function(){
+	                    console.log("AJAX완료");
+	                }
+	            });   
 				
-// 			};
-			
-// 		}
-// 		else{
-// 			alert("브라우저가 웹소켓을 지원 하지 않습니다.")
-// 		}
-// 	}
+			}
+		});
+	});
 	
 	$(document).ready(function(){
 		$('.chatbox').hide();
@@ -594,7 +613,49 @@
 					function openmessage(e){
 						var nickname = $(e).text();
 						$("#dmnickname").text(nickname);
-						$('.chatbox').show();
+						$("#messagebox *").remove(); 
+						
+						$.ajax({
+			                url: "selectUserId.do", // 처리할 페이지(서블릿) 주소
+			                type: "get",
+			                data: {nickname: nickname},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			                success: function(response) {
+			                	$('.chatbox').show();
+			                	$("#userId").val(response);
+			                	var receiver = $("#userId").val();
+			                	$.ajax({
+					                url: "selectmessenger.do", // 처리할 페이지(서블릿) 주소
+					                type: "get",
+					                data: {receiver: receiver,sender:"${sessionScope.loginId}"},    
+					                success: function(response) {
+					                	 for(var i=0;i<response.length;i++){
+					                		 if(response[i].sender == "${sessionScope.loginId}"){
+					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+response[i].message+"</div></div>");
+					                		 }
+					                		 else{
+					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+nickname+"</a></div><div class='message-box message-partner'>"+response[i].message+"</div></div>")
+					                		 }
+					                	 }
+					                	 var objDiv = document.getElementById("messagebox");
+				                         objDiv.scrollTop = objDiv.scrollHeight;  
+					                },
+					                error: function() {
+					                    console.log("에러 발생");
+					                },
+					                complete: function(){
+					                    console.log("AJAX 종료");
+					                }
+					            });
+			                },
+			                error: function() {
+			                    console.log("에러 발생");
+			                },
+			                complete: function(){
+			                    console.log("AJAX 종료");
+			                }
+			            });
+						
+						
 					};
 					</script>
                      <div class="nav-side-menu" id="dm">
@@ -645,9 +706,9 @@
       </div>
       
       <div class="chat-group-name" id="dmnickname">
-        <span class="status away"></span>
         
       </div>
+      <input type="hidden" id="userId">
       <div class="chatbox-icons">
         <label for="chkSettings"><i class="fa fa-gear"></i></label><input type="checkbox" id="chkSettings" />
         <div class="settings-popup">
@@ -663,65 +724,13 @@
       </div>      
     </div>
     
-    <div class="chat-messages">
-       <div class="message-box-holder">
-        <div class="message-box">
-          What are you people doing?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Ben Stiller</a>
-         </div>
-        <div class="message-box message-partner">
-          Hey, nobody's here today. I'm at office alone.
-          Hey, nobody's here today. I'm at office alone.
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-box">
-          who else is online?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Chris Jerrico</a>
-         </div>
-        <div class="message-box message-partner">
-          I'm also online. How are you people?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-box">
-          I am fine.
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Rockey</a>
-         </div>
-        <div class="message-box message-partner">
-          I'm also online. How are you people?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Christina Farzana</a>
-         </div>
-        <div class="message-box message-partner">
-          We are doing fine. I am in.
-        </div>
-      </div>      
+    <div class="chat-messages" id="messagebox">
+
+            
     </div>
     
     <div class="chat-input-holder">
-      <textarea class="chat-input"></textarea>
+      <input type="text" class="chat-input" id="sendDm">
     </div>
     
     <div class="attachment-panel">

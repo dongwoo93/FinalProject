@@ -50,7 +50,7 @@
       <p class="" id="ptag">We ♥ new friends</p>
       </div>
    
-      <form id="loginform" method="post">
+      <form id="loginform" method="post"> 
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">ID</p>
             <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
@@ -58,7 +58,6 @@
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">Password</p>
             <input type="password" name="pw" id="password" class="form-style" />
-            <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
             <br>
             <div id="result"></div>
             

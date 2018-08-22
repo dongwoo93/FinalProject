@@ -202,4 +202,21 @@ public class IMemberDAO implements MemberDAO {
 		});		
 	}
 	
+	@Override
+	public MemberDTO selectUserId(String nickname) throws Exception {
+		String sql = "select * from member where nickname=?";
+		
+		return template.query(sql, new String[] {nickname}, new RowMapper<MemberDTO>() {
+
+			@Override
+			public MemberDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				MemberDTO dto = new MemberDTO(rs.getString(1),"","","","","","");   
+				return dto;
+			}
+
+			
+		}).get(0);
+		
+	}
+	
 }
