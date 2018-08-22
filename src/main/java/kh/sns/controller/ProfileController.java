@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -200,14 +201,17 @@ public class ProfileController {
 	}
 	
 	@RequestMapping("/updateBizProfileProc.member")
-	public ModelAndView updateBizProfileProc(HttpSession session, MemberBusinessDTO memberBiz, HttpServletResponse response) throws Exception {
+	public ModelAndView updateBizProfileProc(HttpSession session, MemberBusinessDTO memberBiz, 
+			HttpServletResponse response) throws Exception {
 		String id = session.getAttribute("loginId").toString();
 		memberBiz.setId(id);
+		//System.out.println(memberBiz.getIsAllowEnterProfile());
+		if(memberBiz.getIsAllowEnterProfile() == null)	memberBiz.setIsAllowEnterProfile("y");
 		int result = mBizService.updateAnMemberBiz(memberBiz);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:profile.member?targetTab=bizProfile");
+		mav.addObject("updateBizProfileResult", result);
 		return mav;
-		
 	}
 
 }

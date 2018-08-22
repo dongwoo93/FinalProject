@@ -535,7 +535,7 @@
 									<div id='duplResultArea'></div>
 								</div>						
 							<hr>
-							 <input class="form-check-input" type="checkbox" name=isAllowEnterProfile value="y" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'y' ? 'checked' : '' }>
+							 <input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
 							<strong style="font-weight:bold;">타임라인 광고에서 프로필 페이지에서 불허</strong><br>
 						     <small>타임라인 광고에서 프로필 링크를 불허합니다(?) 비공개 계정 설정과는 다르며 공개 계정인 경우 프로필 페이지로 접속할 수 있습니다.</small>
 				
