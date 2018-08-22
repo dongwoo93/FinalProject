@@ -1,8 +1,5 @@
 package kh.sns.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kh.sns.beans.SendEmail;
+import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
+import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
 import kh.sns.util.EncryptUtils;
@@ -32,13 +31,9 @@ import kh.sns.util.LogUtil;
 @Controller
 public class MemberController {
 
-	@Autowired
-	private MemberService memberService;
-
-
-
-	@Autowired
-	private ProfileService profileService;
+	@Autowired	private MemberService memberService;
+	@Autowired	private ProfileService profileService;
+	@Autowired	private MemberBusinessService mBizService;
 
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
@@ -177,44 +172,7 @@ public class MemberController {
 
 
 	}
-	/*======*/
-	@RequestMapping("/profile.member")
-	public ModelAndView editProfile(HttpSession session) throws Exception {
 
-		ModelAndView mav = new ModelAndView();
-
-		if(session.getAttribute("loginId") != null) {
-			System.out.println("currentLoginId: " + session.getAttribute("loginId").toString());
-			MemberDTO member = memberService.getOneMember(session.getAttribute("loginId").toString());
-			ProfileDTO profile = profileService.getOneProfile(session.getAttribute("loginId").toString());
-
-			mav.addObject("member", member);
-			mav.addObject("profile", profile);
-
-			mav.setViewName("mypage2.jsp");
-
-		} else {
-			// 작업 추가
-		}		
-
-		return mav;		
-
-	}
-
-	@RequestMapping("/editProfileProc.member")
-	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpServletRequest request) throws Exception {
-
-		member.setId(request.getSession().getAttribute("loginId").toString());
-		profile.setId(request.getSession().getAttribute("loginId").toString());
-		System.out.println(member);
-
-		int result = memberService.updateOneMemberProfile(member, profile);
-
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("editProfileResult", result);
-		mav.setViewName("redirect:profile.member?targetTab=profileTab");	// 리다이렉트? 포워드?
-		return mav;		
-	}
 
 
 	@RequestMapping("/findPw.do")

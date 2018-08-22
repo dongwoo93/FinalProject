@@ -103,8 +103,11 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 				isLiked.setIs_liked(rs.getString("is_liked"));
 				return isLiked;
 			}} );	
-		
-		return an.get(0);
+		  
+		if(an.size()>0) {
+			return an.get(0);
+		}
+		return result; 
 	}
 	
 	//BestLike

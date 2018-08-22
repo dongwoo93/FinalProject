@@ -242,6 +242,8 @@ html,body {
     <!-- 스크립트 외부 파일로 빼는건 나중에 고칠 부분이 없을 정도로 완성되었을 때 하는걸로 부탁드립니다. 외부 파일로 빼면 갱신이 너무 느려서요.. -->
     <script>
     $(document).ready(function() {	
+    	
+    		var globalChartNumber = 1;
     		
     		var originalPrivacyTab = $('#privacyTab').html();
     		var newPrivacyTab = $('#tabthree').html();
@@ -389,12 +391,40 @@ html,body {
     		});
     		$("#boardmodal").modal();
     	})
-
-			
+    	
+    	$('a[id*=stat]').click(function(){
+    		/* alert($(this).attr("id")) */
+    		globalChartNumber = $(this).attr("id").replace("stat", "");    		
+    		
+    		$.ajax({
+    			url : "chartRenew.ajax",
+    			type : "get",
+    			data : {
+    				chart: globalChartNumber
+    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+    			success : function(response) {
+    				// console.log(response)
+    				var chart = $("#chartContainer").CanvasJSChart(); 
+    			
+    	    		chart.options.data[0].dataPoints = response;    		 
+    	    		chart.render();
+    				
+    			},
+    			error : function() {
+    				console.log("에러 발생");
+    			},
+    			complete : function() {
+    				// console.log("AJAX 종료");
+    			}
+			})
+    		
+    	})
+    	
+	
 		    	/*파이 차트*/
 		    $("#chartContainer").CanvasJSChart({ 
 				title: { 
-					text: "리포트 통계 I: 리포트 종류",
+					text: "Reports Stats",
 					fontSize: 24
 				}, 
 				axisY: { 
@@ -423,15 +453,18 @@ html,body {
 					]  */
 				} 
 				] 
-			});     	
+			});     
+    	
+
     	
     	
+    	// chartRenew
 		setInterval(function(){			
 			$.ajax({
     			url : "chartRenew.ajax",
     			type : "get",
     			data : {
-    				
+    				chart: globalChartNumber
     			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
     			success : function(response) {
     				// console.log(response)
@@ -447,7 +480,7 @@ html,body {
     				// console.log("AJAX 종료");
     			}
 			})
-    	}, 3000)
+    	}, 30000)
     	
     	
     })
@@ -491,16 +524,16 @@ html,body {
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span>
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
-							class="active nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="navi">리포트 통계 Ⅰ</a></li>
+							class="nav-link mp " data-toggle="pill"
+							data-target="#reportMain" style="font-weight:bold;" id="stat1">리포트 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#reportCode" id="navi">리포트 통계 Ⅱ</a></li>
+							data-toggle="pill" data-target="#reportMain" id="stat2">리포트 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
-						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#resultCode" id="navi">리포트 통계 Ⅲ</a></li>
+<!-- 						<li class="nav-item"><a href="#" class="nav-link mp "
+							data-toggle="pill" data-target="#resultCode" id="stat3">리포트 통계 Ⅲ</a></li>
  						<li class="nav-item"><a class="nav-link mp" href="#" 
- 							data-toggle="pill" data-target="#tabfive" id="navi">Code Legends</a></li> 
+ 							data-toggle="pill" data-target="#tabfive" id="stat4">Code Legends</a></li>  -->
 					<!-- 	<li class="nav-item"><a class="nav-link mp " href="#"
 							data-toggle="pill" data-target="#reportLog" id="resetOriginalPrivacyTab" >과거 기록 열람</a></li> -->
 					</ul>
@@ -520,7 +553,7 @@ html,body {
 						
 						
 						<div class="tab-pane fade" id="reportCode" role="tabpanel">
-							<div></div>
+							<div id="chartContainer2" style="width: 100%; height: 100%"></div>
 						</div>
 						
 						

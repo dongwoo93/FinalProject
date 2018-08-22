@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.parser.DTD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.Board_Tags2DTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -48,8 +50,7 @@ public class BoardController {
 	private BoardService boardService;
 	@Autowired
 	private Board_CommentService board_commentService;
-	@Autowired
-	private ProfileService profileService;
+
 	@Autowired
 	private Board_LikeService board_likeService;
 	@Autowired
@@ -59,8 +60,9 @@ public class BoardController {
 	
 	@Autowired
 	private Member_FollowService member_followService;
+	
 	@Autowired
-	private ProfileService profileservice;
+	private ProfileService profileService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpSession seesion) {
@@ -75,7 +77,8 @@ public class BoardController {
 			List<Integer> mark = new ArrayList<>();
 			Map<Integer,String> mapmark = new HashMap<>();
 			List<List<Board_MediaDTO>> media = new ArrayList<>();
-			 
+			List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+			Map<String, String> getAllProfilePic = new HashMap<>();
 			try {
 				list = boardService.getFeed(id);
 				for(int i = 0; i < list.size(); i++) {
@@ -85,11 +88,13 @@ public class BoardController {
 				like = board_likeService.searchLike(id);
 				mark = board_bookmarkService.searchMark(id);
 				
+			    profile_image = profileService.getAllProfileImage();
+				
 				Set<Integer> seqlist = new HashSet<>();
 			for(Board_CommentDTO dto : list1) {	
 				seqlist.add(dto.getBoard_seq());
 				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
-		
+				
 			}  
 			for(Board_CommentDTO dto : list1) {
 				for(int seq : seqlist) {
@@ -98,6 +103,12 @@ public class BoardController {
 					} 
 				}
 			}
+			
+			for(Profile_ImageDTO dto : profile_image) {
+				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+			};
+			
 			
 			
 			for(int tmp : like) {
@@ -116,7 +127,9 @@ public class BoardController {
 			mav.addObject("like", maplike);
 			mav.addObject("bookmark", mapmark);
 			mav.addObject("commentresult",commentlist);
+			mav.addObject("profile_pic",getAllProfilePic);
 			mav.setViewName("timeline2.jsp");
+	
 		}else {
 			mav.setViewName("redirect:main.jsp");
 		}
@@ -135,7 +148,7 @@ public class BoardController {
 		
 		boolean isBlock = member_blockService.isBlock(sessionid,id);
 		boolean isFollow = member_followService.isFollow(sessionid,id);
-		boolean isNotPublic = profileservice.isNotPublic(id);
+		boolean isNotPublic = profileService.isNotPublic(id);
 		List<Board_MediaDTO> result2 = new ArrayList<>();
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
@@ -147,6 +160,7 @@ public class BoardController {
 		Map<Integer, Integer> likecount = new HashMap<>();
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
 		Map<Integer, Integer> commentcount = new HashMap<>();
+		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
 		
 		for(int[] tmp : likecnt) {
 			likecount.put(tmp[0],tmp[1]);
@@ -165,19 +179,30 @@ public class BoardController {
 		mav.addObject("isBlock", isBlock); 
 		mav.addObject("isFollow", isFollow);
 		mav.addObject("isNotPublic", isNotPublic);  
+		mav.addObject("profileImg", profileImg);
 		mav.setViewName("myarticle3.jsp");
+		mav.addObject("profileImg", profileImg);
 		return mav;
 	}
 	
 	@RequestMapping("/boardView.bo")
-	public void getBoardModal(HttpServletResponse response, String seq) throws Exception{
+	public void getBoardModal(HttpSession session, HttpServletResponse response, String seq) throws Exception{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
+		String id = (String)session.getAttribute("loginId");  
 		BoardDTO result = boardService.getBoardModal(seq);
-		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));
+		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
+		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
+	
 		List<Object> result3 = new ArrayList<>();
+		Board_LikeDTO like = board_likeService.isLiked(id,Integer.parseInt(seq));
+		Board_BookmarkDTO bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(seq));
 		result3.add(result);
 		result3.add(result2);
+		result3.add(commentlist); 
+		
+		result3.add(like);
+		result3.add(bookmark);
 		new Gson().toJson(result3,response.getWriter());
 
 	}

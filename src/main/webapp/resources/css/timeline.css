@@ -170,8 +170,6 @@ padding-right:3%;
 .commenttxt { 
 	border:none;
 	width:100%; 
-	
-   
 }  
   
 .creco {   
@@ -264,4 +262,8 @@ padding-right:3%;
 .close{
    	 top : 2.5%;
    	 font-size: 25px;
+}
+.pic{
+	width : 30px;
+	height : 30px;   
 }

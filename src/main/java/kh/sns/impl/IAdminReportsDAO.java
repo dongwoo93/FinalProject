@@ -109,7 +109,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 	
 	@Override
 	public List<JQueryPieChartVO> getAdminReportProcessedForPieChartVO(int category) throws Exception {
-		String sql = "select report_code, REPORT_CODE_DESCRIPTION as label, "
+		String sql = "select report_code as code, REPORT_CODE_DESCRIPTION as label, "
 				+ "(select count(*) from admin_reports where c.report_code = report_code) as y "
 				+ "from admin_report_code c";
 		switch(category) {
@@ -117,7 +117,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 			
 			break;
 		case 2:
-			sql = "select result_code, result_description as label, (select count(*) from admin_reports where c.result_code = result_code) as y from admin_report_result_code c";
+			sql = "select result_code as code, result_description as label, (select count(*) from admin_reports where c.result_code = result_code) as y from admin_report_result_code c order by code";
 			break;
 		}
 		
@@ -125,7 +125,7 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 			JQueryPieChartVO pcvo = new JQueryPieChartVO();
 			pcvo.setLabel(rs.getString("label"));
 			pcvo.setY(rs.getDouble("y"));
-			pcvo.setLegendText(rs.getString("report_code") + ". " + rs.getString("label"));			
+			pcvo.setLegendText(rs.getString("code") + ". " + rs.getString("label"));			
 			return pcvo;
 		});
 	}

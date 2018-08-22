@@ -1,8 +1,5 @@
 package kh.sns.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -31,7 +28,7 @@ public class Board_LikeController {
 		String id = (String) session.getAttribute("loginId");
 		dto.setId(id);
 		
-		
+		 
 		int result = 0;
 		try {
 			if(dto.getIs_liked().equals("y")) {
