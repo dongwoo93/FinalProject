@@ -97,7 +97,7 @@
 	var boardid = $("#boardid").val();  
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; background-color:#E1F5FE"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-word; background-color:#E1F5FE"); 
 		
 		if(sessionid == boardid) {      
 		$("#commentdel"+seq).html("삭제");   
@@ -110,7 +110,7 @@
     	var seq = $(e).attr("value"); 
 		 
 		$("#ul"+seq).attr("style",false);            
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word;"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-word;"); 
 		$("#commentdel"+seq).html("");  
 		$("#commentmod"+seq).html("");
   
@@ -356,8 +356,8 @@
 														<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>
 														<li id='li2'><div
 																id='commenttxt${comment.comment_seq}'
-																class='commenttxt txt${tmp.board_seq}'
-																style='word-wrap: break-word;'>${comment.comment_contents}</div></li>
+																class='commenttxt txt${tmp.board_seq}'  
+																style='word-wrap: break-word; word-break:break-word;'>${comment.comment_contents}</div></li>
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
@@ -424,7 +424,7 @@
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {     
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word;' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-word;' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>");
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
