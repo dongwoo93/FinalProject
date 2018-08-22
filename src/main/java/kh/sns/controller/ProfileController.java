@@ -3,7 +3,9 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,8 +44,11 @@ public class ProfileController {
 			System.out.println("currentLoginId: " + memberId);
 			MemberDTO member = memberService.getOneMember(memberId);
 			ProfileDTO profile = profileService.getOneProfile(memberId);
+			List<Profile_ImageDTO> profile_image = new ArrayList<>();
 			MemberBusinessDTO memberBiz = null;
 			try {
+				
+				profile_image = profileService.getPic(memberId);
 				memberBiz = mBizService.selectAnMemberBiz(memberId);
 			} catch(IndexOutOfBoundsException e) {
 				System.err.println("This is not business account!!");
@@ -52,7 +57,7 @@ public class ProfileController {
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			mav.addObject("memberBiz", memberBiz);
-
+			mav.addObject("profile_pic", profile_image.get(0).getSystem_file_name());
 			mav.setViewName("mypage2.jsp");
 
 		} else {
@@ -124,7 +129,7 @@ public class ProfileController {
             newFileName = System.currentTimeMillis()+"."
                     +fileName.substring(fileName.lastIndexOf(".")+1);
             // System.out.println("시스템 파일 이름 : " +newFileName);
-            Profile_ImageDTO dto = new Profile_ImageDTO(id, fileName, newFileName, "y");
+            Profile_ImageDTO dto = new Profile_ImageDTO(id, fileName, newFileName, "y", "");
             setImg = profileService.updateProfileImages(id);
             result = profileService.insertProfileImage(dto);
             if(result == 1) {

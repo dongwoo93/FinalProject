@@ -15,6 +15,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.parser.DTD;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,7 +76,8 @@ public class BoardController {
 			List<Integer> mark = new ArrayList<>();
 			Map<Integer,String> mapmark = new HashMap<>();
 			List<List<Board_MediaDTO>> media = new ArrayList<>();
-			 
+			List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+			Map<String, String> getAllProfilePic = new HashMap<>();
 			try {
 				list = boardService.getFeed(id);
 				for(int i = 0; i < list.size(); i++) {
@@ -85,11 +87,13 @@ public class BoardController {
 				like = board_likeService.searchLike(id);
 				mark = board_bookmarkService.searchMark(id);
 				
+			    profile_image = profileService.getAllProfileImage();
+				
 				Set<Integer> seqlist = new HashSet<>();
 			for(Board_CommentDTO dto : list1) {	
 				seqlist.add(dto.getBoard_seq());
 				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
-		
+				
 			}  
 			for(Board_CommentDTO dto : list1) {
 				for(int seq : seqlist) {
@@ -98,6 +102,12 @@ public class BoardController {
 					} 
 				}
 			}
+			
+			for(Profile_ImageDTO dto : profile_image) {
+				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+			};
+			
 			
 			
 			for(int tmp : like) {
@@ -116,7 +126,9 @@ public class BoardController {
 			mav.addObject("like", maplike);
 			mav.addObject("bookmark", mapmark);
 			mav.addObject("commentresult",commentlist);
+			mav.addObject("profile_pic",getAllProfilePic);
 			mav.setViewName("timeline2.jsp");
+	
 		}else {
 			mav.setViewName("redirect:main.jsp");
 		}

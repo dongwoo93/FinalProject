@@ -193,9 +193,8 @@
 
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
-						<div class="profile-image">
-							<img class="ml-3 mr-2"
-								src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+						<div class="profile-image"> 
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
 							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
 							<br> <a class="mt-1 idtxt" id="id"
 								href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South
