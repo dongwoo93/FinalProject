@@ -6,6 +6,7 @@ import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
+
 import kh.sns.dto.Board_TagsDTO;
 
 import kh.sns.dto.FollowInfo;
@@ -34,5 +35,8 @@ public interface BoardService {
 	//oneBoard
 	public BoardDTO oneBoard(String board_seq) throws Exception;
 	
-
+	//tour
+	public List<BoardDTO> getAllBoard() throws Exception;
+	public List<Board_MediaDTO> getAllBoard2() throws Exception;
+	public List<String[]> selectTagCount() throws Exception;
 }

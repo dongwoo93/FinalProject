@@ -48,7 +48,7 @@
 	<!-- ServiceImpl에 @Transactional("txManager") -->
 
 	<bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 
@@ -70,6 +70,7 @@
 		<!-- defaultEncoding -->
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>
+	
 
 	<tx:annotation-driven transaction-manager="txManager" />
 
@@ -78,6 +79,6 @@
 	<context:component-scan base-package="kh.sns"></context:component-scan>
 
 
-
+   
 
 </beans>

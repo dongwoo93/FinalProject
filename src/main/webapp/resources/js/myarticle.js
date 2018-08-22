@@ -1,47 +1,3 @@
-function follow(id1, id2) {
-	var id = id1;
-	var targetId = id2;
-	$.ajax({
-		url : "follow.do",
-		type : "post",
-		data : {
-			id : id,
-			targetId : targetId,
-		},
-		success : function(resp) {
-			$("#cancelFollow").show();
-			$("#follow").hide();
-			
-		},
-		error : function() {
-			console.log("에러 발생!");
-			}
-		})
-}
-
-function unfollow(id1, id2) {
-	var id = id1;
-	var targetId = id2;
-	$.ajax({
-		url : "deletefollow.do",
-		type : "post",
-		data : {
-			id : id,
-			targetId : targetId,
-		},
-		success : function(resp) {
-			$("#follow").show();
-			$("#cancelFollow").hide();
-			
-		},
-		error : function() {
-			console.log("에러 발생!");
-			}
-		})
-}
- 
-    
-
 $(document).ready(function() {
 	$("#logout").click(function() {
 		$(location).attr("href", "logout.do");
@@ -380,9 +336,19 @@ function commentover2(e) {
 	var commentid = $(e).prev().children().children().html();    
 	$(e).prev().attr("style","background-color:#E1F5FE");
 	$("#commenttxt"+comment_seq).attr("style","word-wrap: break-word; background-color:#E1F5FE"); 
+	 var modstate = $("#modstate"+comment_seq).val();
+	   
+	 if(modstate == "2"){     
+		 $("#del"+comment_seq).attr("style","color:#00B8D4");
+		 $("#mod"+comment_seq).attr("style","color:#00B8D4");
+	 }else if(modstate =="1") {
+		 $("#del"+comment_seq).attr("style",false);
+		 $("#mod"+comment_seq).attr("style",false);
 		 
+	 }
 		if(sessionid == commentid) {     
 			$(e).attr("style", "background-color:#E1F5FE;"); 
+			
 		}  
 	
     }
@@ -421,7 +387,7 @@ function likeit(e) {
 
 function unlikeit(e) {
 	var board_seq = $(e).val();   
-	var sessionid = $("#sessionid").val();
+	var sessionid = $("#sessionid").val();   
 	$.ajax({
 		url : "like.bo",
 		type : "get",
@@ -496,9 +462,10 @@ function delComment(e) {
           url: "commentdel.co",      
           data: {board_seq:board_seq,comment_seq:comment_seq},
           success : function(cnt) {
-        	  console.log(cnt);
-        	  $("#ul2"+comment_seq).remove();  
-           $("#ul"+comment_seq).remove();    
+        	  console.log(cnt);      
+        	  $("#ul"+comment_seq).fadeOut(400,function() { $("#ul"+comment_seq).remove(); }); 
+        	  $("#ul2"+comment_seq).fadeOut(400,function() { $("#ul2"+comment_seq).remove(); });   
+        	      
           }  
                
      }); //ajax 
@@ -508,14 +475,23 @@ function modComment(e) {
 
 	 var comment_seq = $(e).attr("value");
 	 var board_seq = $(e).parent().attr("value");
-
-		 
+	 var modstate = $("#modstate"+comment_seq).val();
+	   
+	 if(modstate == "1") {
+		
+		 $("#commentmod"+comment_seq).html("완료");
 	$("#commenttxt"+comment_seq).attr("contentEditable",true);
   	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
   	 $("#commenttxt"+comment_seq).focus();  
-
-  	$(e).click(function() {    
-  			 var txt = $("#commenttxt"+comment_seq).val();     
+  	 $("#modstate"+comment_seq).val("2");  
+  	 $("#del"+comment_seq).attr("style","color:#00B8D4");
+	 $("#mod"+comment_seq).attr("style","color:#00B8D4");
+	 }
+	 
+	 
+	 else if(modstate=="2") {      
+		
+  			 var txt = $("#commenttxt"+comment_seq).html();     
      	 	 
             	$.ajax({    
                       type: "POST",    
@@ -525,11 +501,18 @@ function modComment(e) {
                     	$("#commenttxt"+comment_seq).attr("contentEditable",false);
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
+		                   $("#modstate"+comment_seq).val("1");  
+		                   $("#ul"+comment_seq).hide().fadeIn(500);
+		                   $("#del"+comment_seq).attr("style",false);
+		          		 $("#mod"+comment_seq).attr("style",false);
+		          		 $("#commentmod"+comment_seq).html("수정");
                       }  
                  }); //ajax 
-  	})
+	 }
   
 }
+
+
 	
  
 	   

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
+import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_LikeService;
 
 @Controller
@@ -15,6 +17,9 @@ public class Board_LikeController {
 	
 	@Autowired
 	private Board_LikeService board_likeservice;
+	
+	@Autowired
+	private BoardService board_service;
 	
 	
 	@RequestMapping("/like.bo")
@@ -36,8 +41,6 @@ public class Board_LikeController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
-
+	
 }

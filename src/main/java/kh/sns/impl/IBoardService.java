@@ -98,7 +98,7 @@ public class IBoardService implements BoardService {
 	}
 	
 
-
+	//Search(검색)
 	@Override
 	public List<BoardDTO> search(String keyword) throws Exception {
 		// TODO Auto-generated method stub
@@ -110,6 +110,24 @@ public class IBoardService implements BoardService {
 		// TODO Auto-generated method stub
 		return dao.oneBoard(board_seq);
 	}
+	
+	//tour(둘러보기)
+	@Override
+	public List<BoardDTO> getAllBoard() throws Exception {
+		return dao.getAllBoard();
+	}
+
+	@Override
+	public List<Board_MediaDTO> getAllBoard2() throws Exception {
+		return dao.getAllBoard2();
+	}
+
+	@Override
+	public List<String[]> selectTagCount() throws Exception {
+		return dao.selectTagCount();
+	}
+	
+	
 
 	
 	

@@ -1,6 +1,7 @@
 package kh.sns.controller;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ public class Member_BlockController {
 	private Member_BlockService service;
 	
 	@RequestMapping("/block.mem")
-	public void blockMember(Member_BlockDTO dto, HttpServletResponse response) throws Exception {
+	public void blockMember(Member_BlockDTO dto, HttpSession session, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		int result = service.insertBlock(dto);
 		if(result == 1) {

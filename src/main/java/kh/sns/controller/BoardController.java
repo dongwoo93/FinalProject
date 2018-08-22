@@ -32,6 +32,7 @@ import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
+
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.Profile_ImageDTO;
@@ -60,10 +61,10 @@ public class BoardController {
 	@Autowired	private MemberBusinessService mBizService;
 
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed(HttpSession seesion) {
+	public ModelAndView toFeed(HttpServletResponse response, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
 		String id = (String) seesion.getAttribute("loginId");
-		if(id != null) {
+
 			List<BoardDTO> list = new ArrayList<BoardDTO>();
 			List<Board_CommentDTO> list1 = new ArrayList<>();
 			Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
@@ -124,59 +125,59 @@ public class BoardController {
 			mav.addObject("commentresult",commentlist);
 			mav.addObject("profile_pic",getAllProfilePic);
 			mav.setViewName("timeline2.jsp");
-
-		}else {
-			mav.setViewName("redirect:main.jsp");
-		}
-
+			
 		return mav;
 	}
 
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session, String id) throws Exception{
-
+	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id) throws Exception{
+		
 		ModelAndView mav = new ModelAndView();
 		String sessionid= (String)session.getAttribute("loginId");
 
-		//		String id = (String) session.getAttribute("loginId");
-		List<BoardDTO> result = boardService.getBoard(id);
-
-		boolean isBlock = member_blockService.isBlock(sessionid,id);
-		boolean isFollow = member_followService.isFollow(sessionid,id);
-		boolean isNotPublic = profileService.isNotPublic(id);
-		List<Board_MediaDTO> result2 = new ArrayList<>();
-		for(int i = 0; i < result.size(); i++) {
-			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
-		}
-		String boardCount = boardService.boardCount(id);
-		int followerCount = member_followService.getFollowerCount(id);
-		int followingCount = member_followService.getFollowingCount(id);
-		List<int[]> likecnt = board_likeService.selectLikeCount();
-		Map<Integer, Integer> likecount = new HashMap<>();
-		List<int[]> commentcnt = board_commentService.selectCommentCount();
-		Map<Integer, Integer> commentcount = new HashMap<>();
-		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
-
-		for(int[] tmp : likecnt) {
-			likecount.put(tmp[0],tmp[1]);
-		}
-
-		for(int[] tmp : commentcnt) {
-			commentcount.put(tmp[0],tmp[1]);
-		}
-		mav.addObject("result", result);
-		mav.addObject("result2", result2);
-		mav.addObject("boardCount", boardCount);
-		mav.addObject("followerCount", followerCount);
-		mav.addObject("followingCount", followingCount);
-		mav.addObject("likecount", likecount); 
-		mav.addObject("commentcount", commentcount); 
-		mav.addObject("isBlock", isBlock); 
-		mav.addObject("isFollow", isFollow);
-		mav.addObject("isNotPublic", isNotPublic);  
-		mav.addObject("profileImg", profileImg);
-		mav.setViewName("myarticle3.jsp");
-		mav.addObject("profileImg", profileImg);
+			List<BoardDTO> result = boardService.getBoard(id);
+			
+			boolean isBlock = member_blockService.isBlock(sessionid,id);
+			boolean isFollow = member_followService.isFollow(sessionid,id);
+			boolean isNotPublic = profileService.isNotPublic(id);
+			List<Board_MediaDTO> result2 = new ArrayList<>();
+			for(int i = 0; i < result.size(); i++) {
+				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
+			}
+			String boardCount = boardService.boardCount(id);
+			int followerCount = member_followService.getFollowerCount(id);
+			int followingCount = member_followService.getFollowingCount(id);
+			List<int[]> likecnt = board_likeService.selectLikeCount();
+			Map<Integer, Integer> likecount = new HashMap<>();
+			List<int[]> commentcnt = board_commentService.selectCommentCount();
+			Map<Integer, Integer> commentcount = new HashMap<>();
+			List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
+			
+			for(int[] tmp : likecnt) {
+				likecount.put(tmp[0],tmp[1]);
+			}
+			 
+			for(int[] tmp : commentcnt) {
+				commentcount.put(tmp[0],tmp[1]);
+			}
+			mav.addObject("result", result);
+			mav.addObject("result2", result2);
+			mav.addObject("boardCount", boardCount);
+			mav.addObject("followerCount", followerCount);
+			mav.addObject("followingCount", followingCount);
+			mav.addObject("likecount", likecount); 
+			mav.addObject("commentcount", commentcount); 
+			mav.addObject("isBlock", isBlock); 
+			mav.addObject("isFollow", isFollow);
+			mav.addObject("isNotPublic", isNotPublic);  
+			mav.addObject("profileImg", profileImg);
+			mav.setViewName("myarticle3.jsp");
+			mav.addObject("profileImg", profileImg);
+		
+		
+//		String id = (String) session.getAttribute("loginId");
+		
+		mav.addObject("pageid", id);
 		return mav;
 	}
 
@@ -204,7 +205,7 @@ public class BoardController {
 
 
 	@RequestMapping("/boardDelete.bo")
-	public ModelAndView deleteBoard(HttpSession session, int seq) throws Exception {
+	public ModelAndView deleteBoard(HttpSession session, HttpServletResponse response, int seq) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
@@ -214,52 +215,122 @@ public class BoardController {
 
 
 	@RequestMapping("/boardModify.bo")
-	public void modifyBoard(HttpServletResponse response, BoardDTO dto) throws Exception {
+	public void modifyBoard(HttpSession seesion, HttpServletResponse response, BoardDTO dto) throws Exception {
 		int result = boardService.modifyBoard(dto);
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
-
-
-	//search
+	
+	
+	//Search(검색)
 	@RequestMapping("/search.bo")
 	public ModelAndView search(HttpSession session, String search) throws Exception{
-		String id = (String)session.getAttribute("loginId");
 		ModelAndView mav = new ModelAndView();
-		System.out.println(search);
-		List<BoardDTO> result = boardService.search(search);
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();
-		List<Integer> result3 = board_likeService.searchLike(id);
-		List<int[]> result4 = board_likeService.selectLikeCount();
-		Map<Integer,String> map = new HashMap<>();
-		Map<Integer,Integer> countlike = new HashMap<>();
-
-		for(int[] list : result4) {
-			countlike.put(list[0], list[1]);
+		String id = (String)session.getAttribute("loginId");
+		
+		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+		
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+		
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
-
+		
+		// 누를때
 		for(int tmp : result3) {
 			map.put(tmp, "y");
 		}
-
-		for(int i = 0; i < result.size(); i++) {
-			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+	 	
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
 		}
+		
 		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result);
-		mav.addObject("result2", result2);
-		mav.addObject("result3", map);
-		mav.addObject("result4",countlike);
+		mav.addObject("result", result);		// 검색어
+		mav.addObject("result2", result2);		// 사진
+		mav.addObject("result3", map);			// 누를때
+		mav.addObject("result4",countlike);		// 조회
 		mav.setViewName("search2.jsp");
 		return mav;
 	}
+	
+		//tour(둘러보기)
+		@RequestMapping("/tour.bo")
+		public ModelAndView goTour(HttpSession session, String cat) throws Exception {
+			ModelAndView mav = new ModelAndView();
+			String id = (String)session.getAttribute("loginId");
+			String category = null;
+			
+			List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+			List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+			List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+			List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+			
+			Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+			Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
+			// 최신글
+			if(cat.equals("1")) {
+				result = boardService.getAllBoard();
+				category = "최신글";
+			}
+			
+			// 좋아요 
+			else if(cat.equals("2")) {
+				category = "좋아요 순";
+				List<int[]> seqArr = board_likeService.bestLike();
+				for(int i = 0; seqArr.size() > i; i++) {
+					result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+				}
+			}
+			
+			// 인기 태그
+			else if(cat.equals("3")) {
+				category = "인기 태그 순";
+				List<String[]> tagArr = boardService.selectTagCount();
+				for(int i = 0; i < tagArr.size(); i++) {
+					for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
+					System.out.println(tagArr.get(i)[2].split(",")[j]);
+					}
+				}
+			}
+			
+			// 사진
+			for(int i = 0;i < result.size(); i++) { 
+				result2.add(boardService.search2(result.get(i).getBoard_seq()));
+			}
+			
+			// 누를때
+			for(int tmp : result3) {
+				map.put(tmp, "y");
+			}
+		 	
+			// 조회
+			for(int[] list : result4) {
+				countlike.put(list[0], list[1]);
+			}
+			
+			mav.addObject("category", category);	// 카테고리
+			mav.addObject("result", result);		// 전체 
+			mav.addObject("result2", result2);		// 사진 
+			mav.addObject("result3", map);			// 누를때
+			mav.addObject("result4",countlike);		// 조회
+			mav.setViewName("tour.jsp");
+			return mav;
+		}
+	
 	@RequestMapping("/mypage.bo")
-	public ModelAndView toMypage(){
+	public ModelAndView toMypage(HttpSession seesion, HttpServletResponse response){
 		ModelAndView mav = new ModelAndView();
-
 		return mav;
 	}
 
@@ -300,6 +371,7 @@ public class BoardController {
 
 	@RequestMapping("/writeProc.bo")
 	public ModelAndView writeProcBoard(
+			HttpSession seesion,
 			HttpServletRequest request,
 			@RequestParam("contents") String contents,
 			@RequestParam("filename[]") MultipartFile files,
@@ -419,7 +491,7 @@ public class BoardController {
 
 	// AJAX
 	@RequestMapping("/getOneArticle.ajax")
-	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void getOneArticleAjax(HttpServletRequest request, HttpServletResponse response, HttpSession seesion) throws Exception {
 		response.setCharacterEncoding("UTF8");
 		response.setContentType("application/json");
 		PrintWriter xout = response.getWriter();
@@ -437,7 +509,7 @@ public class BoardController {
 	}
 
 	@RequestMapping("/getOneComment.ajax")
-	public void getOneCommentAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void getOneCommentAjax(HttpServletRequest request, HttpServletResponse response, HttpSession seesion) throws Exception {
 		response.setCharacterEncoding("UTF8");
 		response.setContentType("application/json");
 		try {
@@ -467,47 +539,53 @@ public class BoardController {
 
 
 	@RequestMapping("/oneBoard.do")
-	public ModelAndView oneBoard(String board_seq , HttpSession session) {
+	public ModelAndView oneBoard(String board_seq , HttpSession session, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView();
-		BoardDTO a = null;
-		List<Board_CommentDTO> result = null;
-		List<List<Board_MediaDTO>> media = new ArrayList<>();
-
-		Board_LikeDTO like = null;
-		Board_BookmarkDTO bookmark = null;
 		String id = (String) session.getAttribute("loginId");
-
-
-		try {
+		if(id != null) {
+			BoardDTO a = null;
+			List<Board_CommentDTO> result = null;
+			List<List<Board_MediaDTO>> media = new ArrayList<>();
+			
+			Board_LikeDTO like = null;
+			Board_BookmarkDTO bookmark = null;
+			
+			
+			
+			try {
 			System.out.println(board_seq);
-
+			
 			a = boardService.oneBoard(board_seq);
 			media.add(boardService.search2(a.getBoard_seq()));
 
-
+			
 			result = board_commentService.getCommentList(Integer.parseInt(board_seq));
-
+			
 			like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
-
+			
 			bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
-
-		}catch(Exception e) {
-			System.out.println("oneboard.do");
-			e.printStackTrace();
+			
+			}catch(Exception e) {
+				System.out.println("oneboard.do");
+				e.printStackTrace();
+			}
+			
+			mav.setViewName("oneBoard.jsp");
+			mav.addObject("b", a);
+			mav.addObject("result", result);
+			mav.addObject("result2", media);
+			mav.addObject("like", like);
+			mav.addObject("bookmark", bookmark);
+		}else {
+			mav.setViewName("redirect:main.jsp");
 		}
-
-		mav.setViewName("oneBoard.jsp");
-		mav.addObject("b", a);
-		mav.addObject("result", result);
-		mav.addObject("result2", media);
-		mav.addObject("like", like);
-		mav.addObject("bookmark", bookmark);
+		
 		return mav;
 
 	}
 
 	@RequestMapping("/follow.do")
-	public void insertFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+	public void insertFollowInfo(FollowInfo fi, HttpServletResponse response, HttpSession seesion) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		int result = member_followService.insertFollowInfo(fi);
 		if(result == 1) {
@@ -522,7 +600,7 @@ public class BoardController {
 	}
 
 	@RequestMapping("/deletefollow.do")
-	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response) throws Exception {
+	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response, HttpSession seesion) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		int result = member_followService.deleteFollowInfo(fi);
 		if(result == 1) {
