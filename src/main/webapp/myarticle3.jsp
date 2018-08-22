@@ -313,7 +313,7 @@ $(document).ready(function(){
                                   
                                   $("#likeit").attr("style", "display:none;");
                                   $("#likecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
-                                  if(data[3] != null) { 
+                                  if(data[3] != null) {   
                                 	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
                                   }else {
                                 	  $("#likeit").attr("style", false);
@@ -543,7 +543,7 @@ $(document).ready(function(){
                                 $("#comment").val("");         
                                 $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+comment_contents+"</div></li></ul>"
                                 		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
-                          			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");      
+                          			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
                                   
                                   
   
