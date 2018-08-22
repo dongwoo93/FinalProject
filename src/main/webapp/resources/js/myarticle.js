@@ -336,9 +336,19 @@ function commentover2(e) {
 	var commentid = $(e).prev().children().children().html();    
 	$(e).prev().attr("style","background-color:#E1F5FE");
 	$("#commenttxt"+comment_seq).attr("style","word-wrap: break-word; background-color:#E1F5FE"); 
+	 var modstate = $("#modstate"+comment_seq).val();
+	   
+	 if(modstate == "2"){     
+		 $("#del"+comment_seq).attr("style","color:#00B8D4");
+		 $("#mod"+comment_seq).attr("style","color:#00B8D4");
+	 }else if(modstate =="1") {
+		 $("#del"+comment_seq).attr("style",false);
+		 $("#mod"+comment_seq).attr("style",false);
 		 
+	 }
 		if(sessionid == commentid) {     
 			$(e).attr("style", "background-color:#E1F5FE;"); 
+			
 		}  
 	
     }
@@ -377,7 +387,7 @@ function likeit(e) {
 
 function unlikeit(e) {
 	var board_seq = $(e).val();   
-	var sessionid = $("#sessionid").val();
+	var sessionid = $("#sessionid").val();   
 	$.ajax({
 		url : "like.bo",
 		type : "get",
@@ -452,9 +462,10 @@ function delComment(e) {
           url: "commentdel.co",      
           data: {board_seq:board_seq,comment_seq:comment_seq},
           success : function(cnt) {
-        	  console.log(cnt);
-        	  $("#ul2"+comment_seq).remove();  
-           $("#ul"+comment_seq).remove();    
+        	  console.log(cnt);      
+        	  $("#ul"+comment_seq).fadeOut(400,function() { $("#ul"+comment_seq).remove(); }); 
+        	  $("#ul2"+comment_seq).fadeOut(400,function() { $("#ul2"+comment_seq).remove(); });   
+        	      
           }  
                
      }); //ajax 
@@ -468,16 +479,18 @@ function modComment(e) {
 	   
 	 if(modstate == "1") {
 		
-		 
+		 $("#commentmod"+comment_seq).html("완료");
 	$("#commenttxt"+comment_seq).attr("contentEditable",true);
   	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
   	 $("#commenttxt"+comment_seq).focus();  
   	 $("#modstate"+comment_seq).val("2");  
+  	 $("#del"+comment_seq).attr("style","color:#00B8D4");
+	 $("#mod"+comment_seq).attr("style","color:#00B8D4");
 	 }
 	 
 	 
 	 else if(modstate=="2") {      
-		 
+		
   			 var txt = $("#commenttxt"+comment_seq).html();     
      	 	 
             	$.ajax({    
@@ -489,6 +502,10 @@ function modComment(e) {
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
 		                   $("#modstate"+comment_seq).val("1");  
+		                   $("#ul"+comment_seq).hide().fadeIn(500);
+		                   $("#del"+comment_seq).attr("style",false);
+		          		 $("#mod"+comment_seq).attr("style",false);
+		          		 $("#commentmod"+comment_seq).html("수정");
                       }  
                  }); //ajax 
 	 }

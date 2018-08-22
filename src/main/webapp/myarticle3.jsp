@@ -545,7 +545,7 @@ $(document).ready(function(){
                                 		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
                           			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
                                   
-                                  
+                                $("#ul"+comment_seq).hide().fadeIn(500);     
   
                                 var objDiv = document.getElementById("articlecomment");
                                 objDiv.scrollTop = objDiv.scrollHeight;    

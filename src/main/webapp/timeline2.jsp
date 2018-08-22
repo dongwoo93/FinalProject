@@ -94,14 +94,22 @@
     	
 	var seq = $(e).attr("value"); 
     var sessionid = $("#sessionid").val();
-	var boardid = $("#boardid").val();  
+	var boardid = $("#boardid").val(); 
+	var modstate = $("#modstate"+seq).val();    
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
 		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all background-color:#E1F5FE"); 
 		
-		if(sessionid == boardid) {      
-		$("#commentdel"+seq).html("삭제");   
-		$("#commentmod"+seq).html("수정");
+		if(sessionid == boardid) {       
+		$("#commentdel"+seq).html("삭제"); 
+		
+		if(modstate == "1") {
+			$("#commentmod"+seq).html("수정");
+		} 
+		else if(modstate =="2") {  
+			$("#commentmod"+seq).html("완료");
+		}
+		
 		}  
 	
     }
@@ -124,8 +132,8 @@
                   url: "commentdel.co",      
                   data: {board_seq:board_seq,comment_seq:comment_seq},
                   success : function(cnt) {
-                	  console.log(cnt);
-                   $("#ul"+comment_seq).remove();    
+                	console.log(cnt);    
+                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
                    if(cnt>2){ 
                        $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
                        else {
@@ -142,15 +150,16 @@
 		
 		
 		if(modstate == "1") {
-		
+			$("#commentmod"+comment_seq).html("완료");
 			 $("#commenttxt"+comment_seq).attr("contentEditable",true);
           	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
           	 $("#commenttxt"+comment_seq).focus();  
-          	 $("#modstate"+comment_seq).val("2");  
+          	
+          	 $("#modstate"+comment_seq).val("2");    
 
 		}
 		else if(modstate=="2") {
-			
+			$("#commentmod"+comment_seq).html("수정");   
 			 var txt = $("#commenttxt"+comment_seq).html();
   			 if(txt == ""){
                  alert("댓글을 입력해주세요");
@@ -165,6 +174,8 @@
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
 		                   $("#modstate"+comment_seq).val("1");    
+		                   $("#ul"+comment_seq).hide().fadeIn(500);  
+		                   
                       }  
                  }); //ajax 
                  }
@@ -433,7 +444,8 @@
 	                                              success : function(seq) {       
 	                                               $("#comment${tmp.board_seq}").val("");              
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
-	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>"); 
+	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
