@@ -44,20 +44,21 @@ public class ProfileController {
 			System.out.println("currentLoginId: " + memberId);
 			MemberDTO member = memberService.getOneMember(memberId);
 			ProfileDTO profile = profileService.getOneProfile(memberId);
-			List<Profile_ImageDTO> profile_image = new ArrayList<>();
+			String myImg = null;
 			MemberBusinessDTO memberBiz = null;
 			try {
 				
-				profile_image = profileService.getPic(memberId);
+				myImg = profileService.getPic(memberId);
 				memberBiz = mBizService.selectAnMemberBiz(memberId);
 			} catch(IndexOutOfBoundsException e) {
 				System.err.println("This is not business account!!");
 			}
 			
+			
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			mav.addObject("memberBiz", memberBiz);
-			mav.addObject("profile_pic", profile_image.get(0).getSystem_file_name());
+			mav.addObject("profile_pic", myImg);
 			mav.setViewName("mypage2.jsp");
 
 		} else {

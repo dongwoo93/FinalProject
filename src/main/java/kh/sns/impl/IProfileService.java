@@ -71,7 +71,7 @@ public class IProfileService implements ProfileService {
 	}
 
 	@Override
-	public List<Profile_ImageDTO> getPic(String id) throws Exception {
+	public String getPic(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return pdao.getPic(id);
 	}

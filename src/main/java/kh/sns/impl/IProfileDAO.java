@@ -129,11 +129,12 @@ public class IProfileDAO implements ProfileDAO {
 	}
 
 	@Override
-	public List<Profile_ImageDTO> getPic(String id) throws Exception {
+	public String getPic(String id) throws Exception {
 		// TODO Auto-generated method stub
 		String sql = "select system_file_name from profile_image where id=? and is_selected='y'";
-		return template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
-
+		String myImg = null;
+		List<Profile_ImageDTO> list = template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
+		
 			@Override
 			public Profile_ImageDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
@@ -149,7 +150,13 @@ public class IProfileDAO implements ProfileDAO {
 			
 		});
 		
+		if(list.size() > 0 ) {
+			myImg = list.get(0).getSystem_file_name(); 
+		}
+		
+		return myImg; 
+		
 	}
-
+	
 	
 }
