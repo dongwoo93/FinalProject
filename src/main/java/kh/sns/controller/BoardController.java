@@ -172,7 +172,6 @@ public class BoardController {
 			mav.addObject("isNotPublic", isNotPublic);  
 			mav.addObject("profileImg", profileImg);
 			mav.setViewName("myarticle3.jsp");
-			mav.addObject("profileImg", profileImg);
 		
 		
 //		String id = (String) session.getAttribute("loginId");
