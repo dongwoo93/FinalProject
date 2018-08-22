@@ -106,5 +106,50 @@ public class IProfileDAO implements ProfileDAO {
 		return template.update(sql, systemFileName);
 	}
 
+	@Override
+	public List<Profile_ImageDTO> getAllProfileImage() throws Exception {
+		// TODO Auto-generated method stub
+		
+		String sql = "select * from profile_image where is_selected='y'";
+		return template.query(sql, new RowMapper<Profile_ImageDTO>() {
+
+			@Override
+			public Profile_ImageDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Profile_ImageDTO tmp = new Profile_ImageDTO();
+				tmp.setId(rs.getString("id"));
+				tmp.setOriginal_file_name(rs.getString("original_file_name"));
+				tmp.setSystem_file_name(rs.getString("system_file_name"));
+				tmp.setIs_selected(rs.getString("is_selected"));
+				tmp.setApply_date(rs.getString("apply_date"));
+				return tmp;
+			}
+			
+		});
+	}
+
+	@Override
+	public List<Profile_ImageDTO> getPic(String id) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "select system_file_name from profile_image where id=? and is_selected='y'";
+		return template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
+
+			@Override
+			public Profile_ImageDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Profile_ImageDTO tmp = new Profile_ImageDTO();
+				tmp.setId("");
+				tmp.setOriginal_file_name("");
+				tmp.setIs_selected("");
+				tmp.setApply_date("");
+				tmp.setSystem_file_name(rs.getString("system_file_name"));
+				
+				return tmp;
+			}
+			
+		});
+		
+	}
+
 	
 }

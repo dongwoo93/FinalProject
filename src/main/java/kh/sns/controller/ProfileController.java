@@ -3,7 +3,9 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +35,7 @@ public class ProfileController {
 	
 	/*======*/
 	@RequestMapping("/profile.member")
-	public ModelAndView editProfile(HttpSession session) throws Exception {
+	public ModelAndView editProfile(HttpSession session, HttpServletResponse response) throws Exception {
 
 		ModelAndView mav = new ModelAndView();
 
@@ -42,8 +44,11 @@ public class ProfileController {
 			System.out.println("currentLoginId: " + memberId);
 			MemberDTO member = memberService.getOneMember(memberId);
 			ProfileDTO profile = profileService.getOneProfile(memberId);
+			List<Profile_ImageDTO> profile_image = new ArrayList<>();
 			MemberBusinessDTO memberBiz = null;
 			try {
+				
+				profile_image = profileService.getPic(memberId);
 				memberBiz = mBizService.selectAnMemberBiz(memberId);
 			} catch(IndexOutOfBoundsException e) {
 				System.err.println("This is not business account!!");
@@ -52,19 +57,19 @@ public class ProfileController {
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			mav.addObject("memberBiz", memberBiz);
-
+			mav.addObject("profile_pic", profile_image.get(0).getSystem_file_name());
 			mav.setViewName("mypage2.jsp");
 
 		} else {
 			// 작업 추가
 		}		
 
-		return mav;		
+		return mav;
 
 	}
 
 	@RequestMapping("/editProfileProc.member")
-	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpServletRequest request) throws Exception {
+	public ModelAndView editProfile(MemberDTO member, ProfileDTO profile, HttpSession seesion, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		member.setId(request.getSession().getAttribute("loginId").toString());
 		profile.setId(request.getSession().getAttribute("loginId").toString());
@@ -79,7 +84,7 @@ public class ProfileController {
 	}
 	
 	@RequestMapping("/toggleProfileCheckbox.ajax")
-	public void toggleProfileCheckbox(HttpServletRequest request, HttpServletResponse response) {		
+	public void toggleProfileCheckbox(HttpServletRequest request, HttpServletResponse response, HttpSession seesion) {		
 		
 		response.setCharacterEncoding("UTF8");
 		try {
@@ -124,7 +129,7 @@ public class ProfileController {
             newFileName = System.currentTimeMillis()+"."
                     +fileName.substring(fileName.lastIndexOf(".")+1);
             // System.out.println("시스템 파일 이름 : " +newFileName);
-            Profile_ImageDTO dto = new Profile_ImageDTO(id, fileName, newFileName, "y");
+            Profile_ImageDTO dto = new Profile_ImageDTO(id, fileName, newFileName, "y", "");
             setImg = profileService.updateProfileImages(id);
             result = profileService.insertProfileImage(dto);
             if(result == 1) {
@@ -146,7 +151,7 @@ public class ProfileController {
 	}
 	
 	@RequestMapping("/updateImg.profile")
-	public void updateProfileImage(HttpServletResponse response, Profile_ImageDTO dto) throws Exception {
+	public void updateProfileImage(HttpServletResponse response, Profile_ImageDTO dto, HttpSession seesion) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		int setImg = profileService.updateProfileImages(dto.getId());
 		int updateImg = profileService.updateProfileImages2(dto.getSystem_file_name());
@@ -163,7 +168,7 @@ public class ProfileController {
 	
 	// 최초 1회 변경입니다.
 	@RequestMapping("/changeBizAccount.profile")
-	public ModelAndView changeBizAccount(HttpSession session) throws Exception {
+	public ModelAndView changeBizAccount(HttpSession session, HttpServletResponse response) throws Exception {
 		
 		String id = session.getAttribute("loginId").toString();
 		MemberDTO member = memberService.getOneMember(id);
@@ -194,7 +199,7 @@ public class ProfileController {
 	}
 	
 	@RequestMapping("/updateBizProfileProc.member")
-	public ModelAndView updateBizProfileProc(HttpSession session, MemberBusinessDTO memberBiz) throws Exception {
+	public ModelAndView updateBizProfileProc(HttpSession session, MemberBusinessDTO memberBiz, HttpServletResponse response) throws Exception {
 		String id = session.getAttribute("loginId").toString();
 		memberBiz.setId(id);
 		int result = mBizService.updateAnMemberBiz(memberBiz);

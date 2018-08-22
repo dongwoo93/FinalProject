@@ -172,6 +172,8 @@ padding-right:3%;
 .commenttxt { 
 	border:none;
 	width:100%; 
+	word-wrap: break-word; 
+	    
 }  
   
 .creco {   
@@ -265,11 +267,7 @@ padding-right:3%;
    	 top : 2.5%;
    	 font-size: 25px;
 }
-
-._5mToa {
-    border-top: 2px solid #efefef;
-    height: 2px;
-    margin: 0 0 12px;
-    width: 100%;
+.pic{
+	width : 30px;
+	height : 30px;   
 }
-
