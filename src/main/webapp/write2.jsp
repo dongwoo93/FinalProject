@@ -45,6 +45,7 @@
 
         $(document).ready(function() {
         	console.log('x111ddd111');
+        	var globalBizFormEnabled = false;
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
               function getCaretPosition(editableDiv) {   
@@ -164,6 +165,19 @@
                 	alert('사진은 1개 이상 필요합니다.')
                 	return;
                 }
+                
+                <c:if test="${ memberBiz ne null }">
+	                if($('#enableBiz') != null && $('#enableBiz').is(":checked")){
+	                	$('#shifted_enableBiz').val($('#enableBiz').is(":checked") ? "y" : "n")
+	                	$('#shifted_moreInfoWebsite').val($('#moreInfoWebsite').val())
+	                	$('#shifted_isWebsitePurposeOfPurchase').val($('#isWebsitePurposeOfPurchase').is(":checked") ? "y" : "n")
+	                	$('#shifted_exposureRange').val($('#exposureRange').val())
+	                	$('#shifted_exposureCount').val($('#exposureCount').val())
+	                	$('#shifted_costPerClick').val($('#costPerClick').val())
+	                }
+                </c:if>
+                
+                
             	var length = $('.imgWidth100').length;
               	var filterOutput = "";
               	for(i = 0; i < length; i++){
@@ -314,6 +328,35 @@
             	console.log($('#fileSelect').val());
 
             })
+            
+            <c:if test="${ memberBiz ne null }">
+	            // 비즈니스 창 최초 로딩시
+	            $("#rangeSpan").text ($("#exposureRange").val ());
+	            $('#exposureCount').val(Number($("#exposureRange").val () * 500).toLocaleString('ko'))
+	            $('#costPerClick').val( 200 * ( 1-($("#exposureRange").val()/500) ) )
+	            
+	            // 변화할때마다
+	            $("#exposureRange").bind("change", function (event)
+	 			 {
+				    $("#rangeSpan").text ($(this).val());
+				    $('#exposureCount').val(Number($(this).val () * 500).toLocaleString('ko'))
+				    $('#costPerClick').val( 200 * (1-($(this).val()/500)) )
+				    
+				 });
+	            
+	            $( "#bizform input" ).prop( "disabled", true );
+	            $("#enableBiz").change(function(){
+	            	if($("#enableBiz").is(":checked")){
+	            		$( "#bizform input" ).prop( "disabled", false );
+	            		globalBizFormEnabled = true;
+	            	}
+	            	else{
+	            		$( "#bizform input" ).prop( "disabled", true );
+	            		globalBizFormEnabled = false;
+	            	}
+	            	
+	            })
+            </c:if>
         });
     
     </script>
@@ -428,7 +471,11 @@
 									<li class="list-group-item" id="person"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
-		
+								<c:if test="${ memberBiz ne null }">
+									<li class="list-group-item" id="person"><i
+										class="fas fa-users tagicon mr-2 pr-1"></i><a
+										onclick="bizModal()" style="cursor: pointer;"> <span class="badge badge-pill badge-warning">biz</span> 비즈니스 설정하기</a></li>
+								</c:if>
 								</ul>
 							</div>
 							<div class="py-3">
@@ -439,12 +486,16 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				
+													<input type=hidden id=shifted_enableBiz value="n" name="enableBiz">
+													<input type=hidden id=shifted_moreInfoWebsite value="" name="moreInfoWebsite">
+													<input type=hidden id=shifted_isWebsitePurposeOfPurchase value="n" name="isWebsitePurposeOfPurchase">
+													<input type=hidden id=shifted_exposureRange value="" name="costPerMille">
+													<input type=hidden id=shifted_exposureCount value="" name="remainedPublicExposureCount">
+													<input type=hidden id=shifted_costPerClick value="" name="costPerClick">
+				</form>
 			</div>
-	
-	</form>
-	</div>
+				
+
 	<!-- form 끝 -->
 
 	<script>
@@ -463,6 +514,7 @@
                 },
                 error: function() {
                     console.log("에러 발생");
+                    
                 },
                 complete: function(){
                     console.log("AJAX 종료");
@@ -572,6 +624,104 @@
 			async defer></script>
 	</div>
 	<!--        사람태그하기 Modal 끝-->
+	
+	<c:if test="${ memberBiz ne null }">
+	<!--       비즈니스 설정 Modal부분-->
+	<div id="bizModal" class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						게시물 홍보하기
+					</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="bizmodal">
+				
+					<div class="row">
+						<div class="col-12">
+							<fieldset class="form-group">
+						      <legend>게시물을 홍보하여 비즈니스 성장을 도모하기</legend>
+						      <div class="form-check">
+						        <label class="form-check-label">
+						          <input id="enableBiz" class="form-check-input" type="checkbox" value="y" >
+						         이 게시물을 홍보합니다.
+						        </label>
+						      </div>
+
+						    </fieldset>
+
+						</div>
+					</div>
+					<div class="row"><hr></div>
+					<form id="bizform">
+					<div class="row">
+						<div class="col-12">							
+						    
+						    <div class="form-group">
+							  <label class="col-form-label" for="moreInfoWebsite">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
+							  <input type="text" class="form-control" placeholder="http://example.com/?shopid=12" id="moreInfoWebsite">
+							  <small class="form-text text-muted">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>
+							</div>
+					
+							<fieldset class="form-group">
+						      <!-- <legend>특정 상품의 판매를 목적으로 하는 페이지</legend> -->
+						      <div class="form-check">
+						        <label class="form-check-label">
+						          <input class="form-check-input" type="checkbox" id="isWebsitePurposeOfPurchase" >
+						          페이지가 특정 상품의 판매를 목적으로 하는 경우 이 체크란을 반드시 클릭해주세요. 
+						        </label>
+						      </div>
+
+						    </fieldset>
+						   						
+						   						
+						  					 	<datalist id="tickmarks">
+								    				<c:forEach var="i" begin="10" end="100" step="10">
+								    					<option value="${ i }">
+								    				</c:forEach>							    						
+								    			</datalist>
+						    
+						      <div class="form-group">
+							    <label for="formControlRange">1회 노출단가 결정: ￦<span id="rangeSpan">50</span>  </label>
+							    <input type="range" class="form-control-range" id="exposureRange" min="10" max="100" value="50" step="10" list="tickmarks" >
+							   						 
+							    <small id="exposureRange" class="form-text text-muted">범위는 ￦10 ~ ￦100 내에서 설정 가능하며, 단가가 높을수록 추가 혜택이 높아집니다.</small> 
+							    					
+							  </div>
+							  
+							  <div class="form-group">
+								  <fieldset>
+								    <label class="control-label" for="exposureCount">총 노출횟수</label>
+								    <input class="form-control" id="exposureCount" type="text" placeholder="Readonly input here…" readonly >
+								    <small  class="form-text text-muted">총 노출횟수는 노출단가에 의해 결정되며 다음 공식으로 산정됩니다. [노출단가 * 500]</small> 
+								  </fieldset>
+								</div>
+							  
+							    <div class="form-group">
+								  <fieldset>
+								    <label class="control-label" for="costPerClick">클릭당 단가(￦)</label>
+								    <input class="form-control" id="costPerClick" type="text" placeholder="Readonly input here…" readonly >
+								    <small class="form-text text-muted">클릭당 단가는 노출단가에 의해 결정되며 다음 공식으로 산정됩니다. [200 * (1 - 노출단가 / 500)]</small> 
+								  </fieldset>
+								</div>
+						</div>
+					</div>
+					</form>
+			
+				</div>
+				<div class="modal-footer">
+					<button id="bizconfirm" class="btn btn-primary"  data-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</c:if>
+	<!--        비즈니스설정 Modal 끝-->
 
 	<script>
       var map;
@@ -673,6 +823,12 @@
          
           map.fitBounds(bounds);
         });
+      }
+      
+      function bizModal() {
+          
+          $('#bizModal').modal('show');
+          
       }
 
     </script>
