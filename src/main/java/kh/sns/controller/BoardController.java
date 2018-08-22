@@ -241,7 +241,7 @@ public class BoardController {
 		return mav;
 	}
 	
-		//tour
+		//tour(둘러보기)
 		@RequestMapping("/tour.bo")
 		public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 			ModelAndView mav = new ModelAndView();
@@ -261,6 +261,7 @@ public class BoardController {
 				result = boardService.getAllBoard();
 				category = "최신글";
 			}
+			
 			// 좋아요 
 			else if(cat.equals("2")) {
 				category = "좋아요 순";
@@ -269,6 +270,7 @@ public class BoardController {
 					result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 				}
 			}
+			
 			// 인기 태그
 			else if(cat.equals("3")) {
 				category = "인기 태그 순";
@@ -276,8 +278,7 @@ public class BoardController {
 				for(int i = 0; tag.size() > i; i++) {
 					for(int j = 0; tag.get(i).getSeqArr().size() > j; j++) {
 						result.add(boardService.oneBoard(tag.get(i).getSeqArr().get(j)));
-					}
-					
+					}	
 				}
 			}
 			
