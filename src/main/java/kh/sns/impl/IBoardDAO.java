@@ -1,10 +1,14 @@
 package kh.sns.impl;
 
+import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.aspectj.weaver.TemporaryTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
@@ -214,7 +218,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 
 	@Override
-	public BoardDTO  oneBoard(String board_seq) throws Exception {
+	public BoardDTO oneBoard(String board_seq) throws Exception {
 		// TODO Auto-generated method stub
 		String sql = "select * from board where board_seq = ?";
 		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
@@ -235,5 +239,81 @@ public class IBoardDAO implements BoardDAO  {
 		
 		return result.get(0);
 		}
+	
+	
+	//tour
+	@Override
+	public List<BoardDTO> getAllBoard() throws Exception {
+		String sql = "select * from board order by board_seq desc";
+		return template.query(sql, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+		});
 		
+	}
+	
+	// tour 사진
+	@Override
+	public List<Board_MediaDTO> getAllBoard2() throws Exception {
+		String sql = "select * from board_media where board_seq";
+		return template.query(sql, new RowMapper<Board_MediaDTO>() {
+
+			@Override
+			public Board_MediaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_MediaDTO media = new Board_MediaDTO();
+				media.setMedia_seq(rs.getInt(1));
+				media.setBoard_seq(rs.getInt(2));
+				media.setMedia_type(rs.getString(3));
+				media.setOriginal_file_name(rs.getString(4));
+				media.setSystem_file_name(rs.getString(5));
+				return media;
+			}
+		});
+	}
+	
+	// TOUR TAG 인기순 
+	@Override
+	public List<String[]> selectTagCount() throws Exception {
+		String sql = "SELECT T10.TAGS"  			// STEP03 : 여러개의 ROW를 1개의 셀로 합치기
+				   + "     , T10.CNT"  
+				   + "     , LISTAGG(T10.BOARD_SEQ,',') WITHIN GROUP (ORDER BY T10.BOARD_SEQ)" 
+				   + " FROM ("  					// STEP02 : TAGS별 건수가 많은 순으로 임의 번호 지정
+				   + "       SELECT T20.BOARD_SEQ" 
+				   + "			  , T20.TAGS" 
+				   + "			  , T20.CNT" 
+				   + "			  , ROW_NUMBER() OVER(PARTITION BY T20.BOARD_SEQ ORDER BY CNT DESC) AS SEQ"
+				   + "		   FROM (" 				// STEP01 - TAGS 별 건수 조회
+				   + "				 SELECT T30.BOARD_SEQ"
+				   + "					  , T30.TAGS" 
+				   + "					  , COUNT(1) OVER(PARTITION BY T30.TAGS) AS CNT"  // TAG별건수
+				   + "				   FROM BOARD_TAGS T30" 
+				   + "				) T20"
+				   + "					  ) T10"
+				   + "				WHERE T10.SEQ = 1"		// TAG별 건수가 가장 많은 TAG만 뽑기위한 조건(중복제거용)
+				   + "				GROUP BY " 
+				   + "					  T10.TAGS" 
+				   + "					, T10.CNT" 
+				   + "				ORDER BY " 
+				   + "					  2 DESC";
+		return template.query(sql, new RowMapper<String[]>() {
+
+			@Override
+			public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				String[] list = {rs.getString(1), rs.getString(2), rs.getString(3)};
+				System.out.println(list[2]);
+				return list;
+			}
+			
+		});
+	}
 }

@@ -13,6 +13,10 @@ public interface Board_LikeDAO {
 			public int deleteLike(Board_LikeDTO dto) throws Exception;
 			public List<Integer> searchLike(String id) throws Exception;
 			public List<int[]> selectLikeCount() throws Exception;
+			
+			//likeBest
+			public List<int[]> bestLike() throws Exception; 
+			
 			// 연뜹
 			public int insertLiko(Board_LikeDTO dto) throws Exception;
 			public Board_LikeDTO isLiked(String id, int board_seq) throws Exception;
