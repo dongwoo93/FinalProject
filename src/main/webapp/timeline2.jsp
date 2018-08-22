@@ -470,13 +470,13 @@
 				</c:forEach>
 			</div>
 			<!-- board -->
-
+<div class="col-md-6 align-self-center" id="side">dfsfdsfdsf    
+			<br>
+		</div>
 
 		</div>
 		<!-- container -->
-		<div class="col-md-6 align-self-center" id="side">
-			<br>
-		</div>
+		
 	</div>
 	<!-- centerwrapper -->
 </div>
