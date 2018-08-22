@@ -33,11 +33,13 @@ import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
+import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
@@ -62,6 +64,9 @@ public class BoardController {
 	
 	@Autowired
 	private ProfileService profileService;
+	
+	@Autowired
+	private MemberService memService;
 	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpSession seesion) {
@@ -156,6 +161,11 @@ public class BoardController {
 			Map<Integer, Integer> commentcount = new HashMap<>();
 			List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
 			
+			// NickName
+			String memNick = memService.myNick_Id(id).get(0).getNickname();
+			// introduce
+			String memIntro = profileService.selectIntro(id).get(0).getIntroduce();
+			
 			for(int[] tmp : likecnt) {
 				likecount.put(tmp[0],tmp[1]);
 			}
@@ -176,7 +186,8 @@ public class BoardController {
 			mav.addObject("profileImg", profileImg);
 			mav.setViewName("myarticle3.jsp");
 			mav.addObject("profileImg", profileImg);
-		
+			mav.addObject("memNick", memNick);   // 닉네임
+			mav.addObject("memIntro", memIntro); // 소개
 		
 //		String id = (String) session.getAttribute("loginId");
 		
