@@ -477,40 +477,53 @@
 	
 			
 		
-			<c:forEach var="tmp" items="${result}" varStatus="status" begin="1" end="1">
-				<div id="float" style="position:fixed;">	
-				
-				  <div class="container" style="width:300px;margin-top:55px;margin-left:30px;"> 
-				  
+			
+			<div style="position:fixed;border-radius: 1px;">	
+				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1" end="1">
+				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
+				  <br>
 				  <div class="profile-image"> 
 						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">					
 						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
+						
 				 </div>		
-		    </c:forEach>						
+		  		</c:forEach>				
 				  
 			  
 				  <hr class="_5mToa">					    
-				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;">추천 Follow를 추가하세요!!</p>
-				    	<c:forEach var="followtmp" items="${result3}" varStatus="status">
-					    <table class="table table-striped">					      
-					      <tbody class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;">
-					        <tr>
-					          <td>${followtmp.id}</td>
-					        </tr>
-					         
-					      </tbody>
-					    </table>
-					   </c:forEach>
+				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><i class="far fa-arrow-alt-circle-left" style="font-size:15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천 Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-arrow-alt-circle-right" style="font-size:15px;"></i></p>
+				  <hr class="_5mToa">  
+				    <c:forEach var="followtmp" items="${result3}" varStatus="status" begin="0" end="4">
+					 
+					  <div class="container">
+	  						 
+					    <div class="profile-image"> 
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">	
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}">${followtmp.id}</a>						
+				 		</div>		
+					    		 			      
+					  </div>		
+					
+					</c:forEach>
 					<hr class="_5mToa">
 					
-					</div>
-				</div>	 
-		
-							
-			
-			
-				
-
+						
+				</div>
+				 
+				 <div class="pt-4 pb-3  " id="footer" style="font-size:5px;margin-left:20px;">
+		           <div class="container">
+		              <div class="row" >
+		                <div class="col-md-10">
+		                  <p>SocialWired.정보.지원.홍보.채용</p>
+		                  <p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어  </p>
+		                  <p>@2018SocialWired</p>
+		                </div>
+		              </div>
+		           </div>
+     			 </div>
+					
+			</div>	 
+		 
 
 		</div>
 		<!-- container -->
