@@ -17,6 +17,7 @@ public class BoardBusinessDTO {
 	private int boardBizSeq, boardSeq;
 	private String moreInfoWebsite, isWebsitePurposeOfPurchase;
 	private int clickCount, costPerMille, costPerClick, remainedPublicExposureCount;
+	private String isAllowed, rejectedMessage, requestDate, disposedDate;
 
 	public BoardBusinessDTO() {
 		super();
@@ -86,14 +87,46 @@ public class BoardBusinessDTO {
 		this.remainedPublicExposureCount = remainedPublicExposureCount;
 	}
 
+	public String getIsAllowed() {
+		return isAllowed;
+	}
+
+	public void setIsAllowed(String isAllowed) {
+		this.isAllowed = isAllowed;
+	}
+
+	public String getRejectedMessage() {
+		return rejectedMessage;
+	}
+
+	public void setRejectedMessage(String rejectedMessage) {
+		this.rejectedMessage = rejectedMessage;
+	}
+
+	public String getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(String requestDate) {
+		this.requestDate = requestDate;
+	}
+
+	public String getDisposedDate() {
+		return disposedDate;
+	}
+
+	public void setDisposedDate(String disposedDate) {
+		this.disposedDate = disposedDate;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardBusinessDTO [boardBizSeq=" + boardBizSeq + ", boardSeq=" + boardSeq + ", moreInfoWebsite="
 				+ moreInfoWebsite + ", isWebsitePurposeOfPurchase=" + isWebsitePurposeOfPurchase + ", clickCount="
 				+ clickCount + ", costPerMille=" + costPerMille + ", costPerClick=" + costPerClick
-				+ ", remainedPublicExposureCount=" + remainedPublicExposureCount + "]";
+				+ ", remainedPublicExposureCount=" + remainedPublicExposureCount + ", isAllowed=" + isAllowed
+				+ ", rejectedMessage=" + rejectedMessage + ", requestDate=" + requestDate + ", disposedDate="
+				+ disposedDate + "]";
 	}
-
-
-
+	
 }
