@@ -295,18 +295,30 @@ public class BoardController {
 	public ModelAndView writeProcBoard(
 			HttpServletRequest request,
 			@RequestParam("contents") String contents,
-			@RequestParam("filename[]") MultipartFile files) {
+			@RequestParam("filename[]") MultipartFile files,
+			@RequestParam("enableBiz") String enableBiz,
+			@RequestParam("moreInfoWebsite") String moreInfoWebsite,
+			@RequestParam("isWebsitePurposeOfPurchase") String isWebsitePurposeOfPurchase,
+			@RequestParam("costPerMille") String costPerMille,
+			@RequestParam("remainedPublicExposureCount") String remainedPublicExposureCount,
+			@RequestParam("costPerClick") String costPerClick) {	
 		
-	
-		
-		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
-		
-		List<MultipartFile> mfList = mhsr.getFiles("filename[]");
-		
+		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;		
+		List<MultipartFile> mfList = mhsr.getFiles("filename[]");		
 		List<Board_MediaDTO> fileList = new ArrayList<Board_MediaDTO>();
 		
-		System.out.println(request.getParameter("filters"));
+		/*테스트용 에코 코드*/
+		/*System.out.println(request.getParameter("filters"));
+		System.out.println("enableBiz: " + enableBiz);
+		System.out.println("moreInfoWebsite: " + moreInfoWebsite);
+		System.out.println("isWebsitePurposeOfPurchase: " + isWebsitePurposeOfPurchase);
+		System.out.println("costPerMille: " + costPerMille);
+		System.out.println("remainedPublicExposureCount: " + remainedPublicExposureCount);
+		System.out.println("costPerClick: " + costPerClick);*/
 		
+		boolean isBizEnabled = enableBiz.equalsIgnoreCase("y") ? true : false;
+		
+				
 		String[] filterList = null;
 		if(request.getParameter("filters") != null)
 			filterList = request.getParameter("filters").split(";");
@@ -348,12 +360,9 @@ public class BoardController {
 									filter = flt.split(":")[1];
 							} catch(ArrayIndexOutOfBoundsException e) {
 								System.err.println(e);
-							}
-							
+							}						
 						}
 					}
-					
-
 					fileList.add(new Board_MediaDTO(0, 0, "p", originalName, saveFileName, filter, null, null));
 				
 			} catch (UnsupportedEncodingException e) {
@@ -371,6 +380,9 @@ public class BoardController {
 		try {
 			if(request.getSession().getAttribute("loginId") != null) {
 				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList);
+				if(isBizEnabled) {
+					// 비즈 인서트
+				}
 			} else {
 				// 잘못된 접근
 				boardService.insertNewArticle(new BoardDTO(0, contents, "yoon", "", "", ""), fileList);
