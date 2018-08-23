@@ -95,22 +95,22 @@ public class BoardController {
 					media.add(boardService.search2(list.get(i).getBoard_seq()));
 				} 
 				
-				for(List<Board_MediaDTO> mlist : media) {
-					double max = 0;
-					for(Board_MediaDTO dto : mlist) {
-						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-						double height = bimg.getHeight();
-						double width = bimg.getWidth();
-						height = 600*height/width;   
-						System.out.println("height : " + height);
-						if(max<height) { 
-							max = height;
-						}
-						
-					}
-					maxImgHeight.add((int)max);   
-					System.out.println("max:" + max);     
-				}
+//				for(List<Board_MediaDTO> mlist : media) {
+//					double max = 0;
+//					for(Board_MediaDTO dto : mlist) {
+//						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+//						double height = bimg.getHeight();
+//						double width = bimg.getWidth();
+//						height = 600*height/width;   
+//						System.out.println("height : " + height);
+//						if(max<height) { 
+//							max = height;
+//						}
+//						
+//					}
+//					maxImgHeight.add((int)max);   
+//					System.out.println("max:" + max);     
+//				}
 				
 				
 				
@@ -672,5 +672,71 @@ public class BoardController {
 		response.getWriter().close();
 
 	}
+	
+	
+	@RequestMapping("/followerlist.do")
+	public ModelAndView followerList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		String id = (String) seesion.getAttribute("loginId");
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<FollowInfo> follow_list = new ArrayList<>();
+		
+		try {
+			follow_list = boardService.followerLsit(id);
+		} catch (Exception e1) {
+			
+			e1.printStackTrace();  
+		}
+		
+		profile_image = profileService.getAllProfileImage();
+		
+		
+		for(Profile_ImageDTO dto : profile_image) {
+			getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
 
+		};
+		
+		mav.addObject("profile_pic",getAllProfilePic);
+		mav.addObject("result", follow_list);
+		mav.setViewName("follow.jsp");
+	
+		
+		return mav;	
+	}
+
+	
+	
+	@RequestMapping("/followlist.do")
+	public ModelAndView followList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		String id = (String) seesion.getAttribute("loginId");
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<FollowInfo> follow_list = new ArrayList<>();
+		
+		try {
+			follow_list = boardService.followList(id);
+		} catch (Exception e1) {
+			
+			e1.printStackTrace();  
+		}
+		
+		
+		profile_image = profileService.getAllProfileImage();
+		
+		
+		for(Profile_ImageDTO dto : profile_image) {
+			getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+		};
+		
+		mav.addObject("profile_pic",getAllProfilePic);
+		mav.addObject("result1", follow_list);
+		mav.setViewName("follow.jsp");
+	
+		
+		return mav;	
+	}
+	
 }

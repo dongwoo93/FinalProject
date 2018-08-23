@@ -156,12 +156,25 @@ $(document).ready(function(){
 
 				<ul id="prostat">
 					<li><span class="profile-stat-count">${boardCount}</span> 게시글</li>
-					<li><span class="profile-stat-count">${followerCount}</span>
+					<li id="follower"><span class="profile-stat-count" id="follower">${followerCount}</span>
 						팔로워</li>
-					<li><span class="profile-stat-count">${followingCount}</span>
+					<li id="follow"><span class="profile-stat-count" id="follow">${followingCount}</span>
 						팔로우</li>
 				</ul>
 			</div>
+
+
+		<script>
+		  document.getElementById("follower").onclick = function() {
+		         location.href = "followerlist.do";
+		 }
+		  
+		  document.getElementById("follow").onclick = function() {
+		         location.href = "followlist.do";
+		 }
+		 
+		
+		</script>
 
 			<div class="profile-bio">
 				<p>
@@ -217,7 +230,7 @@ $(document).ready(function(){
 
 						<c:forEach var="tmp" items="${result}" varStatus="status">
 
-							<div class="gallery-item" id="${tmp.board_seq}">
+							<div class="gallery-item" id="${tmp.board_seq}" style="object-fit:cover;">
 								<img src="AttachedMedia/${result2[status.index].system_file_name}" class="img-fluid" style="object-fit:cover;">
 
 								<div class="gallery-item-info">

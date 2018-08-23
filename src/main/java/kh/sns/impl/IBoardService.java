@@ -153,4 +153,19 @@ public class IBoardService implements BoardService {
 		return dao.myBookmark(id);
 	}
 
+	@Override
+	public List<FollowInfo> followerLsit(String id) throws Exception {
+		
+		return dao.followerList(id);
+	}
+
+	@Override
+	public List<FollowInfo> followList(String id) throws Exception {
+		
+		return dao.followList(id);
+	}
+
+	
+	
+	
 }
