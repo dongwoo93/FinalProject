@@ -334,4 +334,19 @@ public class IBoardDAO implements BoardDAO  {
 			
 		});
 	}
+	
+	// my_aticle_bookmark
+	@Override
+	public List<int[]> myBookmark(String id) throws Exception {
+		String sql = "select board_seq from board_bookmark where id=?";
+		return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int[] list = {rs.getInt("board_seq")};
+				return list;
+			}
+		});
+	}
+
 }
