@@ -124,6 +124,7 @@ public class AdminReportController {
 	public ModelAndView manageAdvertisement(HttpSession session) throws Exception {
 		
 		List<BoardBusinessDTO> bbiz = bbs.getAllBoardBiz();
+		List<JQueryPieChartVO> defaultAdPie = ars.getAdminReportProcessedForPieChartVO(21);
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -134,6 +135,7 @@ public class AdminReportController {
 		}
 		
 		mav.setViewName("admin_manage_ad.jsp");
+		mav.addObject("pieChartObject", new Gson().toJson(defaultAdPie));
 		mav.addObject("bList", bbiz);
 		return mav;
 	}
