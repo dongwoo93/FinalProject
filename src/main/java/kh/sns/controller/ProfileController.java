@@ -36,7 +36,7 @@ public class ProfileController {
 	
 	/*======*/
 	@RequestMapping("/profile.member")
-	public ModelAndView editProfile(HttpSession session, HttpServletResponse response) throws Exception {
+	public ModelAndView editProfile(HttpSession session, HttpServletResponse response, String cat) throws Exception {
 
 		ModelAndView mav = new ModelAndView();
 
@@ -59,6 +59,7 @@ public class ProfileController {
 			mav.addObject("profile", profile);
 			mav.addObject("memberBiz", memberBiz);
 			mav.addObject("profile_pic", profile_image.get(0).getSystem_file_name());
+			mav.addObject("category", cat);
 			mav.setViewName("mypage2.jsp");
 
 		} else {
