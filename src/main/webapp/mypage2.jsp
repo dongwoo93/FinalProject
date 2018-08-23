@@ -232,10 +232,10 @@
 </c:if>    
 	<div class="py-5">
 		<div class="container mywrap">
-		<br>    
-			<div class="row"> 
-				<div class="col-4">
-				<img class="rounded-circle" alt="Cinque Terre" width="40" height="35" src="AttachedMedia/${profile_pic}">
+		<br>         
+			<div class="row">        
+				<div class="col-4">                            
+				<img class="rounded-circle" alt='profile' width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
 								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">
