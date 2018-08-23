@@ -13,4 +13,6 @@ public interface MemberBusinessDAO {
 	
 	public List<MemberBusinessDTO> getAllMemberBiz() throws Exception;
 	public List<MemberBusinessDTO> getMemberBizByRange(int start, int end) throws Exception;
+	
+	public int updateAnBizMembersDeposit(MemberBusinessDTO mbiz) throws Exception;
 }
