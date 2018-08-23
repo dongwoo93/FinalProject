@@ -129,6 +129,12 @@ public class IBoardService implements BoardService {
 	
 	
 
+	@Override
+	public List<FollowInfo> toFeed(String id) throws Exception {
+		
+		return dao.toFeed(id);
+	}
+
 	
 	
 	

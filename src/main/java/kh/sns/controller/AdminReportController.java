@@ -17,16 +17,19 @@ import com.google.gson.Gson;
 import kh.sns.dto.AdminReportDTO;
 import kh.sns.dto.AdminReportOutputSet;
 import kh.sns.dto.AdminReportResultCode;
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.JQueryPieChartVO;
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.interfaces.AdminReportsService;
+import kh.sns.interfaces.BoardBusinessService;
 import kh.sns.interfaces.MemberBusinessService;
 
 @Controller
 public class AdminReportController {
 	
 	@Autowired	AdminReportsService ars;
-	@Autowired MemberBusinessService mbs;
+	@Autowired	MemberBusinessService mbs;
+	@Autowired	BoardBusinessService bbs;
 	
 	@RequestMapping("/report.admin")
 	public ModelAndView reportManagementMain(HttpSession session) throws Exception {
@@ -116,5 +119,45 @@ public class AdminReportController {
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
+	
+	@RequestMapping("/manageAd.admin")
+	public ModelAndView manageAdvertisement(HttpSession session) throws Exception {
+		
+		List<BoardBusinessDTO> bbiz = bbs.getAllBoardBiz();
+		
+		ModelAndView mav = new ModelAndView();
+		
+		// 나중에 관리 권한을 가진 사람들만 접속되도록 변경
+		if(session.getAttribute("loginId") == null) {
+			mav.setViewName("redirect:에러페이지");
+			return mav;
+		}
+		
+		mav.setViewName("admin_manage_ad.jsp");
+		mav.addObject("bList", bbiz);
+		return mav;
+	}
+	
+	@RequestMapping("/evaluateAnAd.admin")
+	public ModelAndView manageAnAdvertisement(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		int boardBizSeq = Integer.parseInt(request.getParameter("boardBizSeq"));
+		String isAllowed = request.getParameter("isAllowed");
+		String evalMessage = request.getParameter("evalMessage");
+		
+		BoardBusinessDTO bbiz = new BoardBusinessDTO();
+		bbiz.setIsAllowed(isAllowed);
+		bbiz.setRejectedMessage(evalMessage);
+		bbiz.setBoardBizSeq(boardBizSeq);
+		
+		int result = bbs.updateAnEvaluationResult(bbiz);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:manageAd.admin");
+		mav.addObject("evalResult", result);
+		return mav;
+
+	}
+	
 	
 }

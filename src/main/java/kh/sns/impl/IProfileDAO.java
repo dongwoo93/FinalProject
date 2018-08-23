@@ -158,5 +158,21 @@ public class IProfileDAO implements ProfileDAO {
 		
 	}
 	
+	// 소개
+	@Override
+	public List<ProfileDTO> selectIntro(String introduce) throws Exception {
+		String sql = "select introduce from profile where id=?";
+		ProfileDTO dto = new ProfileDTO();
+		return template.query(sql, new Object[] {introduce}, new RowMapper<ProfileDTO>() {
+
+			@Override
+			public ProfileDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				dto.setIntroduce(rs.getString("introduce"));
+				return dto;
+			}
+		});
+	}
+
+	
 	
 }

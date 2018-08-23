@@ -13,4 +13,6 @@ public interface BoardBusinessDAO {
 	
 	public List<BoardBusinessDTO> getAllBoardBiz() throws Exception;
 	public List<BoardBusinessDTO> getBoardBizByRange() throws Exception;
+	
+	public int updateAnEvaluationResult(BoardBusinessDTO bbiz) throws Exception;
 }

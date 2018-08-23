@@ -35,12 +35,14 @@ import kh.sns.dto.Board_MediaDTO;
 
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
 import kh.sns.interfaces.MemberBusinessService;
+import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
@@ -60,6 +62,8 @@ public class BoardController {
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
 
+	@Autowired
+	private MemberService memService;
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
@@ -75,6 +79,15 @@ public class BoardController {
 			List<List<Board_MediaDTO>> media = new ArrayList<>();
 			List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 			Map<String, String> getAllProfilePic = new HashMap<>();
+			List<FollowInfo> follow_list = new ArrayList<>();
+			
+			try {
+				follow_list = boardService.toFeed(id);
+			} catch (Exception e1) {
+				
+				e1.printStackTrace();
+			}
+			
 			try {
 				list = boardService.getFeed(id);
 				for(int i = 0; i < list.size(); i++) {
@@ -124,7 +137,9 @@ public class BoardController {
 			mav.addObject("bookmark", mapmark);
 			mav.addObject("commentresult",commentlist);
 			mav.addObject("profile_pic",getAllProfilePic);
+			mav.addObject("result3", follow_list);
 			mav.setViewName("timeline2.jsp");
+		
 			
 		return mav;
 	}
@@ -133,8 +148,7 @@ public class BoardController {
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
-		String sessionid= (String)session.getAttribute("loginId");
-
+			String sessionid= (String)session.getAttribute("loginId");
 			List<BoardDTO> result = boardService.getBoard(id);
 			
 			boolean isBlock = member_blockService.isBlock(sessionid,id);
@@ -152,6 +166,11 @@ public class BoardController {
 			List<int[]> commentcnt = board_commentService.selectCommentCount();
 			Map<Integer, Integer> commentcount = new HashMap<>();
 			List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
+			
+			// NickName
+			String memNick = memService.myNick_Id(id).get(0).getNickname();
+			// introduce
+			String memIntro = profileService.selectIntro(id).get(0).getIntroduce();
 			
 			for(int[] tmp : likecnt) {
 				likecount.put(tmp[0],tmp[1]);
@@ -172,9 +191,11 @@ public class BoardController {
 			mav.addObject("isNotPublic", isNotPublic);  
 			mav.addObject("profileImg", profileImg);
 			mav.setViewName("myarticle3.jsp");
+			mav.addObject("profileImg", profileImg);
+			mav.addObject("memNick", memNick);   // 닉네임
+			mav.addObject("memIntro", memIntro); // 소개
 		
-		
-//		String id = (String) session.getAttribute("loginId");
+			//		String id = (String) session.getAttribute("loginId");
 		
 		mav.addObject("pageid", id);
 		return mav;
