@@ -243,7 +243,7 @@ html,body {
     <script>
     $(document).ready(function() {	
     	
-    		var globalChartNumber = 1;
+    		var globalChartNumber = 21;
     		
     		var originalPrivacyTab = $('#privacyTab').html();
     		var newPrivacyTab = $('#tabthree').html();
@@ -383,9 +383,9 @@ html,body {
     	
 	
 		    	/*파이 차트*/
-		/*     $("#chartContainer").CanvasJSChart({ 
+		     $("#chartContainer").CanvasJSChart({ 
 				title: { 
-					text: "Reports Stats",
+					text: "Advertisement Management Stats",
 					fontSize: 24
 				}, 
 				axisY: { 
@@ -397,24 +397,15 @@ html,body {
 				}, 
 				data: [ 
 				{ 
-					type: "doughnut", 
+					type: "pie", 
 					showInLegend: true, 
 					toolTipContent: "{label} <br/> {y} 건", 
 					indexLabel: "{y} 건", 
 					// label: 원 안에서 보이는 것
-					dataPoints: ${pieChartObject}/* [ 
-						{ label: "스팸",  y: 1, legendText: "1: 스팸"}, 
-						{ label: "음란물",  y: 0, legendText: "2: 나체, 음란물"},
-						{ label: "편파적 발언",    y: 1, legendText: "3: 편파적 발언"  }, 
-						{ label: "폭력",  y: 0, legendText: "4: 폭력, 위협"},
-						{ label: "마약",  y: 1, legendText: "5: 마약"},
-						{ label: "따돌림",  y: 0, legendText: "6: 괴롭힙 및 따돌림"},
-						{ label: "재산권 침해",  y: 0, legendText: "7: 지적재산권 침해"},
-						{ label: "자해",   y: 0, legendText: "8: 자해" } 
-					]  
+					dataPoints: ${pieChartObject}
 				} 
 				] 
-			});    */  
+			});      
     	
 
     	
@@ -486,9 +477,9 @@ html,body {
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="stat1">광고 통계 Ⅰ</a></li>
+							data-target="#reportMain" style="font-weight:bold;" id="stat21">광고 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#reportMain" id="stat2">광고 통계 Ⅱ</a></li>
+							data-toggle="pill" data-target="#reportMain" id="stat22">광고 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp "
@@ -561,11 +552,15 @@ html,body {
 							  <tbody>
 							  
 							  <c:forEach var="i" items="${ bList }" varStatus="k">
-							  	<tr>
-							      <th scope="row">${ i.boardBizSeq }</th>
+							  	<tr ${ i.isAllowed eq null ? 'class=table-light' : ''}>
+							      <th scope="row"><span title='${ i.requestDate }'>${ i.boardBizSeq }</span></th>
 							      <%-- <td>${ i.boardSeq }</td> --%>
 							      <td><a href="#;return false;" id='popBoard${ i.boardBizSeq }_${ i.boardSeq }'>${ i.boardSeq }</a></td>
-							      <td><a href="${ i.moreInfoWebsite }" target=_blank>바로가기</a></td>
+							      <td>
+							      	<c:if test="${ i.moreInfoWebsite ne null }">
+							      		<a href="${ i.moreInfoWebsite }" target=_blank>바로가기</a>
+							      	</c:if>
+							      </td>
 							      <td>${ i.isWebsitePurposeOfPurchase eq 'y' ? '네' : '아니오' }</td>
 							      <td>${ i.clickCount }</td>
 							      <td>${ i.costPerMille }</td>
@@ -573,8 +568,8 @@ html,body {
 							      <td>${ i.remainedPublicExposureCount }</td>
 							      <td>
 							      	<c:choose>
-							      		<c:when test="${ i.isAllowed eq 'y' }">허용됨</c:when>
-							      		<c:when test="${ i.isAllowed eq 'n' }">거부됨</c:when>
+							      		<c:when test="${ i.isAllowed eq 'y' }"><span title='${ i.disposedDate }'>허용됨</span></c:when>
+							      		<c:when test="${ i.isAllowed eq 'n' }"><span title='${ i.disposedDate }'>거부됨</span></c:when>
 							      	</c:choose>							   
 							      </td>
 							      <td>${ i.rejectedMessage }</td>						      

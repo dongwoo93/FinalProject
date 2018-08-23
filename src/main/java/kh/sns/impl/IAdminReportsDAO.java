@@ -114,10 +114,16 @@ public class IAdminReportsDAO implements AdminReportsDAO {
 				+ "from admin_report_code c";
 		switch(category) {
 		case 1:
-			
+			// 기본 sql
 			break;
 		case 2:
 			sql = "select result_code as code, result_description as label, (select count(*) from admin_reports where c.result_code = result_code) as y from admin_report_result_code c order by code";
+			break;
+		case 21:
+			sql = "select '상품 판매 목적' as code, decode(is_allowed,'y','허용됨','n','거부됨') as label, count(*) as y from board_business where IS_WEBSITE_PURPOSE_OF_PURCHASE = 'y' group by is_allowed";
+			break;
+		case 22:
+			sql = "select '기타 목적' as code, decode(is_allowed,'y','허용됨','n','거부됨') as label, count(*) as y from board_business where IS_WEBSITE_PURPOSE_OF_PURCHASE = 'n' group by is_allowed";
 			break;
 		}
 		

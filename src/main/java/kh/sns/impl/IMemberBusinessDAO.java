@@ -78,5 +78,11 @@ public class IMemberBusinessDAO implements MemberBusinessDAO {
 		return null;
 	}
 	
+	@Override
+	public int updateAnBizMembersDeposit(MemberBusinessDTO mbiz) throws Exception {
+		String sql = "update member_business set deposit = ? where id=?";
+		return template.update(sql, mbiz.getDeposit(), mbiz.getId());
+	}
+	
 	
 }
