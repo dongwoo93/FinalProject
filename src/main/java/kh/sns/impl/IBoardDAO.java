@@ -26,26 +26,12 @@ import kh.sns.util.HashTagUtil;
 public class IBoardDAO implements BoardDAO  {
 
 	private static final String SAVE_PATH = "/upload";
-	private static final String PREFIX_URL = "/upload/";
+	private static final String PREFIX_URL = "/upload/"; 
 
 	@Autowired
 	private JdbcTemplate template;
 	
 	
-	@Override
-	public List<FollowInfo> toFeed(String id) throws Exception{
-		String sql = "select target_id from member_follow where id in(select target_id from member_follow where id= ?) and (target_id not in(?)) and (target_id not in (select target_id from member_follow where id= ?)) group by target_id order by count(target_id)";
-		return template.query(sql, new Object[] {id,id,id}, new RowMapper<FollowInfo>() {
-			
-			@Override
-			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-				FollowInfo followtmp = new FollowInfo();
-					followtmp.setId(rs.getString(1));
-					return followtmp;
-				}	
-			});
-		}
-
 	
 
 	@Override

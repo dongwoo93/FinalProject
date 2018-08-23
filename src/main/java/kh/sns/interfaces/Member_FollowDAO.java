@@ -14,5 +14,6 @@ public interface Member_FollowDAO {
 	public int getFollowingCount(String id) throws Exception;
 	public int getFollowerCount(String id) throws Exception;
 	public boolean isFollow(String sessionid, String id) throws Exception;
+	public List<FollowInfo> toFeed(String id) throws Exception ;
 
 }

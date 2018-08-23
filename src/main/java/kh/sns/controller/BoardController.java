@@ -84,10 +84,10 @@ public class BoardController {
 			List<FollowInfo> follow_list = new ArrayList<>();
 			
 			List<Integer> maxImgHeight = new ArrayList<>();
-			String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+		
 			
 			try {
-				follow_list = boardService.toFeed(id);
+				follow_list = member_followService.toFeed(id);
 			} catch (Exception e1) {
 				
 				e1.printStackTrace();
@@ -99,22 +99,22 @@ public class BoardController {
 					media.add(boardService.search2(list.get(i).getBoard_seq()));
 				} 
 				
-				for(List<Board_MediaDTO> mlist : media) {
-					double max = 0;
-					for(Board_MediaDTO dto : mlist) {
-						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-						double height = bimg.getHeight();
-						double width = bimg.getWidth();
-						height = 600*height/width;   
-						System.out.println("height : " + height);
-						if(max<height) { 
-							max = height;
-						}
-						
-					}
-					maxImgHeight.add((int)max);   
-					System.out.println("max:" + max);     
-				}
+//				for(List<Board_MediaDTO> mlist : media) {
+//					double max = 0;
+//					for(Board_MediaDTO dto : mlist) {
+//						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+//						double height = bimg.getHeight();
+//						double width = bimg.getWidth();
+//						height = 600*height/width;   
+//						System.out.println("height : " + height);
+//						if(max<height) { 
+//							max = height;
+//						}
+//						
+//					}
+//					maxImgHeight.add((int)max);   
+//					System.out.println("max:" + max);     
+//				}
 				
 				
 				

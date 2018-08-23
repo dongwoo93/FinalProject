@@ -90,5 +90,19 @@ public class IMember_FollowDAO implements Member_FollowDAO {
 		return result;
 	}
 	
+	@Override
+	public List<FollowInfo> toFeed(String id) throws Exception{
+		String sql = "select target_id from member_follow where id in(select target_id from member_follow where id= ?) and (target_id not in(?)) and (target_id not in (select target_id from member_follow where id= ?)) group by target_id order by count(target_id)";
+		return template.query(sql, new Object[] {id,id,id}, new RowMapper<FollowInfo>() {
+			
+			@Override
+			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new FollowInfo(id,rs.getString(1),"");      
+				}	
+			});
+		}
+
+	
+	
 
 }
