@@ -20,7 +20,7 @@ public interface ProfileDAO {
 	public int updateProfileImages(String id) throws Exception;
 	public int updateProfileImages2(String systemFileName) throws Exception;
 	public List<Profile_ImageDTO> getAllProfileImage() throws Exception;
-	public List<Profile_ImageDTO> getPic(String id) throws Exception;
+	public String getPic(String id) throws Exception;
 	
 	// INTRODUCE(소개)
 	public List<ProfileDTO> selectIntro(String id) throws Exception;
