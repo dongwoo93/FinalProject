@@ -180,10 +180,7 @@ public class BoardController {
 			boolean isBlock = member_blockService.isBlock(sessionid,id);
 			boolean isFollow = member_followService.isFollow(sessionid,id);
 			boolean isNotPublic = profileService.isNotPublic(id);
-			List<Board_MediaDTO> result2 = new ArrayList<>();
-			for(int i = 0; i < result.size(); i++) {
-				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
-			}
+			
 			String boardCount = boardService.boardCount(id);
 			int followerCount = member_followService.getFollowerCount(id);
 			int followingCount = member_followService.getFollowingCount(id);
@@ -214,6 +211,10 @@ public class BoardController {
 				for(int i = 0; seqArr.size() > i; i++) {
 					result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 				}
+			}
+			List<Board_MediaDTO> result2 = new ArrayList<>();
+			for(int i = 0; i < result.size(); i++) {
+				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 			}
 			
 			
