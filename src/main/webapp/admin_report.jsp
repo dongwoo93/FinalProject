@@ -588,7 +588,7 @@ html,body {
 							      <th scope="col">Comment No.</th>
 							      <th scope="col">Reported Date</th>
 							      <th scope="col">Reporter's Comment</th>
-							      <th scope="col">조회일</th>
+							      <!-- <th scope="col">조회일</th> -->
 							      <th scope="col">처리일</th>
 							      <th scope="col">처리 결과</th>
 							      <th scope="col">관리자 코멘트</th>
@@ -598,7 +598,7 @@ html,body {
 							  <tbody>
 							  
 							  <c:forEach var="i" items="${ list }" varStatus="k">
-							  	<tr ${ acceptedCounts[k.index] eq '0' ? '' : 'class=table-light'}>
+							  	<tr ${ acceptedCounts[k.index] eq '0' ? 'class=table-light' : ''}>
 							      <th scope="row">${ i.reportSeq }</th>
 							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
 							      <td><a href="#;return false;" id='popBoard${ i.reportSeq }_${ i.boardSeq }' >${ i.boardSeq }</a></td>
@@ -612,7 +612,7 @@ html,body {
 							      	</td>
 							      <td>${ i.reportedDate }</td>
 							      <td>${ i.reportersComment }</td>
-							      <td>${ i.adminFirstReadDate }</td>
+							      <%-- <td>${ i.adminFirstReadDate }</td> --%>
 							      <td>${ i.adminAcceptedDate }</td>
 							      <td>
 							      	<c:if test="${i.resultCode ne '0'}">${ i.resultCode }: </c:if>${ result[k.index].resultDescription }
