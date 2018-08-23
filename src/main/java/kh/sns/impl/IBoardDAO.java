@@ -343,7 +343,8 @@ public class IBoardDAO implements BoardDAO  {
 
 			@Override
 			public int[] mapRow(ResultSet rs, int rowNum) throws SQLException {
-				int[] list = {rs.getInt("board_seq")};
+				int[] list = {rs.getInt(1)};
+				System.out.println(list);
 				return list;
 			}
 		});
