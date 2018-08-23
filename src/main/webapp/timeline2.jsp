@@ -225,7 +225,7 @@
 								Korea
 							</a>
 						</div>
-						<div class="mt-2" id="boardimg" style="height:${maxImgHeight[status.index]}px; max-height:600px">   
+						<div class="mt-2" id="boardimg" >   
 <%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>    
 						  	
 						  	   
@@ -260,7 +260,7 @@
 									
 							<div id="myCarousel${status.index}" class="carousel slide"
 								data-ride="carousel" data-interval="false"
-								style="height:${maxImgHeight[status.index]}px; max-height:600px"> 
+								>   
 								<ul id="carousel-indicators" class="carousel-indicators">
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
@@ -270,16 +270,16 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"   
-									style="height:${maxImgHeight[status.index]}px; max-height:600px">
-									<div id="firstItem" class="carousel-item active">
+								<div id="carousel-inner" class="carousel-inner"       
+									style="height:${maxImgHeight[status.index]}px; max-height:700px">
+									<div id="firstItem" class="carousel-item active">      
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
 											alt=''>
 									</div>
 									<c:forEach begin="1" var="media" 
 										items="${result2[status.index]}" varStatus="status3">
-										<div class="carousel-item">
+										<div class="carousel-item" >
 											<img class='boardimg'  width='100%'  
 												src="AttachedMedia/${media.system_file_name}" alt="">
 										</div>  

@@ -100,17 +100,19 @@ public class BoardController {
 				} 
 				
 				for(List<Board_MediaDTO> mlist : media) {
-					int max = 0;
+					double max = 0;
 					for(Board_MediaDTO dto : mlist) {
 						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-						int height = bimg.getHeight();
+						double height = bimg.getHeight();
+						double width = bimg.getWidth();
+						height = 600*height/width;   
 						System.out.println("height : " + height);
 						if(max<height) { 
 							max = height;
 						}
 						
 					}
-					maxImgHeight.add(max);  
+					maxImgHeight.add((int)max);   
 					System.out.println("max:" + max);     
 				}
 				

@@ -107,10 +107,19 @@
 .idtxt {
 	font-weight: 600;
 }
-
+.carousel-inner {   
+		
+	
+}
+.carousel-item {   
+		
+	
+}
 .boardimg {
 	z-index:auto;
-	max-height: 600px;
+	max-height: 700px;
+ 
+	
 }
 
 #id {
