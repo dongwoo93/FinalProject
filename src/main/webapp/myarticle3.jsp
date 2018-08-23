@@ -3,6 +3,12 @@
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/myarticle.css">
+<style>
+	.editableDivCommentSection{
+		margin-left: 10px;
+		text-align: left;
+	}
+</style>
 <script src="resources/js/myarticle.js"></script>
 <script>
 $(document).ready(function(){
@@ -206,8 +212,8 @@ $(document).ready(function(){
 						<table class="table">
 							<thead>
 								<tr>
-									<th class="text-center">게시물</th>
-									<th class="text-center">태그됨</th>
+									<th class="text-center"><a href="board.bo?id=${sessionScope.loginId}&cat=1">게시물</a></th>
+									<th class="text-center"><a href="board.bo?id=${sessionScope.loginId}&cat=2">저장됨</a></th>
 								</tr>
 							</thead>
 						</table>
@@ -332,7 +338,6 @@ $(document).ready(function(){
                                 	  $("#mark").attr("style", false);
                                   }
                             
-
                                  }
                             });
                           
@@ -462,19 +467,25 @@ $(document).ready(function(){
 
 				<div class="py-2 bg-white text-right">
 
-					<input type="text" placeholder="댓글 달기..." class="creco"
-						id="comment">
+					<!-- <input type="text" placeholder="댓글 달기..." class="creco" id="comment">  -->
+					<div contenteditable="true" class="editableDivCommentSection" class="creco" id="comment"><span class=text-muted>댓글 달기...</span></div>
+					<input type=hidden id="caretposition" value="0">
+
 
 					<script>
+					
+				var globalThisCommentIsFocusedOnFirst = true;
+					
                 $('#comment').keypress(function(event){
                    var seq = $("#seq").val();
-                   var comment_contents = $("#comment").val();
+                   /* var comment_contents = $("#comment").val(); */
+                   var comment_contents = $("#comment").text();
                      
                     var keycode = (event.keyCode ? event.keyCode : event.which);
                     if(keycode == '13'){ 
                        
-                       var text = $("#comment${tmp.board_seq}").val();
-                       if(text == ""){
+                       /* var text = $("#comment${tmp.board_seq}").val(); */
+                       if(comment_contents == ""){
                           alert("댓글을 입력해주세요");
                        }  
                        else {     
@@ -484,7 +495,9 @@ $(document).ready(function(){
                                data: {board_seq:seq, comment_contents : comment_contents},
                                success : function(comment_seq) {
                             	   var board_seq = $("#seq").val();
-                                $("#comment").val("");         
+                                /* $("#comment").val(""); */
+                                $("#comment").html("");
+                                
                                 $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+comment_contents+"</div></li></ul>"
                                 		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
                           			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
@@ -500,6 +513,144 @@ $(document).ready(function(){
                     }
                     
                 });
+                
+                /* ========================= editable div에 태그 적용 시작 ========================= */
+                
+                
+                $('#comment').focus(function() {
+                	if(globalThisCommentIsFocusedOnFirst){
+                		$("#comment").html("");
+                    	globalThisCommentIsFocusedOnFirst = false;
+                	}
+                	
+                });
+                
+                $('#comment').focusout(function() {
+                	if($('#comment').text() == ""){
+                		$("#comment").html("<span class=text-muted>댓글 달기...</span>");
+                		globalThisCommentIsFocusedOnFirst = true;
+                	}
+                })
+                
+                function getCaretPosition(editableDiv) {
+                    var caretPos = 0,
+                        sel, range;
+                    if (window.getSelection) {
+                        sel = window.getSelection();
+                        if (sel.rangeCount) {
+                            range = sel.getRangeAt(0);
+
+                            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+                            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
+                                caretPos = range.endOffset;
+                                // console.log("caretPos: " + caretPos)
+
+
+                                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+                                var isEqualOrLower = false;
+                                while (i >= 0) {
+                                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
+                                        $(range.commonAncestorContainer).text()) {
+                                        i--;
+                                        continue;
+                                    } else {
+                                        while (i >= 0) {
+                                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+                                            // console.log($impl.text());
+                                            caretPos += $impl.text().length
+                                            i--;
+                                        }
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+
+
+                    } else if (document.selection && document.selection.createRange) {
+                        range = document.selection.createRange();
+                        if (range.parentElement() == editableDiv) {
+
+                            var tempEl = document.createElement("span");
+                            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+                            var tempRange = range.duplicate();
+                            tempRange.moveToElementText(tempEl);
+                            tempRange.setEndPoint("EndToEnd", range);
+                            caretPos = tempRange.text.length;
+                        }
+                    }
+
+                    return caretPos;
+                }
+
+
+
+                 var update = function () {
+                    $('#caretposition').val(getCaretPosition(this));
+                };
+
+
+                $('#comment').on("mousedown mouseup keydown keyup", update);
+
+
+                var map = {
+                    16: false,
+                    32: false
+                };
+                $("#comment").keyup(function (e) {
+
+                    if ((e.keyCode === 32)) {
+                        map[e.keyCode] = true;
+                        
+                        if(parseInt($('#caretposition').val()) == 0){
+                       	 // alert('뭐?')                        	 
+                        } else if (parseInt($('#caretposition').val()) == $('#comment').text().length){
+                       	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
+                        } else {
+                       	 // alert('임마?')
+                       	 return;
+                        }
+                        
+
+                        var regex = /(#[^#\s,;<>.]+)/gi;
+                        if (regex) {
+                            var newtxt = "<span class=fugue>" + $('#comment').text()
+                                .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                    "</span><span class=fugue>") + "</span>"
+
+                            console.log($('#comment').text().length);   
+                            console.log(newtxt)   
+                            newtxt += "<kz></kz>"
+                            $('#comment').html(newtxt)
+                            var el = document.getElementById("comment");
+                            console.log("childNodes: " + el.childNodes.length);
+                            var range = document.createRange();
+                            var sel = window.getSelection();
+                            range.setStart(el.lastChild, 0);
+                            range.collapse(false);
+                            sel.removeAllRanges();
+                            sel.addRange(range);
+
+                            $('#comment').focusout();
+                            $('#comment').focus();
+                            if (parseInt($('#caretposition').val()) == $('#comment').text().length) {
+
+                            }
+
+                        }
+                    }
+                })
+                /* .keyup(function(e){   
+                                    if(e.keyCode === 32){   
+                                       map[e.keyCode] = false;             
+                   
+                                      }
+                                    console.log($('#comment').text().length);
+                   
+                                 }); */
+                /* ========================= editable div에 태그 적용 끝 ========================= */
+
                 </script>
 
 					<c:choose>

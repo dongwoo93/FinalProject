@@ -124,7 +124,7 @@
                          }
                          
                          
-                         var regex = /(#[^#\s,;<>.]+)/gi;  
+                         var regex = /(#[^#\s,;<>. ]+)/gi;  
                              if(regex){      
                             	 var newtxt = "<span class=fugue>" + $('#editorDiv').text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
                             	 									  
