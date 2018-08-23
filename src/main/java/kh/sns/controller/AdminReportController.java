@@ -138,15 +138,26 @@ public class AdminReportController {
 		return mav;
 	}
 	
-/*	@RequestMapping("/evaluateAnAd.admin")
+	@RequestMapping("/evaluateAnAd.admin")
 	public ModelAndView manageAnAdvertisement(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		int reportSeq = Integer.parseInt(request.getParameter("boardBizSeq"));
+		int boardBizSeq = Integer.parseInt(request.getParameter("boardBizSeq"));
 		String isAllowed = request.getParameter("isAllowed");
 		String evalMessage = request.getParameter("evalMessage");
-
 		
-	}*/
+		BoardBusinessDTO bbiz = new BoardBusinessDTO();
+		bbiz.setIsAllowed(isAllowed);
+		bbiz.setRejectedMessage(evalMessage);
+		bbiz.setBoardBizSeq(boardBizSeq);
+		
+		int result = bbs.updateAnEvaluationResult(bbiz);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:manageAd.admin");
+		mav.addObject("evalResult", result);
+		return mav;
+
+	}
 	
 	
 }

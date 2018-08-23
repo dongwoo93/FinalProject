@@ -54,6 +54,10 @@ public class IBoardBusinessDAO implements BoardBusinessDAO {
 			bbiz.setIsWebsitePurposeOfPurchase(rs.getString("is_website_purpose_of_purchase"));
 			bbiz.setMoreInfoWebsite(rs.getString("more_info_website"));
 			bbiz.setRemainedPublicExposureCount(rs.getInt("remained_public_exposure_count"));
+			bbiz.setIsAllowed(rs.getString("is_allowed"));
+			bbiz.setRejectedMessage(rs.getString("rejected_message"));
+			bbiz.setRequestDate(rs.getString("requestdate"));	// 변수명 실수
+			bbiz.setDisposedDate(rs.getString("disposeddate"));	// 변수명 실수
 			return bbiz;
 		});
 	}
