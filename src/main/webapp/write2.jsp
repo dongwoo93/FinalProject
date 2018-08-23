@@ -334,7 +334,7 @@
 	            $("#rangeSpan").text ($("#exposureRange").val());
 	            $('#exposureCount').val(Number($("#exposureRange").val () * 500).toLocaleString('ko'))
 	            $('#costPerClick').val( 200 * ( 1-($("#exposureRange").val()/500) ) )
-	            $('#totalCost').val($("#exposureRange").val() * $("#exposureRange").val () * 500 * 1.2)
+	            $('#totalCost').val(Number($("#exposureRange").val() * $("#exposureRange").val () * 500 * 1.2).toLocaleString('ko'))
 	            
 	            // 변화할때마다
 	            $("#exposureRange").bind("change", function (event)
@@ -342,7 +342,7 @@
 				    $("#rangeSpan").text ($(this).val());
 				    $('#exposureCount').val(Number($(this).val () * 500).toLocaleString('ko'))
 				    $('#costPerClick').val( 200 * (1-($(this).val()/500)) )
-				    $('#totalCost').val($(this).val() * $(this).val () * 500 * 1.2)
+				    $('#totalCost').val(Number($(this).val() * $(this).val () * 500 * 1.2).toLocaleString('ko'))
 				    
 				 });
 	            
@@ -714,7 +714,7 @@
 								
 								<div class="form-group">
 								  <fieldset>
-								    <label class="control-label" for="costPerClick">총 결제금액</label>
+								    <label class="control-label" for="costPerClick">총 결제금액(￦)</label>
 								    <input class="form-control" id="totalCost" type="text" placeholder="Readonly input here…" readonly >
 								    <small class="form-text text-muted">총 결제금액은 다음 공식으로 산정됩니다.[총 노출단가 + 보증비 20% 가산],
 								    	<br>광고가 거부된 경우 총 결제금액은 매월 첫째 주 월요일에 일괄 환급되며,
