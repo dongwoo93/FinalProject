@@ -328,32 +328,11 @@ $(document).ready(function(){
                        });
 
                      
-                       
-//                        $("#modify${tmp.board_seq}").click(function() {
-//                           $("#seq").val(${tmp.board_seq});  
-//                              $("#boardmodal").modal();                             
-//                        });
-
-                  
-//                        $("seq1").click(function() {                      
-//                             $("#boardmodal").modal('show');                         
-//                        });
-           
-               </script>
-
-
-							</div>
-
-							<!-- <script>
-         num++;
-      </script> -->
-						</c:forEach>
-
-
-					</c:if>
-
-
-				</div>
+             				</script>
+						</div>
+					</c:forEach>
+				</c:if>
+			</div>
 
 				<!--          <div class="spinner"></div> -->
 
@@ -366,8 +345,6 @@ $(document).ready(function(){
 
 <div class="modal fade" id="boardmodal" role="dialog">
 	<div class="modal-dialog bo" role="document">
-
-
 
 		<div class="modal-content view"
 			style="flex-direction: row; width: 60px; height: auto; opacity: 0.5;">
