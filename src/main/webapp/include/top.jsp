@@ -49,9 +49,19 @@
                   <li class="nav-item">
                     <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="board.bo?id=${sessionScope.loginId}"><i class="far fa-user nav-icon"></i></a>
-                  </li>
+                  <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="far fa-user nav-icon"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}">내 계정</a>
+          <a class="dropdown-item" href="profile.member">프로필 편집</a>
+          <a class="dropdown-item" href="#">나의 게시판</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="logout.do">로그아웃</a>
+        </div>
+      </li>
+                  
                 </ul>
               </div>
             </div>
