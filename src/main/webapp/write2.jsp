@@ -331,9 +331,10 @@
             
             <c:if test="${ memberBiz ne null }">
 	            // 비즈니스 창 최초 로딩시
-	            $("#rangeSpan").text ($("#exposureRange").val ());
+	            $("#rangeSpan").text ($("#exposureRange").val());
 	            $('#exposureCount').val(Number($("#exposureRange").val () * 500).toLocaleString('ko'))
 	            $('#costPerClick').val( 200 * ( 1-($("#exposureRange").val()/500) ) )
+	            $('#totalCost').val(Number($("#exposureRange").val() * $("#exposureRange").val () * 500 * 1.2).toLocaleString('ko'))
 	            
 	            // 변화할때마다
 	            $("#exposureRange").bind("change", function (event)
@@ -341,6 +342,7 @@
 				    $("#rangeSpan").text ($(this).val());
 				    $('#exposureCount').val(Number($(this).val () * 500).toLocaleString('ko'))
 				    $('#costPerClick').val( 200 * (1-($(this).val()/500)) )
+				    $('#totalCost').val(Number($(this).val() * $(this).val () * 500 * 1.2).toLocaleString('ko'))
 				    
 				 });
 	            
@@ -707,6 +709,16 @@
 								    <label class="control-label" for="costPerClick">클릭당 단가(￦)</label>
 								    <input class="form-control" id="costPerClick" type="text" placeholder="Readonly input here…" readonly >
 								    <small class="form-text text-muted">클릭당 단가는 노출단가에 의해 결정되며 다음 공식으로 산정됩니다. [200 * (1 - 노출단가 / 500)]</small> 
+								  </fieldset>
+								</div>
+								
+								<div class="form-group">
+								  <fieldset>
+								    <label class="control-label" for="costPerClick">총 결제금액(￦)</label>
+								    <input class="form-control" id="totalCost" type="text" placeholder="Readonly input here…" readonly >
+								    <small class="form-text text-muted">총 결제금액은 다음 공식으로 산정됩니다.[총 노출단가 + 보증비 20% 가산],
+								    	<br>광고가 거부된 경우 총 결제금액은 매월 첫째 주 월요일에 일괄 환급되며,
+								    	<br>광고가 허용된 겨우 보증비는 광고 집행이 정상적으로 종료되었을 때 환급됩니다.</small> 
 								  </fieldset>
 								</div>
 						</div>
