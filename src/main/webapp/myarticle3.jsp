@@ -319,7 +319,6 @@ $(document).ready(function(){
                                 	  $("#mark").attr("style", false);
                                   }
                             
-                             	 }
                                  }
                             });
                           
