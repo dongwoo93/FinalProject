@@ -752,7 +752,9 @@ $(document).ready(function() {
 	
               <div class="py-2 bg-white">     	
                
-                <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">   	  
+               <input type="text" placeholder="댓글 달기..." class="ml-2 pl-2" id="comment">
+
+                
                    
 		   <c:choose>
 			<c:when test="${result[0].id == sessionScope.loginId}">

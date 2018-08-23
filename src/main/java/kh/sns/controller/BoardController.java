@@ -54,18 +54,14 @@ public class BoardController {
 
 	@Autowired	private BoardService boardService;
 	@Autowired	private Board_CommentService board_commentService;
-
 	@Autowired	private Board_LikeService board_likeService;
 	@Autowired	private Board_BookmarkService board_bookmarkService;
 	@Autowired	private Member_BlockService member_blockService;
-
 	@Autowired	private Member_FollowService member_followService;
-
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
-
-	@Autowired
-	private MemberService memService;
+	@Autowired	private MemberService memService;
+	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
@@ -171,19 +167,16 @@ public class BoardController {
 	}
 
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id) throws Exception{
+	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
 			String sessionid= (String)session.getAttribute("loginId");
-			List<BoardDTO> result = boardService.getBoard(id);
+			List<BoardDTO> result = new ArrayList<>();
 			
 			boolean isBlock = member_blockService.isBlock(sessionid,id);
 			boolean isFollow = member_followService.isFollow(sessionid,id);
 			boolean isNotPublic = profileService.isNotPublic(id);
-			List<Board_MediaDTO> result2 = new ArrayList<>();
-			for(int i = 0; i < result.size(); i++) {
-				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
-			}
+			
 			String boardCount = boardService.boardCount(id);
 			int followerCount = member_followService.getFollowerCount(id);
 			int followingCount = member_followService.getFollowingCount(id);
@@ -205,6 +198,22 @@ public class BoardController {
 			for(int[] tmp : commentcnt) {
 				commentcount.put(tmp[0],tmp[1]);
 			}
+			
+			if(cat.equals("1")) {
+				result = boardService.getBoard(id);
+			}
+			else if(cat.equals("2")) {
+				List<int[]> seqArr = boardService.myBookmark(id);
+				for(int i = 0; seqArr.size() > i; i++) {
+					result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+				}
+			}
+			List<Board_MediaDTO> result2 = new ArrayList<>();
+			for(int i = 0; i < result.size(); i++) {
+				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
+			}
+			
+			
 			mav.addObject("result", result);
 			mav.addObject("result2", result2);
 			mav.addObject("boardCount", boardCount);
