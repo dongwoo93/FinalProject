@@ -145,8 +145,12 @@ public class IBoardService implements BoardService {
 		
 		return dao.toFeed(id);
 	}
+	
+	//my_aticle_bookmark
+	@Override
+	public List<int[]> myBookmark(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.myBookmark(id);
+	}
 
-	
-	
-	
 }

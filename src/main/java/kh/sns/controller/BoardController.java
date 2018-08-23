@@ -167,11 +167,11 @@ public class BoardController {
 	}
 
 	@RequestMapping("/board.bo")
-	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id) throws Exception{
+	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
 			String sessionid= (String)session.getAttribute("loginId");
-			List<BoardDTO> result = boardService.getBoard(id);
+			List<BoardDTO> result = new ArrayList<>();
 			
 			boolean isBlock = member_blockService.isBlock(sessionid,id);
 			boolean isFollow = member_followService.isFollow(sessionid,id);
@@ -201,6 +201,18 @@ public class BoardController {
 			for(int[] tmp : commentcnt) {
 				commentcount.put(tmp[0],tmp[1]);
 			}
+			
+			if(cat.equals("1")) {
+				result = boardService.getBoard(id);
+			}
+			else if(cat.equals("2")) {
+				List<int[]> seqArr = boardService.myBookmark(id);
+				for(int i = 0; seqArr.size() > i; i++) {
+					result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+				}
+			}
+			
+			
 			mav.addObject("result", result);
 			mav.addObject("result2", result2);
 			mav.addObject("boardCount", boardCount);

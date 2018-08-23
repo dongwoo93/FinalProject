@@ -31,7 +31,7 @@
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
-                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색어를 입력하세요">
                 </form>
               </div>
               <div id="nav-icons">
@@ -54,7 +54,7 @@
           <i class="far fa-user nav-icon"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}">내 계정</a>
+          <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a>
           <a class="dropdown-item" href="profile.member">프로필 편집</a>
           <a class="dropdown-item" href="calendar.bo">나의 게시판</a>
           <div class="dropdown-divider"></div>

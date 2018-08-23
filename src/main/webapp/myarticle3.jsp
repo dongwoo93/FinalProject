@@ -199,8 +199,8 @@ $(document).ready(function(){
 						<table class="table">
 							<thead>
 								<tr>
-									<th class="text-center">게시물</th>
-									<th class="text-center">태그됨</th>
+									<th class="text-center"><a href="board.bo?id=${sessionScope.loginId}&cat=1">게시물</a></th>
+									<th class="text-center"><a href="board.bo?id=${sessionScope.loginId}&cat=2">저장됨</a></th>
 								</tr>
 							</thead>
 						</table>
