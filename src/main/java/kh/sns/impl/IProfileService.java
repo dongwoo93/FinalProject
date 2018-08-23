@@ -76,6 +76,12 @@ public class IProfileService implements ProfileService {
 		return pdao.getPic(id);
 	}
 
+	@Override
+	public List<ProfileDTO> selectIntro(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return pdao.selectIntro(id);
+	}
+
 	
 
 }

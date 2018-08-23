@@ -275,60 +275,23 @@ html,body {
     	
 
     	// 작업 처리
-    	$("a[id*='dealReport_']").click(function(){
-    		var managerComment = prompt($(this).attr('title') + " | " + "처리 코멘트 입력(없을 경우 확인 버튼 클릭) ");
-    		var reportSeq = $(this).attr('id').replace("dealReport_", "");
-    		var resultCode = $(this).attr('title').split(":")[0]
-    		console.log( reportSeq + managerComment + resultCode );
+    	$("a[id*='dealAd_']").click(function(){
+    		var boardBizSeq = $(this).attr('id').replace("dealAd_", "").split("_")[1];
+    		var managerComment = prompt(boardBizSeq + " | " + "처리 코멘트 입력(없을 경우 확인 버튼 클릭)");
+    		var evalResult = $(this).attr('id').replace("dealAd_", "").split("_")[0];
+    		console.log( boardBizSeq + managerComment + evalResult );
+    		if(managerComment != null){
+    			location.href = "evaluateAnAd.admin?boardBizSeq=" 
+    				+ boardBizSeq + "&evalMessage=" + managerComment + "&isAllowed=" + evalResult;
+    		}
     		
-    		$.ajax({
-    			url : "manageAnReport.ajax",
-    			type : "post",
-    			data : {
-    				reportSeq : reportSeq,
-    				managerComment : managerComment,
-    				resultCode : resultCode
-    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-    			success : function(response) {
-    				console.log(response)
-    				location.reload();
-    			},
-    			error : function() {
-    				console.log("에러 발생");
-    			},
-    			complete : function() {
-    				// console.log("AJAX 종료");
-    			}
-    		}) // $AJAX 끝
+    		
+    		
     	});
     	
-    $('[data-toggle="popover"]').popover({container: "body"});
+    	$('[data-toggle="popover"]').popover({container: "body"});
     	
-    /*	$('a[id*="popBoard"]').focus(function(){
-    		var elem = $(this)
-    		var seq = $(this).attr('id').replace('popBoard', '').split('_');
-
-    		
-    		$.ajax({
-    			url : "getOneArticle.ajax",
-    			type : "get",
-    			data : {
-    				seq : seq[1]
-    			}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
-    			success : function(response) {
-    				// console.log(response.contents)
-    				$(elem).attr('data-original-title', seq[0] + " | " + seq[1] + " | " + response.id + " | " + response.writedate)
-    			   	$(elem).attr('data-content', response.contents)
-    			},
-    			error : function() {
-    				console.log("에러 발생");
-    			},
-    			complete : function() {
-    				// console.log("AJAX 종료");
-    			}
-    		}) // $AJAX 끝
-    	}) */
-    	
+        	
     	  $('a[id*="popComment"]').focus(function(){
     		var elem = $(this)
     		var seq = $(this).attr('id').replace('popComment', '').split('_');
@@ -362,7 +325,7 @@ html,body {
     		}) // $AJAX 끝
     	})
     	
-    	// 보드 더블클릭
+    	// 보드 클릭
     	$('a[id*="popBoard"]').click(function(){
     		var seq = $(this).attr('id').replace('popBoard', '').split('_');
     		$.ajax({
@@ -420,7 +383,7 @@ html,body {
     	
 	
 		    	/*파이 차트*/
-		    $("#chartContainer").CanvasJSChart({ 
+		/*     $("#chartContainer").CanvasJSChart({ 
 				title: { 
 					text: "Reports Stats",
 					fontSize: 24
@@ -448,10 +411,10 @@ html,body {
 						{ label: "따돌림",  y: 0, legendText: "6: 괴롭힙 및 따돌림"},
 						{ label: "재산권 침해",  y: 0, legendText: "7: 지적재산권 침해"},
 						{ label: "자해",   y: 0, legendText: "8: 자해" } 
-					]  */
+					]  
 				} 
 				] 
-			});     
+			});    */  
     	
 
     	
@@ -523,9 +486,9 @@ html,body {
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="nav-link mp " data-toggle="pill"
-							data-target="#reportMain" style="font-weight:bold;" id="stat1">리포트 통계 Ⅰ</a></li>
+							data-target="#reportMain" style="font-weight:bold;" id="stat1">광고 통계 Ⅰ</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#reportMain" id="stat2">리포트 통계 Ⅱ</a></li>
+							data-toggle="pill" data-target="#reportMain" id="stat2">광고 통계 Ⅱ</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp "
@@ -583,54 +546,39 @@ html,body {
 							  <thead>
 							    <tr class="table-warning">
 							      <th scope="col">No.</th>
-							      <th scope="col">리포트 종류</th>
 							      <th scope="col">Board No.</th>
-							      <th scope="col">Comment No.</th>
-							      <th scope="col">Reported Date</th>
-							      <th scope="col">Reporter's Comment</th>
-							      <th scope="col">조회일</th>
-							      <th scope="col">처리일</th>
-							      <th scope="col">처리 결과</th>
-							      <th scope="col">관리자 코멘트</th>
+							      <th scope="col">Attached URL</th>
+							      <th scope="col">상품 판매 목적?</th>
+							      <th scope="col">URL 클릭수</th>
+							      <th scope="col" title="1회 노출 당 비용(Cost Per One)">CPO</th>
+							      <th scope="col" title="1회 클릭 당 비용(Cost Per Click)">CPC</th>
+							      <th scope="col">잔여 노출수</th>
+							      <th scope="col">심사결과</th>
+							      <th scope="col">코멘트</th>
 							      <th scope="col">작업</th>
 							    </tr>
 							  </thead>
 							  <tbody>
 							  
-							  <c:forEach var="i" items="${ list }" varStatus="k">
-							  	<tr ${ acceptedCounts[k.index] eq '0' ? '' : 'class=table-light'}>
-							      <th scope="row">${ i.reportSeq }</th>
-							      <td>${ i.reportCode }: ${code[k.index].reportCodeDescription}</td>
-							      <td><a href="#;return false;" id='popBoard${ i.reportSeq }_${ i.boardSeq }' >${ i.boardSeq }</a></td>
+							  <c:forEach var="i" items="${ bList }" varStatus="k">
+							  	<tr>
+							      <th scope="row">${ i.boardBizSeq }</th>
+							      <%-- <td>${ i.boardSeq }</td> --%>
+							      <td><a href="#;return false;" id='popBoard${ i.boardBizSeq }_${ i.boardSeq }'>${ i.boardSeq }</a></td>
+							      <td><a href="${ i.moreInfoWebsite }" target=_blank>바로가기</a></td>
+							      <td>${ i.isWebsitePurposeOfPurchase eq 'y' ? '네' : '아니오' }</td>
+							      <td>${ i.clickCount }</td>
+							      <td>${ i.costPerMille }</td>
+							      <td>${ i.costPerClick }</td>
+							      <td>${ i.remainedPublicExposureCount }</td>
 							      <td>
 							      	<c:choose>
-							      		<c:when test="${ i.commentSeq eq 0 }">-</c:when>
-							      		<c:otherwise>
-							      			<a href="#;return false;"  id='popComment${ i.reportSeq }_${ i.boardSeq }_${ i.commentSeq }' title="" data-container="body" data-toggle="popover" data-placement="top" data-content="코멘트 삭제됨" data-original-title="코멘트 삭제됨" aria-describedby="popover371932">${ i.commentSeq }</a>
-							      		</c:otherwise>
-							      	</c:choose>
-							      	</td>
-							      <td>${ i.reportedDate }</td>
-							      <td>${ i.reportersComment }</td>
-							      <td>${ i.adminFirstReadDate }</td>
-							      <td>${ i.adminAcceptedDate }</td>
-							      <td>
-							      	<c:if test="${i.resultCode ne '0'}">${ i.resultCode }: </c:if>${ result[k.index].resultDescription }
+							      		<c:when test="${ i.isAllowed eq 'y' }">허용됨</c:when>
+							      		<c:when test="${ i.isAllowed eq 'n' }">거부됨</c:when>
+							      	</c:choose>							   
 							      </td>
-							      <td>${ i.adminComment }</td>
-							      <td>
-						      		<c:choose>
-						      			<c:when test="${ acceptedCounts[k.index] eq '0' }">
-						      				<c:forEach var="j" items="${ resultList }" varStatus="l">
-							      				<a href='#;return false;' id="dealReport_${ i.reportSeq }" title="${ j.resultCode }: ${ j.resultDescription }">${ j.resultCode }</a><br>
-							      			</c:forEach>
-						      			</c:when>
-						      			<c:otherwise>
-						      				처리됨
-						      			</c:otherwise>
-						      		</c:choose>
-							      	
-								  </td>
+							      <td>${ i.rejectedMessage }</td>						      
+							      <td><a href='#' id='dealAd_y_${ i.boardBizSeq }'>허용</a> | <a href='#' id='dealAd_n_${ i.boardBizSeq }'>거부</a></td>
 							    </tr>
 							  </c:forEach>
 					

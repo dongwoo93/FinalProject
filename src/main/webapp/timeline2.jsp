@@ -204,9 +204,11 @@
     	$("#commenthide"+board_seq).html("");
     }
 </script>
-<div id="allwrapper">
+<div class="" id="allwrapper">
 	<div class="" id="centerwrapper">
-		<div class="container" id="contents">
+	
+		<div class="container " id="contents">
+		
 			<div id="board">
 
 				<script>var num = 1;</script>
@@ -363,17 +365,17 @@
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
-			 var regex = /(#[^#\s,;]+)/gi  ;            
-		  var txt = "${tmp.contents}";                    
-          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
-          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-		$("#contdiv${tmp.board_seq}").html(newtxt);    
-		  
-		function tag(e) {
-			var search = $(e).html().split("#")[1]; 
-			$(location).attr("href","search.bo?search="+search); 
-
-		}
+							var regex = /(#[^#\s,;]+)/gi  ;            
+							  var txt = "${tmp.contents}";                    
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
+							$("#contdiv${tmp.board_seq}").html(newtxt);    
+							  
+							function tag(e) {
+								var search = $(e).html().split("#")[1]; 
+								$(location).attr("href","search.bo?search="+search); 
+					
+							}
 
 		</script>
 								</div>
@@ -503,9 +505,58 @@
 				</c:forEach>
 			</div>
 			<!-- board -->
-<div class="col-md-6 align-self-center" id="side">dfsfdsfdsf    
-			<br>
-		</div>
+			
+			
+	
+			
+		
+			
+			<div style="position:fixed;border-radius: 1px;">	
+				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1" end="1">
+				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
+				  <br>
+				  <div class="profile-image"> 
+						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">					
+						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
+						
+				 </div>		
+		  		</c:forEach>				
+				  
+			  
+				  <hr class="_5mToa">					    
+				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><i class="far fa-arrow-alt-circle-left" style="font-size:15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천 Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-arrow-alt-circle-right" style="font-size:15px;"></i></p>
+				  <hr class="_5mToa">  
+				    <c:forEach var="followtmp" items="${result3}" varStatus="status" begin="0" end="4">
+					 
+					  <div class="container">
+	  						 
+					    <div class="profile-image"> 
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">	
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}">${followtmp.id}</a>						
+				 		</div>		
+					    		 			      
+					  </div>		
+					
+					</c:forEach>
+					<hr class="_5mToa">
+					
+						
+				</div>
+				 
+				 <div class="pt-4 pb-3  " id="footer" style="font-size:5px;margin-left:20px;">
+		           <div class="container">
+		              <div class="row" >
+		                <div class="col-md-10">
+		                  <p>SocialWired.정보.지원.홍보.채용</p>
+		                  <p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어  </p>
+		                  <p>@2018SocialWired</p>
+		                </div>
+		              </div>
+		           </div>
+     			 </div>
+					
+			</div>	 
+		 
 
 		</div>
 		<!-- container -->
