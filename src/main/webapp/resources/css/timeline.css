@@ -4,10 +4,12 @@
 	margin-left: auto;
 	margin-right: auto;
 	display: -webkit-box;
+	
 }
 
 #centerwrapper {
 	height: 100%;
+	
 }
  
 /*컨테이너*/
@@ -170,8 +172,8 @@ padding-right:3%;
 .commenttxt { 
 	border:none;
 	width:100%; 
-	
-   
+	word-wrap: break-word; 
+	    
 }  
   
 .creco {   
@@ -181,9 +183,14 @@ padding-right:3%;
 }
  
 #feed {    
-	border:0.5px solid lightgray;  
+	  border:0.5px solid #efe4e4;  
+	  background-color: #FFFFFF;
 	}
 	
+	#float{
+	 	border:0.5px solid #efe4e4;  
+	 /*	background-color: #FFFFFF;*/
+	}
 .commentline {   
 	padding-left: 0px;   
 	margin-left: 1%;   
@@ -710,8 +717,8 @@ ul {
 	text-align: center;  
 }
 
-.modal-content {
-	width:70%;   
+.cons{
+	width: 485px;   
 	border-radius: 1.5rem;
 }
 
@@ -744,10 +751,32 @@ ul {
 }
 .modal-title {
     text-align: center;
+    font-weight: bold;
 }
 .headbtn {
     position: absolute;
+    top : 2.5%
 }
 .footertbtn {
 	width: 100%;
+}
+.item {
+	margin-top: 10px;
+	font-size: x-medium;
+}
+#report-head{
+	font-size: small;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.mbody {
+	text-align: left;
+}
+.close{
+   	 top : 2.5%;
+   	 font-size: 25px;
+}
+.pic{
+	width : 30px;
+	height : 30px;   
 }

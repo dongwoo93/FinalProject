@@ -52,7 +52,6 @@ public class IMemberService implements MemberService{
 	}
 
 
-
 	@Override
 	public int signUp(MemberDTO dto) throws Exception {
 		// TODO Auto-generated method stub
@@ -117,6 +116,13 @@ public class IMemberService implements MemberService{
 	@Override
 	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception{
 		return this.dao.selectfollowlist(id,searchtext);
+	}
+	
+	// My_aticle
+	@Override
+	public List<MemberDTO> myNick_Id(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.myNick_Id(id);
 	}
 
 //	@Override

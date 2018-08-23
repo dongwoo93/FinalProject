@@ -4,10 +4,13 @@ import java.util.List;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
+
+import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
+	public List<FollowInfo> toFeed(String id) throws Exception;
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
@@ -20,18 +23,16 @@ public interface BoardDAO {
 	public int selectBoardSeqRecentCurrVal() throws Exception;
 	
 	public BoardDTO getBoardModal(String seq) throws Exception;
-	
-	public int insertFollowInfo(FollowInfo fi) throws Exception;
-	public int deleteFollowInfo(FollowInfo fi) throws Exception;	// 언팔
-	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception;
-	
-	public int getFollowingCount(String id) throws Exception;
-	public int getFollowerCount(String id) throws Exception;
 
 	// search
 	public List<BoardDTO> search(String keyword);
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
+	
 	//oneBoard
 	public BoardDTO oneBoard(String board_seq) throws Exception;
 	
+	//tour
+	public List<BoardDTO> getAllBoard() throws Exception;
+	public List<Board_MediaDTO> getAllBoard2() throws Exception;
+	public List<String[]> selectTagCount() throws Exception;
 }

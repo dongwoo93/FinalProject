@@ -28,8 +28,7 @@ public interface MemberService {
 	public int checkEmailDuplicated(String email, String currentUserId) throws Exception;
 	public MemberDTO selectUserId(String nickname) throws Exception;
 	
-	
-	
-	
+	// My_aticle
+	public List<MemberDTO> myNick_Id(String id) throws Exception;
 	
 }

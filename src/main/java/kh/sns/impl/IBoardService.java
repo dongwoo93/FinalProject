@@ -5,18 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.interfaces.BoardBusinessDAO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 
 @Service
 public class IBoardService implements BoardService {
 
-	@Autowired
-	private BoardDAO dao;
+	@Autowired	private BoardDAO dao;
+	@Autowired	private BoardBusinessDAO bbdao;
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
@@ -49,11 +51,12 @@ public class IBoardService implements BoardService {
 	
 	@Override	
 	// @Transactional("txManager")
-	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList) throws Exception {
+	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList, BoardBusinessDTO bbiz) throws Exception {
 		
 		// 글 삽입
 		int contentResult = dao.insertNewBoardContent(boardContent);
 		int mediaResult = 1;
+		int bizResult = 1;
 		
 		// 그림 등 삽입
 		if(contentResult == 1) {
@@ -72,9 +75,16 @@ public class IBoardService implements BoardService {
 			for(int i : hashTagResult) {
 				System.out.print(i);
 			}
+			
+			// 비즈니스 계정이 null이 아닌 경우 비즈니스 보드에도 삽입
+			if(bbiz != null) {
+				bbiz.setBoardSeq(boardCurrVal);
+				bizResult = bbdao.insertAnBoardBiz(bbiz);
+			}
+			
 		} 			
 		
-		return contentResult * mediaResult;
+		return contentResult * mediaResult * bizResult;
 	}
 
 	@Override
@@ -87,31 +97,8 @@ public class IBoardService implements BoardService {
 		return dao.getBoardModal(seq);
 	}
 	
-	@Override
-	public int insertFollowInfo(FollowInfo fi) throws Exception {
-		return dao.insertFollowInfo(fi);
-	}
-	
-	@Override
-	public int deleteFollowInfo(FollowInfo fi) throws Exception {
-		return dao.deleteFollowInfo(fi);
-	}
-	
-	@Override
-	public int getFollowingCount(String id) throws Exception {
-		return dao.getFollowingCount(id);
-	}
-	
-	@Override
-	public int getFollowerCount(String id) throws Exception {
-		return dao.getFollowerCount(id);
-	}
-	
-	@Override
-	public List<BoardDTO> getBoardFromFollowingList(String id) throws Exception {
-		return dao.getBoardFromFollowingList(id);
-	}
 
+	//Search(검색)
 	@Override
 	public List<BoardDTO> search(String keyword) throws Exception {
 		// TODO Auto-generated method stub
@@ -122,6 +109,30 @@ public class IBoardService implements BoardService {
 	public BoardDTO  oneBoard(String board_seq) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.oneBoard(board_seq);
+	}
+	
+	//tour(둘러보기)
+	@Override
+	public List<BoardDTO> getAllBoard() throws Exception {
+		return dao.getAllBoard();
+	}
+
+	@Override
+	public List<Board_MediaDTO> getAllBoard2() throws Exception {
+		return dao.getAllBoard2();
+	}
+
+	@Override
+	public List<String[]> selectTagCount() throws Exception {
+		return dao.selectTagCount();
+	}
+	
+	
+
+	@Override
+	public List<FollowInfo> toFeed(String id) throws Exception {
+		
+		return dao.toFeed(id);
 	}
 
 	

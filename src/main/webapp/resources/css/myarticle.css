@@ -49,7 +49,7 @@
 	
 	.profile-user-name {
 		display: inline-block;
-		font-size: 3.2rem;
+		font-size: 2.5rem;
 		font-weight: 300;
 	}
 	.profile-edit-btn {
@@ -100,6 +100,8 @@
 		flex-wrap: wrap;
 		margin: -1rem -1rem;
 		padding-bottom: 3rem;
+		
+		
 	}
 	.gallery-item {
 		position: relative;
@@ -107,6 +109,8 @@
 		margin: 1rem;
 		color: #fff;
 		cursor: pointer;
+		width: 100%;
+		height: 100%;
 	}
 	.gallery-item:hover .gallery-item-info {
 		visibility: visible;
@@ -316,43 +320,89 @@
 	}
 
 
- 	.modal-dialog{  
-  		margin-top : 150px; 	 	
+ 	.bo{  
+  		margin-top : 150px; 	
+  		margin-left: 1px; 
+  		padding-left : 450px;
   	}  
- 	.modal-content{ 
+ 	.view{ 
  		width:100%; 
  		height:100%;
- 		border : 3px solid white; 
- 		
+ 		border : 3px solid white;  		
  	} 
 	
- 
 	#board{
 		width:100%; 
  		height:100%;
  		border : 3px solid white; 
 	}
 	
-    
-    #comment {
-      width: 85%;  
-      height: 5%;
+	      
+ .block {     
+ 	border : 0.5px solid lightgray;   
+ 	text-align:center;  
+ 	  
+ }  
+	
+    #comment {  
+   width:90%;     
+      height: 3%;
       border: none;
       font-size: 13px;
-      padding-left: 2%;
-      margin-right: 2%;
+  	    margin-right:4%;      
       font-family: "Open Sans", Arial, sans-serif;
       border : 3px solid white; 
       
     }
    
    	#picture{
-   		 border : 3px solid white; 
+   	  border : 3px solid white; 
    	}
    	
    	.carousel-inner img {
-      width: 100%;
+    width: 100%;
     max-height: 494px;
     object-fit: contain;
   }
+  
+#profileimg {
+  max-width: 300px;
+  max-height: 250px;
+  padding: 5px;
+}
+input[type=file]{
+padding: 10px;
+}
+
+.commenttxt { 
+	  
+	width:100%; 
+
+}  
+
+  
+.comment-contents li {
+position:relative;	
+		}  
+  
+#li1 {
+width:14%;
+display:contents;
+    
+   
+}
+#li2  {               
+width:72%;         
+padding-left:3%;     
+}  
+
+.pointer {    
+	cursor:pointer;    
+}
+
+.commentline2 {
+	padding-left: 75%;   
+}
+    
+   
    

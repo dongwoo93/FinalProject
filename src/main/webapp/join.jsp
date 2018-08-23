@@ -246,7 +246,8 @@ $("document").ready(function(){
 	$("#cancel").click(function(){
 		
 		$(".validate").val("");
-		
+		$("#confirm").prop("disabled", false);
+		$(".phoneinput").remove();       
 	});
 	
 $("#back").click(function(){
@@ -414,8 +415,8 @@ $("#sign").click(function(){
 			
 			if(yes){
 				
-				console.log("인증번호 ");
 				
+				 $("#confirm").prop("disabled", true);
 				
 				 $.ajax({
 					url:"sms.do",
@@ -440,6 +441,7 @@ $("#sign").click(function(){
 							alert("인증번호 전송완료");
 							$("input[name=phone]").attr("readonly",true);
 						var start = $(".confirm");
+						
 						start.after(
 								"<div class='row phoneinput'><div class='input-field col s6'><input type='text' id='certification' name='certification' class='validate' placeholder='인증번호를 입력하세요'></div> <div class='input-field time'></div></div>");
 						

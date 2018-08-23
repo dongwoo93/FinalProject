@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
     <%@ include file="include/top.jsp"%>
     <link rel="stylesheet" type="text/css" href="resources/css/mypage.css">
     <!-- <script src="resources/js/mypage.js"></script> -->
@@ -168,6 +169,13 @@
     		})
     	}
     	
+    	$('#changeBizBtn').click(function(){
+    		$('.modal-title').text('비즈니스 계정으로 전환')
+    		/* $('.modal-body').html() */
+    		 $(".modal").modal();
+    		 
+    	})
+    	
     })
     </script>
     
@@ -197,20 +205,22 @@
 			<script>alert('회원 정보 변경에 실패했습니다.')</script>
 		</c:otherwise>
 	</c:choose>
-</c:if>
+</c:if>    
 	<div class="py-5">
 		<div class="container mywrap">
-		<br>
-			<div class="row">
+		<br>    
+			<div class="row"> 
 				<div class="col-4">
-				<img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
-								class="rounded-circle" alt="Cinque Terre" width="40" height="35">
+				<img class="rounded-circle" alt="Cinque Terre" width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
-								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span>
+								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
+								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">
+									<span class="badge badge-pill badge-warning">biz</span>
+								</c:if>
 					<ul class="nav nav-pills flex-column">
 						<li class="nav-item"><a href="#"
 							class="active nav-link mp " data-toggle="pill"
-							data-target="#profileTab" style="font-weight:bold;" id="navi">프로필 편집</a></li>
+							data-target="#profileTab" id="navi">프로필 편집</a></li>
 						<li class="nav-item"><a href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
@@ -220,7 +230,13 @@
 <!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
 <!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
 						<li class="nav-item"><a class="nav-link mp " href="#"
-							data-toggle="pill" data-target="#privacyTab" id="resetOriginalPrivacyTab" >공개 범위 및 보안</a></li>
+							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a></li>
+							
+						<c:if test="${ memberBiz ne null }">
+							<li class="nav-item"><a class="nav-link mp " href="#"
+								data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a></li>
+						</c:if>
+						
 					</ul>
 					
 				</div>
@@ -300,6 +316,10 @@
 							<div class="form-group text-center "> 
 								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;">제출</button>
 								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">계정을 일시적으로 비활성화</button>
+								<c:if test="${ memberBiz eq null }">
+									<button type=button class="btn btn-light text-dark" style="font-weight:bold;" id="changeBizBtn">비즈니스 계정으로 전환</button>
+								</c:if>
+								
 							</div>		
 									
 						</form>
@@ -414,8 +434,8 @@
 							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
 							<br><div class="form-check">&nbsp;&nbsp;
 						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_public value="y" id=chkAllowPublic
-						          ${ profile.is_allow_public eq 'y' ? 'checked' : '' }>
+						          <input class="form-check-input" type="checkbox" name=is_allow_public value="n" id=chkAllowPublic
+						          ${ profile.is_allow_public eq 'n' ? 'checked' : '' }>
 						           <strong style="font-weight:bold;">비공개 계정</strong>
 						        </label>
 						        <p id="p"><small>계정이 비공개 상태인 경우 회원님이 승인한 사람만 SocialWired에서 회원님의 사진과 동영상을 볼 수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</small></p>
@@ -488,6 +508,55 @@
 						 
 						</div>
 						
+						<c:if test="${ memberBiz ne null }">
+							<div class="tab-pane fade" id="bizProfile" role="tabpanel">
+
+								<!-- business form 시작 -->
+							<h3 class="text-center" style="font-weight:bold;">비즈니스 프로필 편집</h3>
+							<small>비즈니스 도구에 오신 것을 환영합니다. 고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. 게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.
+							<br><br>비즈니스 프로필에 입력된 정보는 일반 프로필 정보와는 별도로 취급됩니다.</small>
+							<hr>
+							 
+							<form action="updateBizProfileProc.member" method="post">
+
+					         <div class="form-group">
+					           <label for="websiteField" style="font-weight:bold;" >비즈니스 웹 사이트</label>
+					           <input type="text" class="form-control" value="${ memberBiz.bizWebsite }" id="bizWebsiteField" name=bizWebsite> 
+					        </div>
+
+								 <div class="form-group"> 
+     								 <label for="introduceArea" style="font-weight:bold;">비즈니스 이메일</label>
+     								 <input type="email" class="form-control" value="${ memberBiz.bizEmail }" id="bizEmailField" name=bizEmail> 	
+   								 </div>
+   			
+								<div class="form-group">		
+									<label for="InputEmail1" style="font-weight:bold;">비즈니스 전화번호</label>
+										<input class="form-control" type="tel" value="${ memberBiz.bizPhone }" id="bizPhoneField" name="bizPhone">
+									<div id='duplResultArea'></div>
+								</div>						
+							<hr>
+							 <input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
+							<strong style="font-weight:bold;">타임라인 광고에서 프로필 페이지에서 불허</strong><br>
+						     <small>타임라인 광고에서 프로필 링크를 불허합니다(?) 비공개 계정 설정과는 다르며 공개 계정인 경우 프로필 페이지로 접속할 수 있습니다.</small>
+				
+						     <hr>
+								잔액 결제하기: 돈이 있어야 광고를 하죠? 현재 잔액은 ￦<fmt:formatNumber>${ memberBiz.deposit }</fmt:formatNumber> 입니다. 
+								<button type=button>결제하기</button>
+								
+							<hr>
+								
+							<div class="form-group text-center "> 
+								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;">제출</button>
+								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">일반 계정으로 전환</button>
+								
+							</div>		
+									
+						</form>
+							<!-- business form 끝 -->
+
+	 						</div>							
+						</c:if>
+												
 						  
 						
 					</div>
@@ -497,4 +566,32 @@
 		</div>
 		<br>
 	</div>
+	
+													<div class="modal">
+													  <div class="modal-dialog" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h5 class="modal-title">Modal title</h5>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													          <span aria-hidden="true">&times;</span>
+													        </button>
+													      </div>
+													      <div class="modal-body">
+													      	<table style="padding: 4px">
+													      		<tr>
+													      			<td style="width: 23%"><img src=resources/images/business.png width=100 height=100></td>
+													      			<td style="width: 77%"><p>비즈니스 도구에 오신 것을 환영합니다. <br><br>고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. <br><br>게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.</p></td>
+													      		</tr>
+													      	</table>
+													        
+													      </div>
+													      <div class="modal-footer">
+													      	<form action='changeBizAccount.profile' method=post>
+													        	<button type="submit" class="btn btn-primary">비즈니스 계정으로 전환</button>
+													        </form>
+													        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													      </div>
+													    </div>
+													  </div>
+													</div>
 	<%@ include file="include/bottom.jsp"%>

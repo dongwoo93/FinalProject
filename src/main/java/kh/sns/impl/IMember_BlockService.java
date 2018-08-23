@@ -29,5 +29,9 @@ public class IMember_BlockService implements Member_BlockService {
 	public List<Member_BlockDTO> selectBlock(String id) throws Exception {
 		return dao.selectBlock(id);
 	}
+	
+	public boolean isBlock(String sessionid, String id) throws Exception {
+		return dao.isBlock(sessionid,id);
+	}
 
 }
