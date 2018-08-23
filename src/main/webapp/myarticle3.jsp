@@ -81,10 +81,9 @@ $(document).ready(function(){
 
 			<div class="profile-user-settings">
 				<h2 class="profile-user-name">${pageid}</h2>
-				<div class="profile-edit-btn" id="toMy" style="height:40px;">프로필편집</div>
-				<div class="profile-settings-btn">
-					<i class="far fa-times-circle" id="logout"></i>
-				</div>
+				<div class="profile-edit-btn" id="toMy">프로필 편집</div>
+				<div class="profile-edit-btn" id="">나의 게시판</div>
+				<i class="fas fa-user-cog" data-toggle="modal" data-target="#settingModal" style="font-size: 20px; margin-left: 15px; cursor: pointer;"></i>
 				
 			</div>  
 			  
@@ -149,7 +148,7 @@ $(document).ready(function(){
 
 			<div class="profile-stats">
 
-				<ul>
+				<ul id="prostat">
 					<li><span class="profile-stat-count">${boardCount}</span> 게시글</li>
 					<li><span class="profile-stat-count">${followerCount}</span>
 						팔로워</li>
@@ -612,4 +611,28 @@ $(document).ready(function(){
     </div>
          </div>
              </form>
+             <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
+             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    	  			<input type=hidden id=modalseq>
+    	  			    <div class="modal-content cons">
+    	               <div class="modal-body">
+    	                  <a class="dropdown-item mo1" href="profile.member?cat=1">비밀번호 변경</a>
+    	                  <div class="dropdown-divider"></div>
+    	                  <a class="dropdown-item mo1" href="profile.member?cat=2">이메일 및 SMS</a>
+    	                  <div class="dropdown-divider"></div>
+    	                  <a class="dropdown-item mo1" href="profile.member?cat=3">공개 범위 및 보안</a>
+    	                  <div class="dropdown-divider"></div>
+    	                  <a class="dropdown-item mo1" href="profile.member?cat=4">비즈니스 프로필</a>
+    	                  <div class="dropdown-divider"></div>
+    	                  <a class="dropdown-item mo1" href="logout.do">로그아웃</a>
+    	                  
+    	               </div>
+    	               <div class="modal-footer">
+    	                  <button type="button" class="btn btn-outline-primary footertbtn"
+    	                     data-dismiss="modal">Close</button>
+    	               </div>
+    	            </div>
+    	         
+    	   </div>
+    	   </div>
 <%@ include file="include/bottom.jsp"%>

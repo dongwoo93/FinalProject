@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 @import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
+@font-face { font-family: 'billabong'; src: url("../fonts/billabong.ttf") format('truetype'); }
 
 	/* Base Styles */
 	:root {
@@ -96,6 +97,7 @@
     .logo{
         display: none;
         flex-grow: 1;
+        /* font-family: billabong !important; */
     }
     
     .text-white {
