@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -65,7 +67,7 @@ public class BoardController {
 	@Autowired
 	private MemberService memService;
 	@RequestMapping("/feed.bo")
-	public ModelAndView toFeed(HttpServletResponse response, HttpSession seesion) {
+	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
 		String id = (String) seesion.getAttribute("loginId");
 
@@ -81,6 +83,9 @@ public class BoardController {
 			Map<String, String> getAllProfilePic = new HashMap<>();
 			List<FollowInfo> follow_list = new ArrayList<>();
 			
+			List<Integer> maxImgHeight = new ArrayList<>();
+			String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+			
 			try {
 				follow_list = boardService.toFeed(id);
 			} catch (Exception e1) {
@@ -92,7 +97,27 @@ public class BoardController {
 				list = boardService.getFeed(id);
 				for(int i = 0; i < list.size(); i++) {
 					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				} 
+				
+				for(List<Board_MediaDTO> mlist : media) {
+					double max = 0;
+					for(Board_MediaDTO dto : mlist) {
+						BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+						double height = bimg.getHeight();
+						double width = bimg.getWidth();
+						height = 600*height/width;   
+						System.out.println("height : " + height);
+						if(max<height) { 
+							max = height;
+						}
+						
+					}
+					maxImgHeight.add((int)max);   
+					System.out.println("max:" + max);     
 				}
+				
+				
+				
 				list1 = board_commentService.getFeedComment(id);
 				like = board_likeService.searchLike(id);
 				mark = board_bookmarkService.searchMark(id);
@@ -138,6 +163,7 @@ public class BoardController {
 			mav.addObject("commentresult",commentlist);
 			mav.addObject("profile_pic",getAllProfilePic);
 			mav.addObject("result3", follow_list);
+			mav.addObject("maxImgHeight",maxImgHeight);
 			mav.setViewName("timeline2.jsp");
 		
 			
@@ -629,6 +655,10 @@ public class BoardController {
 		response.getWriter().flush();
 		response.getWriter().close();
 
+	}
+	@RequestMapping("/calendar.bo")
+	public String goCalendar(){
+		return "redirect:calendar.jsp";   
 	}
 
 	@RequestMapping("/deletefollow.do")

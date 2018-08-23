@@ -176,7 +176,31 @@
     		 
     	})
     	
+    	if("${category}" == '1') {
+    		$("#a1").attr("class", "nav-link mp");
+    		$("#profileTab").attr("class","tab-pane fade");	
+    		$("#a2").attr("class", "active nav-link mp");
+    		$("#passwordTab").attr("class", "tab-pane fade show active");
+    		
+    	}else if("${category}" == '2') {
+    		$("#a1").attr("class", "nav-link mp");
+    		$("#profileTab").attr("class","tab-pane fade");	
+    		$("#a3").attr("class", "active nav-link mp");
+    		$("#emailTab").attr("class", "tab-pane fade show active");
+    	}else if("${category}" == '3') {
+    		$("#a1").attr("class", "nav-link mp");
+    		$("#profileTab").attr("class","tab-pane fade");	
+    		$("#a4").attr("class", "active nav-link mp");
+    		$("#privacyTab").attr("class", "tab-pane fade show active");
+    	}else if("${category}" == '4') {
+    		$("#a1").attr("class", "nav-link mp");
+    		$("#profileTab").attr("class","tab-pane fade");
+    		$("#a5").attr("class", "active nav-link mp");
+    		$("#bizProfile").attr("class", "tab-pane fade show active");
+    		
+    	}
     })
+    
     </script>
     
     
@@ -208,32 +232,32 @@
 </c:if>    
 	<div class="py-5">
 		<div class="container mywrap">
-		<br>    
-			<div class="row"> 
-				<div class="col-4">
-				<img class="rounded-circle" alt="Cinque Terre" width="40" height="35" src="AttachedMedia/${profile_pic}">
+		<br>         
+			<div class="row">        
+				<div class="col-4">                            
+				<img class="rounded-circle" alt='profile' width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
 								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">
 									<span class="badge badge-pill badge-warning">biz</span>
 								</c:if>
 					<ul class="nav nav-pills flex-column">
-						<li class="nav-item"><a href="#"
+						<li class="nav-item"><a id="a1" href="#"
 							class="active nav-link mp " data-toggle="pill"
 							data-target="#profileTab" id="navi">프로필 편집</a></li>
-						<li class="nav-item"><a href="#" class="nav-link mp "
+						<li class="nav-item"><a id="a2" href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a></li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
-						<li class="nav-item"><a href="#" class="nav-link mp "
+						<li class="nav-item"><a id="a3" href="#" class="nav-link mp "
 							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a></li>
 <!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
 <!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
-						<li class="nav-item"><a class="nav-link mp " href="#"
+						<li class="nav-item"><a id="a4" class="nav-link mp " href="#"
 							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a></li>
 							
 						<c:if test="${ memberBiz ne null }">
-							<li class="nav-item"><a class="nav-link mp " href="#"
+							<li class="nav-item"><a id="a5" class="nav-link mp " href="#"
 								data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a></li>
 						</c:if>
 						

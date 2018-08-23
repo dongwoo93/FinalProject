@@ -56,7 +56,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a>
           <a class="dropdown-item" href="profile.member">프로필 편집</a>
-          <a class="dropdown-item" href="#">나의 게시판</a>
+          <a class="dropdown-item" href="calendar.bo">나의 게시판</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="logout.do">로그아웃</a>
         </div>
