@@ -644,6 +644,10 @@ public class BoardController {
 		response.getWriter().close();
 
 	}
+	@RequestMapping("/calendar.bo")
+	public String goCalendar(){
+		return "redirect:calendar.jsp";   
+	}
 
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response, HttpSession seesion) throws Exception {
