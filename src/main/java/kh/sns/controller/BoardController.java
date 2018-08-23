@@ -54,18 +54,14 @@ public class BoardController {
 
 	@Autowired	private BoardService boardService;
 	@Autowired	private Board_CommentService board_commentService;
-
 	@Autowired	private Board_LikeService board_likeService;
 	@Autowired	private Board_BookmarkService board_bookmarkService;
 	@Autowired	private Member_BlockService member_blockService;
-
 	@Autowired	private Member_FollowService member_followService;
-
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
-
-	@Autowired
-	private MemberService memService;
+	@Autowired	private MemberService memService;
+	
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
