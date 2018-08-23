@@ -36,7 +36,7 @@ $(document).ready(function() {
 		})*/
 
 	$("#toMy").click(function() {
-		$(location).attr("href", "profile.member");
+		$(location).attr("href", "profile.member?cat=0");
 	})
 
 	$("#goNext").click(function() {
