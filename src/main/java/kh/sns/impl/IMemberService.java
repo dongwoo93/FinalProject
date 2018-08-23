@@ -113,12 +113,19 @@ public class IMemberService implements MemberService{
 		return this.dao.selectfriendlist(id,searchtext);
 	}
 	
+	@Override
+	public List<String> findMember(String searchtext) throws Exception {
+		return dao.findMember(searchtext);
+	}
+	
 	// My_aticle
 	@Override
 	public List<MemberDTO> myNick_Id(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.myNick_Id(id);
 	}
+
+	
 
 //	@Override
 //	public boolean isIdExist(String id) {

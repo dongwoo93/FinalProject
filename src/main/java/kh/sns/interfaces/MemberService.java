@@ -17,6 +17,7 @@ public interface MemberService {
 	public List<MemberDTO> findId(String name, String email) throws Exception;
 	public String changePass(String id) throws Exception;
 	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception;
+	public List<String> findMember(String searchtext) throws Exception;
 	
 	public MemberDTO getOneMember(String id) throws Exception;
 	

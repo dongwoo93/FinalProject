@@ -20,7 +20,56 @@
 </head>
 
 <body>
-	
+<script type="text/javascript">
+
+$(function() {
+
+    var availableCity = [
+    	{ link: "board.bo?id=ykng10",
+        label: "ykng10"
+        },
+    	{ link: "www.example.com",
+      label: "James Bond"
+    	}];
+
+    $("#searchform").autocomplete({
+
+    	source: function( request, response ) {
+            $.ajax({
+            	type: 'post',
+            	dataType: "json",
+              url: "searchAccount.do",
+              data: {
+                term: request.term
+              },
+              success: function(data) {
+            	alert(data);
+                response(data);
+                }
+            });
+          },
+        minLength: 2,
+        select: function(event, ui) {
+            console.log(ui.item);
+        },
+
+        focus: function(event, ui) {
+
+            return false;
+
+            //event.preventDefault();
+
+        }
+
+    });
+
+});
+
+
+
+</script>
+
+
 
 
  

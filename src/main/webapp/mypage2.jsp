@@ -176,29 +176,6 @@
     		 
     	})
     	
-    	if("${category}" == '1') {
-    		$("#a1").attr("class", "nav-link mp");
-    		$("#profileTab").attr("class","tab-pane fade");	
-    		$("#a2").attr("class", "active nav-link mp");
-    		$("#passwordTab").attr("class", "tab-pane fade show active");
-    		
-    	}else if("${category}" == '2') {
-    		$("#a1").attr("class", "nav-link mp");
-    		$("#profileTab").attr("class","tab-pane fade");	
-    		$("#a3").attr("class", "active nav-link mp");
-    		$("#emailTab").attr("class", "tab-pane fade show active");
-    	}else if("${category}" == '3') {
-    		$("#a1").attr("class", "nav-link mp");
-    		$("#profileTab").attr("class","tab-pane fade");	
-    		$("#a4").attr("class", "active nav-link mp");
-    		$("#privacyTab").attr("class", "tab-pane fade show active");
-    	}else if("${category}" == '4') {
-    		$("#a1").attr("class", "nav-link mp");
-    		$("#profileTab").attr("class","tab-pane fade");
-    		$("#a5").attr("class", "active nav-link mp");
-    		$("#bizProfile").attr("class", "tab-pane fade show active");
-    		
-    	}
     })
     
     </script>
@@ -242,23 +219,68 @@
 									<span class="badge badge-pill badge-warning">biz</span>
 								</c:if>
 					<ul class="nav nav-pills flex-column">
-						<li class="nav-item"><a id="a1" href="#"
-							class="active nav-link mp " data-toggle="pill"
-							data-target="#profileTab" id="navi">프로필 편집</a></li>
-						<li class="nav-item"><a id="a2" href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a></li>
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 0}">
+						<a href="#" class="nav-link mp " data-toggle="pill" data-target="#profileTab" id="navi">프로필 편집</a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="active nav-link mp " data-toggle="pill" data-target="#profileTab" id="navi">프로필 편집</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
+						
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 1}">
+						<a href="#" class="nav-link mp " data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="active nav-link mp " data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
-						<li class="nav-item"><a id="a3" href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a></li>
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 2}">
+						<a href="#" class="nav-link mp "
+							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="active nav-link mp "
+							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
+						
 <!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
 <!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
-						<li class="nav-item"><a id="a4" class="nav-link mp " href="#"
-							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a></li>
-							
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 3}">
+						<a class="nav-link mp " href="#"
+							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a>
+						</c:when>
+						<c:otherwise>
+						<a class="active nav-link mp " href="#"
+							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
+						
 						<c:if test="${ memberBiz ne null }">
-							<li class="nav-item"><a id="a5" class="nav-link mp " href="#"
-								data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a></li>
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 4}">
+							<a class="nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
+						</c:when>
+						<c:otherwise>
+							<a class="active nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
 						</c:if>
 						
 					</ul>
@@ -270,7 +292,15 @@
 				
 				<div class="col-8" id="info">
 					<div class="tab-content">
+					<c:choose>
+						<c:when test="${category != 0}">
+						<div class="tab-pane fade" id="profileTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
 						<div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 						<br>
 							<!-- profile form 시작 -->
 							<h3 class="text-center" style="font-weight:bold;">프로필 편집</h3>
@@ -350,8 +380,15 @@
 							<!-- profile form 끝 -->
 						</div>
 						
-						
+						<c:choose>
+						<c:when test="${category != 1}">
 						<div class="tab-pane fade" id="passwordTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="passwordTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 							<h3 class="text-center" style="font-weight:bold;">비밀번호 변경</h3>
 							<div class="form-group">
 								<form action='passwordChangeProc.member' method=post id=pwdfrm>
@@ -396,8 +433,15 @@
 						</div>
 						<!-- -- -->
 						
-						
+						<c:choose>
+						<c:when test="${category != 2}">
 						<div class="tab-pane fade" id="emailTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="emailTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 							<h2 class="" style="font-weight:bold;">받아보기:</h2><br>
 							 <div class="form-check">
 						        <label class="form-check-label">
@@ -453,8 +497,15 @@
 								
 <!-- 							</div> -->
 <!-- 						</div> -->
-						
+						<c:choose>
+						<c:when test="${category != 3}">
 						<div class="tab-pane fade" id="privacyTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="privacyTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
 							<br><div class="form-check">&nbsp;&nbsp;
 						        <label class="form-check-label">
@@ -533,7 +584,15 @@
 						</div>
 						
 						<c:if test="${ memberBiz ne null }">
-							<div class="tab-pane fade" id="bizProfile" role="tabpanel">
+						<c:choose>
+						<c:when test="${category != 4}">
+						<div class="tab-pane fade" id="bizProfile" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="bizProfile" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+							
 
 								<!-- business form 시작 -->
 							<h3 class="text-center" style="font-weight:bold;">비즈니스 프로필 편집</h3>
