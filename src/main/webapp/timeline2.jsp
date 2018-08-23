@@ -271,7 +271,7 @@
 									</c:forEach>
 								</ul>
 								<div id="carousel-inner" class="carousel-inner"         
-									style="height:${maxImgHeight[status.index]}px; max-height:700px">
+									> 
 									<div id="firstItem" class="carousel-item active">      
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -516,7 +516,7 @@
 				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
 				  <br>
 				  <div class="profile-image"> 
-						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">					
+						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">					
 						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
 						
 				 </div>		
@@ -531,7 +531,7 @@
 					  <div class="container">
 	  						 
 					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">	
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">	
 							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}">${followtmp.id}</a>						
 				 		</div>		
 					    		 			      
