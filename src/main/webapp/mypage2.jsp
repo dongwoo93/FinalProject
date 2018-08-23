@@ -596,6 +596,7 @@
 
 								<!-- business form 시작 -->
 							<h3 class="text-center" style="font-weight:bold;">비즈니스 프로필 편집</h3>
+							<br>
 							<small>비즈니스 도구에 오신 것을 환영합니다. 고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. 게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.
 							<br><br>비즈니스 프로필에 입력된 정보는 일반 프로필 정보와는 별도로 취급됩니다.</small>
 							<hr>
@@ -618,7 +619,7 @@
 									<div id='duplResultArea'></div>
 								</div>						
 							<hr>
-							 <input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
+							 &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
 							<strong style="font-weight:bold;">타임라인 광고에서 프로필 페이지에서 불허</strong><br>
 						     <small>타임라인 광고에서 프로필 링크를 불허합니다(?) 비공개 계정 설정과는 다르며 공개 계정인 경우 프로필 페이지로 접속할 수 있습니다.</small>
 				
@@ -649,6 +650,7 @@
 		</div>
 		<br>
 	</div>
+	
 	
 													<div class="modal">
 													  <div class="modal-dialog" role="document">

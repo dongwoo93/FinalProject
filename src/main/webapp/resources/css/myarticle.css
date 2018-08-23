@@ -413,6 +413,12 @@ padding-left:3%;
 #prostat {
 	    -webkit-padding-start: 0;
 }
-    
+
+.img-fluid{
+	width: 330px;
+	height: 300px;
+	object-fit:cover;
+		
+}    
    
    
