@@ -24,4 +24,9 @@ public class IMessengerService implements MessengerService{
 	public List<MessengerDTO> selectmessenger(String receiver,String sender) {
 		return this.dao.selectmessenger(receiver,sender);
 	}
+	
+	@Override
+	public List<MessengerDTO> currentMessenger(String id) {
+		return this.dao.currentMessenger(id);
+	}
 }

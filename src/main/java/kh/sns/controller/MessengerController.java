@@ -1,7 +1,11 @@
 package kh.sns.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,6 +22,7 @@ import kh.sns.dto.MemberDTO;
 import kh.sns.dto.MessengerDTO;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.MessengerService;
+import kh.sns.websocket.WebSocket;
 
 @Controller
 public class MessengerController {
@@ -28,6 +33,7 @@ public class MessengerController {
 	@Autowired
 	private MessengerService messengerService;
 	
+	
 	@RequestMapping("/dmfriendlist.do")
 	public void searchFriend(HttpServletResponse response, @RequestParam("searchtext") String searchtext, HttpSession session) {
 		response.setCharacterEncoding("UTF-8");
@@ -36,7 +42,8 @@ public class MessengerController {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)  session.getAttribute("loginId");
 		List<MemberDTO> list = null;
-		List<String> friendlist = new ArrayList<>();
+		List<String> onlinefriendlist = new ArrayList<>();
+		List<String> offlinefriendlist = new ArrayList<>();
 		
 		try {
 			list = memberService.selectfollowlist(id,searchtext);
@@ -44,15 +51,21 @@ public class MessengerController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		for(MemberDTO tmp : list) {
-			System.out.println(tmp.getNickname());
-			friendlist.add(tmp.getNickname());
+			if(WebSocket.onlineUser.containsKey(tmp.getId())) {
+				onlinefriendlist.add(tmp.getNickname());
+			}
+			else {
+				offlinefriendlist.add(tmp.getNickname());
+			}
 		}
 		
 		try {
-			new Gson().toJson(friendlist, response.getWriter());
-			
+			List<Object> object = new ArrayList<>();
+			object.add(onlinefriendlist);
+			object.add(offlinefriendlist);
+			new Gson().toJson(object, response.getWriter());
 		}catch(Exception e1) {
 			e1.printStackTrace();
 		}
@@ -90,7 +103,9 @@ public class MessengerController {
 		try {
 			result = messengerService.insertMessage(dto);
 			if(result == 1) {
-				new Gson().toJson("전송성공", response.getWriter());
+				SimpleDateFormat  format2 = new SimpleDateFormat("yyyy-MM-dd#a hh:mm:ss");
+				Date to = new Date();
+				new Gson().toJson(format2.format(to), response.getWriter());
 			}else {
 				new Gson().toJson("전송실패", response.getWriter());
 			}
@@ -104,9 +119,48 @@ public class MessengerController {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		ModelAndView mav = new ModelAndView();
+		SimpleDateFormat  format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat  format2 = new SimpleDateFormat("yyyy-MM-dd#a hh:mm:ss");
 		List<MessengerDTO> message = new ArrayList<>();
 		try {
 			message = messengerService.selectmessenger(receiver,sender);
+			for(MessengerDTO tmp : message) {
+				Date to = format1.parse(tmp.getMessage_date());
+				tmp.setMessage_date(format2.format(to));
+			}
+			new Gson().toJson(message, response.getWriter());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/currentMessenger.do")
+	public void currentMessenger(HttpServletResponse response,@RequestParam("id") String id, HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		ModelAndView mav = new ModelAndView();
+		List<MessengerDTO> list = new ArrayList<>();
+		Map<String,MessengerDTO> message = new HashMap<>();
+		String receiver = null;
+		try {
+			list = messengerService.currentMessenger(id);
+			for(MessengerDTO tmp : list) {
+				if(tmp.getSender().equals(id)) {
+					receiver = tmp.getReceiver();
+				}else {
+					receiver = tmp.getSender();
+				}
+				for(MessengerDTO tmp2 : list) {
+					if(receiver.equals(tmp2.getReceiver()) || receiver.equals(tmp2.getSender())) {
+						if(tmp.getMessage_seq() > tmp2.getMessage_seq()) {
+							message.put(receiver,new MessengerDTO(tmp.getMessage_seq(),id,receiver,tmp.getMessage(),tmp.getMessage_date()));
+						}
+						else {
+							message.put(receiver,new MessengerDTO(tmp2.getMessage_seq(),id,receiver,tmp2.getMessage(),tmp2.getMessage_date()));
+						}
+					}
+				}
+			}
 			new Gson().toJson(message, response.getWriter());
 		}catch(Exception e) {
 			e.printStackTrace();

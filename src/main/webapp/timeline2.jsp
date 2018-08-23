@@ -34,11 +34,22 @@
 	                data: {message:message,receiver:receiver,sender:"${sessionScope.loginId}"}, 
 	                success: function(response) {
 	                	console.log(response);
-	                	if(response == "전송성공"){
+	                	if(response == "전송실패"){
+	                		   alert("전송실패");
+	                	}
+	                	else{
+	                		var date = response.split("#")[0];
+	                		var time = response.split("#")[1];
+	                		var objDiv = document.getElementById("messagebox");
+	                		var lastdate = $(".dmdate").last().text();
 	                		ws.send(receiver+":"+message);
-		                	$("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+message+"</div></div>");
-		                	var objDiv = document.getElementById("messagebox");
-                            objDiv.scrollTop = objDiv.scrollHeight;   
+	                		console.log(lastdate);
+	                		if(lastdate != date){
+	                			
+			                $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
+	                		}
+		                	$("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+message+"</div><div class='mt-2'>"+time+"</div></div>");
+                            objDiv.scrollTop = objDiv.scrollHeight;
 	                	}
 	                },
 	                error: function() {
@@ -656,15 +667,30 @@
 					<!--                                  DM -->
 					<script>
 					function openDm() {
-						$("#dmfriendlist *").remove();
+						$("#offlinefriendlist *").remove();
+						$("#onlinefriendlist *").remove();
 						$.ajax({
 			                url: "dmfriendlist.do", // 처리할 페이지(서블릿) 주소
 			                type: "get",
 			                data: {searchtext: ""},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 			                success: function(response) {
-			                    for(var i=0;i<response.length;i++){
-			                   	 $("#dmfriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[i]+"<a class='favorite'><i class='far fa-star' onclick='checkfavorite(this)'></i></a></li>");
-			                    }
+			                	$("#onlinecount").text(response[0].length);
+			                	$("#offlinecount").text(response[1].length);
+			                	for(var i=0;i<response.length;i++){
+			                		if(i==0){
+			                			for(var k=0;k<response[0].length;k++){
+			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[0][k]+"<a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
+			                			}
+			       
+			                		}
+			                		else{
+			                			for(var k=0;k<response[1].length;k++){
+			                				console.log(response[1][k]);
+			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[1][k]+"<a class='favorite'><i class='fas fa-circle'></a></li>");
+			                			}
+			                			
+			                		}
+			                	}
 			                },
 			                error: function() {
 			                    console.log("에러 발생");
@@ -672,7 +698,22 @@
 			                complete: function(){
 			                    console.log("AJAX 종료");
 			                }
-			            });   
+			            });
+						$.ajax({
+			                url: "currentMessenger.do",
+			                type: "get",
+			                data: {id:"${sessionScope.loginId}"}, 
+			                success: function(response) {
+// 			                	for()
+// 			                	$("#currentmessenger").append("<li onclick='openmessage(this)'>"+response+"<a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
+			                },
+			                error: function() {
+			                    console.log("에러 발생");
+			                },
+			                complete: function(){
+			                    console.log("AJAX 종료");
+			                }
+			            });
 					    document.getElementById("dm").style.width = "17%";
 					    document.getElementById("allwrapper").style.marginLeft = "17%";
 					    document.getElementById("footer").style.marginLeft = "17%";
@@ -684,34 +725,36 @@
 					    document.getElementById("footer").style.marginLeft = "0";
 					}
 					
-					function checkfavorite(e){
-						$(e).attr('class','fas fa-star');
-					}
-					
 					function openmessage(e){
 						var nickname = $(e).text();
 						$("#dmnickname").text(nickname);
 						$("#messagebox *").remove(); 
 						
 						$.ajax({
-			                url: "selectUserId.do", // 처리할 페이지(서블릿) 주소
+			                url: "selectUserId.do",
 			                type: "get",
-			                data: {nickname: nickname},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			                data: {nickname: nickname}, 
 			                success: function(response) {
 			                	$('.chatbox').show();
 			                	$("#userId").val(response);
 			                	var receiver = $("#userId").val();
 			                	$.ajax({
-					                url: "selectmessenger.do", // 처리할 페이지(서블릿) 주소
+					                url: "selectmessenger.do",
 					                type: "get",
 					                data: {receiver: receiver,sender:"${sessionScope.loginId}"},    
 					                success: function(response) {
+					                	 var date = response[0].message_date.split("#")[0];
+					                	 $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
 					                	 for(var i=0;i<response.length;i++){
+					                		 if(response[i].message_date.split("#")[0] != date){
+					                			 date = response[i].message_date.split("#")[0];
+					                			 $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
+					                		 }
 					                		 if(response[i].sender == "${sessionScope.loginId}"){
-					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+response[i].message+"</div></div>");
+					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+response[i].message+"</div><div class='mt-2'>"+response[i].message_date.split("#")[1]+"</div></div>");
 					                		 }
 					                		 else{
-					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+nickname+"</a></div><div class='message-box message-partner'>"+response[i].message+"</div></div>")
+					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+nickname+"</a></div><div class='message-box message-partner'>"+response[i].message+"</div><div class='mt-2' style='align-self:flex-start;'>"+response[i].message_date.split("#")[1]+"</div></div>")
 					                		 }
 					                	 }
 					                	 var objDiv = document.getElementById("messagebox");
@@ -748,29 +791,29 @@
 					        <div class="menu-list">
 					  
 					            <ul id="menu-content" class="menu-content collapse out">
-					                <li  data-toggle="collapse" data-target="#favorite" class="collapsed active">
-					                  <a href="#"><i class="fas fa-star"></i>즐겨찾기<span class="arrow"></span></a>
-					                </li>
-					                <ul class="sub-menu collapse" id="favorite">
-					                    <li class="active"><a href="#">CSS3 Animation</a></li>
-					                    <li><a href="#">General</a></li>
-					                    <li><a href="#">Buttons</a></li>
-					                </ul>
-					
-					
-					                <li data-toggle="collapse" data-target="#service" class="collapsed">
-					                  <a href="#"><i class="fab fa-fort-awesome-alt fa-lg"></i>최근 목록<span class="arrow"></span></a>
+					         
+					                <li data-toggle="collapse" data-target="#currentmessenger" class="collapsed">
+					                  <a><i class="fab fa-fort-awesome-alt fa-lg"></i>최근 목록</a>
 					                </li>  
-					                <ul class="sub-menu collapse" id="service">
-					                  <li>New Service 1</li>
-					                  <li>New Service 2</li>
-					                  <li>New Service 3</li>
-					                </ul> 
+					                <ul class="sub-menu collapse" id="currentmessenger">
+
+					                </ul>
+					                
 					            </ul>
+					            
 					    	 </div>
-					    	 <ul id="dmfriendlist">
-					    	 	
-					    	 </ul>
+					    	 <li>
+					                  <a><i class="fas fa-circle onlineicon"></i>온라인 친구<span class="ml-2" id="onlinecount"></span></a>
+					                </li>
+					                <ul id="onlinefriendlist">
+
+					                </ul> 
+					                <li>
+					                  <a><i class="fas fa-circle"></i>오프라인 친구<span class="ml-2" id="offlinecount"></span></a>
+					                </li>
+					                <ul id="offlinefriendlist">
+					    	 			 
+					    		    </ul>
 					</div>
 					
 					

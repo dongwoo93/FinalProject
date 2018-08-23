@@ -7,4 +7,5 @@ import kh.sns.dto.MessengerDTO;
 public interface MessengerService {
 	public int insertMessage(MessengerDTO dto);
 	public List<MessengerDTO> selectmessenger(String receiver,String sender);
+	public List<MessengerDTO> currentMessenger(String id);
 }

@@ -39,5 +39,20 @@ public class IMessengerDAO implements MessengerDAO{
 			
 		});
 	}
+	
+	@Override
+	public List<MessengerDTO> currentMessenger(String id){
+		String sql = "select * from messenger where message_seq in(select max(message_seq) from messenger where (sender=?) or (receiver=?) group by sender, receiver)";
+		
+		return template.query(sql, new String[] {id,id}, new RowMapper<MessengerDTO>() {
+
+			@Override
+			public MessengerDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				MessengerDTO dto = new MessengerDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));   
+				return dto;
+			}
+			
+		});
+	}
 
 }
