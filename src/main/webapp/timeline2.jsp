@@ -6,6 +6,84 @@
 <script src="resources/js/timeline.js"></script>
 <script>
     AOS.init();
+    
+	function getCaretPosition(editableDiv) {
+	    var caretPos = 0,
+	        sel, range;
+	    if (window.getSelection) {
+	        sel = window.getSelection();
+	        if (sel.rangeCount) {
+	            range = sel.getRangeAt(0);
+
+	            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+	            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
+	                caretPos = range.endOffset;
+	                // console.log("caretPos: " + caretPos)
+
+
+	                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+	                var isEqualOrLower = false;
+	                while (i >= 0) {
+	                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
+	                        $(range.commonAncestorContainer).text()) {
+	                        i--;
+	                        continue;
+	                    } else {
+	                        while (i >= 0) {
+	                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+	                            // console.log($impl.text());
+	                            caretPos += $impl.text().length
+	                            i--;
+	                        }
+	                        break;
+	                    }
+	                }
+
+	            }
+	        }
+
+
+	    } else if (document.selection && document.selection.createRange) {
+	        range = document.selection.createRange();
+	        if (range.parentElement() == editableDiv) {
+
+	            var tempEl = document.createElement("span");
+	            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+	            var tempRange = range.duplicate();
+	            tempRange.moveToElementText(tempEl);
+	            tempRange.setEndPoint("EndToEnd", range);
+	            caretPos = tempRange.text.length;
+	        }
+	    }
+
+	    return caretPos;
+	}
+	
+	var update = function () {
+	    $('#caretposition').val(getCaretPosition(this));
+ 	    console.log(getCaretPosition(this))
+	    console.log(this)
+	};	
+	
+	function placeCaretAtEnd(el) {
+	    el.focus();
+	    if (typeof window.getSelection != "undefined"
+	            && typeof document.createRange != "undefined") {
+	        var range = document.createRange();
+	        range.selectNodeContents(el);
+	        range.collapse(false);
+	        var sel = window.getSelection();
+	        sel.removeAllRanges();
+	        sel.addRange(range);
+	    } else if (typeof document.body.createTextRange != "undefined") {
+	        var textRange = document.body.createTextRange();
+	        textRange.moveToElementText(el);
+	        textRange.collapse(false);
+	        textRange.select();
+	    }
+	}
+    
+    
     function likeit(e) {
     	var board_seq = $(e).attr("value");
     	$.ajax({
@@ -145,22 +223,32 @@
     }
 
     function modComment(e) { 
-      	 var comment_seq = $(e).attr("value");  
+      	 var comment_seq;
+      	 if($(e).attr("value") != null){
+      		comment_seq = $(e).attr("value"); 
+      	 } else {
+      		 comment_seq = $(e).attr("id").replace("commenttxt", "");
+      	 }
+      	 
       	 var modstate = $("#modstate"+comment_seq).val();   
 		
 		
-		if(modstate == "1") {
+		if(modstate == "1") {	// 수정중
 			$("#commentmod"+comment_seq).html("완료");
-			 $("#commenttxt"+comment_seq).attr("contentEditable",true);
+			 $("#commenttxt"+comment_seq).attr("contentEditable",true);	
+			 
           	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
           	 $("#commenttxt"+comment_seq).focus();  
+          	 
+          	 placeCaretAtEnd( document.getElementById("commenttxt"+comment_seq) );
+			 
           	
           	 $("#modstate"+comment_seq).val("2");    
 
 		}
-		else if(modstate=="2") {
+		else if(modstate=="2") {	// 수정 완료하고 싶을 때
 			$("#commentmod"+comment_seq).html("수정");   
-			 var txt = $("#commenttxt"+comment_seq).html();
+			 var txt = $("#commenttxt"+comment_seq).text();
   			 if(txt == ""){
                  alert("댓글을 입력해주세요");
               }
@@ -173,7 +261,7 @@
                     	$("#commenttxt"+comment_seq).attr("contentEditable",false);
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-		                   $("#modstate"+comment_seq).val("1");    
+		                   $("#modstate"+comment_seq).val("1");   
 		                   $("#ul"+comment_seq).hide().fadeIn(500);  
 		                   
                       }  
@@ -208,7 +296,7 @@
     	
     	var globalThisCommentIsFocusedOnFirst = true;
     	
-        $("div[id*=comment]").focus(function() {
+        $("div[id*=comment].insertfield").focus(function() {
         	if(globalThisCommentIsFocusedOnFirst){
         		$(this).html("");
             	globalThisCommentIsFocusedOnFirst = false;
@@ -216,74 +304,15 @@
         	
         });
         
-        $("div[id*=comment]").focusout(function() {
+        $("div[id*=comment].insertfield").focusout(function() {
         	if($(this).text() == ""){
         		$(this).html("<span class=text-muted>댓글 달기...</span>");
         		globalThisCommentIsFocusedOnFirst = true;
         	}
         })
     	
-    	function getCaretPosition(editableDiv) {
-    	    var caretPos = 0,
-    	        sel, range;
-    	    if (window.getSelection) {
-    	        sel = window.getSelection();
-    	        if (sel.rangeCount) {
-    	            range = sel.getRangeAt(0);
 
-    	            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
-    	            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
-    	                caretPos = range.endOffset;
-    	                // console.log("caretPos: " + caretPos)
-
-
-    	                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
-    	                var isEqualOrLower = false;
-    	                while (i >= 0) {
-    	                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
-    	                        $(range.commonAncestorContainer).text()) {
-    	                        i--;
-    	                        continue;
-    	                    } else {
-    	                        while (i >= 0) {
-    	                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
-    	                            // console.log($impl.text());
-    	                            caretPos += $impl.text().length
-    	                            i--;
-    	                        }
-    	                        break;
-    	                    }
-    	                }
-
-    	            }
-    	        }
-
-
-    	    } else if (document.selection && document.selection.createRange) {
-    	        range = document.selection.createRange();
-    	        if (range.parentElement() == editableDiv) {
-
-    	            var tempEl = document.createElement("span");
-    	            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-    	            var tempRange = range.duplicate();
-    	            tempRange.moveToElementText(tempEl);
-    	            tempRange.setEndPoint("EndToEnd", range);
-    	            caretPos = tempRange.text.length;
-    	        }
-    	    }
-
-    	    return caretPos;
-    	}
-    	
-    	var update = function () {
-    	    $('#caretposition').val(getCaretPosition(this));
-    	    console.log(getCaretPosition(this))
-    	    console.log(this)
-    	};
-    	
-    	$("div[id*='comment']").on("mousedown mouseup keydown keyup", update);
-    	
-    	$("div[id*='comment']").keyup(function (e) {
+    	function makeupHashtag (e) {
 
             if ((e.keyCode === 32)) {
 
@@ -323,7 +352,19 @@
 
                 }
             }
-        })
+        }
+    	
+    	$("div[id*='comment'].insertfield").on("mousedown mouseup keydown keyup", update);
+    	$("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+    	
+    	$("div[id*='comment'].insertfield").keyup(makeupHashtag)
+    	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
+    
+    	$("div[id*='commenttxt']").keypress(function(e){
+			if(e.keyCode === 13) {
+			modComment(this);
+		 }
+		})
     	
     });
 </script>
@@ -331,35 +372,36 @@
 <div class="" id="allwrapper">
 	<input type="hidden" id=caretposition>
 	<div class="" id="centerwrapper">
-	
+
 		<div class="container " id="contents">
-		
+
 			<div id="board">
 
 				<script>var num = 1;</script>
 
-				<c:forEach var="tmp" items="${result}" varStatus="status"> 
+				<c:forEach var="tmp" items="${result}" varStatus="status">
 
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
-						<div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+						<div class="profile-image">
+							<img class="ml-3 mr-2 pic"
+								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
 							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
 							<br> <a class="mt-1 idtxt" id="id"
 								href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South
 								Korea
 							</a>
 						</div>
-						<div class="mt-2" id="boardimg" >   
-<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>    
-						  	
-						  	   
-<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
-										
-<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
-<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
-										 
-										<script>      
+						<div class="mt-2" id="boardimg">
+							<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>
+
+
+							<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
+
+							<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
+							<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
+
+							<script>      
 										
 // 										var height= $("#feedimg${status.index}a${status3.index}").height()
 										
@@ -379,13 +421,12 @@
 // 										$("#myCarousel${status.index}").attr("style"," height:"+realmax+"px;");  
 										
 										</script>
-<%-- 									</c:forEach> --%>
-									 
-						
-									
+							<%-- 									</c:forEach> --%>
+
+
+
 							<div id="myCarousel${status.index}" class="carousel slide"
-								data-ride="carousel" data-interval="false"
-								>   
+								data-ride="carousel" data-interval="false">
 								<ul id="carousel-indicators" class="carousel-indicators">
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
@@ -395,20 +436,19 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"           
-									> 
-									<div id="firstItem" class="carousel-item active">        
-										<img class='boardimg'  width='100%'
+								<div id="carousel-inner" class="carousel-inner">
+									<div id="firstItem" class="carousel-item active">
+										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
-											alt=''>  
+											alt=''>
 									</div>
-									<c:forEach begin="1" var="media" 
+									<c:forEach begin="1" var="media"
 										items="${result2[status.index]}" varStatus="status3">
-										<div class="carousel-item" >
-											<img class='boardimg'  width='100%'  
+										<div class="carousel-item">
+											<img class='boardimg' width='100%'
 												src="AttachedMedia/${media.system_file_name}" alt="">
-										</div>  
-										
+										</div>
+
 									</c:forEach>
 
 								</div>
@@ -485,15 +525,16 @@
 							<div id="contcenter" class="mt-2 mx-3 pb-2">
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
-									<a class="ml-1 idtxt" id="con${tmp.board_seq}" 
-										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px; ">${tmp.id}</a>
+									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
+										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;">${tmp.id}</a>
 
-									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
+									<div class='pl-3' id="contdiv${tmp.board_seq}"
+										style="word-wrap: break-word; word-break: break-all"></div>
 									<script>
 							           
 							  var txt = "${tmp.contents}"; 
-							  var regex = /(#[^#\s,;]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");        
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 							$("#contdiv${tmp.board_seq}").html(newtxt);    
 							  
@@ -533,11 +574,12 @@
 														onmouseover="commentover(this)"
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
-														<li id='li1'><a href="board.bo?id=${comment.id}&cat=1">${comment.id}</a></li>
+														<li id='li1'><a
+															href="board.bo?id=${comment.id}&cat=1">${comment.id}</a></li>
 														<li id='li2'><div
-																id='commenttxt${comment.comment_seq}'  
-																class='commenttxt txt${tmp.board_seq}'   
-																style='word-wrap: break-word; word-break:break-all'>${comment.comment_contents}</div></li>
+																id='commenttxt${comment.comment_seq}'
+																class='commenttxt txt${tmp.board_seq}'
+																style='word-wrap: break-word; word-break: break-all'>${comment.comment_contents}</div></li>
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
@@ -546,15 +588,20 @@
 															value="${comment.comment_seq}" onclick="modComment(this)"
 															class="pointer"></a></li>
 
-												   </ul>
-                                       <script>
-                                       var text = $("#commenttxt${comment.comment_seq}").html();  
-                           var regex = /(#[^#\s,;]+)/gi  ;            
-                               var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
-                                $("#commenttxt${comment.comment_seq}").html(newtxt);
-                           </script>
-                                       
-                                       <input type=hidden id='modstate${comment.comment_seq}' value="1">
+													</ul>
+													<script>
+	                                        var text = $("#commenttxt${comment.comment_seq}").text();  
+	                           				var regex = /(#[^#\s,;<>.]+)/gi;            
+	                              			// var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red; cursor: pointer;'>"+"$1"+"</a>");
+	                              			var newtxt = "<span class=fugue>" + text.replace(
+	                              			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                            "</a><span class=fugue>") + "</span>";
+                            				newtxt += "<kz></kz>";
+	                               			$("#commenttxt${comment.comment_seq}").html(newtxt);
+                           				</script>
+
+													<input type=hidden id='modstate${comment.comment_seq}'
+														value="1">
 													<script>
 							$("#ul${commenttmp.value[0].comment_seq}").attr("style",false);
 							$("#ul${commenttmp.value[1].comment_seq}").attr("style",false);
@@ -581,12 +628,15 @@
 
 
 
-<%-- 								<input type="text" placeholder="댓글 달기..."
+								<%-- 								<input type="text" placeholder="댓글 달기..."
 									name="comment_contents${tmp.board_seq}" class="creco ml-2 "
 									id="comment${tmp.board_seq}"> --%>
-									
-									<div contenteditable=true class="creco ml-2" id="comment${ tmp.board_seq }"><span class=text-muted>댓글 달기...</span></div>
-								
+
+								<div contenteditable=true class="creco ml-2 insertfield"
+									id="comment${ tmp.board_seq }">
+									<span class=text-muted>댓글 달기...</span>
+								</div>
+
 								<div class="btn-group bg-white">
 									<i id="modalBoardBtn${tmp.board_seq}"
 										value="${tmp.board_seq}:${tmp.id}" onclick="modal(this)"
@@ -614,13 +664,65 @@
 	                                              success : function(seq) {       
 	                                            	  $('#comment${tmp.board_seq}').html("");
 	                                              /*  $("#comment${tmp.board_seq}").val("");   */  
-	                                              var regex = /(#[^#\s,;]+)/gi  ;            
-                                              var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+	                                              var regex = /(#[^#\s,;<>.]+)/gi;            
+                                                  // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+                                                   var newtxt = "<span class=fugue>" + text.replace(
+	                              			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                          												"</a><span class=fugue>") + "</span>";
+                            						newtxt += "<kz></kz>";
                                             
                                                    
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
+	                                               
+	                                               $("#commenttxt" + seq).keyup(function(e){
+	                                            	   // =================== 복붙 =================== 
+	                                            	   if(e.keyCode === 32){
+	                                            		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+	                                                       } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+	                                                       } else {
+	                                                           return;
+	                                                       }
+
+	                                                       var regex = /(#[^#\s,;<>. ]+)/gi;
+	                                                       if (regex) {
+	                                                           var newtxt = "<span class=fugue>" + $(this).text()
+	                                                               .replace(regex, "</span><span class=text-danger>" + "$1" +
+	                                                                   "</span><span class=fugue>") + "</span>"
+
+	                                                           // console.log($('#editorDiv').text().length);   
+	                                                           // console.log(newtxt)   
+	                                                           newtxt += "<kz></kz>"
+	                                                           $(this).html(newtxt)
+	                                                           var el = this;
+	                                                           console.log("childNodes: " + el.childNodes.length);
+	                                                           var range = document.createRange();
+	                                                           var sel = window.getSelection();
+	                                                           range.setStart(el.lastChild, 0);
+	                                                           range.collapse(false);
+	                                                           sel.removeAllRanges();
+	                                                           sel.addRange(range);
+
+	                                                           $(this).focusout();
+	                                                           $(this).focus();
+	                                                           if (parseInt($('#caretposition').val()) == $(this).text().length) {
+			
+	                                                           }
+
+	                                                       }
+	                                            	   } 
+	                                            	   
+	                                            	   
+	                                            	// =================== 복붙 =================== 
+	                                               })
+	                                               
+	                                               $("#commenttxt" + seq).keypress(function(e){
+														if(e.keyCode === 13) {
+														modComment(this);
+													 }
+													})
+	                                               
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
@@ -628,7 +730,7 @@
 		                            }); 
 							 
 
-						 		</script>    
+						 		</script>
 						</div>
 						<!--cont  -->
 					</div>
@@ -645,64 +747,79 @@
 				</c:forEach>
 			</div>
 			<!-- board -->
-			
-			
-	
-			
-		
-			
-			<div style="position:fixed;border-radius: 1px;">	
-				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1" end="1">
-				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
-				  <br>
-				  <div class="profile-image"> 
-						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">					
-						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-						
-				 </div>		
-		  		</c:forEach>				
-				  
-			  
-				  <hr class="_5mToa">					    
-				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><i class="far fa-arrow-alt-circle-left" style="font-size:15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천 Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-arrow-alt-circle-right" style="font-size:15px;"></i></p>
-				  <hr class="_5mToa">  
-				    <c:forEach var="followtmp" items="${result3}" varStatus="status" begin="0" end="4">
-					 
-					  <div class="container">
-	  						 
-					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>						
-				 		</div>		
-					    		 			      
-					  </div>		
-					
-					</c:forEach>
-					<hr class="_5mToa">
-					
-						
+
+
+
+
+
+
+			<div style="position: fixed; border-radius: 1px;">
+				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1"
+					end="1">
+					<div class="container" id="float"
+						style="width: 300px; margin-top: 55px; margin-left: 30px;">
+						<br>
+						<div class="profile-image">
+							<img class="ml-3 mr-2 pic"
+								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">
+							<a class="mt-6 idtxt"
+								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
+								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
+
+						</div>
+				</c:forEach>
+
+
+				<hr class="_5mToa">
+				<p class="text-center"
+					style="font-family: 'HelveticaNeue', 'Arial', sans-serif; font-size: 15px;">
+					<i class="far fa-arrow-alt-circle-left" style="font-size: 15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천
+					Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i
+						class="far fa-arrow-alt-circle-right" style="font-size: 15px;"></i>
+				</p>
+				<hr class="_5mToa">
+				<c:forEach var="followtmp" items="${result3}" varStatus="status"
+					begin="0" end="4">
+
+					<div class="container">
+
+						<div class="profile-image">
+							<img class="ml-3 mr-2 pic"
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">
+							<a class="mt-6 idtxt"
+								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
+						</div>
+
+					</div>
+
+				</c:forEach>
+				<hr class="_5mToa">
+
+
+			</div>
+
+			<div class="pt-4 pb-3  " id="footer"
+				style="font-size: 5px; margin-left: 20px;">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-10">
+							<p>SocialWired.정보.지원.홍보.채용</p>
+							<p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어</p>
+							<p>@2018SocialWired</p>
+						</div>
+					</div>
 				</div>
-				 
-				 <div class="pt-4 pb-3  " id="footer" style="font-size:5px;margin-left:20px;">
-		           <div class="container">
-		              <div class="row" >
-		                <div class="col-md-10">
-		                  <p>SocialWired.정보.지원.홍보.채용</p>
-		                  <p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어  </p>
-		                  <p>@2018SocialWired</p>
-		                </div>
-		              </div>
-		           </div>
-     			 </div>
-					
-			</div>	 
-		 
+			</div>
 
 		</div>
-		<!-- container -->
-		
+
+
 	</div>
-	<!-- centerwrapper -->
+	<!-- container -->
+
+</div>
+<!-- centerwrapper -->
 </div>
 <!--  allwrapper-->
 
@@ -754,7 +871,7 @@
 						<li style="margin-bottom: 8px;">폭력을 조장하거나 사람의 정체성을 바탕으로 공격하는
 							내용의 게시물</li>
 						<li style="margin-bottom: 8px;">신체적 상해, 절도 또는 기물 파손에 대한 협박</li>
-					</ul> 
+					</ul>
 					<p style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는
 						공개되지 않습니다.</p>
 					<p style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급
