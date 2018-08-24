@@ -694,6 +694,7 @@ public class BoardController {
 		
 		
 		for(Profile_ImageDTO dto : profile_image) {
+			
 			getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
 
 		};
@@ -715,11 +716,9 @@ public class BoardController {
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-		
 		try {
 			follow_list = boardService.followList(id);
-		} catch (Exception e1) {
-			
+		}catch (Exception e1) {
 			e1.printStackTrace();  
 		}
 		
