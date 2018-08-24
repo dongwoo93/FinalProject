@@ -197,30 +197,48 @@ $(document).ready(function(){
 				<br> <br>
 				<br>
 			</div>
-
+		
 
 		</c:when>
 
 		<c:otherwise>
-
-
-			<div class="tagmenu">
+			
+			<c:choose>
+				<c:when test="${pageid == sessionScope.loginId}">
+				<div class="tagmenu">
 				<div class="row">
 					<div class="col-md-12">
 						<table class="table">
 							<thead>
 								<tr>
-									<th class="text-center"><a href="board.bo?id=${sessionScope.loginId}&cat=1">게시물</a></th>
-									<th class="text-center"><a href="board.bo?id=${sessionScope.loginId}&cat=2">저장됨</a></th>
+									<th class="text-center"><a href="board.bo?id=${pageid}&cat=1">게시물</a></th>
+									<th class="text-center"><a href="board.bo?id=${pageid}&cat=2">찜콕됨</a></th>
 								</tr>
 							</thead>
 						</table>
 					</div>
 				</div>
 			</div>
+			
+		</c:when>
 
-
-
+			<c:otherwise>
+				<div class="tagmenu">
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table">
+								<thead>
+									<tr>
+										<th class="text-center"><a href="">게시물</a></th>
+									
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+		</c:otherwise>
+	</c:choose>
 			<div class="container my">
 
 				<div class="gallery">
@@ -291,11 +309,22 @@ $(document).ready(function(){
                                     $("#carousel-next").show();
                                  }
                                  $("#modalid1").text(data.id);   
-//                                   $("#modalcontents").text(data.contents);       
-                               $("#modalcontents").html(data[0].contents);
+                                 
+                                 
+//                                   $("#modalcontents").text(data.contents);  
+								var txt = data[0].contents;
+  								var regex = /(#[^#\s,;]+)/gi  ;   
+					         	var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+					          
+                               $("#modalcontents").html(newtxt);
+                             //  $("#modalcontents").html(data[0].contents);
                                   $("#seq").val(data[0].board_seq);
                                   $("#modalid2").text(data[0].id);
-                                     
+       
+	             				  $("#modalid2").click(function() {  
+	                					$(location).attr("href", "board.bo?id="+data[0].id+"&cat=1");
+	             				  });
+             					
                                   $("#likeit").val(data[0].board_seq);
                                   $("#likecancel").val(data[0].board_seq); 
                                   $("#mark").val(data[0].board_seq);
@@ -310,8 +339,13 @@ $(document).ready(function(){
                                   }
                                       
                                   $(".commentline").remove();          
-                                  for(var i =0; i<data[2].length; i++){                
-                                	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>"
+                                  for(var i =0; i<data[2].length; i++){ 
+                                	  var txt = data[2][i].comment_contents;   
+                                      var regex = /(#[^#\s,;]+)/gi  ;            
+                                      var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                                    
+                                	  
+                                	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='board.bo?id="+data[2][i].id+"&cat=1' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
                                 			  +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>"
                                 			  +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
                                   }
@@ -415,11 +449,10 @@ $(document).ready(function(){
 					<div class="profile-image">
 						<img class="ml-3 mr-2"
 							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-						<div class="" id="modalid2" style="font-size: 16px;"></div>
+						<div class="pointer" id="modalid2" style="font-size: 16px;"></div>
 					</div>
 
-
-
+				
 					<br> <br> <input id="seq" type=hidden name=board_seq style="word-wrap: break-word; word-break:break-all">    
 
 
@@ -496,7 +529,12 @@ $(document).ready(function(){
                                 /* $("#comment").val(""); */
                                 $("#comment").html("");
                                 
-                                $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+comment_contents+"</div></li></ul>"
+                                var regex = /(#[^#\s,;]+)/gi  ;            
+                                var newtxt = comment_contents.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                              
+                                    
+                                
+                                $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
                                 		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
                           			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
                                   
@@ -748,7 +786,7 @@ $(document).ready(function(){
         
       </div>
     </div>
-         </div>
+         </div>  
              </form>
              <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
