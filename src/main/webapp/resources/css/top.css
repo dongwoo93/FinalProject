@@ -120,3 +120,65 @@
 	#navbar.scrolled .text-white {
 		color: black !important;
 	}
+.ui-autocomplete {
+			z-index:2000;
+            max-height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            background-color: white;
+            width: 200px;
+            border: 0.5px solid #efe4e4;
+            list-style-type: none;
+            margin: 0;
+			padding: 0;
+
+	}
+	
+	#autodiv {
+		font-size: 15px;
+	}
+	
+	#autodiv1{
+		display: flex;
+	}
+	
+	#autodiv0:hover{
+    background: #ff8a00;
+    border: none;
+    color:#000;
+    border-radius:0;
+    font-weight: normal;
+	}
+	
+	#textdiv {
+		margin-left: 10px;
+	}
+	
+	#searchimg {
+		margin-top: 10px;
+		    border-radius: 50%;
+		        width: 30px;
+    height: 30px;
+	}
+	
+	.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    background: #ff8a00;
+    border: none;
+    color:#000;
+    border-radius:0;
+    font-weight: normal;
+}
+	
+	#autodiv0 {
+		cursor: pointer;
+		padding-left: 10px;
+		margin-bottom: 10px;
+		
+	}
+	
+	.ui-autocomplete-loading { 
+	background:url('../images/spinner.gif') no-repeat right center;
+	 background-size: 20px 20px;
+	}
+	
