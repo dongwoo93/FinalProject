@@ -16,6 +16,9 @@ public interface Member_FollowService {
 	
 	public boolean isFollow(String sessionid, String id) throws Exception;
 	public List<FollowInfo> toFeed(String id) throws Exception ;
-
+	public List<FollowInfo> followerList(String id) throws Exception;
+	
+	public List<FollowInfo> followList(String id) throws Exception;
+	
 
 }

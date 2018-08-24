@@ -137,6 +137,11 @@ public class IBoardService implements BoardService {
 	public List<String[]> selectTagCount() throws Exception {
 		return dao.selectTagCount();
 	}
+
+	@Override
+	public List<int[]> myBookmark(String id) throws Exception {
+		return dao.myBookmark(id);
+	}
 	
 	
 

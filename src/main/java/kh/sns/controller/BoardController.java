@@ -686,7 +686,7 @@ public class BoardController {
 		
 		
 		try {
-			follow_list = boardService.followerLsit(id);
+			follow_list = member_followService.followerList(id);
 		} catch (Exception e1) {
 			
 			e1.printStackTrace();  
@@ -719,7 +719,7 @@ public class BoardController {
 		List<FollowInfo> follow_list = new ArrayList<>();
 		
 		try {
-			follow_list = boardService.followList(id);
+			follow_list = member_followService.followList(id);
 		} catch (Exception e1) {
 			
 			e1.printStackTrace();  
