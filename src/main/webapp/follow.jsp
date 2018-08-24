@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="include/top.jsp"%>
+
+
+<style>
+
 
 #contents {
 	max-width: 1000px;
@@ -24,8 +31,6 @@
 .profile-image img {
 	border-radius: 50%;
 }
-
-
 
 .cock {
 	float: left; 
@@ -287,3 +292,61 @@ padding-right:3%;
 	width : 30px;
 	height : 30px;   
 }
+
+
+</style>
+
+<div id="allwrapper" style="margin-top:50px;">
+
+	<div class="container">
+
+	   <hr class="_5mToa ">					
+		<ul class="nav">
+			<li class="nav-item">
+				 <a class="nav-link" href="followerlist.do?id=${pageid}&cat=1">팔로워</a>
+			</li>
+			<li class="nav-item">
+				 <a class="nav-link" href="followlist.do?id=${pageid}&cat=1">팔로우</a>
+			</li>
+		</ul>				
+						
+			<div style="border : 0px solid black;">		 			    				 
+				<c:forEach var="follower" items="${result}" varStatus="status"> 
+				   <div class="container">
+	  				 <hr class="_5mToa">		 
+					    <div class="profile-image"> 
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follower.targetId]}'/>">	
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follower.targetId}&cat=1">${follower.targetId}</a>						
+				 		</div>		
+					 <hr class="_5mToa">		 			      
+				  </div>		
+				</c:forEach> 			
+			</div>
+			
+			
+			<div style="border : 0px solid black;">		 			    				 
+				<c:forEach var="follow" items="${result1}" varStatus="status"> 
+				   <div class="container">
+	  				 <hr class="_5mToa">		 
+					    <div class="profile-image"> 
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follow.id]}'/>">	
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follow.id}&cat=1">${follow.id}</a>						
+				 		</div>								
+			  		<hr class="_5mToa" >		 			      
+				  </div>		
+				</c:forEach>			
+			</div>
+
+		</div>
+	
+	</div>	
+ 	
+ 
+
+	
+	
+
+
+
+
+<%@ include file="include/bottom.jsp"%>
