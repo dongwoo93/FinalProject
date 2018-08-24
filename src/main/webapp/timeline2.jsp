@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
+  
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 <script>
@@ -113,8 +114,8 @@
 		}  
 	
     }
-    
-    function commentleave(e) {
+   
+    function commentleave(e) { 
     	var seq = $(e).attr("value"); 
 		 
 		$("#ul"+seq).attr("style",false);            
@@ -395,9 +396,11 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"           
-									> 
-									<div id="firstItem" class="carousel-item active">        
+<!-- 								<div id="carousel-inner" class="carousel-inner"          -->
+<%-- 									style="height:${maxImgHeight[status.index]}px; max-height:700px"> --%>
+										<div id="carousel-inner" class="carousel-inner"         
+									>  
+									<div id="firstItem" class="carousel-item active">      
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
 											alt=''>  
@@ -527,7 +530,7 @@
 												</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
-
+									
 													<ul id="ul${comment.comment_seq}" style="display: none"
 														value="${comment.comment_seq}"
 														onmouseover="commentover(this)"
@@ -652,37 +655,61 @@
 		
 			
 			<div style="position:fixed;border-radius: 1px;">	
-				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1" end="1">
+				
 				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
 				  <br>
 				  <div class="profile-image"> 
-						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">					
-						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
+						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">	  				
+						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
 						
-				 </div>		
-		  		</c:forEach>				
-				  
-			  
-				  <hr class="_5mToa">					    
-				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><i class="far fa-arrow-alt-circle-left" style="font-size:15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천 Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-arrow-alt-circle-right" style="font-size:15px;"></i></p>
+				 </div>		 
+		   
+				  <hr class="_5mToa">	      				         
+				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><a id="followprev" style="color:#919191;" class="pointer pr-3">◀</a>추천 Follow를 추가하세요!!<a id="follownext" style="color:#919191" class="pointer pl-3">▶</a></p>
 				  <hr class="_5mToa">  
-				    <c:forEach var="followtmp" items="${result3}" varStatus="status" begin="0" end="4">
-					 
-					  <div class="container">
-	  						 
-					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>						
-				 		</div>		
-					    		 			      
-					  </div>		
+				  
+				    
+				    <c:forEach  begin="0" end="${follow_size}" varStatus="status">
+<!-- 				      <div id="followContainer" class="myslides">   -->
+				      
+<%-- 				    	<c:forEach var="followtmp" items="${result3}" varStatus="memstatus" begin="parseInt(${status})" end=""> --%>
+				   
+<%-- 					  <div class="container recommendmem" id="follow${memstatus.index}">  --%>
+<!-- 					    <div class="profile-image">  -->
+<%-- 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.targetId]}'/>">  	   --%>
+<%-- 							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.targetId}">${followtmp.targetId}</a>						 --%>
+<!-- 				 		</div>				 			       -->
+<!-- 					  </div> -->
+					  
+<%-- 					  </c:forEach> --%>
+<!-- 					  </div>	 -->
+					</c:forEach>  
 					
-					</c:forEach>
 					<hr class="_5mToa">
-					
-						
-				</div>
-				 
+				</div> 
+				
+				
+				<script>
+				<script>
+				var slideIndex = 0;
+				carousel();
+ 
+				function carousel() {
+				    var i;
+				    var x = $(".myslides");  
+				    for (i = 0; i < x.length; i++) {
+				      x[i].style.display = "none"; 
+				    }
+				    slideIndex++;
+				    if (slideIndex > x.length) {slideIndex = 1} 
+				    x[slideIndex-1].style.display = "block"; 
+				    setTimeout(carousel, 2000); 
+				}
+				</script>
+			
+				
+				
+				
 				 <div class="pt-4 pb-3  " id="footer" style="font-size:5px;margin-left:20px;">
 		           <div class="container">
 		              <div class="row" >

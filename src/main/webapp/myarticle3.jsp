@@ -786,7 +786,7 @@ $(document).ready(function(){
         
       </div>
     </div>
-         </div>
+         </div>  
              </form>
              <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
