@@ -203,8 +203,133 @@
     	$(".co"+board_seq).attr("style","display:none;");    
     	$("#commenthide"+board_seq).html("");
     }
+    
+    $(document).ready(function(){
+    	
+    	var globalThisCommentIsFocusedOnFirst = true;
+    	
+        $("div[id*=comment]").focus(function() {
+        	if(globalThisCommentIsFocusedOnFirst){
+        		$(this).html("");
+            	globalThisCommentIsFocusedOnFirst = false;
+        	}
+        	
+        });
+        
+        $("div[id*=comment]").focusout(function() {
+        	if($(this).text() == ""){
+        		$(this).html("<span class=text-muted>댓글 달기...</span>");
+        		globalThisCommentIsFocusedOnFirst = true;
+        	}
+        })
+    	
+    	function getCaretPosition(editableDiv) {
+    	    var caretPos = 0,
+    	        sel, range;
+    	    if (window.getSelection) {
+    	        sel = window.getSelection();
+    	        if (sel.rangeCount) {
+    	            range = sel.getRangeAt(0);
+
+    	            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+    	            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
+    	                caretPos = range.endOffset;
+    	                // console.log("caretPos: " + caretPos)
+
+
+    	                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+    	                var isEqualOrLower = false;
+    	                while (i >= 0) {
+    	                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
+    	                        $(range.commonAncestorContainer).text()) {
+    	                        i--;
+    	                        continue;
+    	                    } else {
+    	                        while (i >= 0) {
+    	                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+    	                            // console.log($impl.text());
+    	                            caretPos += $impl.text().length
+    	                            i--;
+    	                        }
+    	                        break;
+    	                    }
+    	                }
+
+    	            }
+    	        }
+
+
+    	    } else if (document.selection && document.selection.createRange) {
+    	        range = document.selection.createRange();
+    	        if (range.parentElement() == editableDiv) {
+
+    	            var tempEl = document.createElement("span");
+    	            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+    	            var tempRange = range.duplicate();
+    	            tempRange.moveToElementText(tempEl);
+    	            tempRange.setEndPoint("EndToEnd", range);
+    	            caretPos = tempRange.text.length;
+    	        }
+    	    }
+
+    	    return caretPos;
+    	}
+    	
+    	var update = function () {
+    	    $('#caretposition').val(getCaretPosition(this));
+    	    console.log(getCaretPosition(this))
+    	    console.log(this)
+    	};
+    	
+    	$("div[id*='comment']").on("mousedown mouseup keydown keyup", update);
+    	
+    	$("div[id*='comment']").keyup(function (e) {
+
+            if ((e.keyCode === 32)) {
+
+                if (parseInt($('#caretposition').val()) == 0) {
+                    // alert('뭐?')                        	 
+                } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+                    // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
+                } else {
+                    // alert('임마?')
+                    return;
+                }
+
+                var regex = /(#[^#\s,;<>. ]+)/gi;
+                if (regex) {
+                    var newtxt = "<span class=fugue>" + $(this).text()
+                        .replace(regex, "</span><span class=text-danger>" + "$1" +
+                            "</span><span class=fugue>") + "</span>"
+
+                    // console.log($('#editorDiv').text().length);   
+                    // console.log(newtxt)   
+                    newtxt += "<kz></kz>"
+                    $(this).html(newtxt)
+                    var el = this;
+                    console.log("childNodes: " + el.childNodes.length);
+                    var range = document.createRange();
+                    var sel = window.getSelection();
+                    range.setStart(el.lastChild, 0);
+                    range.collapse(false);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+
+                    $(this).focusout();
+                    $(this).focus();
+                    if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+                    }
+
+                }
+            }
+        })
+    	
+    });
 </script>
+
 <div class="" id="allwrapper">
+	<input type="hidden" id=caretposition>
 	<div class="" id="centerwrapper">
 	
 		<div class="container " id="contents">
@@ -221,7 +346,7 @@
 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
 							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
 							<br> <a class="mt-1 idtxt" id="id"
-								href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South
+								href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South
 								Korea
 							</a>
 						</div>
@@ -270,9 +395,9 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"         
-									style="height:${maxImgHeight[status.index]}px; max-height:700px">
-									<div id="firstItem" class="carousel-item active">      
+								<div id="carousel-inner" class="carousel-inner"           
+									> 
+									<div id="firstItem" class="carousel-item active">        
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
 											alt=''>  
@@ -361,7 +486,7 @@
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}" 
-										href="board.bo?id=${tmp.id}" style="font-size: 14px; ">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px; ">${tmp.id}</a>
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
@@ -407,7 +532,7 @@
 														onmouseover="commentover(this)"
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
-														<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>
+														<li id='li1'><a href="board.bo?id=${comment.id}&cat=1">${comment.id}</a></li>
 														<li id='li2'><div
 																id='commenttxt${comment.comment_seq}'  
 																class='commenttxt txt${tmp.board_seq}'   
@@ -448,9 +573,11 @@
 
 
 
-								<input type="text" placeholder="댓글 달기..."
+<%-- 								<input type="text" placeholder="댓글 달기..."
 									name="comment_contents${tmp.board_seq}" class="creco ml-2 "
-									id="comment${tmp.board_seq}">
+									id="comment${tmp.board_seq}"> --%>
+									
+									<div contenteditable=true class="creco ml-2" id="comment${ tmp.board_seq }"><span class=text-muted>댓글 달기...</span></div>
 								
 								<div class="btn-group bg-white">
 									<i id="modalBoardBtn${tmp.board_seq}"
@@ -467,7 +594,7 @@
 								$('#comment${tmp.board_seq}').keypress(function(event){
 	                                var keycode = (event.keyCode ? event.keyCode : event.which);
 	                                if(keycode == '13'){
-	                                   var text = $("#comment${tmp.board_seq}").val();
+	                                   var text = $("#comment${tmp.board_seq}").text();
 	                                   if(text == ""){
 	                                      alert("댓글을 입력해주세요");
 	                                   }
@@ -477,7 +604,8 @@
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {       
-	                                               $("#comment${tmp.board_seq}").val("");              
+	                                            	  $('#comment${tmp.board_seq}').html("");
+	                                              /*  $("#comment${tmp.board_seq}").val("");   */            
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
@@ -516,8 +644,8 @@
 				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
 				  <br>
 				  <div class="profile-image"> 
-						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">					
-						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
+						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">					
+						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
 						
 				 </div>		
 		  		</c:forEach>				
@@ -531,8 +659,8 @@
 					  <div class="container">
 	  						 
 					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}">${followtmp.id}</a>						
+							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">	
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>						
 				 		</div>		
 					    		 			      
 					  </div>		
