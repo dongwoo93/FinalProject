@@ -266,7 +266,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
-		mav.setViewName("redirect:board.bo?id="+id);
+		mav.setViewName("redirect:board.bo?id="+id+"&cat=1");  
 		return mav;	
 	}
 
