@@ -113,10 +113,34 @@ function unmarkit(e) {
 					<div class="card" id="card">
 						<h4 class="card-title" id="searchTop">
 							<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
-								<a id="ids" href="board.bo?id=${result.id}">${result.id}</a>
-									<!-- 북마크 -->
-									<i value="${result.board_seq}" style="cursor: pointer;" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
-									<i value="${result.board_seq}" style="font-weight: bold; cursor: pointer; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
+								<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
+									<!-- 북마크 -->  
+								<c:choose> 
+										<c:when test="${bookmark.containsKey(result.board_seq)}">
+
+												<i value="${result.board_seq}" id="mark"
+													class="far fa-bookmark icon pointer" style="display: none;"
+													onclick="markit(this)"></i>
+												<i value="${result.board_seq}"
+													style="font-weight: bold; color: #00B8D4;" id="markcancel"
+													class="far fa-bookmark icon pointer"
+													onclick="unmarkit(this)"></i>
+
+											</c:when>
+											<c:otherwise>  
+
+												<i value="${result.board_seq}" id="mark"
+													class="far fa-bookmark icon pointer" onclick="markit(this)"></i>
+												<i value="${result.board_seq}"
+													style="font-weight: bold; color: #00B8D4; display: none;"
+													id="markcancel" class="far fa-bookmark icon pointer"
+													onclick="unmarkit(this)"></i>
+
+											</c:otherwise>
+									    </c:choose>   
+									
+<%-- 									<i value="${result.board_seq}" style="cursor: pointer;" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i> --%>
+<%-- 									<i value="${result.board_seq}" style="font-weight: bold; cursor: pointer; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i> --%>
 									<!-- 좋아요 -->
 									<c:choose>
 										<c:when test="${result3.containsKey(result.board_seq)}">
@@ -152,15 +176,20 @@ function unmarkit(e) {
 									<script> $("#myContents${result.board_seq}").attr("style","overflow:visible"); </script>
 										<p id="myContents${result.board_seq}">${result.contents}</p>
 											<script>    
-												var plus = "";    
-												var txt = "${result.contents}";       
-											    	if(txt.length > 48) {                
-											    		plus = "<p id='${result.board_seq}' >&nbsp-더보기</p>";
-									 		    	  }
-													$("#myContents${result.board_seq}:last-child").after("</p>"+plus);   			
-												   	$("#${result.board_seq}").click(function() { 
-												   		$("#myContents${result.board_seq}").attr("style","overflow:visible");  
-												   	});
+// 												var plus = "";    
+// 												var txt = "${result.contents}";       
+// 											    	if(txt.length > 48) {                
+// 											    		plus = "<p id='${result.board_seq}' >&nbsp-더보기</p>";
+// 									 		    	  }
+// 													$("#myContents${result.board_seq}:last-child").after("</p>"+plus);   			
+// 												   	$("#${result.board_seq}").click(function() { 
+// 												   		$("#myContents${result.board_seq}").attr("style","overflow:visible");  
+// 												   	});
+
+									var text = $("#myContents${result.board_seq}").html();  
+									var regex = /(#[^#\s,;]+)/gi  ;              
+  							        var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+  					            	$("#myContents${result.board_seq}").html(newtxt);
 											 </script>
 								</div>
 									<!-- 이미지 -->

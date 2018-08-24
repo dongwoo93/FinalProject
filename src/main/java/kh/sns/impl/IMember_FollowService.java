@@ -43,6 +43,25 @@ public class IMember_FollowService implements Member_FollowService {
 	public boolean isFollow(String sessionid, String id) throws Exception {
 		return dao.isFollow(sessionid, id);
 	}
+	
+
+	@Override
+	public List<FollowInfo> toFeed(String id) throws Exception {
+		
+		return dao.toFeed(id);
+	}
+
+	@Override
+	public List<FollowInfo> followerList(String id) throws Exception {
+		return dao.followerList(id);
+	}
+
+	@Override
+	public List<FollowInfo> followList(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.followList(id);
+	}
+
 
 
 }

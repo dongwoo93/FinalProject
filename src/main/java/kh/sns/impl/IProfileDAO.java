@@ -147,7 +147,7 @@ public class IProfileDAO implements ProfileDAO {
 				tmp.setApply_date(rs.getString("apply_date"));
 				return tmp;
 			}
-			
+		
 		});
 	}
 
