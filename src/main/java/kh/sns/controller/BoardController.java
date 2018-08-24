@@ -34,10 +34,8 @@ import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
-
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
-import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
@@ -237,12 +235,47 @@ public class BoardController {
 	}
 
 	@RequestMapping("/boardView.bo")
-	public void getBoardModal(HttpSession session, HttpServletResponse response, String seq) throws Exception{
+	public void getBoardModal(HttpSession session, HttpServletResponse response, HttpServletRequest request, String seq) throws Exception{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		String id = (String)session.getAttribute("loginId");  
 		BoardDTO result = boardService.getBoardModal(seq);
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
+		
+		
+		////////////////////////////////////////
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+
+		double maxwidth = 0;
+
+		
+		for(Board_MediaDTO dto : result2) {  
+			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+			
+			double width = bimg.getWidth();  
+			double height = bimg.getHeight();
+			
+			if(width < height) {
+				width = 600 * width / height;
+			}
+		
+			if(maxwidth<width) { 
+				maxwidth = width;
+				
+			}   
+	  
+		}
+	
+	
+		if(maxwidth > 600) {
+			maxwidth = 600;
+		}
+		
+
+		
+		
+		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
 		List<Object> result3 = new ArrayList<>();
@@ -252,8 +285,10 @@ public class BoardController {
 		result3.add(result2);
 		result3.add(commentlist); 
 
-		result3.add(like);
+		result3.add(like);  
 		result3.add(bookmark);
+		System.out.println("하" + maxwidth);
+		result3.add(maxwidth);//5
 		new Gson().toJson(result3,response.getWriter());
 
 	}

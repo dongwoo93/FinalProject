@@ -334,11 +334,19 @@ $(document).ready(function(){
                                 	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
                                   }else {
                                 	  $("#mark").attr("style", false);
-                                  }
-                            
-                                 }
-                            });
-                          
+                                  } 
+                                       
+                                  var width = data[5]+300;  
+                                  var width1 = parseInt(data[5]);
+                                  alert(width + " : " + width1)
+                                  $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
+                                 $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
+                                      
+                                 
+                                 $(".modalslide").attr("style", " height:590px;");               
+                                 }    
+                            }); 
+                           
                              $("#boardmodal").modal();                      
                        });
 
@@ -377,12 +385,11 @@ $(document).ready(function(){
 		<br>
 
 
-		<div class="modal-content view"
-			style="flex-direction: row; width: 1000px; height: auto;">
-
-			<div class="modal-content view" style="width: 70%; height: auto;">
+		<div class="modal-content view modalmedia" style="flex-direction: row;">
+       
+			<div class="modal-content view modalmedia1" >    
 				<div class="gallerymodal" id="picture">
-					<div id="demo" class="carousel slide" data-ride="carousel"
+					<div id="demo" class="carousel slide modalslide" data-ride="carousel"
 						data-interval="false">
 						<ul id="carousel-indicators" class="carousel-indicators">
 							<li id="firstli" data-target="#demo" data-slide-to="0"
@@ -399,9 +406,9 @@ $(document).ready(function(){
 					</div>
 				</div>
 
-			</div>
-
-			<div class="modal-content view" style="width: 30%; height: auto;">
+			</div> 
+  
+			<div class="modal-content view" style="width: 300px;">
 
 
 
