@@ -734,11 +734,11 @@ public class BoardController {
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
 		try {
-			follow_list = boardService.followList(id);
-		}catch (Exception e1) {
-			e1.printStackTrace();  
-		}
-		
+	         follow_list = member_followService.followerList(id);
+	      } catch (Exception e1) {
+	         
+	         e1.printStackTrace();  
+	      }
 		
 		profile_image = profileService.getAllProfileImage();
 		
