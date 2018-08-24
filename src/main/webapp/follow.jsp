@@ -303,10 +303,10 @@ padding-right:3%;
 	   <hr class="_5mToa ">					
 		<ul class="nav">
 			<li class="nav-item">
-				 <a class="nav-link" href="followerlist.do">팔로워</a>
+				 <a class="nav-link" href="followerlist.do?id=${pageid}&cat=1">팔로워</a>
 			</li>
 			<li class="nav-item">
-				 <a class="nav-link" href="followlist.do">팔로우</a>
+				 <a class="nav-link" href="followlist.do?id=${pageid}&cat=1">팔로우</a>
 			</li>
 		</ul>				
 						
@@ -316,7 +316,7 @@ padding-right:3%;
 	  				 <hr class="_5mToa">		 
 					    <div class="profile-image"> 
 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follower.targetId]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follower.targetId}">${follower.targetId}</a>						
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follower.targetId}&cat=1">${follower.targetId}</a>						
 				 		</div>		
 					 <hr class="_5mToa">		 			      
 				  </div>		
@@ -330,7 +330,7 @@ padding-right:3%;
 	  				 <hr class="_5mToa">		 
 					    <div class="profile-image"> 
 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follow.id]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follow.id}">${follow.id}</a>						
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follow.id}&cat=1">${follow.id}</a>						
 				 		</div>								
 			  		<hr class="_5mToa" >		 			      
 				  </div>		

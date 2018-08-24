@@ -49,19 +49,6 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<FollowInfo> followerList(String id) throws Exception{
-		String sql = "select target_id from member_follow where target_id in(select target_id from member_follow where id=?) and (target_id not in(?)) group by target_id order by count(target_id)";
-		return template.query(sql, new Object[] {id,id}, new RowMapper<FollowInfo>() {
-			
-			@Override
-			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new FollowInfo("", rs.getString(1),"");
-				}	
-			});
-		}
-	
-
-	@Override
-	public List<FollowInfo> followList(String id) throws Exception{
 		String sql = "select id from member_follow where target_id in(select target_id from member_follow where target_id=?)and (id not in(?))";
 		return template.query(sql, new Object[] {id,id}, new RowMapper<FollowInfo>() {
 			
@@ -69,6 +56,19 @@ public class IBoardDAO implements BoardDAO  {
 			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
 				FollowInfo followtmp = new FollowInfo();
 				return new FollowInfo(rs.getString(1),"",rs.getString(1));
+				}	
+			});
+		}
+	
+
+	@Override
+	public List<FollowInfo> followList(String id) throws Exception{
+		String sql = "select target_id from member_follow where target_id in(select target_id from member_follow where id=?) and (target_id not in(?)) group by target_id order by count(target_id)";
+		return template.query(sql, new Object[] {id,id}, new RowMapper<FollowInfo>() {
+			
+			@Override
+			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new FollowInfo("", rs.getString(1),"");
 				}	
 			});
 		}

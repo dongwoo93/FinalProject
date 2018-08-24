@@ -346,7 +346,7 @@
 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
 							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
 							<br> <a class="mt-1 idtxt" id="id"
-								href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South
+								href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South
 								Korea
 							</a>
 						</div>
@@ -395,9 +395,9 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"         
+								<div id="carousel-inner" class="carousel-inner"           
 									> 
-									<div id="firstItem" class="carousel-item active">      
+									<div id="firstItem" class="carousel-item active">        
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
 											alt=''>  
@@ -486,7 +486,7 @@
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}" 
-										href="board.bo?id=${tmp.id}" style="font-size: 14px; ">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px; ">${tmp.id}</a>
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
@@ -532,7 +532,7 @@
 														onmouseover="commentover(this)"
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
-														<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>
+														<li id='li1'><a href="board.bo?id=${comment.id}&cat=1">${comment.id}</a></li>
 														<li id='li2'><div
 																id='commenttxt${comment.comment_seq}'  
 																class='commenttxt txt${tmp.board_seq}'   
