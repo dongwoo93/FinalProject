@@ -383,7 +383,7 @@ $(document).ready(function(){
 				</c:if>
 			</div>
 
-				<!--          <div class="spinner"></div> -->
+<!-- 				         <div class="spinner"></div> -->
 
 			</div>
 
