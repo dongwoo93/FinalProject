@@ -289,7 +289,14 @@ public class BoardController {
 		
 		List<BoardDTO> result = boardService.search(search);		// 전체 글
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
-		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<Integer> mark = new ArrayList<>();
+        Map<Integer,String> mapmark = new HashMap<>();
+        mark = board_bookmarkService.searchMark(id);
+        for(int tmp : mark) {
+            mapmark.put(tmp, "y");
+         }
+		//////////////////////////////
 		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
 		
 		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
@@ -315,6 +322,7 @@ public class BoardController {
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("bookmark", mapmark);
 		mav.setViewName("search2.jsp");
 		return mav;
 	}
