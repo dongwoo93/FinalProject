@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 <script>
@@ -114,8 +114,8 @@
 		}  
 	
     }
-    
-    function commentleave(e) {
+   
+    function commentleave(e) { 
     	var seq = $(e).attr("value"); 
 		 
 		$("#ul"+seq).attr("style",false);            
@@ -404,7 +404,7 @@
 												</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
-
+									
 													<ul id="ul${comment.comment_seq}" style="display: none"
 														value="${comment.comment_seq}"
 														onmouseover="commentover(this)"
@@ -424,6 +424,13 @@
 															class="pointer"></a></li>
 
 													</ul>
+													<script>
+													var text = $("#commenttxt${comment.comment_seq}").html();  
+									var regex = /(#[^#\s,;]+)/gi  ;            
+  							        var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+  					            	$("#commenttxt${comment.comment_seq}").html(newtxt);
+									</script>
+													
 													<input type=hidden id='modstate${comment.comment_seq}' value="1">
 													<script>
 							$("#ul${commenttmp.value[0].comment_seq}").attr("style",false);
@@ -480,8 +487,12 @@
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {       
-	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                               $("#comment${tmp.board_seq}").val(""); 
+	                                           		var regex = /(#[^#\s,;]+)/gi  ;            
+	              							        var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+	              					            
+	                                               
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                            				  }
@@ -527,21 +538,23 @@
 				  <hr class="_5mToa">	      				         
 				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><a id="followprev" style="color:#919191;" class="pointer pr-3">◀</a>추천 Follow를 추가하세요!!<a id="follownext" style="color:#919191" class="pointer pl-3">▶</a></p>
 				  <hr class="_5mToa">  
+				  
 				    
-				    <c:forEach  begin="0" end="${result3.size()/5}" varStatus="status">
-				      <div id="followContainer" class="myslides" > 
-				    	<c:forEach var="followtmp" items="${result3}" varStatus="memstatus" begin="${status*5}" end="${status*5+4}">
+				    <c:forEach  begin="0" end="${follow_size}" varStatus="status">
+<!-- 				      <div id="followContainer" class="myslides">   -->
+				      
+<%-- 				    	<c:forEach var="followtmp" items="${result3}" varStatus="memstatus" begin="parseInt(${status})" end=""> --%>
 				   
-					  <div class="container recommendmem" id="follow${memstatus.index}">
-					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.targetId]}'/>">  	  
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.targetId}">${followtmp.targetId}</a>						
-				 		</div>				 			      
-					  </div>
+<%-- 					  <div class="container recommendmem" id="follow${memstatus.index}">  --%>
+<!-- 					    <div class="profile-image">  -->
+<%-- 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.targetId]}'/>">  	   --%>
+<%-- 							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.targetId}">${followtmp.targetId}</a>						 --%>
+<!-- 				 		</div>				 			       -->
+<!-- 					  </div> -->
 					  
-					  </c:forEach>
-					  </div>	
-					</c:forEach>
+<%-- 					  </c:forEach> --%>
+<!-- 					  </div>	 -->
+					</c:forEach>  
 					
 					<hr class="_5mToa">
 				</div> 

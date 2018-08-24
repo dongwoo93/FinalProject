@@ -68,6 +68,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public BoardDTO getBoardModal(String seq) throws Exception {
+		System.out.println(seq + " d에에에엑");  
 		String sql = "select * from board where board_seq=?";
 		
 		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {

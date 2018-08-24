@@ -163,6 +163,9 @@ public class BoardController {
 			mav.addObject("commentresult",commentlist);
 			mav.addObject("profile_pic",getAllProfilePic);
 			mav.addObject("result3", follow_list);
+			mav.addObject("follow_size", follow_list.size()/5);
+			System.out.println(follow_list.size()/5); 
+			
 			mav.addObject("maxImgHeight",maxImgHeight);
 			mav.setViewName("timeline2.jsp");
 		
