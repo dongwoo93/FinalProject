@@ -342,6 +342,13 @@ public class BoardController {
 			Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 			Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
+			List<Integer> mark = new ArrayList<>();
+	         Map<Integer,String> mapmark = new HashMap<>();
+	         mark = board_bookmarkService.searchMark(id);
+	         for(int tmp : mark) {
+	               mapmark.put(tmp, "y");
+	            }
+	         
 			// 최신글
 			if(cat.equals("1")) {
 				result = boardService.getAllBoard();
@@ -383,7 +390,7 @@ public class BoardController {
 			for(int[] list : result4) {
 				countlike.put(list[0], list[1]);
 			}
-			
+			mav.addObject("bookmark", mapmark);
 			mav.addObject("category", category);	// 카테고리
 			mav.addObject("result", result);		// 전체 
 			mav.addObject("result2", result2);		// 사진 
