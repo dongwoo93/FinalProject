@@ -494,7 +494,7 @@
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
 							           
-							  var txt = "${tmp.contents}";    
+							  var txt = "${tmp.contents}"; 
 							  var regex = /(#[^#\s,;]+)/gi  ; 
 					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
@@ -549,15 +549,15 @@
 															value="${comment.comment_seq}" onclick="modComment(this)"
 															class="pointer"></a></li>
 
-													</ul>
-													<script>
-													var text = $("#commenttxt${comment.comment_seq}").html();  
-									var regex = /(#[^#\s,;]+)/gi  ;            
-  							        var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
-  					            	$("#commenttxt${comment.comment_seq}").html(newtxt);
-									</script>
-													
-													<input type=hidden id='modstate${comment.comment_seq}' value="1">
+												   </ul>
+                                       <script>
+                                       var text = $("#commenttxt${comment.comment_seq}").html();  
+                           var regex = /(#[^#\s,;]+)/gi  ;            
+                               var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                                $("#commenttxt${comment.comment_seq}").html(newtxt);
+                           </script>
+                                       
+                                       <input type=hidden id='modstate${comment.comment_seq}' value="1">
 													<script>
 							$("#ul${commenttmp.value[0].comment_seq}").attr("style",false);
 							$("#ul${commenttmp.value[1].comment_seq}").attr("style",false);
@@ -615,11 +615,12 @@
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {       
-	                                               $("#comment${tmp.board_seq}").val(""); 
-	                                           		var regex = /(#[^#\s,;]+)/gi  ;            
-	              							        var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
-	              					            
-	                                               
+	                                            	  $('#comment${tmp.board_seq}').html("");
+	                                              /*  $("#comment${tmp.board_seq}").val("");   */  
+	                                              var regex = /(#[^#\s,;]+)/gi  ;            
+                                              var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                                            
+                                                   
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
