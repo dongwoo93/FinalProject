@@ -327,14 +327,15 @@ public class MemberController {
 	public void searchAccount(HttpServletResponse response, String term, HttpSession session) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		List<String> result = memberService.findMember(term);
-		List<JSONObject> result2 = new ArrayList<>();
+		List<MemberDTO> result = memberService.findMember(term);
+
 		JsonArray list = new JsonArray();
 		
 		for(int i = 0; i < result.size(); i++) {
 			JsonObject object = new JsonObject();
-			object.addProperty("id", result.get(i));
-			object.addProperty("link", "board.bo?id="+result.get(i));
+			object.addProperty("id", result.get(i).getId());
+			object.addProperty("name", result.get(i).getName());
+			object.addProperty("link", "board.bo?id="+result.get(i).getId()+"&cat=1");
 			System.out.println(object);
 			list.add(object);
 		}
@@ -342,6 +343,6 @@ public class MemberController {
 		
 		
 		
-		new Gson().toJson(result2, response.getWriter());
+		new Gson().toJson(list, response.getWriter());
 	}
 }

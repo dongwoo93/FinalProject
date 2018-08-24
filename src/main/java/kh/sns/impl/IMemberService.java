@@ -114,7 +114,7 @@ public class IMemberService implements MemberService{
 	}
 	
 	@Override
-	public List<String> findMember(String searchtext) throws Exception {
+	public List<MemberDTO> findMember(String searchtext) throws Exception {
 		return dao.findMember(searchtext);
 	}
 	

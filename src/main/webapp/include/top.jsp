@@ -24,13 +24,7 @@
 
 $(function() {
 
-    var availableCity = [
-    	{ link: "board.bo?id=ykng10",
-        label: "ykng10"
-        },
-    	{ link: "www.example.com",
-      label: "James Bond"
-    	}];
+    var searchResult = [];
 
     $("#searchform").autocomplete({
 
@@ -43,14 +37,28 @@ $(function() {
                 term: request.term
               },
               success: function(data) {
-            	alert(data);
-                response(data);
+            	  console.log(data);
+            	  response(
+            			  $.map(data, function(item) {
+            		  return {
+            			  label: item.id,
+            			  value: item.id,
+            			  link: item.link,
+            			  name: item.name
+            		  }
+            		  
+            	  })
+            	  );
+            	  
+                
                 }
             });
+
           },
         minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
+            window.location = ui.item.link;
         },
 
         focus: function(event, ui) {
@@ -61,7 +69,10 @@ $(function() {
 
         }
 
-    });
+    })
+    .autocomplete("instance")._renderItem = function(ul, item) {
+    	return $("<li>").append("<div>"+item.label+"<br>"+item.name+"</div>").appendTo(ul);
+    };
 
 });
 
