@@ -270,12 +270,16 @@ $(document).ready(function(){
                                  $("#carousel-prev").hide();
                               $("#carousel-next").hide();
                                  }else {
-                                    $("#carousel-prev").show();
+                                    $("#carousel-prev").show();  
                                     $("#carousel-next").show();
                                  }
                                  $("#modalid1").text(data.id);   
-//                                   $("#modalcontents").text(data.contents);       
-                               $("#modalcontents").html(data[0].contents);
+//                                   $("#modalcontents").text(data.contents);        
+                              	var text = data[0].contents;
+				var regex = /(#[^#\s,;]+)/gi  ;            
+			    var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");  
+			    
+				$("#modalcontents").html(newtxt);
                                   $("#seq").val(data[0].board_seq);
                                   $("#modalid2").text(data[0].id);
                                      
