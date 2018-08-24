@@ -660,7 +660,7 @@
 				  <br>
 				  <div class="profile-image"> 
 						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">	  				
-						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}">${sessionScope.loginId}</a>
+						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
 						
 				 </div>		 
 		   
