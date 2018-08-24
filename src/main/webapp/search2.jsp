@@ -113,7 +113,7 @@ function unmarkit(e) {
 					<div class="card" id="card">
 						<h4 class="card-title" id="searchTop">
 							<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
-								<a id="ids" href="board.bo?id=${result.id}">${result.id}</a>
+								<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
 									<!-- 북마크 -->
 									<i value="${result.board_seq}" style="cursor: pointer;" id="mark" class="far fa-bookmark icon" onclick="markit(this)"></i>
 									<i value="${result.board_seq}" style="font-weight: bold; cursor: pointer; color: #28a745; display: none;" id="markcancel" class="far fa-bookmark icon" onclick="unmarkit(this)"></i>
