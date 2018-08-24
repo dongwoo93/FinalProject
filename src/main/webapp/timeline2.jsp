@@ -493,8 +493,9 @@
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
-							var regex = /(#[^#\s,;]+)/gi  ;            
-							  var txt = "${tmp.contents}";                    
+							           
+							  var txt = "${tmp.contents}";    
+							  var regex = /(#[^#\s,;]+)/gi  ; 
 					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 							$("#contdiv${tmp.board_seq}").html(newtxt);    

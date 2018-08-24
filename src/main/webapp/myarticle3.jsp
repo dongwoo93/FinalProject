@@ -247,100 +247,104 @@ $(document).ready(function(){
 								<script>
                
        
-								 $("#${tmp.board_seq}").click(function() {
-			                    	   var objDiv = document.getElementById("articlecomment");
-			                           objDiv.scrollTop = 0;            
-			                          var seq = "${tmp.board_seq}";
-			                         
-			                          $("#prev").val(${result[status.index-1].board_seq}); 
-			                          $("#next").val(${result[status.index+1].board_seq}); 
-			                          $("#hidden").val(${result[status.index].board_seq});
-			                          for(var i =0; i<list.length; i++) {
-			                            if(seq == list[i]) {
-			                               if(list.length == 1) {
-			                              $("#modalbtn").hide();
-			                           }
-			                           else if(i==0) {
-			                              $("#goPrev").hide();
-			                              $("#goNext").show();
-			                           }
-			                               else if(i == (list.length-1)){
-			                                  $("#goNext").hide();
-			                                  $("#goPrev").show(); 
-			                               } 
-			                               else { 
-			                                  $("#goPrev").show(); 
-			                                  $("#goNext").show();
-			                                  
-			                               }
-			                               break;
-			                            }
-			                         }
-			                          $.ajax({
-			                              type: "POST",
-			                              url: "boardView.bo",
-			                              data: {seq:seq},
-			                              success: function(data)       
-			                              {
-			                           	   
-			                                 if(data[1].length == 1) {
-			                                 $("#carousel-prev").hide();
-			                              $("#carousel-next").hide();
-			                                 }else {
-			                                    $("#carousel-prev").show();
-			                                    $("#carousel-next").show();
-			                                 }
-			                                 $("#modalid1").text(data.id);   
-//			                                   $("#modalcontents").text(data.contents);       
-			                               $("#modalcontents").html(data[0].contents);
-			                                  $("#seq").val(data[0].board_seq);
-			                                  $("#modalid2").text(data[0].id);
-			                                     
-			                                  $("#likeit").val(data[0].board_seq);
-			                                  $("#likecancel").val(data[0].board_seq); 
-			                                  $("#mark").val(data[0].board_seq);
-			                                  $("#markcancel").val(data[0].board_seq);
-			                          
-			                                
-			                                  $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
-			                                  for(var i = 1; i < data[1].length; i++) {
-			                                     $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
-			                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
-			                                       
-			                                  }
-			                                      
-			                                  $(".commentline").remove();          
-			                                  for(var i =0; i<data[2].length; i++){                
-			                                	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>"
-			                                			  +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>"
-			                                			  +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
-			                                  }
-			                                           
-			                                 
-			                              
-			                                  
-			                                  $("#likeit").attr("style", "display:none;");
-			                                  $("#likecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
-			                                  if(data[3] != null) {   
-			                                	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
-			                                  }else {
-			                                	  $("#likeit").attr("style", false);
-			                                  }
-			                                  
-			                                  
-			                                  $("#mark").attr("style", "display:none;");
-			                                  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4; display:none; ");   
-			                                  if(data[4] != null) { 
-			                                	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
-			                                  }else {
-			                                	  $("#mark").attr("style", false);
-			                                  }
-			                            
-			                                 }
-			                            });
-			                          
-			                             $("#boardmodal").modal();                      
-			                       });
+                       $("#${tmp.board_seq}").click(function() {
+                    	   var objDiv = document.getElementById("articlecomment");
+                           objDiv.scrollTop = 0;            
+                          var seq = "${tmp.board_seq}";
+                         
+                          $("#prev").val(${result[status.index-1].board_seq}); 
+                          $("#next").val(${result[status.index+1].board_seq}); 
+                          $("#hidden").val(${result[status.index].board_seq});
+                          for(var i =0; i<list.length; i++) {
+                            if(seq == list[i]) {
+                               if(list.length == 1) {
+                              $("#modalbtn").hide();
+                           }
+                           else if(i==0) {
+                              $("#goPrev").hide();
+                              $("#goNext").show();
+                           }
+                               else if(i == (list.length-1)){
+                                  $("#goNext").hide();
+                                  $("#goPrev").show(); 
+                               } 
+                               else { 
+                                  $("#goPrev").show(); 
+                                  $("#goNext").show();
+                                  
+                               }
+                               break;
+                            }
+                         }
+                          $.ajax({
+                              type: "POST",
+                              url: "boardView.bo",
+                              data: {seq:seq},
+                              success: function(data)       
+                              {
+                           	   
+                                 if(data[1].length == 1) {
+                                 $("#carousel-prev").hide();
+                              $("#carousel-next").hide();
+                                 }else {
+                                    $("#carousel-prev").show();
+                                    $("#carousel-next").show();
+                                 }
+                                 $("#modalid1").text(data.id);   
+//                                   $("#modalcontents").text(data.contents); 
+var txt = data[0].contents;
+								 var regex = /(#[^#\s,;]+)/gi  ; 
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+					         
+                               $("#modalcontents").html(newtxt);
+                                  $("#seq").val(data[0].board_seq);
+                                  $("#modalid2").text(data[0].id);
+                                     
+                                  $("#likeit").val(data[0].board_seq);
+                                  $("#likecancel").val(data[0].board_seq); 
+                                  $("#mark").val(data[0].board_seq);
+                                  $("#markcancel").val(data[0].board_seq);
+                          
+                                
+                                  $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                                  for(var i = 1; i < data[1].length; i++) {
+                                     $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
+                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
+                                       
+                                  }
+                                      
+                                  $(".commentline").remove();          
+                                  for(var i =0; i<data[2].length; i++){                
+                                	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>"
+                                			  +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>"
+                                			  +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
+                                  }
+                                           
+                                 
+                              
+                                  
+                                  $("#likeit").attr("style", "display:none;");
+                                  $("#likecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
+                                  if(data[3] != null) {   
+                                	  $("#likecancel").attr("style", "font-weight: bold; color: red; ");   
+                                  }else {
+                                	  $("#likeit").attr("style", false);
+                                  }
+                                  
+                                  
+                                  $("#mark").attr("style", "display:none;");
+                                  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4; display:none; ");   
+                                  if(data[4] != null) { 
+                                	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
+                                  }else {
+                                	  $("#mark").attr("style", false);
+                                  }
+                            
+                                 }
+                            });
+                          
+                             $("#boardmodal").modal();                      
+                       });
 
                      
              				</script>
@@ -748,7 +752,7 @@ $(document).ready(function(){
         
       </div>
     </div>
-         </div>
+         </div>  
              </form>
              <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
              <div class="modal-dialog modal-sm modal-dialog-centered" role="document">

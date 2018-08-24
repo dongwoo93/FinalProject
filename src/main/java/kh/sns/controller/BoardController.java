@@ -167,7 +167,6 @@ public class BoardController {
 			
 		return mav;
 	}
-
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
 		
@@ -258,7 +257,8 @@ public class BoardController {
 		result3.add(bookmark);
 		new Gson().toJson(result3,response.getWriter());
 
-	}
+	}   
+
 
 
 	@RequestMapping("/boardDelete.bo")
