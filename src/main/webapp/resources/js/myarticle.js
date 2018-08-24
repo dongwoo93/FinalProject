@@ -133,12 +133,8 @@ $(document).ready(function() {
 					$("#carousel-prev").show();
 					$("#carousel-next").show();
 				}
-				$("#modalid").text(data[0].id);	   
-				var text = data[0].contents;
-				var regex = /(#[^#\s,;]+)/gi  ;            
-			    var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");  
-			    
-				$("#modalcontents").html(newtxt);
+				$("#modalid").text(data[0].id);	        	   
+				$("#modalcontents").html(data[0].contents);
 				$("#seq").val(data[0].board_seq);
 				 $("#likeit").val(data[0].board_seq);
 			        $("#likecancel").val(data[0].board_seq); 
@@ -194,10 +190,7 @@ $(document).ready(function() {
 			$(".element").remove();
 		}
 		var seq = $("#prev").val();
-	    $("#likeit").val(seq);
-        $("#likecancel").val(seq); 
-        $("#mark").val(seq);
-        $("#markcancel").val(seq);  
+	   
 		var prevSeq;
 		var nextSeq;
 		for(var i =0; i<list.length; i++) {
@@ -236,11 +229,7 @@ $(document).ready(function() {
 					$("#carousel-next").show();
 				}
 				$("#modalid").text(data[0].id);	        	       
-				var text = data[0].contents;
-				var regex = /(#[^#\s,;]+)/gi  ;            
-			    var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");  
-			    
-				$("#modalcontents").html(newtxt);
+				$("#modalcontents").html(data[0].contents);
 				$("#seq").val(data[0].board_seq);   
 				 $("#likeit").val(data[0].board_seq);
 			        $("#likecancel").val(data[0].board_seq); 
@@ -571,3 +560,4 @@ function modComment(e) {
 	
  
 	   
+  
