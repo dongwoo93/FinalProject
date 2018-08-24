@@ -158,24 +158,22 @@ $(document).ready(function(){
 					<li><span class="profile-stat-count">${boardCount}</span> 게시글</li>
 					<li id="follower"><span class="profile-stat-count" id="follower">${followerCount}</span>
 						팔로워</li>
-					<li id="follow"><span class="profile-stat-count" id="follow">${followingCount}</span>
+					<li id="follown"><span class="profile-stat-count" id="follown">${followingCount}</span>
 						팔로우</li>
 				</ul>
 			</div>
 
-
 		<script>
 		  document.getElementById("follower").onclick = function() {
-		         location.href = "followerlist.do";
-		 }
-		  
-		  document.getElementById("follow").onclick = function() {
-		         location.href = "followlist.do";
+		         location.href = "followerlist.do?id=${pageid}&cat=1";
 		 }
 		 
-		
+		  document.getElementById("follown").onclick = function() {
+		         location.href = "followlist.do?id=${pageid}&cat=1";
+		 }
+			
 		</script>
-
+	
 			<div class="profile-bio">
 				<p>
 					<span class="profile-real-name">${memNick}</span>&nbsp;&nbsp;${memIntro}
@@ -383,7 +381,7 @@ $(document).ready(function(){
 			style="flex-direction: row; width: 1000px; height: auto;">
 
 			<div class="modal-content view" style="width: 70%; height: auto;">
-				<div class="gallery-item" id="picture">
+				<div class="gallerymodal" id="picture">
 					<div id="demo" class="carousel slide" data-ride="carousel"
 						data-interval="false">
 						<ul id="carousel-indicators" class="carousel-indicators">

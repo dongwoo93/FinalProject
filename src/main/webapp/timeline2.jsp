@@ -221,7 +221,7 @@
 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
 							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
 							<br> <a class="mt-1 idtxt" id="id"
-								href="board.bo?id=${tmp.id}">${tmp.id}<br>Dangsan.South
+								href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South
 								Korea
 							</a>
 						</div>
@@ -270,9 +270,9 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>
-								<div id="carousel-inner" class="carousel-inner"         
+								<div id="carousel-inner" class="carousel-inner"           
 									> 
-									<div id="firstItem" class="carousel-item active">      
+									<div id="firstItem" class="carousel-item active">        
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
 											alt=''>  
@@ -361,7 +361,7 @@
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}" 
-										href="board.bo?id=${tmp.id}" style="font-size: 14px; ">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px; ">${tmp.id}</a>
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}" style="word-wrap: break-word; word-break:break-all"></div>  
 									<script>
@@ -407,7 +407,7 @@
 														onmouseover="commentover(this)"
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
-														<li id='li1'><a href="board.bo?id=${comment.id}">${comment.id}</a></li>
+														<li id='li1'><a href="board.bo?id=${comment.id}&cat=1">${comment.id}</a></li>
 														<li id='li2'><div
 																id='commenttxt${comment.comment_seq}'  
 																class='commenttxt txt${tmp.board_seq}'   
@@ -478,7 +478,7 @@
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
 	                                              success : function(seq) {       
 	                                               $("#comment${tmp.board_seq}").val("");              
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}&cat=1'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+text+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                            				  }

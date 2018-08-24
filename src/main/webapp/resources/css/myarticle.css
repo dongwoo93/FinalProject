@@ -9,13 +9,13 @@
 	}
 	
 	.my {
-		max-width: 93.5rem;
+/* 		max-width: 93.5rem; */
 		margin: 0 auto;
 		padding: 0 2rem;
 	}
 	
 	.tagmenu {
-		max-width: 100rem;
+		max-width: 95rem;
 		margin: 0 auto;
 		padding: 0 2rem;
 	}
@@ -106,8 +106,7 @@
 		flex-wrap: wrap;
 		margin: -1rem -1rem;
 		padding-bottom: 3rem;
-		
-		
+			
 	}
 	.gallery-item {
 		position: relative;
@@ -115,8 +114,19 @@
 		margin: 1rem;
 		color: #fff;
 		cursor: pointer;
-		width: 100%;
-		height: 100%;
+		width: 412px;;
+		height: 93%;
+	
+	}
+	
+	.gallerymodal{
+		position: relative;
+/* 		flex: 1 0 22rem; */
+		margin: auto;
+		color: #fff;
+		cursor: pointer;
+/* 		width: 412px;; */
+/* 		height: 93%; */
 	}
 	.gallery-item:hover .gallery-item-info {
 		visibility: visible;
@@ -269,8 +279,8 @@
 			display: grid;
 			grid-template-columns: 1fr 2fr;
 			grid-template-rows: repeat(3, auto);
-			grid-column-gap: 3rem;
-			align-items: center;
+/* 			grid-column-gap: 3rem; */
+/* 			align-items: center; */
 	}
 	
 	.profile-image {
@@ -281,14 +291,13 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
 		grid-gap: 2rem;
+		
 	}
 	
 	.profile-image,
 	.profile-user-settings,
 	.profile-stats,
-	.profile-bio,
-	.gallery-item,
-	.gallery {
+	.profile-bio {
 		width: auto;
 		margin: 0;
 	}

@@ -111,7 +111,7 @@ public class BoardController {
 //					maxImgHeight.add((int)max);   
 //					System.out.println("max:" + max);     
 //				}
-				
+//				
 				
 				
 				list1 = board_commentService.getFeedComment(id);
@@ -675,12 +675,13 @@ public class BoardController {
 	
 	
 	@RequestMapping("/followerlist.do")
-	public ModelAndView followerList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) throws Exception {
+	public ModelAndView followerList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String id) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		String id = (String) seesion.getAttribute("loginId");
+//		String id = (String) seesion.getAttribute("loginId");
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
+		
 		
 		try {
 			follow_list = boardService.followerLsit(id);
@@ -698,9 +699,9 @@ public class BoardController {
 		};
 		
 		mav.addObject("profile_pic",getAllProfilePic);
-		mav.addObject("result", follow_list);
+		mav.addObject("result1", follow_list);
 		mav.setViewName("follow.jsp");
-	
+		mav.addObject("pageid", id);
 		
 		return mav;	
 	}
@@ -708,9 +709,9 @@ public class BoardController {
 	
 	
 	@RequestMapping("/followlist.do")
-	public ModelAndView followList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) throws Exception {
+	public ModelAndView followList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion , String id) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		String id = (String) seesion.getAttribute("loginId");
+//		String id = (String) seesion.getAttribute("loginId");
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
@@ -732,7 +733,8 @@ public class BoardController {
 		};
 		
 		mav.addObject("profile_pic",getAllProfilePic);
-		mav.addObject("result1", follow_list);
+		mav.addObject("result", follow_list);
+		mav.addObject("pageid", id);
 		mav.setViewName("follow.jsp");
 	
 		
