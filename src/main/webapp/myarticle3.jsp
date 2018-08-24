@@ -415,14 +415,14 @@ $(document).ready(function(){
 			style="flex-direction: row; width: 1000px; height: auto;">
 
 			<div class="modal-content view" style="width: 70%; height: auto;">
-				<div class="gallerymodal" id="picture">
+				<div class="gallerymodal" id="picture"  style="background-color:black;">
 					<div id="demo" class="carousel slide" data-ride="carousel"
 						data-interval="false">
 						<ul id="carousel-indicators" class="carousel-indicators">
 							<li id="firstli" data-target="#demo" data-slide-to="0"
 								class="active"></li>
 						</ul>
-						<div id="carousel-inner" class="carousel-inner">
+						<div id="carousel-inner" class="carousel-inner" style="background-color:black;">
 							<div id="firstItem" class="carousel-item active"></div>
 						</div>
 						<a id="carousel-prev" class="carousel-control-prev" href="#demo"
