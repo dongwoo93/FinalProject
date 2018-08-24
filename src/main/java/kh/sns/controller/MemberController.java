@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 
 import kh.sns.beans.SendEmail;
 import kh.sns.dto.MemberDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
@@ -328,7 +329,7 @@ public class MemberController {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		List<MemberDTO> result = memberService.findMember(term);
-
+		
 		JsonArray list = new JsonArray();
 		
 		for(int i = 0; i < result.size(); i++) {
@@ -336,6 +337,8 @@ public class MemberController {
 			object.addProperty("id", result.get(i).getId());
 			object.addProperty("name", result.get(i).getName());
 			object.addProperty("link", "board.bo?id="+result.get(i).getId()+"&cat=1");
+			object.addProperty("img", "AttachedMedia/"+profileService.selectOneProfileImage(result.get(i).getId()));
+			object.addProperty("category", "People");
 			System.out.println(object);
 			list.add(object);
 		}

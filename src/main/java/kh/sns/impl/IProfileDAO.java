@@ -87,6 +87,29 @@ public class IProfileDAO implements ProfileDAO {
 			}
 		});
 	}
+	
+	@Override
+	public String selectOneProfileImage(String id) throws Exception {
+		String sql = "select * from profile_image where id=? and is_selected='y'";
+		String result = "";
+		List<Profile_ImageDTO> image = template.query(sql, new Object[] {id}, new RowMapper<Profile_ImageDTO>() {
+
+			@Override
+			public Profile_ImageDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Profile_ImageDTO tmp = new Profile_ImageDTO();
+				tmp.setId(rs.getString(1));
+				tmp.setOriginal_file_name(rs.getString(2));
+				tmp.setSystem_file_name(rs.getString(3));
+				tmp.setIs_selected(rs.getString(4));
+				return tmp;
+			}
+		});
+		
+		if(image.size() > 0) {
+			result =  image.get(0).getSystem_file_name();
+		}
+		return result;
+	}
 
 	@Override
 	public int insertProfileImage(Profile_ImageDTO dto) throws Exception {

@@ -20,14 +20,12 @@
 </head>
 
 <body>
-<script type="text/javascript">
-
+<script>
 $(function() {
 
     var searchResult = [];
 
     $("#searchform").autocomplete({
-
     	source: function( request, response ) {
             $.ajax({
             	type: 'post',
@@ -44,7 +42,8 @@ $(function() {
             			  label: item.id,
             			  value: item.id,
             			  link: item.link,
-            			  name: item.name
+            			  name: item.name,
+            			  img: item.img
             		  }
             		  
             	  })
@@ -58,6 +57,9 @@ $(function() {
         minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
+            if (ui.item && ui.item.value){
+                ui.item.value="";
+            } 
             window.location = ui.item.link;
         },
 
@@ -70,20 +72,21 @@ $(function() {
         }
 
     })
-    .autocomplete("instance")._renderItem = function(ul, item) {
-    	return $("<li>").append("<div>"+item.label+"<br>"+item.name+"</div>").appendTo(ul);
+    .autocomplete("instance")._renderItem = function(div, item) {
+    	return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 18px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
     };
+    
+    
+    
+    
 
 });
-
-
-
 </script>
 
 
 
 
- 
+ <span style="color: black;"></span>
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
             <div class="container" id="navcontainer">
