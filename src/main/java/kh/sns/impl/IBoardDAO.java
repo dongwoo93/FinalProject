@@ -111,12 +111,13 @@ public class IBoardDAO implements BoardDAO  {
 		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?))";
 		/*String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?)) or "
 				+ "(board_seq in (select board_seq from board_location where location_name=?)) order by board_seq desc";*/
-		return template.query(sql, new Object[] {keyword, keyword}, new RowMapper<BoardDTO>() {
+		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				BoardDTO tmp = new BoardDTO();
 				tmp.setBoard_seq(rs.getInt(1));
+				
 				tmp.setContents(rs.getString(2));
 				tmp.setId(rs.getString(3));
 				tmp.setWritedate(rs.getString(4));
