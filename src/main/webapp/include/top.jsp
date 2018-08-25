@@ -58,7 +58,6 @@ $(function() {
             });
 
           },
-        minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
             if (ui.item && ui.item.value){
