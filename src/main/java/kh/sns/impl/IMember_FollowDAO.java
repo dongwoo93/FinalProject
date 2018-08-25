@@ -84,7 +84,8 @@ public class IMember_FollowDAO implements Member_FollowDAO {
 			
 		});
 		
-		if(list.size() ==1) {
+		System.out.println(list.size());
+		if(list.size() > 0) {
 			result=true;
 		}
 		return result;
