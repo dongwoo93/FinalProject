@@ -50,7 +50,7 @@ $(document).ready(function(){
 	  				 	  
 				
 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follow.id]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follow.id}">${follow.id}</a>
+							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follow.id}&cat=1">${follow.id}</a>
 							  
 							
 							<div class="profile-edit-btn float-right mt-2 mr-2" id="cancelFollow" style="height:40px;">팔로잉</div>
