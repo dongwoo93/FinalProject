@@ -689,7 +689,7 @@
 				</div> 
 				
 				
-				<script>
+
 				<script>
 				var slideIndex = 0;
 				carousel();
