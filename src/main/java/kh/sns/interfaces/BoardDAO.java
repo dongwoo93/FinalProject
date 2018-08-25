@@ -38,4 +38,8 @@ public interface BoardDAO {
 	
 	// my_aticle_bookmark
 	public List<int[]> myBookmark(String id) throws Exception;
+	
+	// my_aticle_tag
+	public List<int[]> myTag(String id) throws Exception;
+	
 }

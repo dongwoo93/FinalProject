@@ -337,4 +337,20 @@ public class IBoardDAO implements BoardDAO  {
 		});
 	}
 
+	// my_aticle_Tag
+	@Override
+	public List<int[]> myTag(String id) throws Exception {
+		String sql = "select board_seq from member_tags where member_tags=?";
+		return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int arg1) throws SQLException {
+				int[] listTag = {rs.getInt("board_seq")};
+				System.out.println(listTag);
+				return listTag;
+			}
+			
+		});
+	}
+
 }

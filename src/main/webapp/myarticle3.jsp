@@ -213,6 +213,7 @@ $(document).ready(function(){
 								<tr>
 									<th class="text-center"><a href="board.bo?id=${pageid}&cat=1">게시물</a></th>
 									<th class="text-center"><a href="board.bo?id=${pageid}&cat=2">찜콕됨</a></th>
+									<th class="text-center"><a href="board.bo?id=${pageid}&cat=3">태그됨</a></th>
 								</tr>
 							</thead>
 						</table>
