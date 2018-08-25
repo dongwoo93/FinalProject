@@ -108,10 +108,10 @@ public class IBoardDAO implements BoardDAO  {
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?))";
+		String sql = "select * from board where board_seq in (select board_seq from board_tags where tags=?)";
 		/*String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?)) or "
 				+ "(board_seq in (select board_seq from board_location where location_name=?)) order by board_seq desc";*/
-		return template.query(sql, new Object[] {keyword, keyword}, new RowMapper<BoardDTO>() {
+		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -148,7 +148,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public List<String[]> getTag(String keyword) throws Exception {
-		String sql = "select bt.tags, count(*) from board_tags bt where bt.tags like '%'||?||'%' group by bt.tags";
+		String sql = "select bt.tags, COUNT(DISTINCT(b.board_seq)) from board b, board_tags bt where bt.tags like '%'||?||'%' and bt.board_seq = b.board_seq group by bt.tags";
 		return template.query(sql, new Object[] {keyword}, new RowMapper<String[]>() {
 
 			@Override
