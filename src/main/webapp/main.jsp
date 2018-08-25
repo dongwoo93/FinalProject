@@ -65,6 +65,7 @@
             
          </div>
          
+         
          <div class="form-item">
          <p class="" style="font-weight:bold;"><a href="findPass.jsp" ><small>Forgot Password ?</small></a></p>   
          <p class="pull-left" style="font-weight:bold;"><a href="join.do"><small>Register</small></a></p>
