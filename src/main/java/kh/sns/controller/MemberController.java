@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import kh.sns.beans.SendEmail;
-import kh.sns.dto.BoardDTO;
 import kh.sns.dto.MemberDTO;
-import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
@@ -328,7 +324,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/searchAccount.do")
-	public void searchAccount(HttpServletResponse response, String term, HttpSession session) throws Exception {
+	public void searchAccountandTags(HttpServletResponse response, String term, HttpSession session) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		List<MemberDTO> result = memberService.findMember(term);
@@ -353,7 +349,7 @@ public class MemberController {
 			object.addProperty("tags", result2.get(i)[0]);
 			object.addProperty("link", "search.bo?search="+result2.get(i)[0]);
 			object.addProperty("count", result2.get(i)[1]);
-			object.addProperty("img", "resources/images/business.png");
+			object.addProperty("img", "resources/images/hashtag.png");
 			object.addProperty("category", "Tag");
 			list.add(object);
 			System.out.println(object);
