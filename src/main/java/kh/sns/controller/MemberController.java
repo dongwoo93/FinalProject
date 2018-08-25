@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import kh.sns.beans.SendEmail;
-import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.BoardDTO;
 import kh.sns.dto.MemberDTO;
-import kh.sns.dto.ProfileDTO;
+import kh.sns.dto.Profile_ImageDTO;
+import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
@@ -34,6 +39,7 @@ public class MemberController {
 	@Autowired	private MemberService memberService;
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
+	@Autowired	private BoardService boardService;
 
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
@@ -319,5 +325,45 @@ public class MemberController {
 		}catch(Exception e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	@RequestMapping("/searchAccount.do")
+	public void searchAccount(HttpServletResponse response, String term, HttpSession session) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		List<MemberDTO> result = memberService.findMember(term);
+		List<String[]> result2 = boardService.getTag(term);
+		
+		JsonArray list = new JsonArray();
+		
+		for(int i = 0; i < result.size(); i++) {
+			JsonObject object = new JsonObject();
+			object.addProperty("id", result.get(i).getId());
+			object.addProperty("name", result.get(i).getName());
+			object.addProperty("link", "board.bo?id="+result.get(i).getId()+"&cat=1");
+			object.addProperty("img", "AttachedMedia/"+profileService.selectOneProfileImage(result.get(i).getId()));
+			object.addProperty("category", "People");
+			System.out.println(object);
+			list.add(object);
+			
+		}
+		
+		for(int i = 0; i < result2.size(); i++) {
+			JsonObject object = new JsonObject();
+			object.addProperty("tags", result2.get(i)[0]);
+			object.addProperty("link", "search.bo?search="+result2.get(i)[0]);
+			object.addProperty("count", result2.get(i)[1]);
+			object.addProperty("img", "resources/images/business.png");
+			object.addProperty("category", "Tag");
+			list.add(object);
+			System.out.println(object);
+		}
+		
+		
+		System.out.println(list);
+		
+		
+		
+		new Gson().toJson(list, response.getWriter());
 	}
 }

@@ -135,9 +135,12 @@ $(document).ready(function() {
 				}
 				$("#modalid").text(data[0].id);	        	   
 				var txt = data[0].contents;
-					var regex = /(#[^#\s,;]+)/gi  ;   
-	          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
-	          
+					var regex = /(#[^#\s,;]+)/gi  ;  
+					var newtxt;
+					if(txt != null) {
+						newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+					}
+	         
                $("#modalcontents").html(newtxt);
 				$("#seq").val(data[0].board_seq);
 				 $("#likeit").val(data[0].board_seq);
@@ -240,8 +243,11 @@ $(document).ready(function() {
 				}
 				$("#modalid").text(data[0].id);	 
 				var txt = data[0].contents;
-				var regex = /(#[^#\s,;]+)/gi  ;   
-				var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+				var regex = /(#[^#\s,;]+)/gi;
+				var newtxt;
+				if(txt != null) {
+					newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+				}
 	          
                $("#modalcontents").html(newtxt);   
 			

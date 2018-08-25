@@ -20,10 +20,82 @@
 </head>
 
 <body>
-	
+<script>
+$(function() {
+
+    var searchResult = [];
+
+    $("#searchform").autocomplete({
+    	source: function( request, response ) {
+            $.ajax({
+            	type: 'post',
+            	dataType: "json",
+              url: "searchAccount.do",
+              data: {
+                term: request.term
+              },
+              success: function(data) {
+            	  console.log(data);
+            	  response(
+            			  $.map(data, function(item) {
+            				  
+            					  return {
+                        			  label: item.id,
+                        			  value: item.id,
+                        			  link: item.link,
+                        			  name: item.name,
+                        			  img: item.img,
+                        			  tag: item.tags,
+                        			  count: item.count,
+                        			  category : item.category
+                        		  }
+
+            	  })
+            	  );
+            	  
+                
+                }
+            });
+
+          },
+        minLength: 2,
+        select: function(event, ui) {
+            console.log(ui.item);
+            if (ui.item && ui.item.value){
+                ui.item.value="";
+            }
+            window.location = ui.item.link;
+        },
+
+        focus: function(event, ui) {
+
+            return false;
+
+            //event.preventDefault();
+
+        }
+
+    })
+    .autocomplete("instance")._renderItem = function(div, item) {
+    	if(item.category == "People") {
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 18px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    	}else if(item.category == "Tag") {
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 18px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
+    	}
+    	
+    };
+    
+    
+    
+    
+
+});
+</script>
 
 
- 
+
+
+ <span style="color: black;"></span>
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
             <div class="container" id="navcontainer">

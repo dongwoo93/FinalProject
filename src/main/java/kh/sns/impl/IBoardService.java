@@ -115,6 +115,11 @@ public class IBoardService implements BoardService {
 		// TODO Auto-generated method stub
 		return dao.search(keyword);
 	}
+	
+	@Override
+	public List<String[]> getTag(String keyword) throws Exception {
+		return dao.getTag(keyword);
+	}
 
 	@Override
 	public BoardDTO  oneBoard(String board_seq) throws Exception {
@@ -142,10 +147,5 @@ public class IBoardService implements BoardService {
 	public List<int[]> myBookmark(String id) throws Exception {
 		return dao.myBookmark(id);
 	}
-	
-	
-
-	
-	
 	
 }

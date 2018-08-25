@@ -22,6 +22,7 @@ public interface MemberDAO {
 	
 	public int updateOneMemberPassword(MemberDTO member) throws Exception;
 	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception;
+	public List<MemberDTO> findMember(String searchtext) throws Exception;
 
 	public int checkEmailDuplicated(String email, String currentUserId) throws Exception;
 	
