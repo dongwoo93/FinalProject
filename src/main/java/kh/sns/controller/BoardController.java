@@ -741,7 +741,7 @@ public class BoardController {
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
 		try {
-	         follow_list = member_followService.followerList(id);
+	         follow_list = member_followService.followList(id);
 	      } catch (Exception e1) {
 	         
 	         e1.printStackTrace();  

@@ -314,8 +314,11 @@ $(document).ready(function(){
                                  
 //                                   $("#modalcontents").text(data.contents);  
 								var txt = data[0].contents;
-  								var regex = /(#[^#\s,;]+)/gi  ;   
-					         	var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+  								var regex = /(#[^#\s,;]+)/gi  ; 
+  								var newtxt;
+  								if(txt != null) {
+  									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+  								}        
 					          
                                $("#modalcontents").html(newtxt);
                              //  $("#modalcontents").html(data[0].contents);
