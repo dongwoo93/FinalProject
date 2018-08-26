@@ -20,7 +20,7 @@ $(document).ready(function(){
       
   
 })
-  
+
 								
 	function articleover(e) {
 	var seq = $(e).attr("value");
@@ -275,13 +275,16 @@ $(document).ready(function(){
 								<script>
                
        
-                       $("#${tmp.board_seq}").click(function() {
+                       $("#${tmp.board_seq}").click(function() { 
+                    	    
                     	   var objDiv = document.getElementById("articlecomment");
                            objDiv.scrollTop = 0;            
                           var seq = "${tmp.board_seq}";
+                          if(${status.count != 1}) {
+                          $("#prev").val(${result[status.index-1].board_seq});  }
+                          if(${status.count != result.size()}) {
+                          $("#next").val(${result[status.index+1].board_seq}); } 
                           
-                          $("#prev").val(${result[status.index-1].board_seq}); 
-                          $("#next").val(${result[status.index+1].board_seq}); 
                           $("#hidden").val(${result[status.index].board_seq}); 
                           for(var i =0; i<list.length; i++) {
                             if(seq == list[i]) {
@@ -303,14 +306,14 @@ $(document).ready(function(){
                                }
                                break;
                             }
-                         }
+                         }  
                           $.ajax({
                               type: "POST",
                               url: "boardView.bo",
                               data: {seq:seq},
-                              success: function(data)       
+                              success: function(data)         
                               {
-                           	   
+                           	    
                                  if(data[1].length == 1) {
                                  $("#carousel-prev").hide();
                               $("#carousel-next").hide();
@@ -324,8 +327,9 @@ $(document).ready(function(){
 //                                   $("#modalcontents").text(data.contents);  
 								var txt = data[0].contents;
   								var regex = /(#[^#\s,;]+)/gi  ; 
-  								var newtxt;
-  								if(txt != null) {
+  								var newtxt =data[0].contents;  
+  								if(txt != " ") {      
+  								  
   									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
   								}        
 					          
@@ -424,7 +428,7 @@ $(document).ready(function(){
 		<br>
 
 
-		<div class="modal-content view"
+		<div class="modal-content view"  
 			style="flex-direction: row; width: 1000px; height: auto;">
 
 			<div class="modal-content view" style="width: 70%; height: auto;">
@@ -516,10 +520,33 @@ $(document).ready(function(){
 					<input type=hidden id="caretposition" value="0">
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 					<script>
 					
 				var globalThisCommentIsFocusedOnFirst = true;
 					
+				
+				  /* ========================= 댓글달기 ========================= */
+				
                 $('#comment').keypress(function(event){
                    var seq = $("#seq").val();
                    /* var comment_contents = $("#comment").val(); */
@@ -746,6 +773,22 @@ $(document).ready(function(){
 					</c:choose>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				</div>
 			</div>
 
@@ -756,6 +799,25 @@ $(document).ready(function(){
 
 	</div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <form id="fileForm">
 <div class="modal fade" id="profileimage" tabindex="-1" role="dialog">
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

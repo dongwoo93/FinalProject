@@ -251,7 +251,11 @@ public class BoardController {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		String id = (String)session.getAttribute("loginId");  
-		BoardDTO result = boardService.getBoardModal(seq);
+		BoardDTO result = boardService.getBoardModal(seq);    
+		if(result.getContents() == null) {
+			result.setContents(" "); 
+		}
+		System.out.println(result.getContents() + " ::::::::::::::::::");  
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
