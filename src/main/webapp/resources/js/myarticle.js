@@ -303,8 +303,8 @@ $(document).ready(function() {
 	})
 	
 	$("#delete").click(function(){
-		var seq = document.getElementById("hidden").value;
-		location.href = "boardDelete.bo?seq="+seq;
+		var seq = document.getElementById("hidden").value;  
+		location.href = "boardDelete.bo?seq="+seq+"&cat=1";   
 
 	})
 
@@ -582,8 +582,5 @@ function modComment(e) {
   
 }
 
-
-	
- 
 	   
   

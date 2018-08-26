@@ -20,9 +20,20 @@ $(document).ready(function(){
       
   
 })
+  
+								
+	function articleover(e) {
+	var seq = $(e).attr("value");
+	$("#divinfo"+seq).attr("style",false);
+		}  
+	function articleleave(e) {
+		var seq = $(e).attr("value"); 
+		$("#divinfo"+seq).attr("style","display:none;");
+}
+								</script>
+ 
 
 
-</script>
 
 <c:if test="${result.size() > 0}">
 	<input type=hidden id='sessionid' value="${sessionScope.loginId}">
@@ -239,28 +250,27 @@ $(document).ready(function(){
 				</div>
 		</c:otherwise>
 	</c:choose>
-			<div class="container my">
+			<div class="container my ">  
 
-				<div class="gallery">
-					<c:if test="${result.size() != 0}">
+				<div class="row">
+					<c:if test="${result.size() != 0}">  
 
-						<c:forEach var="tmp" items="${result}" varStatus="status">
-
-							<div class="gallery-item" id="${tmp.board_seq}" style="object-fit:cover;">
-								<img src="AttachedMedia/${result2[status.index].system_file_name}" class="img-fluid" style="object-fit:cover;">
-
-								<div class="gallery-item-info">
+						<c:forEach var="tmp" items="${result}" varStatus="status">    
+       
+							  <div class="col-md-4 divitem pt-4" id="${tmp.board_seq}" value="${tmp.board_seq}" onmouseover="articleover(this)" onmouseleave="articleleave(this)">               
+                    <img src="AttachedMedia/${result2[status.index].system_file_name}" class="divimg pointer" > 
+							     
+                  	<div class="divinfo divimg" id="divinfo${tmp.board_seq}" style="display:none;" >                                                
 									<ul>
-										<li class="gallery-item-likes"><i class="fas fa-heart"></i>
-											<c:out value="${likecount[tmp.board_seq]}" /></li>
-										<li class="gallery-item-comments"><i
+										<li class="divicons"><i class="fas fa-heart"></i>
+											<c:out value="${likecount[tmp.board_seq]}" /></li>  
+										<li class="divicons"><i
 											class="fas fa-comment"></i> <c:out
 												value="${commentcount[tmp.board_seq]}" /></li>
 									</ul>
 								</div>
-
-
-
+								
+							
 
 								<script>
                
@@ -269,10 +279,10 @@ $(document).ready(function(){
                     	   var objDiv = document.getElementById("articlecomment");
                            objDiv.scrollTop = 0;            
                           var seq = "${tmp.board_seq}";
-                         
+                          
                           $("#prev").val(${result[status.index-1].board_seq}); 
                           $("#next").val(${result[status.index+1].board_seq}); 
-                          $("#hidden").val(${result[status.index].board_seq});
+                          $("#hidden").val(${result[status.index].board_seq}); 
                           for(var i =0; i<list.length; i++) {
                             if(seq == list[i]) {
                                if(list.length == 1) {
@@ -788,7 +798,7 @@ $(document).ready(function(){
         <input id="hiddenid" type="hidden" value="${sessionScope.loginId}">
         
       </div>
-    </div>
+    </div> 
          </div>  
              </form>
              <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">

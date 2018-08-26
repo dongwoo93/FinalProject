@@ -134,7 +134,7 @@
                   data: {board_seq:board_seq,comment_seq:comment_seq},
                   success : function(cnt) {
                 	console.log(cnt);    
-                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
+                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });    
                    if(cnt>2){ 
                        $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
                        else {

@@ -214,6 +214,15 @@ public class BoardController {
 				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 			}
 			
+			int rowcount = 0;
+			if(result.size() % 3 == 0 ) {
+				rowcount = result.size()/3;
+			}else {
+				rowcount = result.size()/3+1;
+				
+			}   
+			
+			mav.addObject("rowcount", rowcount); 
 			
 			mav.addObject("result", result);
 			mav.addObject("result2", result2);
@@ -222,10 +231,10 @@ public class BoardController {
 			mav.addObject("followingCount", followingCount);
 			mav.addObject("likecount", likecount); 
 			mav.addObject("commentcount", commentcount); 
-			mav.addObject("isBlock", isBlock); 
+			mav.addObject("isBlock", isBlock);   
 			mav.addObject("isFollow", isFollow);
 			mav.addObject("isNotPublic", isNotPublic);  
-			mav.addObject("profileImg", profileImg);
+			mav.addObject("profileImg", profileImg);  
 			mav.setViewName("myarticle3.jsp");
 			mav.addObject("profileImg", profileImg);
 			mav.addObject("memNick", memNick);   // 닉네임
