@@ -432,7 +432,7 @@ $(document).ready(function(){
 			style="flex-direction: row; width: 1000px; height: auto;">
 
 			<div class="modal-content view" style="width: 70%; height: auto;">
-				<div class="gallerymodal" id="picture">
+				    
 					<div id="demo" class="carousel slide" data-ride="carousel"
 						data-interval="false">
 						<ul id="carousel-indicators" class="carousel-indicators">
@@ -448,7 +448,7 @@ $(document).ready(function(){
 							data-slide="next"> <span class="carousel-control-next-icon"></span>
 						</a>
 					</div>
-				</div>
+				
 
 			</div>
 
@@ -831,7 +831,7 @@ $(document).ready(function(){
         
         <!-- Modal body -->
          
-        <div class="modal-body">
+        <div class="modal-body">   
         <div style="max-height: 300px;">
           <input id="inputimg" name="inputimg" type='file' onchange="readURL(this);">  
 			<img id="profileimg" src="resources/images/Placeholder.png" alt="your image" />

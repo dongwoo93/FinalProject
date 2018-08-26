@@ -395,18 +395,18 @@
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-<!-- 								<div id="carousel-inner" class="carousel-inner"          -->
-<%-- 									style="height:${maxImgHeight[status.index]}px; max-height:700px"> --%>
-										<div id="carousel-inner" class="carousel-inner"         
-									>  
-									<div id="firstItem" class="carousel-item active">      
+								</ul>  
+								<div id="carousel-inner" class="carousel-inner "         
+									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">  
+<!-- 										<div id="carousel-inner" class="carousel-inner"          -->
+<!-- 									>   -->
+									<div id="firstItem" class="carousel-item active">        
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
-											alt=''>  
+											alt='' >  
 									</div>
 									<c:forEach begin="1" var="media" 
-										items="${result2[status.index]}" varStatus="status3">
+										items="${result2[status.index]}" varStatus="status3">  
 										<div class="carousel-item" >
 											<img class='boardimg'  width='100%'  
 												src="AttachedMedia/${media.system_file_name}" alt="">
@@ -694,20 +694,20 @@
 				
 
 				<script>
-				var slideIndex = 0;
-				carousel();
+// 				var slideIndex = 0; 
+// 				carousel();
  
-				function carousel() {
-				    var i;
-				    var x = $(".myslides");  
-				    for (i = 0; i < x.length; i++) {
-				      x[i].style.display = "none"; 
-				    }
-				    slideIndex++;
-				    if (slideIndex > x.length) {slideIndex = 1} 
-				    x[slideIndex-1].style.display = "block"; 
-				    setTimeout(carousel, 2000); 
-				}
+// 				function carousel() {
+// 				    var i;
+// 				    var x = $(".myslides");  
+// 				    for (i = 0; i < x.length; i++) {
+// 				      x[i].style.display = "none"; 
+// 				    }
+// 				    slideIndex++;
+// 				    if (slideIndex > x.length) {slideIndex = 1} 
+// 				    x[slideIndex-1].style.display = "block"; 
+// 				    setTimeout(carousel, 2000); 
+// 				}
 				</script>
 			
 				
