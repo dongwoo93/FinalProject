@@ -9,7 +9,7 @@
 	
 	$(function () {
 
-		var ws = new WebSocket("ws://172.30.1.39/websocket?loginId=${sessionScope.loginId}");
+		var ws = new WebSocket("ws://192.168.120.102/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
