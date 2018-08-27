@@ -1301,7 +1301,7 @@
     	<img src="/resources/images/imoticon/26.png" class="imoticon">
     	<img src="/resources/images/imoticon/27.png" class="imoticon">
     </div>
-  </div>
+  </div>  
 </div>
 
 	<div class="chatbox-holder row" style='display:none;' id='alertmessenger'>
