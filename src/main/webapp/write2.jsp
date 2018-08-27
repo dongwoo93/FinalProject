@@ -44,7 +44,14 @@
         
 
         $(document).ready(function() {
-        	console.log('x111ddd111');
+        	
+        	document.addEventListener('keydown', function(event) {
+        	    if (event.keyCode === 13) {
+        	        event.preventDefault();
+        	    }
+        	}, true);
+        	
+        	console.log('XXAZSES');
         	var globalBizFormEnabled = false;
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
