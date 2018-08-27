@@ -185,17 +185,15 @@ function unmarkit(e) {
 // 												   	$("#${result.board_seq}").click(function() { 
 // 												   		$("#myContents${result.board_seq}").attr("style","overflow:visible");  
 // 												   	});
-
-									var text = $("#myContents${result.board_seq}").html();  
-									var regex = /(#[^#\s,;]+)/gi  ;              
-									var newtxt;
-	  								if(txt != null) {
-	  									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
-	  								}        
+  
+									var txt = $("#myContents${result.board_seq}").html();  
+									var regex = /(#[^#\s,;]+)/gi;              
+									var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+	  								       
   							        
   							        
   							        $("#myContents${result.board_seq}").html(newtxt);
-											 </script>
+									</script>
 								</div>
 									<!-- 이미지 -->
 								<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">

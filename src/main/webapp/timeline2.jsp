@@ -8,7 +8,7 @@
 	
 	$(function () {
 
-		var ws = new WebSocket("ws://192.168.20.24/websocket?loginId=${sessionScope.loginId}");
+		var ws = new WebSocket("ws://192.168.20.1/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
@@ -901,7 +901,7 @@
 
 			</div>
 
-			<div class="pt-4 pb-3  " id="footer"
+			<div class="pt-4 pb-3" id="footer"
 				style="font-size: 5px; margin-left: 20px;">
 				<div class="container">
 					<div class="row">

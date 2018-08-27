@@ -55,8 +55,7 @@
         	
         	console.log('1xxxxssf31');
         	var globalBizFormEnabled = false;
-        	        	
-        	  <!-- 000000000000000000000000000000000000000000 -->        	  
+        	        	  	  
               function getCaretPosition(editableDiv) {   
                   var caretPos = 0, sel, range;   
                   if (window.getSelection) {   
@@ -380,24 +379,16 @@
 			<!-- form 시작 -->
 			<div id="centerwrapper" class="pt-3">
 				<div class="container" id="contents">
+					<span style="font-family: NANUMBARUNPENR !important;font-size: 15px;background-color: #F5F4F4;">Picture</span>
 					<div class="row">
 						<div class="col-md-7 align-self-center">
-							<!-- -->
-<!-- 							<input type="file" class="btn" multiple=multiple id="fileSelect" -->
-<!-- 								name="filename[]"> <i class="far fa-images"></i> -->
-							<!-- -->
-							<!--                        <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_14.jpg" style="width: 100%;" id='frontImage'>-->
-
-								<div class="filebox">  
-								<input type="file" class="btn btn-light"  multiple id="fileSelect"
-								name="filename[]"> <i class="far fa-images"></i>
-								</div>
-								
+	
 
 							<div id="attachDiv" style="height: 600px;">
 								<div id="carouselAttachDiv" class="carousel slide "
 									data-ride="carousel" data-interval="false">
 									<div class="carousel-inner" id=attachDivInner></div>
+									<br>
 									<a id=leftCarouselBtn class="carousel-control-prev" href="#carouselAttachDiv"
 										role="button" data-slide="prev"> <span
 										class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -469,33 +460,41 @@
 
 							
 						</div>
+					
 						<div class="col-md-5" id="writeform">
-							<div class="card">
-		<!-- 글쓰기 칸 -->
-								<div class="card-body" contenteditable="true" id="editorDiv"></div>
+								
+							<div class="card" style="border: 5px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;">
+							
+							<!-- 글쓰기 칸 -->
+							<span style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">Contents</span>
+								<div class="card-body" contenteditable="true" id="editorDiv" style="overflow:auto;"></div>
 								<input type=hidden id="caretposition" value="0">
 								<input type=hidden name=contents id=contentsHidden> 
 								<input type=hidden name=filters id=filtersHidden>
 								<ul class="list-group list-group-flush">
-									<li class="list-group-item"><i
+									<li class="list-group-item" style="border: 3px solid #eff1f4;"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a
 										onclick="placemodal()" style="cursor: pointer;" id="place">위치
 											태그하기</a></li>
-									<li class="list-group-item" id="person"><i
+											
+									<li class="list-group-item" style="border: 3px solid #eff1f4;">
+									<i class="far fa-images"></i>
+									&nbsp;&nbsp;<input type="file" class="" multiple id="fileSelect" name="filename[]"> 									
+									</li>		
+											
+									<li class="list-group-item"  style="border: 3px solid #eff1f4;" id="person"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
 								<c:if test="${ memberBiz ne null }">
-									<li class="list-group-item" id="person"><i
+									<li class="list-group-item" style="border: 3px solid #eff1f4;" id="person"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="bizModal()" style="cursor: pointer;"> <span class="badge badge-pill badge-warning">biz</span> 비즈니스 설정하기</a></li>
 								</c:if>
 								</ul>
 							</div>
-							<div class="py-3">
-								<button type="button" id="submitbutton">
-									<i class="fas fa-arrow-right fa-2x"></i>
+							<div class="py-3 text-right">
+								<button type="button" id="submitbutton" style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">등록하기			
 								</button>
-								<!-- <button type=button id="testButton">테스트</button> -->
 							</div>
 						</div>
 					</div>
