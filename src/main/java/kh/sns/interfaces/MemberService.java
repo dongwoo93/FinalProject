@@ -18,6 +18,7 @@ public interface MemberService {
 	public String changePass(String id) throws Exception;
 	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception;
 	public List<MemberDTO> findMember(String searchtext) throws Exception;
+	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception;
 	
 	public MemberDTO getOneMember(String id) throws Exception;
 	
@@ -26,6 +27,7 @@ public interface MemberService {
 	public int updateOneMemberPassword(MemberDTO member) throws Exception;
 	
 	public int checkEmailDuplicated(String email, String currentUserId) throws Exception;
+	public MemberDTO selectUserId(String nickname) throws Exception;
 	
 	// My_aticle
 	public List<MemberDTO> myNick_Id(String id) throws Exception;

@@ -28,8 +28,10 @@ import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
 import kh.sns.util.EncryptUtils;
 import kh.sns.util.LogUtil;
+import kh.sns.websocket.WebSocket;
 
 @Controller
+
 public class MemberController {
 
 	@Autowired	private MemberService memberService;
@@ -73,6 +75,7 @@ public class MemberController {
 	public ModelAndView memberLogout(MemberDTO dto, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String id= (String)session.getAttribute("loginId");
+		WebSocket.onlineUser.remove(id);
 		session.invalidate(); 
 		LogUtil log = new LogUtil(); 
 		log.insertLog(id,"logout");   
