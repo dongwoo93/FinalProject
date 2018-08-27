@@ -5,6 +5,81 @@
 <link rel="stylesheet" type="text/css" href="resources/css/oneboard.css">
 <script>
 
+function getCaretPosition(editableDiv) {
+    var caretPos = 0,
+        sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+
+            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
+                caretPos = range.endOffset;
+                // console.log("caretPos: " + caretPos)
+
+
+                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+                var isEqualOrLower = false;
+                while (i >= 0) {
+                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
+                        $(range.commonAncestorContainer).text()) {
+                        i--;
+                        continue;
+                    } else {
+                        while (i >= 0) {
+                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+                            // console.log($impl.text());
+                            caretPos += $impl.text().length
+                            i--;
+                        }
+                        break;
+                    }
+                }
+
+            }
+        }
+
+
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        if (range.parentElement() == editableDiv) {
+
+            var tempEl = document.createElement("span");
+            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            var tempRange = range.duplicate();
+            tempRange.moveToElementText(tempEl);
+            tempRange.setEndPoint("EndToEnd", range);
+            caretPos = tempRange.text.length;
+        }
+    }
+
+    return caretPos;
+}
+
+var update = function () {
+    $('#caretposition').val(getCaretPosition(this));
+	    console.log(getCaretPosition(this))
+    console.log(this)
+};	
+
+function placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (typeof document.body.createTextRange != "undefined") {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+    }
+}
 
 
 function commentover(e){   
@@ -115,11 +190,15 @@ function unlikeit(e){
 function modComment(e){   
 	
 	var comment_seq = $(e).parent().parent().attr("value"); 
-	$("#commentSection"+comment_seq).prop('readonly', false);
+	/* $("#commentSection"+comment_seq).prop('readonly', false); */
+	$("#commentSection"+comment_seq).attr('contenteditable', true)
+	
 	$("#commentSection"+comment_seq).focus();
 	
+	placeCaretAtEnd( document.getElementById("commentSection"+comment_seq) );
+	
 	$("#commentmod"+comment_seq).click(function(){
-		var comment = $("#commentSection"+comment_seq).val();
+		var comment = $("#commentSection"+comment_seq).text();
 		
 		if(comment==""){
 			alert("댓글을 입력해 주세요");
@@ -133,7 +212,8 @@ function modComment(e){
 				url : "commentmod.co",
 				success: function(resp){
 					
-					$("#commentSection"+comment_seq).prop('readonly', true);
+					/* $("#commentSection"+comment_seq).prop('readonly', true); */
+					$("#commentSection"+comment_seq).attr('contenteditable', false)
 					
 				}
 					
@@ -147,7 +227,8 @@ function modComment(e){
   
 		var keycode=(event.keyCode ? event.keyCode : event.which);
 		if(keycode=='13'){
-			var comment = $("#commentSection"+comment_seq).val();
+			var comment = $("#commentSection"+comment_seq).text();	// val -> text
+
 			
 			if(comment==""){
 				alert("댓글을 입력해 주세요");
@@ -161,7 +242,8 @@ function modComment(e){
 					url : "commentmod.co",
 					success: function(resp){
 						
-						$("#commentSection"+comment_seq).prop('readonly', true);
+						/* $("#commentSection"+comment_seq).prop('readonly', true); */
+						$("#commentSection"+comment_seq).attr('contenteditable', false)
 						
 					}
 						
@@ -196,13 +278,62 @@ $("#comment").keypress(function(event){
 				data : {board_seq : ${b.board_seq}, comment_contents : comment },
 				url : "insertComment.co",
 				success: function(seq){
+					
+					var regex = /(#[^#\s,;<>.]+)/gi;
+					var newtxt = "<span class=fugue>" + comment.replace(regex, "</span><span class=text-danger>" + "$1" +
+                        "</span><span class=fugue>") + "</span>"
+                        newtxt += "<kz></kz>"
 					    
 					var start = $("#comment-contents");					
 					start.append('<ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="'
 							+ seq + '" onmouseleave="commentleave(this)"><li id="li1"><a href="#" id="writerId' + seq 
 							+'">'+session+'</a></li><li id="li2">' 
-							+ '<div contenteditable=true id="commentSection' + seq + '" value="' + comment + '" readonly class="commenttxt"></li><li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel'+seq+'"></a></li><li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id="commentmod'+seq+'"></a></li></ul>');
+							+ '<div contenteditable=false id="commentSection' + seq + '" readonly class="commenttxt">' + newtxt
+							+ '</div></li><li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel' 
+							+ seq + '"></a></li><li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id="commentmod' 
+							+ seq + '"></a></li></ul>');
 					$('#comment').html("");
+					
+					$("#commentSection" + seq).keyup(function(e){
+                 	   // =================== 복붙 =================== 
+                 	   if(e.keyCode === 32){
+                 		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+                            } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+                            } else {
+                                return;
+                            }
+
+                            var regex = /(#[^#\s,;<>. ]+)/gi;
+                            if (regex) {
+                                var newtxt = "<span class=fugue>" + $(this).text()
+                                    .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                        "</span><span class=fugue>") + "</span>"
+
+                                // console.log($('#editorDiv').text().length);   
+                                // console.log(newtxt)   
+                                newtxt += "<kz></kz>"
+                                $(this).html(newtxt)
+                                var el = this;
+                                console.log("childNodes: " + el.childNodes.length);
+                                var range = document.createRange();
+                                var sel = window.getSelection();
+                                range.setStart(el.lastChild, 0);
+                                range.collapse(false);
+                                sel.removeAllRanges();
+                                sel.addRange(range);
+
+                                $(this).focusout();
+                                $(this).focus();
+                                if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+                                }
+
+                            }
+                 	   } 
+                 	   
+                 	   
+                 	// =================== 복붙 =================== 
+                    })
 				}   
 
 			});
@@ -293,6 +424,8 @@ $("#comment").keypress(function(event){
 									
 									$('#comment').on("mousedown mouseup keydown keyup", update);
 									$("#comment").keyup(makeupHashtag)
+									$("div[id*='commentSection']").on("mousedown mouseup keydown keyup", update);
+									$("div[id*='commentSection']").keyup(makeupHashtag)
 									
 									var map = {
 									    16: false,
@@ -354,6 +487,7 @@ $("#comment").keypress(function(event){
 
 
 <div id="allwrapper">
+	<input type="text" id=caretposition>
 	<div class="" id="centerwrapper">
 		<div class="container" id="contents">
 		
@@ -473,7 +607,20 @@ $("#comment").keypress(function(event){
                               href="">${b.id}</a>
 
                            <div class='pl-3 mt-1' id="contdiv">
-                           ${b.contents}
+                           <%-- ${b.contents} --%>
+                           	<script>
+                        		  var regex = /(#[^#\s,;<>. ]+)/gi;
+                        		  var originalText = "${b.contents}"
+                        		  var innerCode = ""
+                                  if (regex) {
+                                      innerCode = "<span class=fugue>" + originalText
+                                          .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                              "</span><span class=fugue>") + "</span>"
+                                      innerCode += "<kz></kz>"
+                                      /* document.write(innerCode) */
+                                      $('#contdiv').html(innerCode);
+                                  }
+                        		</script>
                            </div>
                            
                            
@@ -502,7 +649,25 @@ $("#comment").keypress(function(event){
                           
                         <ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="${item.comment_seq}" onmouseleave="commentleave(this)">
                         <li id="li1"><a href="#" id="writerId${item.comment_seq}">${item.id}</a></li>
-                        <li id="li2"><input type=text id="commentSection${item.comment_seq}" value="${item.comment_contents}" readonly="readonly" class='commenttxt'></li>
+                        <li id="li2">
+                        	<%-- <input type=text id="commentSection${item.comment_seq}" value="${item.comment_contents}" readonly="readonly" class='commenttxt'> --%>
+
+                        	<div contenteditable=false id="commentSection${item.comment_seq}" class='commenttxt'>
+                        		<script>
+                        		  var regex = /(#[^#\s,;<>. ]+)/gi;
+                        		  var originalText = "${item.comment_contents}"
+                        		  var innerCode = ""
+                                  if (regex) {
+                                      innerCode = "<span class=fugue>" + originalText
+                                          .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                              "</span><span class=fugue>") + "</span>"
+                                      innerCode += "<kz></kz>"
+                                      /* document.write(innerCode) */
+                                      $("#commentSection${item.comment_seq}").html(innerCode)
+                                  }
+                        		</script>
+                        	</div>
+                        </li>
                        			
                         <li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel${item.comment_seq}"></a></li>     
                         <li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id='commentmod${item.comment_seq}'></a></li>

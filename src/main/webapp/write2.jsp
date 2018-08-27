@@ -213,9 +213,9 @@
                  });
             });
             
-            $("#personmodalbt").click(function(){
+            $("#personmodalbt").click(function(e){
          	   var textValue = $(".tags li").length;
-         	   alert(textValue);
+         	   
          	   $("#person *").remove();
          	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
 
@@ -227,6 +227,8 @@
                 }
          	   
          	   $("#searchfriend").val("");
+         	   
+         	   return false;
             });
             
             
@@ -617,7 +619,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button id="personmodalbt">확인</button>
+					<button id="personmodalbt" type=button>확인</button>
 				</div>
 			</div>
 		</div>

@@ -794,7 +794,7 @@ $(document).ready(function(){
 						class="creco insertfield" id="comment">
 						<span class=text-muted>댓글 달기...</span>
 					</div>
-					<input type=text id="caretposition" value="0">
+					<input type=hidden id="caretposition" value="0">
 
 
 					<script>
