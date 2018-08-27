@@ -94,25 +94,25 @@ public class BoardController {
 			for(int i = 0; i < list.size(); i++) {
 				media.add(boardService.search2(list.get(i).getBoard_seq()));
 			} 
-			String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
+		//	String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
 
 
-			for(List<Board_MediaDTO> mlist : media) { 
-				double max = 0;
-				for(Board_MediaDTO dto : mlist) {
-					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-					double height = bimg.getHeight();
-					double width = bimg.getWidth();
-					height = 600*height/width;   
-					System.out.println("height : " + height);
-					if(max<height) { 
-						max = height;
-					}
-
-				}
-				maxImgHeight.add((int)max);   
-				System.out.println("max:" + max);     
-			}
+//			for(List<Board_MediaDTO> mlist : media) { 
+//				double max = 0;
+//				for(Board_MediaDTO dto : mlist) {
+//					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+//					double height = bimg.getHeight();
+//					double width = bimg.getWidth();
+//					height = 600*height/width;   
+//					System.out.println("height : " + height);
+//					if(max<height) { 
+//						max = height;
+//					}
+//
+//				}
+//				maxImgHeight.add((int)max);   
+//				System.out.println("max:" + max);     
+//			}
 
 
 			list1 = board_commentService.getFeedComment(id);

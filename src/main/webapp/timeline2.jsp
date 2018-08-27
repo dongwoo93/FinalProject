@@ -396,10 +396,10 @@
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
 								</ul>  
-								<div id="carousel-inner" class="carousel-inner "         
-									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">  
-<!-- 										<div id="carousel-inner" class="carousel-inner"          -->
-<!-- 									>   -->
+<!-- 								<div id="carousel-inner" class="carousel-inner "          -->
+<%-- 									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">   --%>
+										<div id="carousel-inner" class="carousel-inner"             
+									>  
 									<div id="firstItem" class="carousel-item active">        
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
