@@ -215,7 +215,7 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Override
 	public int[] insertHashTags(BoardDTO article) throws Exception {
-
+System.out.println(article.getBoard_seq() + " ::::::::::::");  
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
 		String sql = "insert into board_tags values(?, ?)";
@@ -243,7 +243,7 @@ public class IBoardDAO implements BoardDAO  {
 		String sql = "select * from board where board_seq = ?";
 		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
 
-			@Override
+			@Override   
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
 				BoardDTO article = new BoardDTO();
