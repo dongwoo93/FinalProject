@@ -722,32 +722,53 @@ $(document).ready(function(){
 		<div class="modal-content view"
 			style="flex-direction: row; width: 1000px; height: auto;">
 
-			<div class="modal-content view" style="width: 70%; height: auto;">
+<!-- 			<div class="modal-content view" style="width: 70%; height: auto;"> -->
 				    
-					<div id="demo" class="carousel slide" data-ride="carousel"
-						data-interval="false">
-						<ul id="carousel-indicators" class="carousel-indicators">
-							<li id="firstli" data-target="#demo" data-slide-to="0"
-								class="active"></li>
-						</ul>
-						<div id="carousel-inner" class="carousel-inner" style="background-color:black;">
-							<div id="firstItem" class="carousel-item active"></div>
-						</div>
-						<a id="carousel-prev" class="carousel-control-prev" href="#demo"
-							data-slide="prev"> <span class="carousel-control-prev-icon"></span>
-						</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
-							data-slide="next"> <span class="carousel-control-next-icon"></span>
-						</a>
-					</div>
-					<a id="carousel-prev" class="carousel-control-prev" href="#demo"
-						data-slide="prev"> <span class="carousel-control-prev-icon"></span>
-					</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
-						data-slide="next"> <span class="carousel-control-next-icon"></span>
-					</a>
-				</div>
+<!-- 					<div id="demo" class="carousel slide" data-ride="carousel" -->
+<!-- 						data-interval="false"> -->
+<!-- 						<ul id="carousel-indicators" class="carousel-indicators"> -->
+<!-- 							<li id="firstli" data-target="#demo" data-slide-to="0" -->
+<!-- 								class="active"></li> -->
+<!-- 						</ul> -->
+<!-- 						<div id="carousel-inner" class="carousel-inner" style="background-color:black;"> -->
+<!-- 							<div id="firstItem" class="carousel-item active"></div> -->
+<!-- 						</div> -->
+<!-- 						<a id="carousel-prev" class="carousel-control-prev" href="#demo" -->
+<!-- 							data-slide="prev"> <span class="carousel-control-prev-icon"></span> -->
+<!-- 						</a> <a id="carousel-next" class="carousel-control-next" href="#demo" -->
+<!-- 							data-slide="next"> <span class="carousel-control-next-icon"></span> -->
+<!-- 						</a> -->
+<!-- 					</div> -->
+<!-- 					<a id="carousel-prev" class="carousel-control-prev" href="#demo" -->
+<!-- 						data-slide="prev"> <span class="carousel-control-prev-icon"></span> -->
+<!-- 					</a> <a id="carousel-next" class="carousel-control-next" href="#demo" -->
+<!-- 						data-slide="next"> <span class="carousel-control-next-icon"></span> -->
+<!-- 					</a> -->
+<!-- 				</div> -->
 
 
-			</div>
+
+<div class="modal-content view" style="width: 70%; height: auto;">
+
+            <div id="demo" class="carousel slide" data-ride="carousel"
+               data-interval="false">
+               <ul id="carousel-indicators" class="carousel-indicators">
+                  <li id="firstli" data-target="#demo" data-slide-to="0"
+                     class="active"></li>
+               </ul>
+               <div id="carousel-inner" class="carousel-inner" style="background-color:black;">
+                  <div id="firstItem" class="carousel-item active"></div>
+               </div>
+               <a id="carousel-prev" class="carousel-control-prev" href="#demo"
+                  data-slide="prev"> <span class="carousel-control-prev-icon"></span>
+               </a> <a id="carousel-next" class="carousel-control-next" href="#demo"
+                  data-slide="next"> <span class="carousel-control-next-icon"></span>
+               </a>
+            </div>
+
+
+         </div>
+
 
 			<div class="modal-content view" style="width: 30%; height: auto;">
 
@@ -961,50 +982,13 @@ $(document).ready(function(){
 						</c:otherwise>
 					</c:choose>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				</div>
 			</div>
 
 		</div>
 
-
-
-
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <form id="fileForm">

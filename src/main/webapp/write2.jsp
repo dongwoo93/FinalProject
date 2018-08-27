@@ -493,8 +493,7 @@
 								</ul>
 							</div>
 							<div class="py-3 text-right">
-								<button type="button" id="submitbutton">
-									<i class="fas fa-pencil-alt fa-3x"></i>
+								<button type="button" id="submitbutton" style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">등록하기			
 								</button>
 							</div>
 						</div>
