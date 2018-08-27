@@ -746,26 +746,53 @@ $(document).ready(function(){
 		<div class="modal-content view"
 			style="flex-direction: row; width: 1000px; height: auto;">
 
-			<div class="modal-content view" style="width: 70%; height: auto;">
+<!-- 			<div class="modal-content view" style="width: 70%; height: auto;"> -->
+				    
+<!-- 					<div id="demo" class="carousel slide" data-ride="carousel" -->
+<!-- 						data-interval="false"> -->
+<!-- 						<ul id="carousel-indicators" class="carousel-indicators"> -->
+<!-- 							<li id="firstli" data-target="#demo" data-slide-to="0" -->
+<!-- 								class="active"></li> -->
+<!-- 						</ul> -->
+<!-- 						<div id="carousel-inner" class="carousel-inner" style="background-color:black;"> -->
+<!-- 							<div id="firstItem" class="carousel-item active"></div> -->
+<!-- 						</div> -->
+<!-- 						<a id="carousel-prev" class="carousel-control-prev" href="#demo" -->
+<!-- 							data-slide="prev"> <span class="carousel-control-prev-icon"></span> -->
+<!-- 						</a> <a id="carousel-next" class="carousel-control-next" href="#demo" -->
+<!-- 							data-slide="next"> <span class="carousel-control-next-icon"></span> -->
+<!-- 						</a> -->
+<!-- 					</div> -->
+<!-- 					<a id="carousel-prev" class="carousel-control-prev" href="#demo" -->
+<!-- 						data-slide="prev"> <span class="carousel-control-prev-icon"></span> -->
+<!-- 					</a> <a id="carousel-next" class="carousel-control-next" href="#demo" -->
+<!-- 						data-slide="next"> <span class="carousel-control-next-icon"></span> -->
+<!-- 					</a> -->
+<!-- 				</div> -->
 
-				<div id="demo" class="carousel slide" data-ride="carousel"
-					data-interval="false">
-					<ul id="carousel-indicators" class="carousel-indicators">
-						<li id="firstli" data-target="#demo" data-slide-to="0"
-							class="active"></li>
-					</ul>
-					<div id="carousel-inner" class="carousel-inner">
-						<div id="firstItem" class="carousel-item active"></div>
-					</div>
-					<a id="carousel-prev" class="carousel-control-prev" href="#demo"
-						data-slide="prev"> <span class="carousel-control-prev-icon"></span>
-					</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
-						data-slide="next"> <span class="carousel-control-next-icon"></span>
-					</a>
-				</div>
 
 
-			</div>
+<div class="modal-content view" style="width: 70%; height: auto;">
+
+            <div id="demo" class="carousel slide" data-ride="carousel"
+               data-interval="false">
+               <ul id="carousel-indicators" class="carousel-indicators">
+                  <li id="firstli" data-target="#demo" data-slide-to="0"
+                     class="active"></li>
+               </ul>
+               <div id="carousel-inner" class="carousel-inner" style="background-color:black;">
+                  <div id="firstItem" class="carousel-item active"></div>
+               </div>
+               <a id="carousel-prev" class="carousel-control-prev" href="#demo"
+                  data-slide="prev"> <span class="carousel-control-prev-icon"></span>
+               </a> <a id="carousel-next" class="carousel-control-next" href="#demo"
+                  data-slide="next"> <span class="carousel-control-next-icon"></span>
+               </a>
+            </div>
+
+
+         </div>
+
 
 			<div class="modal-content view" style="width: 30%; height: auto;">
 
@@ -979,77 +1006,41 @@ $(document).ready(function(){
 						</c:otherwise>
 					</c:choose>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				</div>
 			</div>
 
 		</div>
 
-
-
-
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <form id="fileForm">
 	<div class="modal fade" id="profileimage" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-lg"
 			role="document">
-			<div class="modal-content">
+			<div class="modal-content" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 
 				<!-- Modal Header -->
-				<div class="modal-header">
-					<h4 class="modal-title">프로필 이미지</h4>
+				<div class="modal-header" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
+					<h4 class="modal-title" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">프로필 이미지 등록하기</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
 				<!-- Modal body -->
 
-				<div class="modal-body">
-					<div style="max-height: 300px;">
+				<div class="modal-body" style="border:5px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;">
+					<div style="max-height: 300px;border:5px solid #eff1f4;">
 						<input id="inputimg" name="inputimg" type='file'
 							onchange="readURL(this);"> <img id="profileimg"
 							src="resources/images/Placeholder.png" alt="your image" />
+							
 					</div>
 					<div class="dropdown-divider"></div>
 
 					<c:if test="${profileImg.size() > 1}">
 						<div class="alert alert-success">
-							  <strong>최근 프로필 사진</strong>
+							  <strong style="font-family: NANUMBARUNPENR !important;font-size: 14px;">최근 프로필 사진</strong>
 						</div>
 						<div style="overflow-x: scroll; max-height: 300px; display: flex;">
 							<c:forEach items="${profileImg}" var="proimg">
@@ -1064,9 +1055,10 @@ $(document).ready(function(){
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button id="savebtn" type="button" class="btn btn-primary">저장</button>
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">닫기</button>
+
+					<button type=button class="btn btn-light text-dark" id="savebtn"  style="font-weight:bold; width:100px;">저장</button>
+					<button type=button class="btn btn-light text-dark"  data-dismiss="modal" style="font-weight:bold;width:100px;">닫기</button>
+
 				</div>
 				<input id="hiddenimgname" type="hidden"> <input
 					id="hiddenid" type="hidden" value="${sessionScope.loginId}">
@@ -1075,6 +1067,9 @@ $(document).ready(function(){
 		</div>
 	</div>
 </form>
+
+
+
 <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-sm modal-dialog-centered"
 		role="document">
@@ -1096,8 +1091,9 @@ $(document).ready(function(){
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-primary footertbtn"
+				<button type="button" class="btn btn-outline-info footertbtn"
 					data-dismiss="modal">Close</button>
+								
 			</div>
 		</div>
 

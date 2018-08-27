@@ -1,6 +1,13 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
-@import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css);
-@font-face { font-family: 'billabong'; src: url("../fonts/billabong.ttf") format('truetype'); }
+/* @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600); */
+/* @import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css); */
+/* @font-face { font-family: 'billabong'; src: url("../fonts/billabong.ttf") format('truetype'); } */
+
+@CHARSET "UTF-8";
+
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
+
 
 	/* Base Styles */
 	:root {
