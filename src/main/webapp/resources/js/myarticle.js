@@ -542,46 +542,7 @@ function delComment(e) {
      }); //ajax 
 }
 
-function modComment(e) { 
-
-	 var comment_seq = $(e).attr("value");
-	 var board_seq = $(e).parent().attr("value");
-	 var modstate = $("#modstate"+comment_seq).val();
-	   
-	 if(modstate == "1") {
-		
-		 $("#commentmod"+comment_seq).html("완료");
-	$("#commenttxt"+comment_seq).attr("contentEditable",true);
-  	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
-  	 $("#commenttxt"+comment_seq).focus();  
-  	 $("#modstate"+comment_seq).val("2");  
-  	 $("#del"+comment_seq).attr("style","color:#00B8D4");
-	 $("#mod"+comment_seq).attr("style","color:#00B8D4");
-	 }
-	 
-	 
-	 else if(modstate=="2") {      
-		
-  			 var txt = $("#commenttxt"+comment_seq).html();     
-     	 	 
-            	$.ajax({    
-                      type: "POST",    
-                      url: "commentmod.co",    
-                      data: {comment_seq:comment_seq, comment_contents:txt},   
-                      success : function() {
-                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
-		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
-		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-		                   $("#modstate"+comment_seq).val("1");  
-		                   $("#ul"+comment_seq).hide().fadeIn(500);
-		                   $("#del"+comment_seq).attr("style",false);
-		          		 $("#mod"+comment_seq).attr("style",false);
-		          		 $("#commentmod"+comment_seq).html("수정");
-                      }  
-                 }); //ajax 
-	 }
-  
-}
+/*function modComment*/
 
 	   
   
