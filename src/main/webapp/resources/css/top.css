@@ -149,17 +149,10 @@
 		font-size: 15px;
 	}
 	
-	#autodiv1{
+	#div1{
 		display: flex;
 		margin-top: 5px;
 		margin-bottom: 5px;
-	}
-	
-	#autodiv0:hover{
-    background: rgba(18, 187, 173, 0.5);
-    color:#000;
-    border-radius: 1rem;
-    font-weight: normal;
 	}
 	
 	#textdiv {
@@ -182,7 +175,7 @@
     font-weight: normal;
 }
 	
-	#autodiv0 {
+	.div0 {
 		cursor: pointer;
 		margin-left: 8px;
 		margin-right: 8px;
