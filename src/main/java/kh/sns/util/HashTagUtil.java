@@ -27,7 +27,7 @@ public class HashTagUtil {
 			extractHashTag = specialCharacterReplace(m.group());
 
 			if(extractHashTag != null && !extractHashTag.equals("#")) {
-				list.add(extractHashTag.replace("#", ""));				
+				list.add(extractHashTag.replace("#", "").replace(" ", ""));				
 			}
 		}
 		
