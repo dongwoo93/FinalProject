@@ -125,49 +125,49 @@ $(function() {
 
 
 
-	<span style="color: black;"></span>
-	<div id="topwrapper">
-		<nav class="navbar navbar-expand-md navbar-light" id="navbar">
-			<div class="container" id="navcontainer">
-				<i class="fab fa-instagram fa-2x" id="instagramicon"></i>
-				<div class="logo">
-					<a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a>
-				</div>
-				<div class="collapse navbar-collapse">
-					<form id="go" action="search.bo" class="form-inline m-0"
-						onsubmit="return false;">
-						<input id="searchform" class="form-control" name="search"
-							type="text" placeholder="검색어를 입력하세요">
-					</form>
-				</div>
-				<div id="nav-icons">
-					<ul class="navbar-nav">
-
-						<li class="nav-item"><a class="nav-link" onclick="openDm()"><i
-								class="far fa-comment-alt nav-icon"></i><span
-								id="totalreadcount" style='display: none;'></span></a></li>
-						<li class="nav-item"><a class="nav-link" href="write.board"><i
-								class="fas fa-pencil-alt nav-icon"></i></a></li>
-						<li class="nav-item"><a class="nav-link" href="tour.bo?cat=1"><i
-								class="far fa-compass nav-icon"></i></a></li>
-						<li class="nav-item"><a class="nav-link" href="#"><i
-								class="far fa-heart nav-icon"></i></a></li>
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <i class="far fa-user nav-icon"></i>
-						</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item"
-									href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a> <a
-									class="dropdown-item" href="profile.member?cat=0">프로필 편집</a> <a
-									class="dropdown-item" href="calendar.bo">나의 게시판</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="logout.do">로그아웃</a>
-							</div></li>
-
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</div>
+ <span style="color: black;"></span>
+      <div id="topwrapper">
+          <nav class="navbar navbar-expand-md navbar-light" id="navbar">
+            <div class="container" id="navcontainer">
+              <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
+              <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
+              <div class="collapse navbar-collapse">
+                  <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색어를 입력하세요">
+                </form>
+              </div>
+              <div id="nav-icons">
+                <ul class="navbar-nav">
+                
+                 <li class="nav-item">
+                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"></i><span id="totalreadcount" style='display:none;'></span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="tour.bo?cat=1"><i class="far fa-compass nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-heart nav-icon"></i></a>
+                  </li>
+                  <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="far fa-user nav-icon"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+         <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px; width:200px;" href="board.bo?id=${sessionScope.loginId}&cat=1"><i class="fas fa-user mr-1 pr-1 fa-1x"></i>내 계정</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="calendar.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
+        </div>
+      </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </nav>
+      </div>
