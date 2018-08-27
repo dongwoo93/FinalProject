@@ -64,7 +64,8 @@ public class LoginAspect {
 		                     throw new RuntimeException("먼저 로그인을 하셔야 합니다.");
 		                }          
 		        }catch(Exception e){
-		             throw new RuntimeException("먼저 로그인을 하셔야 합니다.");
+		        	System.out.println("여기는LoginAspect");
+		        	throw new RuntimeException("먼저 로그인을 하셔야 합니다.");
 		 
 		        }      
 		        Object result = joinPoint.proceed();

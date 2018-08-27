@@ -7,18 +7,20 @@ import org.springframework.stereotype.Service;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_LikeDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.interfaces.BoardBusinessDAO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.MemberBusinessDAO;
 
 @Service
 public class IBoardService implements BoardService {
 
 	@Autowired	private BoardDAO dao;
 	@Autowired	private BoardBusinessDAO bbdao;
+	@Autowired	private MemberBusinessDAO mbdao;
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
@@ -80,6 +82,15 @@ public class IBoardService implements BoardService {
 			if(bbiz != null) {
 				bbiz.setBoardSeq(boardCurrVal);
 				bizResult = bbdao.insertAnBoardBiz(bbiz);
+				
+				// deposit 차감(복잡하다..)
+				// CPO * 노출 횟수 * 1.2(보증비 가산)
+				long totalCost = Math.round(bbiz.getCostPerMille() * bbiz.getRemainedPublicExposureCount() * 1.2);
+				MemberBusinessDTO mbiz = new MemberBusinessDTO();
+				mbiz.setId(boardContent.getId());
+				mbiz.setDeposit(mbdao.selectAnMemberBiz(boardContent.getId()).getDeposit() - totalCost);	
+				mbdao.updateAnBizMembersDeposit(mbiz);
+				
 			}
 			
 		} 			
@@ -104,6 +115,11 @@ public class IBoardService implements BoardService {
 		// TODO Auto-generated method stub
 		return dao.search(keyword);
 	}
+	
+	@Override
+	public List<String[]> getTag(String keyword) throws Exception {
+		return dao.getTag(keyword);
+	}
 
 	@Override
 	public BoardDTO  oneBoard(String board_seq) throws Exception {
@@ -126,16 +142,10 @@ public class IBoardService implements BoardService {
 	public List<String[]> selectTagCount() throws Exception {
 		return dao.selectTagCount();
 	}
-	
-	
 
 	@Override
-	public List<FollowInfo> toFeed(String id) throws Exception {
-		
-		return dao.toFeed(id);
+	public List<int[]> myBookmark(String id) throws Exception {
+		return dao.myBookmark(id);
 	}
-
-	
-	
 	
 }

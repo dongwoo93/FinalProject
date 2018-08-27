@@ -1,4 +1,48 @@
+	function follow(id1, id2) {
+		   var id = id1; 
+		   var targetId = id2; 
+		   $.ajax({ 
+		      url : "follow.do", 
+		      type : "post", 
+		      data : { 
+		         id : id, 
+		         targetId : targetId, 
+		      }, 
+		      success : function(resp) { 
+		         $("#cancelFollow").show(); 
+		         $("#follow").hide(); 
+		          
+		      }, 
+		      error : function() { 
+		         console.log("에러 발생!"); 
+		         } 
+		      }) 
+		} 
+		 
+		function unfollow(id1, id2) {
+		   var id = id1; 
+		   var targetId = id2; 
+		   $.ajax({ 
+		      url : "deletefollow.do", 
+		      type : "post", 
+		      data : { 
+		         id : id, 
+		         targetId : targetId, 
+		      }, 
+		      success : function(resp) { 
+		         $("#follow").show(); 
+		         $("#cancelFollow").hide(); 
+		          
+		      }, 
+		      error : function() { 
+		         console.log("에러 발생!"); 
+		         } 
+		      }) 
+		} 
+
 $(document).ready(function() {
+
+	
 	$("#logout").click(function() {
 		$(location).attr("href", "logout.do");
 	})
@@ -36,7 +80,7 @@ $(document).ready(function() {
 		})*/
 
 	$("#toMy").click(function() {
-		$(location).attr("href", "profile.member");
+		$(location).attr("href", "profile.member?cat=0");
 	})
 
 	$("#goNext").click(function() {
@@ -90,7 +134,14 @@ $(document).ready(function() {
 					$("#carousel-next").show();
 				}
 				$("#modalid").text(data[0].id);	        	   
-				$("#modalcontents").html(data[0].contents);
+				var txt = data[0].contents;
+					var regex = /(#[^#\s,;]+)/gi  ;  
+					var newtxt;
+					if(txt != null) {
+						newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+					}
+	         
+               $("#modalcontents").html(newtxt);
 				$("#seq").val(data[0].board_seq);
 				 $("#likeit").val(data[0].board_seq);
 			        $("#likecancel").val(data[0].board_seq); 
@@ -107,8 +158,14 @@ $(document).ready(function() {
 				}
 				    
                 $(".commentline").remove();        
-                for(var i =0; i<data[2].length; i++){           
-              	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>"
+                for(var i =0; i<data[2].length; i++){       
+                	
+                 	
+              	  var txt = data[2][i].comment_contents;   
+                    var regex = /(#[^#\s,;]+)/gi  ;            
+                    var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");        
+                	  
+              	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
               			 +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>");     
                 }
 
@@ -184,11 +241,19 @@ $(document).ready(function() {
 					$("#carousel-prev").show();
 					$("#carousel-next").show();
 				}
-				$("#modalid").text(data[0].id);	        	       
-				$("#modalcontents").html(data[0].contents);
+				$("#modalid").text(data[0].id);	 
+				var txt = data[0].contents;
+				var regex = /(#[^#\s,;]+)/gi;
+				var newtxt;
+				if(txt != null) {
+					newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+				}
+	          
+               $("#modalcontents").html(newtxt);   
+			
 				$("#seq").val(data[0].board_seq);   
 				 $("#likeit").val(data[0].board_seq);
-			        $("#likecancel").val(data[0].board_seq); 
+			        $("#likecancel").val(data[0].board_seq);   
 			        $("#mark").val(data[0].board_seq);
 			        $("#markcancel").val(data[0].board_seq);  
 				$("#modalid2").text(data[0].id);	 
@@ -202,8 +267,13 @@ $(document).ready(function() {
 				}
 				   
                 $(".commentline").remove();       
-                for(var i =0; i<data[2].length; i++){                
-              	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+data[2][i].comment_contents+"</div></li></ul>"
+                for(var i =0; i<data[2].length; i++){  
+                	
+                	  var txt = data[2][i].comment_contents;   
+                      var regex = /(#[^#\s,;]+)/gi  ;            
+                      var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                	
+              	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
               			 +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>");      
                 }
                    
@@ -516,3 +586,4 @@ function modComment(e) {
 	
  
 	   
+  

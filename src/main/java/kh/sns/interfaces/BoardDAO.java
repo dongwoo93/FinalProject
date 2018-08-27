@@ -10,7 +10,7 @@ import kh.sns.dto.FollowInfo;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
-	public List<FollowInfo> toFeed(String id) throws Exception;
+	
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
 	public int deleteBoard(int seq) throws Exception;
@@ -27,6 +27,7 @@ public interface BoardDAO {
 	// search
 	public List<BoardDTO> search(String keyword);
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
+	public List<String[]> getTag(String keyword) throws Exception;
 	
 	//oneBoard
 	public BoardDTO oneBoard(String board_seq) throws Exception;
@@ -35,4 +36,7 @@ public interface BoardDAO {
 	public List<BoardDTO> getAllBoard() throws Exception;
 	public List<Board_MediaDTO> getAllBoard2() throws Exception;
 	public List<String[]> selectTagCount() throws Exception;
+	
+	// my_aticle_bookmark
+	public List<int[]> myBookmark(String id) throws Exception;
 }

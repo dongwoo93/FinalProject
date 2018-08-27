@@ -48,6 +48,11 @@ public class IProfileService implements ProfileService {
 	public List<Profile_ImageDTO> selectProfileImage(String id) throws Exception {
 		return pdao.selectProfileImage(id);
 	}
+	
+	@Override
+	public String selectOneProfileImage(String id) throws Exception {
+		return pdao.selectOneProfileImage(id);
+	}
 
 	@Override
 	public int insertProfileImage(Profile_ImageDTO dto) throws Exception {
@@ -71,7 +76,7 @@ public class IProfileService implements ProfileService {
 	}
 
 	@Override
-	public List<Profile_ImageDTO> getPic(String id) throws Exception {
+	public String getPic(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return pdao.getPic(id);
 	}
@@ -81,6 +86,8 @@ public class IProfileService implements ProfileService {
 		// TODO Auto-generated method stub
 		return pdao.selectIntro(id);
 	}
+
+	
 
 	
 

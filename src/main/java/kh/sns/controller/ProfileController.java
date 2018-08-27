@@ -3,9 +3,7 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,17 +12,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
-import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -36,7 +33,7 @@ public class ProfileController {
 	
 	/*======*/
 	@RequestMapping("/profile.member")
-	public ModelAndView editProfile(HttpSession session, HttpServletResponse response) throws Exception {
+	public ModelAndView editProfile(HttpSession session, HttpServletResponse response, String cat) throws Exception {
 
 		ModelAndView mav = new ModelAndView();
 
@@ -45,20 +42,22 @@ public class ProfileController {
 			System.out.println("currentLoginId: " + memberId);
 			MemberDTO member = memberService.getOneMember(memberId);
 			ProfileDTO profile = profileService.getOneProfile(memberId);
-			List<Profile_ImageDTO> profile_image = new ArrayList<>();
+			String myImg = null;
 			MemberBusinessDTO memberBiz = null;
 			try {
 				
-				profile_image = profileService.getPic(memberId);
+				myImg = profileService.getPic(memberId);
 				memberBiz = mBizService.selectAnMemberBiz(memberId);
 			} catch(IndexOutOfBoundsException e) {
 				System.err.println("This is not business account!!");
 			}
 			
+			
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
 			mav.addObject("memberBiz", memberBiz);
-			mav.addObject("profile_pic", profile_image.get(0).getSystem_file_name());
+			mav.addObject("profile_pic", myImg);
+			mav.addObject("category", cat);
 			mav.setViewName("mypage2.jsp");
 
 		} else {

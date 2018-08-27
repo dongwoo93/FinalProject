@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/main.css">
 <script src="resources/js/main.js"></script>
 <title>SoicalWired</title>
-
+     
 <script>
    if(${sessionScope.loginId != null}) {
       $(location).attr("href", "feed.bo");
@@ -22,7 +22,7 @@
 </script>
 </head>
 <body>
-
+ 
 
 
 <!-- <div id="formWrapper"> -->
@@ -63,6 +63,7 @@
             
             
          </div>
+         
          
          <div class="form-item">
          <p class="" style="font-weight:bold;"><a href="findPass.jsp" ><small>Forgot Password ?</small></a></p>   

@@ -177,6 +177,7 @@
     	})
     	
     })
+    
     </script>
     
     
@@ -208,33 +209,78 @@
 </c:if>    
 	<div class="py-5">
 		<div class="container mywrap">
-		<br>    
-			<div class="row"> 
-				<div class="col-4">
-				<img class="rounded-circle" alt="Cinque Terre" width="40" height="35" src="AttachedMedia/${profile_pic}">
+		<br>         
+			<div class="row">        
+				<div class="col-4">                            
+				<img class="rounded-circle" alt='profile' width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
 								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">
 									<span class="badge badge-pill badge-warning">biz</span>
 								</c:if>
 					<ul class="nav nav-pills flex-column">
-						<li class="nav-item"><a href="#"
-							class="active nav-link mp " data-toggle="pill"
-							data-target="#profileTab" id="navi">프로필 편집</a></li>
-						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a></li>
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 0}">
+						<a href="#" class="nav-link mp " data-toggle="pill" data-target="#profileTab" id="navi">프로필 편집</a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="active nav-link mp " data-toggle="pill" data-target="#profileTab" id="navi">프로필 편집</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
+						
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 1}">
+						<a href="#" class="nav-link mp " data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="active nav-link mp " data-toggle="pill" data-target="#passwordTab" id="navi">비밀번호 변경</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
 <!-- 						<li class="nav-item"><a href="#" class="nav-link mp text-muted" -->
 <!-- 							data-toggle="pill" data-target="#tabthree" id="navi">허가된 앱</a></li> -->
-						<li class="nav-item"><a href="#" class="nav-link mp "
-							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a></li>
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 2}">
+						<a href="#" class="nav-link mp "
+							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="active nav-link mp "
+							data-toggle="pill" data-target="#emailTab" id="navi">이메일 및 SMS</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
+						
 <!-- 						<li class="nav-item"><a class="nav-link mp text-muted" href="#" -->
 <!-- 							data-toggle="pill" data-target="#tabfive" id="navi">연락처 관리</a></li> -->
-						<li class="nav-item"><a class="nav-link mp " href="#"
-							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a></li>
-							
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 3}">
+						<a class="nav-link mp " href="#"
+							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a>
+						</c:when>
+						<c:otherwise>
+						<a class="active nav-link mp " href="#"
+							data-toggle="pill" data-target="#privacyTab" id="navi" >공개 범위 및 보안</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
+						
 						<c:if test="${ memberBiz ne null }">
-							<li class="nav-item"><a class="nav-link mp " href="#"
-								data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a></li>
+						<li class="nav-item">
+						<c:choose>
+						<c:when test="${category != 4}">
+							<a class="nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
+						</c:when>
+						<c:otherwise>
+							<a class="active nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
+						</c:otherwise>
+						</c:choose>
+						</li>
 						</c:if>
 						
 					</ul>
@@ -246,7 +292,15 @@
 				
 				<div class="col-8" id="info">
 					<div class="tab-content">
+					<c:choose>
+						<c:when test="${category != 0}">
+						<div class="tab-pane fade" id="profileTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
 						<div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 						<br>
 							<!-- profile form 시작 -->
 							<h3 class="text-center" style="font-weight:bold;">프로필 편집</h3>
@@ -326,8 +380,15 @@
 							<!-- profile form 끝 -->
 						</div>
 						
-						
+						<c:choose>
+						<c:when test="${category != 1}">
 						<div class="tab-pane fade" id="passwordTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="passwordTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 							<h3 class="text-center" style="font-weight:bold;">비밀번호 변경</h3>
 							<div class="form-group">
 								<form action='passwordChangeProc.member' method=post id=pwdfrm>
@@ -372,8 +433,15 @@
 						</div>
 						<!-- -- -->
 						
-						
+						<c:choose>
+						<c:when test="${category != 2}">
 						<div class="tab-pane fade" id="emailTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="emailTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 							<h2 class="" style="font-weight:bold;">받아보기:</h2><br>
 							 <div class="form-check">
 						        <label class="form-check-label">
@@ -429,8 +497,15 @@
 								
 <!-- 							</div> -->
 <!-- 						</div> -->
-						
+						<c:choose>
+						<c:when test="${category != 3}">
 						<div class="tab-pane fade" id="privacyTab" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="privacyTab" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+						
 							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
 							<br><div class="form-check">&nbsp;&nbsp;
 						        <label class="form-check-label">
@@ -509,10 +584,19 @@
 						</div>
 						
 						<c:if test="${ memberBiz ne null }">
-							<div class="tab-pane fade" id="bizProfile" role="tabpanel">
+						<c:choose>
+						<c:when test="${category != 4}">
+						<div class="tab-pane fade" id="bizProfile" role="tabpanel">
+						</c:when>
+						<c:otherwise>
+						<div class="tab-pane fade show active" id="bizProfile" role="tabpanel">
+						</c:otherwise>
+						</c:choose>
+							
 
 								<!-- business form 시작 -->
 							<h3 class="text-center" style="font-weight:bold;">비즈니스 프로필 편집</h3>
+							<br>
 							<small>비즈니스 도구에 오신 것을 환영합니다. 고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. 게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.
 							<br><br>비즈니스 프로필에 입력된 정보는 일반 프로필 정보와는 별도로 취급됩니다.</small>
 							<hr>
@@ -535,7 +619,7 @@
 									<div id='duplResultArea'></div>
 								</div>						
 							<hr>
-							 <input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
+							 &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
 							<strong style="font-weight:bold;">타임라인 광고에서 프로필 페이지에서 불허</strong><br>
 						     <small>타임라인 광고에서 프로필 링크를 불허합니다(?) 비공개 계정 설정과는 다르며 공개 계정인 경우 프로필 페이지로 접속할 수 있습니다.</small>
 				
@@ -566,6 +650,7 @@
 		</div>
 		<br>
 	</div>
+	
 	
 													<div class="modal">
 													  <div class="modal-dialog" role="document">

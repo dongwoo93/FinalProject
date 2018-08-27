@@ -42,10 +42,80 @@
 
 
 <body>
-	
+<script>
+$(function() {
+
+    var searchResult = [];
+
+    $("#searchform").autocomplete({
+    	source: function( request, response ) {
+            $.ajax({
+            	type: 'post',
+            	dataType: "json",
+              url: "searchAccount.do",
+              data: {
+                term: request.term
+              },
+              success: function(data) {
+            	  console.log(data);
+            	  response(
+            			  $.map(data, function(item) {
+            				  
+            					  return {
+                        			  label: item.id,
+                        			  value: item.id,
+                        			  link: item.link,
+                        			  name: item.name,
+                        			  img: item.img,
+                        			  tag: item.tags,
+                        			  count: item.count,
+                        			  category : item.category
+                        		  }
+
+            	  })
+            	  );
+            	  
+                
+                }
+            });
+
+          },
+        select: function(event, ui) {
+            console.log(ui.item);
+            if (ui.item && ui.item.value){
+                ui.item.value="";
+            }
+            window.location = ui.item.link;
+        },
+
+        focus: function(event, ui) {
+            return false;
+
+            //event.preventDefault();
+
+        }
+
+    })
+    .autocomplete("instance")._renderItem = function(div, item) {
+    	if(item.category == "People") {
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    	}else if(item.category == "Tag") {
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
+    	}
+    	
+    };
+    
+    
+    
+    
+
+});
+</script>
 
 
- 
+
+
+ <span style="color: black;"></span>
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
             <div class="container" id="navcontainer">
@@ -53,7 +123,7 @@
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
-                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색어를 입력하세요">
                 </form>
               </div>
               <div id="nav-icons">
@@ -76,9 +146,9 @@
           <i class="far fa-user nav-icon"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}">내 계정</a>
-          <a class="dropdown-item" href="profile.member">프로필 편집</a>
-          <a class="dropdown-item" href="#">나의 게시판</a>
+          <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a>
+          <a class="dropdown-item" href="profile.member?cat=0">프로필 편집</a>
+          <a class="dropdown-item" href="calendar.bo">나의 게시판</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="logout.do">로그아웃</a>
         </div>
