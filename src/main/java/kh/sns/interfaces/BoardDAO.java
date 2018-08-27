@@ -10,6 +10,7 @@ import kh.sns.dto.FollowInfo;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
+	public List<BoardDTO> getFeed(String id, int start, int end);	// 범위로 읽어들이기
 	
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
