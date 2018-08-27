@@ -166,6 +166,22 @@ public class ProfileController {
         response.getWriter().close();
 	}
 	
+	@RequestMapping("/deleteImg.profile")
+	public void deleteProfileImage(HttpServletResponse response, Profile_ImageDTO dto, HttpSession seesion) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		
+		int deleteImg = profileService.deleteProfileImage(dto.getSystem_file_name());
+
+		if(deleteImg > 0) {
+
+		}else {
+			response.getWriter().print("삭제 실패");
+		}
+		
+		response.getWriter().flush();
+        response.getWriter().close();
+	}
+	
 	// 최초 1회 변경입니다.
 	@RequestMapping("/changeBizAccount.profile")
 	public ModelAndView changeBizAccount(HttpSession session, HttpServletResponse response) throws Exception {
