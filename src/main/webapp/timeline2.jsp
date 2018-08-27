@@ -1028,17 +1028,16 @@
 			                success: function(response) {
 			                	$("#onlinecount").text(response[0].length);
 			                	$("#offlinecount").text(response[1].length);
-			                	for(var i=0;i<response.length;i++){
+			                	for(var i=0;i<2;i++){
 			                		if(i==0){
 			                			for(var k=0;k<response[0].length;k++){
-			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
+			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[2][k]+"' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
 			                			}
 			       
 			                		}
 			                		else{
 			                			for(var k=0;k<response[1].length;k++){
-			                				console.log(response[1][k]);
-			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
+			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[3][k]+"' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
 			                			}
 			                			
 			                		}
@@ -1150,8 +1149,9 @@
 			                data: {nickname: nickname}, 
 			                success: function(response) {
 			                	$('.chatbox').show();
-			                	$("#userId").val(response);
-			                	setRead(response);
+			                	$("#userId").val(response[0]);
+			                	$(".chatbox-avatar a img").attr("src","AttachedMedia/"+response[1]);
+			                	setRead(response[0]);
 			                	var receiver = $("#userId").val();
 			                	$.ajax({
 					                url: "selectmessenger.do",
