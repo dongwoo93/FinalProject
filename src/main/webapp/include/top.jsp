@@ -58,7 +58,6 @@ $(function() {
             });
 
           },
-        minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
             if (ui.item && ui.item.value){
@@ -68,7 +67,6 @@ $(function() {
         },
 
         focus: function(event, ui) {
-
             return false;
 
             //event.preventDefault();
@@ -78,9 +76,9 @@ $(function() {
     })
     .autocomplete("instance")._renderItem = function(div, item) {
     	if(item.category == "People") {
-    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 18px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
     	}else if(item.category == "Tag") {
-    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 18px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
     	}
     	
     };
@@ -127,7 +125,7 @@ $(function() {
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a>
-          <a class="dropdown-item" href="profile.member">프로필 편집</a>
+          <a class="dropdown-item" href="profile.member?cat=0">프로필 편집</a>
           <a class="dropdown-item" href="calendar.bo">나의 게시판</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="logout.do">로그아웃</a>
