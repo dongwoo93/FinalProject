@@ -7,8 +7,8 @@
 <script>
 	
 	$(function () {
-  
-		var ws = new WebSocket("ws://192.168.20.13/websocket?loginId=${sessionScope.loginId}");
+
+		var ws = new WebSocket("ws://192.168.20.24/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
@@ -20,7 +20,7 @@
 			var receivernickname = $("#dmnickname").text();
 			var receiverId = $("#userId").val();
 			if(receiverId == sender){
-		    	$("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
+		    	$("#message").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
 		    	var objDiv = document.getElementById("messagebox");
 		    	objDiv.scrollTop = objDiv.scrollHeight;
 		    	setRead(receiverId);
@@ -1028,17 +1028,16 @@
 			                success: function(response) {
 			                	$("#onlinecount").text(response[0].length);
 			                	$("#offlinecount").text(response[1].length);
-			                	for(var i=0;i<response.length;i++){
+			                	for(var i=0;i<2;i++){
 			                		if(i==0){
 			                			for(var k=0;k<response[0].length;k++){
-			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
+			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[2][k]+"' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
 			                			}
 			       
 			                		}
 			                		else{
 			                			for(var k=0;k<response[1].length;k++){
-			                				console.log(response[1][k]);
-			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
+			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[3][k]+"' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
 			                			}
 			                			
 			                		}
@@ -1150,8 +1149,9 @@
 			                data: {nickname: nickname}, 
 			                success: function(response) {
 			                	$('.chatbox').show();
-			                	$("#userId").val(response);
-			                	setRead(response);
+			                	$("#userId").val(response[0]);
+			                	$(".chatbox-avatar a img").attr("src","AttachedMedia/"+response[1]);
+			                	setRead(response[0]);
 			                	var receiver = $("#userId").val();
 			                	$.ajax({
 					                url: "selectmessenger.do",
@@ -1273,35 +1273,35 @@
     </div>
     
     <div class="attachment-panel" style='overflow-x:scroll; white-space:nowrap'>
-    	<img src="/resources/images/imoticon/1.png" class="imoticon">
-    	<img src="/resources/images/imoticon/2.png" class="imoticon">
-    	<img src="/resources/images/imoticon/3.png" class="imoticon">
-    	<img src="/resources/images/imoticon/4.png" class="imoticon">
-    	<img src="/resources/images/imoticon/5.png" class="imoticon">
-    	<img src="/resources/images/imoticon/6.png" class="imoticon">
-    	<img src="/resources/images/imoticon/7.png" class="imoticon">
-    	<img src="/resources/images/imoticon/8.png" class="imoticon">
-    	<img src="/resources/images/imoticon/9.png" class="imoticon">
-    	<img src="/resources/images/imoticon/10.png" class="imoticon">
-    	<img src="/resources/images/imoticon/11.png" class="imoticon">
-    	<img src="/resources/images/imoticon/12.png" class="imoticon">
-    	<img src="/resources/images/imoticon/13.png" class="imoticon">
-    	<img src="/resources/images/imoticon/14.png" class="imoticon">
-    	<img src="/resources/images/imoticon/15.png" class="imoticon">
-    	<img src="/resources/images/imoticon/16.png" class="imoticon">
-    	<img src="/resources/images/imoticon/17.png" class="imoticon">
-    	<img src="/resources/images/imoticon/18.png" class="imoticon">
-    	<img src="/resources/images/imoticon/19.png" class="imoticon">
-    	<img src="/resources/images/imoticon/20.png" class="imoticon">
-    	<img src="/resources/images/imoticon/21.png" class="imoticon">
-    	<img src="/resources/images/imoticon/22.png" class="imoticon">
-    	<img src="/resources/images/imoticon/23.png" class="imoticon">
-    	<img src="/resources/images/imoticon/24.png" class="imoticon">
-    	<img src="/resources/images/imoticon/25.png" class="imoticon">
-    	<img src="/resources/images/imoticon/26.png" class="imoticon">
-    	<img src="/resources/images/imoticon/27.png" class="imoticon">
+    	<img src="resources/images/imoticon/1.png" class="imoticon">
+    	<img src="resources/images/imoticon/2.png" class="imoticon">
+    	<img src="resources/images/imoticon/3.png" class="imoticon">
+    	<img src="resources/images/imoticon/4.png" class="imoticon">
+    	<img src="resources/images/imoticon/5.png" class="imoticon">
+    	<img src="resources/images/imoticon/6.png" class="imoticon">
+    	<img src="resources/images/imoticon/7.png" class="imoticon">
+    	<img src="resources/images/imoticon/8.png" class="imoticon">
+    	<img src="resources/images/imoticon/9.png" class="imoticon">
+    	<img src="resources/images/imoticon/10.png" class="imoticon">
+    	<img src="resources/images/imoticon/11.png" class="imoticon">
+    	<img src="resources/images/imoticon/12.png" class="imoticon">
+    	<img src="resources/images/imoticon/13.png" class="imoticon">
+    	<img src="resources/images/imoticon/14.png" class="imoticon">
+    	<img src="resources/images/imoticon/15.png" class="imoticon">
+    	<img src="resources/images/imoticon/16.png" class="imoticon">
+    	<img src="resources/images/imoticon/17.png" class="imoticon">
+    	<img src="resources/images/imoticon/18.png" class="imoticon">
+    	<img src="resources/images/imoticon/19.png" class="imoticon">
+    	<img src="resources/images/imoticon/20.png" class="imoticon">
+    	<img src="resources/images/imoticon/21.png" class="imoticon">
+    	<img src="resources/images/imoticon/22.png" class="imoticon">
+    	<img src="resources/images/imoticon/23.png" class="imoticon">
+    	<img src="resources/images/imoticon/24.png" class="imoticon">
+    	<img src="resources/images/imoticon/25.png" class="imoticon">
+    	<img src="resources/images/imoticon/26.png" class="imoticon">
+    	<img src="resources/images/imoticon/27.png" class="imoticon">
     </div>
-  </div>
+  </div>  
 </div>
 
 	<div class="chatbox-holder row" style='display:none;' id='alertmessenger'>
@@ -1321,7 +1321,7 @@ $(function(){
 	    $(this).closest('.chatbox').hide();
 	    $("#userId").val("");
 	    $("#dmnickname").text("");
-	  });
+	  });   
 });
 </script>
                       
