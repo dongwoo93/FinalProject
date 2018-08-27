@@ -10,10 +10,12 @@ import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardBusinessDAO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.MemberBusinessDAO;
+import kh.sns.interfaces.ProfileDAO;
 
 @Service
 public class IBoardService implements BoardService {
@@ -21,6 +23,7 @@ public class IBoardService implements BoardService {
 	@Autowired	private BoardDAO dao;
 	@Autowired	private BoardBusinessDAO bbdao;
 	@Autowired	private MemberBusinessDAO mbdao;
+	@Autowired	private ProfileDAO proedao;
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
@@ -147,5 +150,5 @@ public class IBoardService implements BoardService {
 	public List<int[]> myBookmark(String id) throws Exception {
 		return dao.myBookmark(id);
 	}
-	
+
 }

@@ -25,5 +25,6 @@ public interface ProfileDAO {
 	
 	// INTRODUCE(소개)
 	public List<ProfileDTO> selectIntro(String id) throws Exception;
+
  
 }

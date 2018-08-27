@@ -24,4 +24,5 @@ public interface ProfileService {
 	
 	// INTRODUCE(소개)
 	public List<ProfileDTO> selectIntro(String id) throws Exception; 
+
 }

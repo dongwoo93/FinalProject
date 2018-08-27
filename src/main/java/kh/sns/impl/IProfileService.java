@@ -87,8 +87,4 @@ public class IProfileService implements ProfileService {
 		return pdao.selectIntro(id);
 	}
 
-	
-
-	
-
 }

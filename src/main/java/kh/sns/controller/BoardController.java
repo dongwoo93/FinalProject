@@ -352,9 +352,9 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
-		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<BoardDTO> result = boardService.search(search);					// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();					// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);				// 좋아요
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
@@ -386,7 +386,7 @@ public class BoardController {
 		mav.addObject("result", result);		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
-		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
 		mav.setViewName("search2.jsp");
 		return mav;

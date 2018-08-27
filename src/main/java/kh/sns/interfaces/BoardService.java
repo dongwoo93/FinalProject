@@ -10,6 +10,7 @@ import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.Board_TagsDTO;
 
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 	
 public interface BoardService {
 	
@@ -29,7 +30,6 @@ public interface BoardService {
 	public List<BoardDTO> search(String keyword) throws Exception;
 	public List<Board_MediaDTO> search2(int seq) throws Exception;
 	public List<String[]> getTag(String keyword) throws Exception;
-	
 	
 	//board_comment
 	

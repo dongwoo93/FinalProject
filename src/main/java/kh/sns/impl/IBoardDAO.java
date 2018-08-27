@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
