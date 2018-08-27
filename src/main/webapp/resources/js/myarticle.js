@@ -85,14 +85,15 @@ $(document).ready(function() {
 
 	$("#goNext").click(function() {
 	
-		
+		   
 		$(".first").remove();
 		$("#firstli").attr('class', 'active');
 		$("#firstItem").attr('class', 'carousel-item active');
 		if($("#carousel-indicators li:nth-child(2)").length) {
 			$(".element").remove();
-		}
+		}  	
 		var seq = $("#next").val();
+		
 	    $("#likeit").val(seq);
         $("#likecancel").val(seq); 
         $("#mark").val(seq);
@@ -136,7 +137,7 @@ $(document).ready(function() {
 				$("#modalid").text(data[0].id);	        	   
 				var txt = data[0].contents;
 					var regex = /(#[^#\s,;]+)/gi  ;  
-					var newtxt;
+					var newtxt = data[0].contents;
 					if(txt != null) {
 						newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
 					}
@@ -203,7 +204,7 @@ $(document).ready(function() {
 			$(".element").remove();
 		}
 		var seq = $("#prev").val();
-	   
+		
 		var prevSeq;
 		var nextSeq;
 		for(var i =0; i<list.length; i++) {
@@ -244,7 +245,7 @@ $(document).ready(function() {
 				$("#modalid").text(data[0].id);	 
 				var txt = data[0].contents;
 				var regex = /(#[^#\s,;]+)/gi;
-				var newtxt;
+				var newtxt = data[0].contents;     
 				if(txt != null) {
 					newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
 				}
@@ -303,8 +304,8 @@ $(document).ready(function() {
 	})
 	
 	$("#delete").click(function(){
-		var seq = document.getElementById("hidden").value;
-		location.href = "boardDelete.bo?seq="+seq;
+		var seq = document.getElementById("hidden").value;  
+		location.href = "boardDelete.bo?seq="+seq+"&cat=1";   
 
 	})
 
@@ -336,7 +337,7 @@ $(document).ready(function() {
 		});
 	})
 	
-	$("#savebtn").click(function() {
+	$("#savebtn").click(function() {  
 		if($('#inputimg').get(0).files.length != 0) {
 			var formData = new FormData($("#fileForm")[0]);
 			$.ajax({
@@ -582,8 +583,5 @@ function modComment(e) {
   
 }
 
-
-	
- 
 	   
   
