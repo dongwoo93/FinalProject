@@ -7,8 +7,8 @@
 <script>
 	
 	$(function () {
-
-		var ws = new WebSocket("ws://192.168.120.102/websocket?loginId=${sessionScope.loginId}");
+  
+		var ws = new WebSocket("ws://192.168.20.13/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
@@ -759,7 +759,7 @@
 	                                      alert("댓글을 입력해주세요");
 	                                   }
 	                                   else {  
-	                                      $.ajax({ 
+	                                       $.ajax({ 
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
@@ -767,13 +767,13 @@
 	                                            	  $('#comment${tmp.board_seq}').html("");
 	                                              /*  $("#comment${tmp.board_seq}").val("");   */  
 	                                              var regex = /(#[^#\s,;<>.]+)/gi;            
-                                                  // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
-                                                   var newtxt = "<span class=fugue>" + text.replace(
+                                               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+                                                var newtxt = "<span class=fugue>" + text.replace(
 	                              			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                          												"</a><span class=fugue>") + "</span>";
-                            						newtxt += "<kz></kz>";
-                                            
-                                                   
+                       												"</a><span class=fugue>") + "</span>";
+                         						newtxt += "<kz></kz>";
+                                            	
+                                                
 	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
@@ -817,13 +817,13 @@
 	                                            	   
 	                                            	   
 	                                            	// =================== 복붙 =================== 
-	                                               })
+	                                               });
 	                                               
 	                                               $("#commenttxt" + seq).keypress(function(e){
 														if(e.keyCode === 13) {
 														modComment(this);
 													 }
-													})
+													});
 	                                               
 	                            				  }
 		                                     }); //ajax 
