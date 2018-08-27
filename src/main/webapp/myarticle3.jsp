@@ -11,6 +11,84 @@
 </style>
 <script src="resources/js/myarticle.js"></script>
 <script>
+
+	function getCaretPosition(editableDiv) {
+	    var caretPos = 0,
+	        sel, range;
+	    if (window.getSelection) {
+	        sel = window.getSelection();
+	        if (sel.rangeCount) {
+	            range = sel.getRangeAt(0);
+	
+	            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+	            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
+	                caretPos = range.endOffset;
+	                // console.log("caretPos: " + caretPos)
+	
+	
+	                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+	                var isEqualOrLower = false;
+	                while (i >= 0) {
+	                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
+	                        $(range.commonAncestorContainer).text()) {
+	                        i--;
+	                        continue;
+	                    } else {
+	                        while (i >= 0) {
+	                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+	                            // console.log($impl.text());
+	                            caretPos += $impl.text().length
+	                            i--;
+	                        }
+	                        break;
+	                    }
+	                }
+	
+	            }
+	        }
+	
+	    } else if (document.selection && document.selection.createRange) {
+	        range = document.selection.createRange();
+	        if (range.parentElement() == editableDiv) {
+	
+	            var tempEl = document.createElement("span");
+	            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+	            var tempRange = range.duplicate();
+	            tempRange.moveToElementText(tempEl);
+	            tempRange.setEndPoint("EndToEnd", range);
+	            caretPos = tempRange.text.length;
+	        }
+	    }
+	
+	    return caretPos;
+	}
+	
+	var update = function () {
+	    $('#caretposition').val(getCaretPosition(this));
+		    console.log(getCaretPosition(this))
+	    console.log(this)
+	};	
+	
+	function placeCaretAtEnd(el) {
+	    el.focus();
+	    if (typeof window.getSelection != "undefined"
+	            && typeof document.createRange != "undefined") {
+	        var range = document.createRange();
+	        range.selectNodeContents(el);
+	        range.collapse(false);
+	        var sel = window.getSelection();
+	        sel.removeAllRanges();
+	        sel.addRange(range);
+	    } else if (typeof document.body.createTextRange != "undefined") {
+	        var textRange = document.body.createTextRange();
+	        textRange.moveToElementText(el);
+	        textRange.collapse(false);
+	        textRange.select();
+	    }
+	}
+
+
+
 $(document).ready(function(){
 
     $("#cancelFollow").click(function() {
@@ -355,11 +433,12 @@ $(document).ready(function(){
                                  
 //                                   $("#modalcontents").text(data.contents);  
 								var txt = data[0].contents;
-  								var regex = /(#[^#\s,;]+)/gi  ; 
-  								var newtxt =data[0].contents;  
-  								if(txt != " ") {      
-  								  
-  									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+  								var regex = /(#[^#\s,;<>. ]+)/gi;
+  								var dataContent0 = data[0].contents; 
+  								var newtxt = "";  
+  								if(txt != " ") {        								  
+  									 newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><span class=text-danger>" 
+  											 + "$1" + "</span><span class=fugue>") + "</span>";
   								}        
 					          
                                $("#modalcontents").html(newtxt);
@@ -387,8 +466,9 @@ $(document).ready(function(){
                                   $(".commentline").remove();          
                                   for(var i =0; i<data[2].length; i++){ 
                                 	  var txt = data[2][i].comment_contents;   
-                                      var regex = /(#[^#\s,;]+)/gi  ;            
-                                      var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                                      var regex = /(#[^#\s,;<>. ]+)/gi;           
+                                      var newtxt = newtxt = "<span class=fugue>" + txt.replace(regex, "</span><span class=text-danger>" 
+   											 + "$1" + "</span><span class=fugue>") + "</span>";          
                                     
                                 	  
                                 	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='board.bo?id="+data[2][i].id+"&cat=1' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
@@ -553,26 +633,6 @@ $(document).ready(function(){
 					<input type=hidden id="caretposition" value="0">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 					<script>
 					
 				var globalThisCommentIsFocusedOnFirst = true;
@@ -602,8 +662,9 @@ $(document).ready(function(){
                                 /* $("#comment").val(""); */
                                 $("#comment").html("");
                                 
-                                var regex = /(#[^#\s,;]+)/gi  ;            
-                                var newtxt = comment_contents.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                                var regex = /(#[^#\s,;<>. ]+)/gi;            
+                                var newtxt = newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><span class=text-danger>" 
+											 + "$1" + "</span><span class=fugue>") + "</span>";          
                               
                                     
                                 
@@ -640,74 +701,16 @@ $(document).ready(function(){
                 		globalThisCommentIsFocusedOnFirst = true;
                 	}
                 })
-                
-                function getCaretPosition(editableDiv) {
-                    var caretPos = 0,
-                        sel, range;
-                    if (window.getSelection) {
-                        sel = window.getSelection();
-                        if (sel.rangeCount) {
-                            range = sel.getRangeAt(0);
-
-                            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
-                            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
-                                caretPos = range.endOffset;
-                                // console.log("caretPos: " + caretPos)
-
-
-                                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
-                                var isEqualOrLower = false;
-                                while (i >= 0) {
-                                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
-                                        $(range.commonAncestorContainer).text()) {
-                                        i--;
-                                        continue;
-                                    } else {
-                                        while (i >= 0) {
-                                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
-                                            // console.log($impl.text());
-                                            caretPos += $impl.text().length
-                                            i--;
-                                        }
-                                        break;
-                                    }
-                                }
-
-                            }
-                        }
-
-
-                    } else if (document.selection && document.selection.createRange) {
-                        range = document.selection.createRange();
-                        if (range.parentElement() == editableDiv) {
-
-                            var tempEl = document.createElement("span");
-                            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-                            var tempRange = range.duplicate();
-                            tempRange.moveToElementText(tempEl);
-                            tempRange.setEndPoint("EndToEnd", range);
-                            caretPos = tempRange.text.length;
-                        }
-                    }
-
-                    return caretPos;
-                }
-
-
-
-                 var update = function () {
-                    $('#caretposition').val(getCaretPosition(this));
-                };
-
 
                 $('#comment').on("mousedown mouseup keydown keyup", update);
-
+                $("div[id*='comment'].insertfield").keyup(makeupHashtag)
 
                 var map = {
                     16: false,
                     32: false
                 };
-                $("#comment").keyup(function (e) {
+                
+                function makeupHashtag (e) {
 
                     if ((e.keyCode === 32)) {
                         map[e.keyCode] = true;
@@ -744,20 +747,13 @@ $(document).ready(function(){
                             $('#comment').focusout();
                             $('#comment').focus();
                             if (parseInt($('#caretposition').val()) == $('#comment').text().length) {
-
+								
                             }
 
                         }
                     }
-                })
-                /* .keyup(function(e){   
-                                    if(e.keyCode === 32){   
-                                       map[e.keyCode] = false;             
-                   
-                                      }
-                                    console.log($('#comment').text().length);
-                   
-                                 }); */
+                }
+
                 /* ========================= editable div에 태그 적용 끝 ========================= */
 
                 </script>
