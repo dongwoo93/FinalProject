@@ -60,9 +60,9 @@ function follow(id1, id2, index) {
 
 		<div style="border: 0px solid black;">
 			<c:forEach var="follow" items="${result}" varStatus="status">
-				<div class="container">
+				<div class="container" style="width:40%">
 					<hr class="_5mToa">
-					<div class="profile-image">
+				
 						<img class="ml-3 mr-2 pic"
 							src="AttachedMedia/<c:out value='${profile_pic[follow.targetId]}'/>">
 						<a class="mt-6 idtxt"
@@ -80,7 +80,7 @@ function follow(id1, id2, index) {
 									style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
 							</c:when>
 
-
+    
 							<c:otherwise>
 								<div class="profile-edit-btn float-right mt-2 mr-2"
 									id="cancelFollow${status.index}"
@@ -91,7 +91,7 @@ function follow(id1, id2, index) {
 							</c:otherwise>
 						</c:choose>
 
-					</div>
+			
 					<hr class="_5mToa">
 				</div>
 				<script>
@@ -106,9 +106,9 @@ function follow(id1, id2, index) {
 
 		<div style="border: 0px solid black;">
 			<c:forEach var="follower" items="${result1}" varStatus="status">
-				<div class="container">
+				<div class="container" style="width:40%">
 					<hr class="_5mToa">
-
+				
 					<img class="ml-3 mr-2 pic"
 						src="AttachedMedia/<c:out value='${profile_pic[follower.id]}'/>">
 					<a class="mt-6 idtxt"
@@ -126,7 +126,7 @@ function follow(id1, id2, index) {
 								style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
 						</c:when>
 
-
+  
 						<c:otherwise>
 							<div class="profile-edit-btn float-right mt-2 mr-2"
 								id="cancelFollow${status.index}"
@@ -136,6 +136,7 @@ function follow(id1, id2, index) {
 								id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
 						</c:otherwise>
 					</c:choose>
+					 
 					<hr class="_5mToa">
 				</div>
 				<script>
