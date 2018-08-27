@@ -17,7 +17,29 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
 <script src="resources/js/top.js"></script>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+            url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
+            type: "get",
+            data: {id:"${sessionScope.loginId}"}, 
+            success: function(response) {
+            	if(response != 0){
+            		$("#totalreadcount").show();
+            		$("#totalreadcount").text(response);
+            	}
+            },
+            error: function() {
+                console.log("에러");
+            },
+            complete: function(){
+                console.log("AJAX완료");
+            } 
+        });
+	})
+</script>
 </head>
+
 
 <body>
 <script>
@@ -108,7 +130,7 @@ $(function() {
                 <ul class="navbar-nav">
                 
                  <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
+                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"></i><span id="totalreadcount" style='display:none;'></span></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
