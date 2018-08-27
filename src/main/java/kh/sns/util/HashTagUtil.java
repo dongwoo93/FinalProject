@@ -17,7 +17,7 @@ public class HashTagUtil {
 		// _ 는 태그에 포함되는것 같음
 		// Pattern p = Pattern.compile("\\#([0-9a-zA-Z가-힣_]*)");
 		Pattern p = Pattern.compile("#[^#\\s,;<>. ]+");	// 2018-08-24 프론트엔드 정규식과 통합
-		// /(#[^#\s,;<>. ]+)/gi;  
+		// /(#[^#\s,;<>. ]+)/gi;  이상한 공백문자가 포함됨 ' '
 		Matcher m = p.matcher(contents);
 		String extractHashTag = null;
 		
