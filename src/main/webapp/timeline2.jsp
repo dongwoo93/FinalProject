@@ -236,7 +236,7 @@
                   data: {board_seq:board_seq,comment_seq:comment_seq},
                   success : function(cnt) {
                 	console.log(cnt);    
-                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
+                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });    
                    if(cnt>2){ 
                        $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
                        else {
@@ -497,18 +497,18 @@
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-<!-- 								<div id="carousel-inner" class="carousel-inner"          -->
-<%-- 									style="height:${maxImgHeight[status.index]}px; max-height:700px"> --%>
-										<div id="carousel-inner" class="carousel-inner"         
+								</ul>  
+<!-- 								<div id="carousel-inner" class="carousel-inner "          -->
+<%-- 									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">   --%>
+										<div id="carousel-inner" class="carousel-inner"             
 									>  
-									<div id="firstItem" class="carousel-item active">      
+									<div id="firstItem" class="carousel-item active">        
 										<img class='boardimg'  width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
-											alt=''>  
+											alt='' >  
 									</div>
 									<c:forEach begin="1" var="media" 
-										items="${result2[status.index]}" varStatus="status3">
+										items="${result2[status.index]}" varStatus="status3">  
 										<div class="carousel-item" >
 											<img class='boardimg'  width='100%'  
 												src="AttachedMedia/${media.system_file_name}" alt="">
@@ -726,7 +726,7 @@
                                               var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
                                             
                                                    
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}&cat=1'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                            				  }
@@ -795,22 +795,22 @@
 				
 				
 
-				<!-- <script>
-				var slideIndex = 0;
-				carousel();
+				<script>
+// 				var slideIndex = 0; 
+// 				carousel();
  
-				function carousel() {
-				    var i;
-				    var x = $(".myslides");  
-				    for (i = 0; i < x.length; i++) {
-				      x[i].style.display = "none"; 
-				    }
-				    slideIndex++;
-				    if (slideIndex > x.length) {slideIndex = 1} 
-				    x[slideIndex-1].style.display = "block"; 
-				    setTimeout(carousel, 2000); 
-				}
-				</script> -->
+// 				function carousel() {
+// 				    var i;
+// 				    var x = $(".myslides");  
+// 				    for (i = 0; i < x.length; i++) {
+// 				      x[i].style.display = "none"; 
+// 				    }
+// 				    slideIndex++;
+// 				    if (slideIndex > x.length) {slideIndex = 1} 
+// 				    x[slideIndex-1].style.display = "block"; 
+// 				    setTimeout(carousel, 2000); 
+// 				}
+				</script>
 			
 				
 				

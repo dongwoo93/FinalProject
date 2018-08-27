@@ -825,6 +825,12 @@ ul {
 .pic{
 	width : 30px;
 	height : 30px;   
-}
+}  
 
-.myslides {display:none;}
+.myslides {display:none;}   
+  
+.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+    /* display: block; */
+    display: table-cell;
+    vertical-align: middle;
+}  
