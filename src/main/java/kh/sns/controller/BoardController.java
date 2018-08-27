@@ -699,7 +699,7 @@ public class BoardController {
 
 	}
 	@RequestMapping("/calendar.bo")
-	public String goCalendar(){
+	public String goCalendar(HttpSession session){
 		return "redirect:calendar.jsp";   
 	}
 
