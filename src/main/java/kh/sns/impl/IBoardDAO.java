@@ -26,52 +26,12 @@ import kh.sns.util.HashTagUtil;
 public class IBoardDAO implements BoardDAO  {
 
 	private static final String SAVE_PATH = "/upload";
-	private static final String PREFIX_URL = "/upload/";
+	private static final String PREFIX_URL = "/upload/"; 
 
 	@Autowired
 	private JdbcTemplate template;
 	
 	
-	@Override
-	public List<FollowInfo> toFeed(String id) throws Exception{
-		String sql = "select target_id from member_follow where id in(select target_id from member_follow where id= ?) and (target_id not in(?)) and (target_id not in (select target_id from member_follow where id= ?)) group by target_id order by count(target_id)";
-		return template.query(sql, new Object[] {id,id,id}, new RowMapper<FollowInfo>() {
-			
-			@Override
-			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-				FollowInfo followtmp = new FollowInfo();
-					followtmp.setId(rs.getString(1));
-					return followtmp;
-				}	
-			});
-		}
-	
-	
-	@Override
-	public List<FollowInfo> followerList(String id) throws Exception{
-		String sql = "select id from member_follow where target_id in(select target_id from member_follow where target_id=?)and (id not in(?))";
-		return template.query(sql, new Object[] {id,id}, new RowMapper<FollowInfo>() {
-			
-			@Override
-			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-				FollowInfo followtmp = new FollowInfo();
-				return new FollowInfo(rs.getString(1),"",rs.getString(1));
-				}	
-			});
-		}
-	
-
-	@Override
-	public List<FollowInfo> followList(String id) throws Exception{
-		String sql = "select target_id from member_follow where target_id in(select target_id from member_follow where id=?) and (target_id not in(?)) group by target_id order by count(target_id)";
-		return template.query(sql, new Object[] {id,id}, new RowMapper<FollowInfo>() {
-			
-			@Override
-			public FollowInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new FollowInfo("", rs.getString(1),"");
-				}	
-			});
-		}
 	
 
 	@Override
@@ -108,6 +68,7 @@ public class IBoardDAO implements BoardDAO  {
 	
 	@Override
 	public BoardDTO getBoardModal(String seq) throws Exception {
+		System.out.println(seq + " d에에에엑");  
 		String sql = "select * from board where board_seq=?";
 		
 		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
@@ -147,9 +108,10 @@ public class IBoardDAO implements BoardDAO  {
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags like '%'||?||'%')) or "
-				+ "(board_seq in (select board_seq from board_location where location_name like '%'||?||'%')) order by board_seq desc";
-		return template.query(sql, new Object[] {keyword, keyword}, new RowMapper<BoardDTO>() {
+		String sql = "select * from board where board_seq in (select board_seq from board_tags where tags=?)";
+		/*String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?)) or "
+				+ "(board_seq in (select board_seq from board_location where location_name=?)) order by board_seq desc";*/
+		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
 
 			@Override
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -181,6 +143,20 @@ public class IBoardDAO implements BoardDAO  {
 				media.setSystem_file_name(rs.getString(5));
 				return media;
 			}
+		});
+	}
+	
+	@Override
+	public List<String[]> getTag(String keyword) throws Exception {
+		String sql = "select bt.tags, COUNT(DISTINCT(b.board_seq)) from board b, board_tags bt where bt.tags like '%'||?||'%' and bt.board_seq = b.board_seq group by bt.tags";
+		return template.query(sql, new Object[] {keyword}, new RowMapper<String[]>() {
+
+			@Override
+			public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				String[] tmp = {rs.getString(1), rs.getString(2)};
+				return tmp;
+			}
+
 		});
 	}
 	

@@ -1,6 +1,5 @@
 package kh.sns.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -78,10 +76,10 @@ public class BoardController {
 			List<FollowInfo> follow_list = new ArrayList<>();
 			
 			List<Integer> maxImgHeight = new ArrayList<>();
-			String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+		
 			
 			try {
-				follow_list = boardService.toFeed(id);
+				follow_list = member_followService.toFeed(id);
 			} catch (Exception e1) {
 				
 				e1.printStackTrace();
@@ -109,7 +107,6 @@ public class BoardController {
 //					maxImgHeight.add((int)max);   
 //					System.out.println("max:" + max);     
 //				}
-//				
 				
 				
 				list1 = board_commentService.getFeedComment(id);
@@ -157,13 +154,15 @@ public class BoardController {
 			mav.addObject("commentresult",commentlist);
 			mav.addObject("profile_pic",getAllProfilePic);
 			mav.addObject("result3", follow_list);
+			mav.addObject("follow_size", follow_list.size()/5);
+			System.out.println(follow_list.size()/5); 
+			
 			mav.addObject("maxImgHeight",maxImgHeight);
 			mav.setViewName("timeline2.jsp");
 		
 			
 		return mav;
 	}
-
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
 		
@@ -172,7 +171,9 @@ public class BoardController {
 			List<BoardDTO> result = new ArrayList<>();
 			
 			boolean isBlock = member_blockService.isBlock(sessionid,id);
+			
 			boolean isFollow = member_followService.isFollow(sessionid,id);
+			
 			boolean isNotPublic = profileService.isNotPublic(id);
 			
 			String boardCount = boardService.boardCount(id);
@@ -221,6 +222,7 @@ public class BoardController {
 			mav.addObject("commentcount", commentcount); 
 			mav.addObject("isBlock", isBlock); 
 			mav.addObject("isFollow", isFollow);
+			
 			mav.addObject("isNotPublic", isNotPublic);  
 			mav.addObject("profileImg", profileImg);
 			mav.setViewName("myarticle3.jsp");
@@ -291,7 +293,8 @@ public class BoardController {
 		result3.add(maxwidth);//5
 		new Gson().toJson(result3,response.getWriter());
 
-	}
+	}   
+
 
 
 	@RequestMapping("/boardDelete.bo")
@@ -299,7 +302,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		int result = boardService.deleteBoard(seq);
 		String id = (String) session.getAttribute("loginId");
-		mav.setViewName("redirect:board.bo?id="+id);
+		mav.setViewName("redirect:board.bo?id="+id+"&cat=1");
 		return mav;	
 	}
 
@@ -322,7 +325,14 @@ public class BoardController {
 		
 		List<BoardDTO> result = boardService.search(search);		// 전체 글
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
-		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<Integer> mark = new ArrayList<>();
+        Map<Integer,String> mapmark = new HashMap<>();
+        mark = board_bookmarkService.searchMark(id);
+        for(int tmp : mark) {
+            mapmark.put(tmp, "y");
+         }
+		//////////////////////////////
 		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
 		
 		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
@@ -348,6 +358,7 @@ public class BoardController {
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("bookmark", mapmark);
 		mav.setViewName("search2.jsp");
 		return mav;
 	}
@@ -367,6 +378,13 @@ public class BoardController {
 			Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 			Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
+			List<Integer> mark = new ArrayList<>();
+	         Map<Integer,String> mapmark = new HashMap<>();
+	         mark = board_bookmarkService.searchMark(id);
+	         for(int tmp : mark) {
+	               mapmark.put(tmp, "y");
+	            }
+	         
 			// 최신글
 			if(cat.equals("1")) {
 				result = boardService.getAllBoard();
@@ -408,7 +426,7 @@ public class BoardController {
 			for(int[] list : result4) {
 				countlike.put(list[0], list[1]);
 			}
-			
+			mav.addObject("bookmark", mapmark);
 			mav.addObject("category", category);	// 카테고리
 			mav.addObject("result", result);		// 전체 
 			mav.addObject("result2", result2);		// 사진 
@@ -710,29 +728,39 @@ public class BoardController {
 	
 	
 	@RequestMapping("/followerlist.do")
-	public ModelAndView followerList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String id) throws Exception {
+	public ModelAndView followerList(HttpServletResponse response, HttpServletRequest request, HttpSession session, String id) throws Exception {
 		ModelAndView mav = new ModelAndView();
-//		String id = (String) seesion.getAttribute("loginId");
+		String sessionid = (String) session.getAttribute("loginId");
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-		
-		
+		List<Boolean> isFollowList = new ArrayList<>();
+		System.out.println(sessionid);
+		System.out.println(id);
 		try {
-			follow_list = boardService.followerLsit(id);
+			follow_list = member_followService.followerList(id);
 		} catch (Exception e1) {
 			
 			e1.printStackTrace();  
 		}
 		
+		for(int i = 0; i < follow_list.size(); i++) {
+			isFollowList.add(member_followService.isFollow(sessionid,follow_list.get(i).getId()));
+		}
+		
+		
+		
+		
 		profile_image = profileService.getAllProfileImage();
 		
 		
 		for(Profile_ImageDTO dto : profile_image) {
+			
 			getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
 
 		};
-		
+
+		mav.addObject("isFollow", isFollowList);	
 		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("result1", follow_list);
 		mav.setViewName("follow.jsp");
@@ -746,18 +774,21 @@ public class BoardController {
 	@RequestMapping("/followlist.do")
 	public ModelAndView followList(HttpServletResponse response, HttpServletRequest request, HttpSession seesion , String id) throws Exception {
 		ModelAndView mav = new ModelAndView();
-//		String id = (String) seesion.getAttribute("loginId");
+		String sessionid = (String) seesion.getAttribute("loginId");
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-		
+		List<Boolean> isFollowList = new ArrayList<>();
 		try {
-			follow_list = boardService.followList(id);
-		} catch (Exception e1) {
-			
-			e1.printStackTrace();  
-		}
+	         follow_list = member_followService.followList(id);
+	      } catch (Exception e1) {
+	         
+	         e1.printStackTrace();  
+	      }
 		
+		for(int i = 0; i < follow_list.size(); i++) {
+			isFollowList.add(member_followService.isFollow(sessionid,follow_list.get(i).getTargetId()));
+		}
 		
 		profile_image = profileService.getAllProfileImage();
 		
@@ -767,6 +798,7 @@ public class BoardController {
 
 		};
 		
+		mav.addObject("isFollow", isFollowList);
 		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("result", follow_list);
 		mav.addObject("pageid", id);
