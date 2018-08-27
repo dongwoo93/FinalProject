@@ -198,7 +198,10 @@ $("#comment").keypress(function(event){
 				success: function(seq){
 					    
 					var start = $("#comment-contents");					
-					start.append('<ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="'+seq+'" onmouseleave="commentleave(this)"><li id="li1"><a href="#" id="writerId'+seq+'">'+session+'</a></li><li id="li2"><input type=text id="commentSection'+seq+'" value="'+comment+'" readonly class="commenttxt"></li><li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel'+seq+'"></a></li><li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id="commentmod'+seq+'"></a></li></ul>');
+					start.append('<ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="'
+							+ seq + '" onmouseleave="commentleave(this)"><li id="li1"><a href="#" id="writerId' + seq 
+							+'">'+session+'</a></li><li id="li2">' 
+							+ '<div contenteditable=true id="commentSection' + seq + '" value="' + comment + '" readonly class="commenttxt"></li><li id="li3"><a style="cursor:pointer;" onclick="delComment(this)"  id="commentdel'+seq+'"></a></li><li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id="commentmod'+seq+'"></a></li></ul>');
 					$('#comment').html("");
 				}   
 
@@ -289,55 +292,53 @@ $("#comment").keypress(function(event){
 									
 									
 									$('#comment').on("mousedown mouseup keydown keyup", update);
-									
+									$("#comment").keyup(makeupHashtag)
 									
 									var map = {
 									    16: false,
 									    32: false
 									};
-									$("#comment").keyup(function (e) {
+									function makeupHashtag (e) {
 									
-									    if ((e.keyCode === 32)) {
-									        map[e.keyCode] = true;
-									        
-									        if(parseInt($('#caretposition').val()) == 0){
-									       	 // alert('뭐?')                        	 
-									        } else if (parseInt($('#caretposition').val()) == $('#comment').text().length){
-									       	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
-									        } else {
-									       	 // alert('임마?')
-									       	 return;
-									        }
-									        
-									
-									        var regex = /(#[^#\s,;<>.]+)/gi;
-									        if (regex) {
-									            var newtxt = "<span class=fugue>" + $('#comment').text()
-									                .replace(regex, "</span><span class=text-danger>" + "$1" +
-									                    "</span><span class=fugue>") + "</span>"
-									
-									            console.log($('#comment').text().length);   
-									            console.log(newtxt)   
-									            newtxt += "<kz></kz>"
-									            $('#comment').html(newtxt)
-									            var el = document.getElementById("comment");
-									            console.log("childNodes: " + el.childNodes.length);
-									            var range = document.createRange();
-									            var sel = window.getSelection();
-									            range.setStart(el.lastChild, 0);
-									            range.collapse(false);
-									            sel.removeAllRanges();
-									            sel.addRange(range);
-									
-									            $('#comment').focusout();
-									            $('#comment').focus();
-									            if (parseInt($('#caretposition').val()) == $('#comment').text().length) {
-									
-									            }
-									
-									        }
-									    }
-									})
+										if ((e.keyCode === 32)) {
+
+							                if (parseInt($('#caretposition').val()) == 0) {
+							                    // alert('뭐?')                        	 
+							                } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+							                    // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
+							                } else {
+							                    // alert('임마?')
+							                    return;
+							                }
+
+							                var regex = /(#[^#\s,;<>. ]+)/gi;
+							                if (regex) {
+							                    var newtxt = "<span class=fugue>" + $(this).text()
+							                        .replace(regex, "</span><span class=text-danger>" + "$1" +
+							                            "</span><span class=fugue>") + "</span>"
+
+							                    // console.log($('#editorDiv').text().length);   
+							                    // console.log(newtxt)   
+							                    newtxt += "<kz></kz>"
+							                    $(this).html(newtxt)
+							                    var el = this;
+							                    console.log("childNodes: " + el.childNodes.length);
+							                    var range = document.createRange();
+							                    var sel = window.getSelection();
+							                    range.setStart(el.lastChild, 0);
+							                    range.collapse(false);
+							                    sel.removeAllRanges();
+							                    sel.addRange(range);
+
+							                    $(this).focusout();
+							                    $(this).focus();
+							                    if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+							                    }
+
+							                }
+							            }
+									}
 									/* .keyup(function(e){   
 									                    if(e.keyCode === 32){   
 									                       map[e.keyCode] = false;             
