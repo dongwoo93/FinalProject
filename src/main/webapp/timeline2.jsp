@@ -1321,7 +1321,7 @@ $(function(){
 	    $(this).closest('.chatbox').hide();
 	    $("#userId").val("");
 	    $("#dmnickname").text("");
-	  });
+	  });   
 });
 </script>
                       
