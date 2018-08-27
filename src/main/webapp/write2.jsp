@@ -23,6 +23,12 @@
 
         //   }
         
+        document.addEventListener('keydown', function(event) {
+        	    if (event.keyCode === 13) {
+        	        event.preventDefault();
+        	    }
+        	}, true);
+        
          function imageInfo(obj){                 
                   
                   console.log(obj.width);
@@ -44,7 +50,10 @@
         
 
         $(document).ready(function() {
-        	console.log('x111ddd111');
+        	
+        	
+        	
+        	console.log('1xxxxssf31');
         	var globalBizFormEnabled = false;
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
@@ -213,9 +222,9 @@
                  });
             });
             
-            $("#personmodalbt").click(function(){
+            $("#personmodalbt").click(function(e){
          	   var textValue = $(".tags li").length;
-         	   alert(textValue);
+         	   
          	   $("#person *").remove();
          	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
 
@@ -227,6 +236,8 @@
                 }
          	   
          	   $("#searchfriend").val("");
+         	   
+
             });
             
             
@@ -621,12 +632,13 @@
 				</div>
 			</div>
 		</div>
-		<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
-			async defer></script>
+
 	</div>
 	<!--        사람태그하기 Modal 끝-->
-	
+			<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
+			async defer></script>
+			
 	<c:if test="${ memberBiz ne null }">
 	<!--       비즈니스 설정 Modal부분-->
 	<div id="bizModal" class="modal fade" tabindex="-1" role="dialog"
