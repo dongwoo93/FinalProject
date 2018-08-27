@@ -597,7 +597,7 @@
 								<!-- business form 시작 -->
 							<h3 class="text-center" style="font-weight:bold;">비즈니스 프로필 편집</h3>
 							<br>
-							<small>비즈니스 도구에 오신 것을 환영합니다. 고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. 게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.
+							<small>&nbsp;비즈니스 도구에 오신 것을 환영합니다. 고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. 게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.
 							<br><br>비즈니스 프로필에 입력된 정보는 일반 프로필 정보와는 별도로 취급됩니다.</small>
 							<hr>
 							 
@@ -625,7 +625,8 @@
 				
 						     <hr>
 								잔액 결제하기: 돈이 있어야 광고를 하죠? 현재 잔액은 ￦<fmt:formatNumber>${ memberBiz.deposit }</fmt:formatNumber> 입니다. 
-								<button type=button>결제하기</button>
+								
+								&nbsp;&nbsp;<button type=button class="btn btn-light text-dark" style="font-weight:bold;">결제하기</button>
 								
 							<hr>
 								
