@@ -12,6 +12,12 @@
 <script src="resources/js/myarticle.js"></script>
 <script>
 
+	function tag(e) {
+		var search = $(e).html().split("#")[1]; 
+		$(location).attr("href","search.bo?search="+search); 
+	
+	}
+
 	function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
 	        sel, range;
@@ -179,8 +185,8 @@ $(document).ready(function(){
             var regex = /(#[^#\s,;<>.]+)/gi;
             if (regex) {
                 var newtxt = "<span class=fugue>" + $(this).text()
-                    .replace(regex, "</span><span class=text-danger>" + "$1" +
-                        "</span><span class=fugue>") + "</span>"
+                    .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                        "</a><span class=fugue>") + "</span>"
 
                 console.log($(this).text().length);   
                 console.log(newtxt)   
@@ -558,8 +564,8 @@ $(document).ready(function(){
   								var dataContent0 = data[0].contents; 
   								var newtxt = "";  
   								if(txt != " ") {        								  
-  									 newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><span class=text-danger>" 
-  											 + "$1" + "</span><span class=fugue>") + "</span>";
+  									 newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+  											 + "$1" + "</a><span class=fugue>") + "</span>";
   									 newtxt += "<kz></kz>"
   								}        
 					          
@@ -589,8 +595,8 @@ $(document).ready(function(){
                                   for(var i =0; i<data[2].length; i++){ 
                                 	  var txt = data[2][i].comment_contents;   
                                       var regex = /(#[^#\s,;<>. ]+)/gi;           
-                                      var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><span class=text-danger>" 
-   											 + "$1" + "</span><span class=fugue>") + "</span>";  
+                                      var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+   											 + "$1" + "</a><span class=fugue>") + "</span>";  
    											newtxt += "<kz></kz>"
                                     
                                 	  
@@ -612,8 +618,8 @@ $(document).ready(function(){
                                           var regex = /(#[^#\s,;<>. ]+)/gi;
                                           if (regex) {
                                               var newtxt = "<span class=fugue>" + $(this).text()
-                                                  .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                                      "</span><span class=fugue>") + "</span>"
+                                                  .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                                      "</a><span class=fugue>") + "</span>"
 
                                               // console.log($('#editorDiv').text().length);   
                                               // console.log(newtxt)   
@@ -827,8 +833,8 @@ $(document).ready(function(){
                                 $("#comment").html("");
                                 
                                 var regex = /(#[^#\s,;<>. ]+)/gi;            
-                                var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><span class=text-danger>" 
-											 + "$1" + "</span><span class=fugue>") + "</span>";          
+                                var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+											 + "$1" + "</a><span class=fugue>") + "</span>";          
 									newtxt += "<kz></kz>"
                                     
                                 
@@ -851,8 +857,8 @@ $(document).ready(function(){
                                           var regex = /(#[^#\s,;<>. ]+)/gi;
                                           if (regex) {
                                               var newtxt = "<span class=fugue>" + $(this).text()
-                                                  .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                                      "</span><span class=fugue>") + "</span>"
+                                                  .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                                      "</a><span class=fugue>") + "</span>"
 
                                               // console.log($('#editorDiv').text().length);   
                                               // console.log(newtxt)   
