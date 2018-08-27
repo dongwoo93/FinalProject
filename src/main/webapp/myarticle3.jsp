@@ -211,9 +211,10 @@ $(document).ready(function(){
     
     $('#comment').on("mousedown mouseup keydown keyup", update);
     $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+    $('#modalcontents').on("mousedown mouseup keydown keyup", update);
     $('#comment').keyup(makeupHashtag)
     $("div[id*='commenttxt']").keyup(makeupHashtag)
-
+	$('#modalcontents').keyup(makeupHashtag)
     /* ========================= editable div에 태그 적용 끝 ========================= */
 	
 	
