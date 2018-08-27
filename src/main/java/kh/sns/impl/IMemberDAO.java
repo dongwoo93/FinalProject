@@ -40,6 +40,26 @@ public class IMemberDAO implements MemberDAO {
 			
 		});
 	}
+	
+	@Override
+	public List<MemberDTO> findMember(String searchtext) throws Exception {
+		String sql = "select * from member where id like '%'||?||'%'";
+		return template.query(sql, new Object[] {searchtext}, new RowMapper<MemberDTO>() {
+			
+			@Override
+			public MemberDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				MemberDTO tmp = new MemberDTO();
+				tmp.setId(rs.getString("id"));
+				tmp.setEmail(rs.getString("email"));
+				tmp.setGender(rs.getString("gender"));
+				tmp.setName(rs.getString("name"));
+				tmp.setNickname(rs.getString("nickname"));
+				tmp.setPhone(rs.getString("phone"));
+				tmp.setPw(rs.getString("pw"));
+				return tmp;
+			}
+		});
+	}
 
 
 	@Override
@@ -198,5 +218,6 @@ public class IMemberDAO implements MemberDAO {
 			
 		});
 	}
+	
 	
 }

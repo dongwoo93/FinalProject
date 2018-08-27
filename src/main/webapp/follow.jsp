@@ -1,350 +1,184 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
-
-
-<style>
-
-
-#contents {
-	max-width: 1000px;
-	margin-left: auto;
-	margin-right: auto;
-	display: -webkit-box;
-	
-}
-
-#centerwrapper {
-	height: 100%;
-	
-}
- 
-/*컨테이너*/
-.profile-image {
-	width: calc(33.333% - 1rem);
-	display: flex;
-	margin-right: 3rem;
-	align-items: center;
-	margin-right: 3rem;
-}
-
-.profile-image img {
-	border-radius: 50%;
-}
-
-.cock {
-	float: left; 
-}
-
-.bookmark {
-	float: left;
-}
-
-.icon {
-	
-	font-size: 20px;
-	color: black;
-	border: 0.5px;
-}
-
-.dot {
-	font-size: 7px;
-	color: lightgray;
-}
-
-.dot1 {
-	font-size: 10px;
-	color: #4FC3F7;
-}
-
-#comment {
-	width: 85%;
-	height: 5%;
-	border: none;
-	font-size: 13px;
-	padding-left: 2%;
-	margin-right: 2%;
-	font-family: "Open Sans", Arial, sans-serif;
-}
-
-#contcenter {
-	border-bottom: 0.3px solid lightgray;
-}
-
-.btn {
-	font-size: 15px;
-}
-
-#peed {
-	border: 0.3px solid lightgray;
-}
-  
-#board {
-	width: 62%;
-	
-}
-
-#side {
-	width: 38%;
-}
-
-#row {
-	display: inline-block
-}
-
-    
-    #myComment{
-    	font-family: "Open Sans", Arial, sans-serif;
-    	font-size: 11px;
-    	
-    }
-    
-    .hidden p {
- 
-    overflow: hidden;    
-    text-overflow: ellipsis;
-    white-space: nowrap; 
-    width:60%;
-    height: 20px;
-    }
-    
- 
-}
-
-.idtxt {
-	font-weight: 600;
-}
-.carousel-inner {   
-		
-	
-}
-.carousel-item {   
-		
-	
-}
-.boardimg {
-	z-index:auto;
-	max-height: 700px;
- 
-	
-}
-
-#id {
-	font-family: "Open Sans", Arial, sans-serif;
-	font-size: 11px;
-}
-
-#con {
-	font-family: "Open Sans", Arial, sans-serif;
-	font-size: 14px;  
-}
-
-#myContents {
-	font-family: "Open Sans", Arial, sans-serif;
-	font-size: 13px;
-}
-
-#myComment {
-	font-family: "Open Sans", Arial, sans-serif;
-	font-size: 11px;
-}
-
-.hidden p {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	width: 60%;
-	height: 20px;
-}
-
-  
-.comment-contents li {
-position:relative;	
-		}  
-  
-#li1 {
-width:14%;
-display:contents;
-    
-   
-}
-#li2  {            
-width:72%;         
-padding-left:3%;     
-}  
-
-#li3 {
-width:12%; 
-text-align:right; 
-padding-right:3%;	
-}    
-  
-#li4 {
-	width:12%; 
-	display:contents; 
-
-}  
-  
-.commenttxt { 
-	border:none;
-	width:100%; 
-	word-wrap: break-word; 
-	    
-}  
-  
-.creco {   
-	border:none;   
-	width:83%;    
-	  
-}
- 
-#feed {    
-	  border:0.5px solid #efe4e4;  
-	  background-color: #FFFFFF;
+<link rel="stylesheet" type="text/css" href="resources/css/follow.css">
+<script>
+function follow(id1, id2, index) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "follow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) { 
+	         $("#cancelFollow"+index).show(); 
+	         $("#follow"+index).hide(); 
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	} 
+	 
+	function unfollow(id1, id2, index) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "deletefollow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) { 
+	         $("#follow"+index).show(); 
+	         $("#cancelFollow"+index).hide(); 
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
 	}
-	
-	#float{
-	 	border:0.5px solid #efe4e4;  
-	 /*	background-color: #FFFFFF;*/
-	}
-.commentline {   
-	padding-left: 0px;   
-	margin-left: 1%;   
-	margin-bottom:0px;
-} 
+</script>
 
-.carousel-indicators li {
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  bottom: -50px;
-  background-color: lightgray;
-}
-
-.carousel-indicators .active {
-    background-color: #4FC3F7;
-}
-
-.modal-body {  
-	text-align: center;  
-}
-
-.cons{
-	width: 485px;   
-	border-radius: 1.5rem;
-}
-
-.dropdown-item:hover{
-	background-color:#E1F5FE;  
-}
-
-.pointer {
-	
-	cursor:pointer;  
-}
-
-
-.mo1:hover {
-	background-color:transparent;
-}
-
-.mo, .mo1 {
-	cursor: pointer;
-}
-
-.mo:hover {
-	background-color:#efefef;
-}
-.p_text {
-	color: #999;
-}
-.modal-header {
-    display: block;
-}
-.modal-title {
-    text-align: center;
-    font-weight: bold;
-}
-.headbtn {
-    position: absolute;
-    top : 2.5%
-}
-.footertbtn {
-	width: 100%;
-}
-.item {
-	margin-top: 10px;
-	font-size: x-medium;
-}
-#report-head{
-	font-size: small;
-	font-weight: bold;
-	margin-bottom: 20px;
-}
-.mbody {
-	text-align: left;
-}
-.close{
-   	 top : 2.5%;
-   	 font-size: 25px;
-}
-.pic{
-	width : 30px;
-	height : 30px;   
-}
-
-
-</style>
-
-<div id="allwrapper" style="margin-top:50px;">
+<div id="allwrapper" style="margin-top: 50px;">
 
 	<div class="container">
 
-	   <hr class="_5mToa ">					
+		<hr class="_5mToa ">
 		<ul class="nav">
-			<li class="nav-item">
-				 <a class="nav-link" href="followerlist.do?id=${pageid}&cat=1">팔로워</a>
-			</li>
-			<li class="nav-item">
-				 <a class="nav-link" href="followlist.do?id=${pageid}&cat=1">팔로우</a>
-			</li>
-		</ul>				
-						
-			<div style="border : 0px solid black;">		 			    				 
-				<c:forEach var="follower" items="${result}" varStatus="status"> 
-				   <div class="container">
-	  				 <hr class="_5mToa">		 
-					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follower.targetId]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follower.targetId}&cat=1">${follower.targetId}</a>						
-				 		</div>		
-					 <hr class="_5mToa">		 			      
-				  </div>		
-				</c:forEach> 			
-			</div>
-			
-			
-			<div style="border : 0px solid black;">		 			    				 
-				<c:forEach var="follow" items="${result1}" varStatus="status"> 
-				   <div class="container">
-	  				 <hr class="_5mToa">		 
-					    <div class="profile-image"> 
-							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[follow.id]}'/>">	
-							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${follow.id}&cat=1">${follow.id}</a>						
-				 		</div>								
-			  		<hr class="_5mToa" >		 			      
-				  </div>		
-				</c:forEach>			
-			</div>
+			<li class="nav-item"><a class="nav-link"
+				href="followerlist.do?id=${pageid}&cat=1">팔로워</a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="followlist.do?id=${pageid}&cat=1">팔로우</a></li>
+		</ul>
 
+		<div style="border: 0px solid black;">
+			<c:forEach var="follow" items="${result}" varStatus="status">
+				<div class="container">
+					<hr class="_5mToa">
+					<div class="profile-image">
+						<img class="ml-3 mr-2 pic"
+							src="AttachedMedia/<c:out value='${profile_pic[follow.targetId]}'/>">
+						<a class="mt-6 idtxt"
+							style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
+							href="board.bo?id=${follow.targetId}&cat=1">${follow.targetId}</a>
+						<c:choose>
+							<c:when test="${sessionScope.loginId == follow.targetId}">
+							</c:when>
+							<c:when test="${isFollow[status.index]}">
+								<div class="profile-edit-btn float-right mt-2 mr-2"
+									id="cancelFollow${status.index}" style="height: 40px;">팔로잉</div>
+								<div class="profile-edit-btn float-right mt-2 mr-2"
+									onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
+									id="follow${status.index}"
+									style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
+							</c:when>
+
+
+							<c:otherwise>
+								<div class="profile-edit-btn float-right mt-2 mr-2"
+									id="cancelFollow${status.index}"
+									style="height: 40px; display: none;">팔로잉</div>
+								<div class="profile-edit-btn float-right mt-2 mr-2"
+									onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
+									id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
+							</c:otherwise>
+						</c:choose>
+
+					</div>
+					<hr class="_5mToa">
+				</div>
+				<script>
+					$("#cancelFollow${status.index}").click(function() {
+						$("#yes").attr("onclick","unfollow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')");
+						$("#exampleModalCenter").modal();
+					});
+				</script>
+			</c:forEach>
 		</div>
-	
-	</div>	
- 	
- 
 
-	
-	
+
+		<div style="border: 0px solid black;">
+			<c:forEach var="follower" items="${result1}" varStatus="status">
+				<div class="container">
+					<hr class="_5mToa">
+
+					<img class="ml-3 mr-2 pic"
+						src="AttachedMedia/<c:out value='${profile_pic[follower.id]}'/>">
+					<a class="mt-6 idtxt"
+						style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
+						href="board.bo?id=${follower.id}&cat=1">${follower.id}</a>
+					<c:choose>
+						<c:when test="${sessionScope.loginId == follower.id}">
+						</c:when>
+						<c:when test="${isFollow[status.index]}">
+							<div class="profile-edit-btn float-right mt-2 mr-2"
+								id="cancelFollow${status.index}" style="height: 40px;">팔로잉</div>
+							<div class="profile-edit-btn float-right mt-2 mr-2"
+								onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
+								id="follow${status.index}"
+								style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
+						</c:when>
+
+
+						<c:otherwise>
+							<div class="profile-edit-btn float-right mt-2 mr-2"
+								id="cancelFollow${status.index}"
+								style="height: 40px; display: none;">팔로잉</div>
+							<div class="profile-edit-btn float-right mt-2 mr-2"
+								onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
+								id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
+						</c:otherwise>
+					</c:choose>
+					<hr class="_5mToa">
+				</div>
+				<script>
+					$("#cancelFollow${status.index}").click(function() {
+						$("#yes").attr("onclick","unfollow('${sessionScope.loginId}', '${follower.id}', '${status.index}')");
+						$("#exampleModalCenter").modal();
+					});
+				</script>
+			</c:forEach>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h2>정말 팔로우를 취소하시겠습니까?</h2>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					id="yes" onclick="">YES</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
 
 
 
