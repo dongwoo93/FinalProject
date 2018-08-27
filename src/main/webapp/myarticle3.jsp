@@ -211,9 +211,10 @@ $(document).ready(function(){
     
     $('#comment').on("mousedown mouseup keydown keyup", update);
     $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+    $('#modalcontents').on("mousedown mouseup keydown keyup", update);
     $('#comment').keyup(makeupHashtag)
     $("div[id*='commenttxt']").keyup(makeupHashtag)
-
+	$('#modalcontents').keyup(makeupHashtag)
     /* ========================= editable div에 태그 적용 끝 ========================= */
 	
 	
@@ -234,6 +235,29 @@ $(document).ready(function(){
 	function articleleave(e) {
 		var seq = $(e).attr("value"); 
 		$("#divinfo"+seq).attr("style","display:none;");
+		
+																$("#modifysubmitbtn").click(function(){
+																	var board_seq = $("#seq").val();
+																	var contents = $("#modalcontents").html();
+																	var contentsToText = $("#modalcontents").text()
+														
+																	$.ajax({
+																		type:"POST",
+																		url:"boardModify.bo",
+																		data: {board_seq:board_seq, contents:contentsToText},
+																		success: function(data)
+																		{
+																			if(data == 1){
+																				$("#modalcontents").html(contents);
+																				$("#modalcontents").attr("contentEditable","false");
+														
+																			}else {
+																				alert("다시 시도해주세요");
+																			}
+														
+																		}
+																	});
+																})
 }
 								</script>
 
