@@ -729,20 +729,20 @@
       function placemodal() {
           
           $('#placeModal').modal('show');
-          if(i == 1){
-              if (navigator.geolocation) {
-                  navigator.geolocation.getCurrentPosition(function(position) {
-                        var pos = {
-                          lat: position.coords.latitude,
-                          lng: position.coords.longitude
-                        };
+//           if(i == 1){
+//               if (navigator.geolocation) {
+//                   navigator.geolocation.getCurrentPosition(function(position) {
+//                         var pos = {
+//                           lat: position.coords.latitude,
+//                           lng: position.coords.longitude
+//                         };
 
-                        map.setCenter(pos);
-                  });
-                } else {
-                  alert("현재위치를 표시할 수 없습니다.");
-                }
-          }
+//                         map.setCenter(pos);
+//                   });
+//                 } else {
+//                   alert("현재위치를 표시할 수 없습니다.");
+//                 }
+//           }
           
           i++;
       }

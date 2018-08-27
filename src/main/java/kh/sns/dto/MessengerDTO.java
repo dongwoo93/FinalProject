@@ -6,18 +6,24 @@ public class MessengerDTO {
 	private String receiver;
 	private String message;
 	private String message_date;
+	private int read;
 	
 	public MessengerDTO() {
 		
 	}
 	
-	public MessengerDTO(int message_seq, String sender, String receiver, String message, String message_date) {
+	public String toString() {
+		return this.message_seq + " : " + this.sender + " : " + this.receiver + " : " + this.message;
+	}
+	
+	public MessengerDTO(int message_seq, String sender, String receiver, String message, String message_date,int read) {
 		super();
 		this.message_seq = message_seq;
 		this.sender = sender;
 		this.receiver = receiver;
 		this.message = message;
 		this.message_date = message_date;
+		this.read = read;
 	}
 
 	public int getMessage_seq() {
@@ -59,6 +65,13 @@ public class MessengerDTO {
 	public void setMessage_date(String message_date) {
 		this.message_date = message_date;
 	}
-	
+
+	public int getRead() {
+		return read;
+	}
+
+	public void setRead(int read) {
+		this.read = read;
+	}
 	
 }

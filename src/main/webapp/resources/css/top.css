@@ -25,7 +25,17 @@
 	 
 	 } 
 	 
-	
+	 #totalreadcount{
+	 	  background-color:red;
+	 	  width:20px;
+	 	  position: absolute;
+		  color:white;
+		  font-size: 12px;
+		  text-align:center;
+   		  top: 10px;
+    	  right: 51.5rem;
+		  border-radius:5px;
+	 }
 
     #allwrapper{
       height:auto;

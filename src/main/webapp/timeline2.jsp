@@ -8,19 +8,37 @@
 	
 	$(function () {
 
-		var ws = new WebSocket("ws://192.168.120.102/websocket?loginId=${sessionScope.loginId}");
+		var ws = new WebSocket("ws://172.30.1.39/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
 		};
 		
 		ws.onmessage = function (msg) {
+			var message = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[0];
+			var sender = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[1];
 			var receivernickname = $("#dmnickname").text();
-			$("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+msg.data+"</div></div>");
-	    };
+			var receiverId = $("#userId").val();
+			if(receiverId == sender){
+		    	$("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
+		    	var objDiv = document.getElementById("messagebox");
+		    	objDiv.scrollTop = objDiv.scrollHeight;
+		    	setRead(receiverId);
+			}
+			else{
+				$("#alertsender").text(sender);
+				$("#alertmsg").html(message);
+				 
+				$("#alertmessenger").fadeIn(2000);
+				setTimeout(function(){
+					$("#alertmessenger").fadeOut(2000);
+				},4000); 
+				reloadMessengerlist();
+			}
+		};
 		
 	    ws.onclose = function (event) {
-
+	    	$("#userId").val("");
 	    };
 	    
 	    $("#sendDm").keydown(function(key) {
@@ -28,40 +46,57 @@
 			var receiver = $("#userId").val();
 			if (key.keyCode == 13) {
 				$("#sendDm").val("");
-				$.ajax({
-	                url: "insertMessage.do", // 처리할 페이지(서블릿) 주소
-	                type: "get",
-	                data: {message:message,receiver:receiver,sender:"${sessionScope.loginId}"}, 
-	                success: function(response) {
-	                	console.log(response);
-	                	if(response == "전송실패"){
-	                		   alert("전송실패");
-	                	}
-	                	else{
-	                		var date = response.split("#")[0];
-	                		var time = response.split("#")[1];
-	                		var objDiv = document.getElementById("messagebox");
-	                		var lastdate = $(".dmdate").last().text();
-	                		ws.send(receiver+":"+message);
-	                		console.log(lastdate);
-	                		if(lastdate != date){
-	                			
-			                $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
-	                		}
-		                	$("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+message+"</div><div class='mt-2'>"+time+"</div></div>");
-                            objDiv.scrollTop = objDiv.scrollHeight;
-	                	}
-	                },
-	                error: function() {
-	                    console.log("에러");
-	                },
-	                complete: function(){
-	                    console.log("AJAX완료");
-	                }
-	            });   
-				
+				sendMsg(message,receiver);
 			}
 		});
+	    
+	    $(".imoticon").dblclick(function(){
+	    	var url = $(this).attr("src");
+	    	var message = "<img src="+url+" class='imoticon'>"
+	    	var receiver = $("#userId").val();
+	    	sendMsg(message,receiver);
+	    });
+	    
+	    $("#dmSearch").keyup(function(){
+			console.log("늘림");
+        	 var searchtext = $(this).val();
+        	 reloadFriendlist(searchtext);
+        });
+	    
+	    function sendMsg(message,receiver){
+	    	$.ajax({
+                url: "insertMessage.do", // 처리할 페이지(서블릿) 주소
+                type: "get",
+                data: {message:message,receiver:receiver,sender:"${sessionScope.loginId}"}, 
+                success: function(response) {
+                	console.log(response);
+                	if(response == "전송실패"){
+                		   alert("전송실패");
+                	}
+                	else{
+                		var date = response.split("#")[0];
+                		var time = response.split("#")[1];
+                		var objDiv = document.getElementById("messagebox");
+                		var lastdate = $(".dmdate").last().text();
+                		ws.send(receiver+"뇽뇽뇽뇽123뇽뇽뇽뇽"+message+"뇽뇽뇽뇽321뇽뇽뇽뇽${sessionScope.loginId}");
+                		console.log(lastdate);
+                		if(lastdate != date){
+                			
+		                $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
+                		}
+	                	$("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+message+"</div><div class='mt-2'>"+time+"</div></div>");
+                        objDiv.scrollTop = objDiv.scrollHeight;
+                        reloadMessengerlist();
+                	}
+                },
+                error: function() {
+                    console.log("에러");
+                },
+                complete: function(){
+                    console.log("AJAX완료");
+                } 
+            });
+	    }
 	});
 	
 	$(document).ready(function(){
@@ -667,26 +702,53 @@
 					<!--                                  DM -->
 					<script>
 					function openDm() {
+						reloadFriendlist("");
+						reloadMessengerlist();
+					    document.getElementById("dm").style.width = "17%";
+					    document.getElementById("allwrapper").style.marginLeft = "17%";
+					    document.getElementById("footer").style.marginLeft = "17%";
+					}
+					
+					function setRead(friendid){
+						$.ajax({
+			                url: "setRead.do", // 처리할 페이지(서블릿) 주소
+			                type: "get",
+			                data: {friendid:friendid,id:"${sessionScope.loginId}"},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			                success: function(response) {
+			                	if(response.length != 0){
+			                		reloadMessengerlist();
+			                	}
+			                },
+			                error: function() {
+			                    console.log("에러 발생");
+			                },
+			                complete: function(){
+			                    console.log("AJAX 종료");
+			                }
+			            });
+					}
+					
+					function reloadFriendlist(text){
 						$("#offlinefriendlist *").remove();
 						$("#onlinefriendlist *").remove();
 						$.ajax({
 			                url: "dmfriendlist.do", // 처리할 페이지(서블릿) 주소
 			                type: "get",
-			                data: {searchtext: ""},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+			                data: {searchtext: text},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 			                success: function(response) {
 			                	$("#onlinecount").text(response[0].length);
 			                	$("#offlinecount").text(response[1].length);
 			                	for(var i=0;i<response.length;i++){
 			                		if(i==0){
 			                			for(var k=0;k<response[0].length;k++){
-			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[0][k]+"<a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
+			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
 			                			}
 			       
 			                		}
 			                		else{
 			                			for(var k=0;k<response[1].length;k++){
 			                				console.log(response[1][k]);
-			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[1][k]+"<a class='favorite'><i class='fas fa-circle'></a></li>");
+			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='루이.jpg' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
 			                			}
 			                			
 			                		}
@@ -699,25 +761,87 @@
 			                    console.log("AJAX 종료");
 			                }
 			            });
+					}
+					
+					function reloadMessengerlist(){
+						$("#currentmessenger *").remove();
+						var notreadcount=0;
 						$.ajax({
 			                url: "currentMessenger.do",
 			                type: "get",
 			                data: {id:"${sessionScope.loginId}"}, 
 			                success: function(response) {
-// 			                	for()
-// 			                	$("#currentmessenger").append("<li onclick='openmessage(this)'>"+response+"<a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
+			                	for (var key in response) {
+			                		if(response[key].read == 0){
+				                	    $("#currentmessenger").append("<li onclick='openmessage(this)' onmouseover='showdelete(this)' onmouseleave='hidedelete(this)' style='font-size:13px;'>"+response[key].receiver+"<input type='hidden' id='usernickname' value='"+response[key].receiver+"'><span style='float:right;' class='mr-3'>"+response[key].message_date.split(" ")[0]+"</span><p class='ml-3' style='width: 200px;'>"+response[key].message+"</p><div onclick='deletemessenger(this)' id='"+response[key].sender+"' class='messengerdelete' style='display:none;'>삭제하기<input type='hidden' id='hiddennick' value='"+response[key].receiver+"''></div></li>");
+			                		}
+			                		else{
+				                	    $("#currentmessenger").append("<li onclick='openmessage(this)' onmouseover='showdelete(this)' onmouseleave='hidedelete(this)' style='font-size:13px;'>"+response[key].receiver+"<input type='hidden' id='usernickname' value='"+response[key].receiver+"'><span style='float:right;' class='mr-3'>"+response[key].message_date.split(" ")[0]+"</span><p class='ml-3 currentmessage' style='width: 250px;'>"+response[key].message+"<span class='notreadcount'>"+response[key].read+"</span></p><div onclick='deletemessenger(this)' id='"+response[key].sender+"' class='messengerdelete' style='display:none;'>삭제하기<input type='hidden' id='hiddennick' value='"+response[key].receiver+"''></div></li>");
+				                	    notreadcount = notreadcount + response[key].read;
+			                		}
+			                		$("#currentmessenger li p img").attr("class","imoticonsm");
+			                		if(notreadcount != 0){
+			                			$("#totalreadcount").text(notreadcount);
+			                			$("#totalreadcount").show();
+			                		}
+			                		else{
+			                			$("#totalreadcount").hide();
+			                		}
+			                	}
 			                },
 			                error: function() {
 			                    console.log("에러 발생");
 			                },
-			                complete: function(){
+			                complete: function(){ 
 			                    console.log("AJAX 종료");
 			                }
 			            });
-					    document.getElementById("dm").style.width = "17%";
-					    document.getElementById("allwrapper").style.marginLeft = "17%";
-					    document.getElementById("footer").style.marginLeft = "17%";
 					}
+					
+					function showdelete(e){
+						$(e).find(".messengerdelete").attr("style","");
+					}
+					
+					function hidedelete(e){
+						$(e).find(".messengerdelete").attr("style","display:none;");
+					}
+					
+					function deletemessenger(e){
+						event.stopPropagation();
+
+						var check = confirm("모든 대화가 삭제됩니다.");
+						if(check){
+							var id = $(e).attr("id");
+							var nickname1 = $(e).find("#hiddennick").val();
+							$.ajax({
+				                url: "deleteMessenger.do",
+				                type: "get",
+				                data: {id:"${sessionScope.loginId}",friendid:id}, 
+				                success: function(response) {
+				                	console.log(response);
+				                	if(response > 0){
+				                		alert("삭제가 완료되었습니다.");
+				                		reloadMessengerlist();
+				                		console.log(nickname1);
+				                		var nickname2 = $("#dmnickname").text();
+				                		if(nickname1 == nickname2){
+				                			$(".chatbox").hide(); 
+				                		}
+				                	}
+				                	else{
+				                		alert("삭제실패");
+				                	}
+				                },
+				                error: function() {
+				                    console.log("에러 발생");
+				                },
+				                complete: function(){ 
+				                    console.log("AJAX 종료");
+				                }
+				            });
+						}
+					}
+					
 
 					function closeDm() {
 					    document.getElementById("dm").style.width = "0";
@@ -726,7 +850,7 @@
 					}
 					
 					function openmessage(e){
-						var nickname = $(e).text();
+						var nickname = $(e).find("#usernickname").val();
 						$("#dmnickname").text(nickname);
 						$("#messagebox *").remove(); 
 						
@@ -737,28 +861,31 @@
 			                success: function(response) {
 			                	$('.chatbox').show();
 			                	$("#userId").val(response);
+			                	setRead(response);
 			                	var receiver = $("#userId").val();
 			                	$.ajax({
 					                url: "selectmessenger.do",
 					                type: "get",
 					                data: {receiver: receiver,sender:"${sessionScope.loginId}"},    
 					                success: function(response) {
-					                	 var date = response[0].message_date.split("#")[0];
-					                	 $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
-					                	 for(var i=0;i<response.length;i++){
-					                		 if(response[i].message_date.split("#")[0] != date){
-					                			 date = response[i].message_date.split("#")[0];
-					                			 $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
-					                		 }
-					                		 if(response[i].sender == "${sessionScope.loginId}"){
-					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+response[i].message+"</div><div class='mt-2'>"+response[i].message_date.split("#")[1]+"</div></div>");
-					                		 }
-					                		 else{
-					                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+nickname+"</a></div><div class='message-box message-partner'>"+response[i].message+"</div><div class='mt-2' style='align-self:flex-start;'>"+response[i].message_date.split("#")[1]+"</div></div>")
-					                		 }
-					                	 }
-					                	 var objDiv = document.getElementById("messagebox");
-				                         objDiv.scrollTop = objDiv.scrollHeight;  
+					                	if(response.length != 0){
+						                	 var date = response[0].message_date.split("#")[0];
+						                	 $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
+						                	 for(var i=0;i<response.length;i++){
+						                		 if(response[i].message_date.split("#")[0] != date){
+						                			 date = response[i].message_date.split("#")[0];
+						                			 $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
+						                		 }
+						                		 if(response[i].sender == "${sessionScope.loginId}"){
+						                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+response[i].message+"</div><div class='mt-2'>"+response[i].message_date.split("#")[1]+"</div></div>");
+						                		 }
+						                		 else{
+						                			 $("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+nickname+"</a></div><div class='message-box message-partner'>"+response[i].message+"</div><div class='mt-2' style='align-self:flex-start;'>"+response[i].message_date.split("#")[1]+"</div></div>")
+						                		 }
+						                	 }
+						                	 var objDiv = document.getElementById("messagebox");
+					                         objDiv.scrollTop = objDiv.scrollHeight;  
+					                	}
 					                },
 					                error: function() {
 					                    console.log("에러 발생");
@@ -775,17 +902,18 @@
 			                    console.log("AJAX 종료");
 			                }
 			            });
-						
-						
+		
 					};
+					
+					
 					</script>
                      <div class="nav-side-menu" id="dm">
 					     <!-- Brand -->
 				            <div class="brand"><i class="fab fa-facebook-messenger mr-1"></i>Messenger</div>
 
 				            <!-- Search body -->
-				            <div id="search">
-				                <input type="text" class="form-control" placeholder="Search">
+				            <div>
+				                <input type="text" id="dmSearch" class="form-control" placeholder="Search" >
 				            </div>
 					  
 					        <div class="menu-list">
@@ -800,9 +928,7 @@
 					                </ul>
 					                
 					            </ul>
-					            
-					    	 </div>
-					    	 <li>
+					            <li>
 					                  <a><i class="fas fa-circle onlineicon"></i>온라인 친구<span class="ml-2" id="onlinecount"></span></a>
 					                </li>
 					                <ul id="onlinefriendlist">
@@ -814,6 +940,8 @@
 					                <ul id="offlinefriendlist">
 					    	 			 
 					    		    </ul>
+					    	 </div>
+					    	 
 					</div>
 					
 					
@@ -854,19 +982,46 @@
       <input type="text" class="chat-input" id="sendDm">
     </div>
     
-    <div class="attachment-panel">
-      <a href="#" class="fa fa-thumbs-up"></a>
-      <a href="#" class="fa fa-camera"></a>
-      <a href="#" class="fa fa-video-camera"></a>
-      <a href="#" class="fa fa-image"></a>
-      <a href="#" class="fa fa-paperclip"></a>
-      <a href="#" class="fa fa-link"></a>
-      <a href="#" class="fa fa-trash-o"></a>
-      <a href="#" class="fa fa-search"></a>
+    <div class="attachment-panel" style='overflow-x:scroll; white-space:nowrap'>
+    	<img src="/resources/images/imoticon/1.png" class="imoticon">
+    	<img src="/resources/images/imoticon/2.png" class="imoticon">
+    	<img src="/resources/images/imoticon/3.png" class="imoticon">
+    	<img src="/resources/images/imoticon/4.png" class="imoticon">
+    	<img src="/resources/images/imoticon/5.png" class="imoticon">
+    	<img src="/resources/images/imoticon/6.png" class="imoticon">
+    	<img src="/resources/images/imoticon/7.png" class="imoticon">
+    	<img src="/resources/images/imoticon/8.png" class="imoticon">
+    	<img src="/resources/images/imoticon/9.png" class="imoticon">
+    	<img src="/resources/images/imoticon/10.png" class="imoticon">
+    	<img src="/resources/images/imoticon/11.png" class="imoticon">
+    	<img src="/resources/images/imoticon/12.png" class="imoticon">
+    	<img src="/resources/images/imoticon/13.png" class="imoticon">
+    	<img src="/resources/images/imoticon/14.png" class="imoticon">
+    	<img src="/resources/images/imoticon/15.png" class="imoticon">
+    	<img src="/resources/images/imoticon/16.png" class="imoticon">
+    	<img src="/resources/images/imoticon/17.png" class="imoticon">
+    	<img src="/resources/images/imoticon/18.png" class="imoticon">
+    	<img src="/resources/images/imoticon/19.png" class="imoticon">
+    	<img src="/resources/images/imoticon/20.png" class="imoticon">
+    	<img src="/resources/images/imoticon/21.png" class="imoticon">
+    	<img src="/resources/images/imoticon/22.png" class="imoticon">
+    	<img src="/resources/images/imoticon/23.png" class="imoticon">
+    	<img src="/resources/images/imoticon/24.png" class="imoticon">
+    	<img src="/resources/images/imoticon/25.png" class="imoticon">
+    	<img src="/resources/images/imoticon/26.png" class="imoticon">
+    	<img src="/resources/images/imoticon/27.png" class="imoticon">
     </div>
   </div>
 </div>
 
+	<div class="chatbox-holder row" style='display:none;' id='alertmessenger'>
+		<div class="alert alert-secondary alert-dismissible" role="alert">
+		  <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);" class="close" data-dismiss="alert"><span aria-hidden="true" class='mr-2'>×</span><span class="sr-only">Close</span></button>
+		  <i class="far fa-envelope mr-2"></i><strong id="alertsender"></strong> 
+		  <marquee><p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt" id='alertmsg'></p></marquee>
+		</div>
+	</div>
+ 
 <script>
 $(function(){
 	  $('.fa-minus').click(function(){    
@@ -874,6 +1029,8 @@ $(function(){
 	  });
 	  $('.fa-close').click(function(){
 	    $(this).closest('.chatbox').hide();
+	    $("#userId").val("");
+	    $("#dmnickname").text("");
 	  });
 });
 </script>

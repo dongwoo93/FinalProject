@@ -42,8 +42,8 @@ public class MessengerController {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)  session.getAttribute("loginId");
 		List<MemberDTO> list = null;
-		List<String> onlinefriendlist = new ArrayList<>();
-		List<String> offlinefriendlist = new ArrayList<>();
+		List<MemberDTO> onlinefriendlist = new ArrayList<>();
+		List<MemberDTO> offlinefriendlist = new ArrayList<>();
 		
 		try {
 			list = memberService.selectfollowlist(id,searchtext);
@@ -54,10 +54,10 @@ public class MessengerController {
 
 		for(MemberDTO tmp : list) {
 			if(WebSocket.onlineUser.containsKey(tmp.getId())) {
-				onlinefriendlist.add(tmp.getNickname());
+				onlinefriendlist.add(tmp);
 			}
 			else {
-				offlinefriendlist.add(tmp.getNickname());
+				offlinefriendlist.add(tmp);
 			}
 		}
 		
@@ -98,7 +98,7 @@ public class MessengerController {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		ModelAndView mav = new ModelAndView();
-		MessengerDTO dto = new MessengerDTO(0,sender,receiver,message,"");
+		MessengerDTO dto = new MessengerDTO(0,sender,receiver,message,"",1);
 		int result = 0;
 		try {
 			result = messengerService.insertMessage(dto);
@@ -142,26 +142,74 @@ public class MessengerController {
 		List<MessengerDTO> list = new ArrayList<>();
 		Map<String,MessengerDTO> message = new HashMap<>();
 		String receiver = null;
+		String nickname = null;
+		int count = 0;
 		try {
 			list = messengerService.currentMessenger(id);
 			for(MessengerDTO tmp : list) {
+				System.out.println("1" + tmp);
 				if(tmp.getSender().equals(id)) {
 					receiver = tmp.getReceiver();
 				}else {
-					receiver = tmp.getSender();
+					receiver = tmp.getSender();		
 				}
+				count = messengerService.getNotReadMsg(id,receiver);
+				nickname = messengerService.getNickname(receiver);
 				for(MessengerDTO tmp2 : list) {
 					if(receiver.equals(tmp2.getReceiver()) || receiver.equals(tmp2.getSender())) {
 						if(tmp.getMessage_seq() > tmp2.getMessage_seq()) {
-							message.put(receiver,new MessengerDTO(tmp.getMessage_seq(),id,receiver,tmp.getMessage(),tmp.getMessage_date()));
+							message.put(receiver,new MessengerDTO(tmp.getMessage_seq(),receiver,nickname,tmp.getMessage(),tmp.getMessage_date(),count));
 						}
 						else {
-							message.put(receiver,new MessengerDTO(tmp2.getMessage_seq(),id,receiver,tmp2.getMessage(),tmp2.getMessage_date()));
+							message.put(receiver,new MessengerDTO(tmp2.getMessage_seq(),receiver,nickname,tmp2.getMessage(),tmp2.getMessage_date(),count));
 						}
 					}
 				}
 			}
+			
 			new Gson().toJson(message, response.getWriter());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/deleteMessenger.do")
+	public void deleteMessenger(HttpServletResponse response,@RequestParam("id") String id,@RequestParam("friendid") String friendid, HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		ModelAndView mav = new ModelAndView();
+		int result = 0;
+		try {
+			result = messengerService.deleteMessenger(id,friendid);
+			new Gson().toJson(result, response.getWriter());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/setRead.do")
+	public void setRead(HttpServletResponse response,@RequestParam("id") String id,@RequestParam("friendid") String friendid, HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		ModelAndView mav = new ModelAndView();
+		int result = 0;
+		try {
+			result = messengerService.setRead(id,friendid);
+			new Gson().toJson(result, response.getWriter());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/getTotalMessage.do")
+	public void getTotalMessage(HttpServletResponse response,@RequestParam("id") String id,HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		ModelAndView mav = new ModelAndView();
+		int result = 0;
+		try {
+			result = messengerService.getTotalMessage(id);
+			new Gson().toJson(result, response.getWriter());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

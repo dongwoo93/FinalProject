@@ -9,11 +9,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import kh.sns.dto.MemberDTO;
-import kh.sns.interfaces.MemberService;
-
 
 //POJO - Plain Old Java Object
 
@@ -32,11 +27,13 @@ public class WebSocket{
 	@OnMessage
 	public void handleMessage(String message) throws Exception{
 		System.out.println(message);
-		String receiver = message.split(":")[0];
-		String msg = message.split(":")[1];
-
+		String receiver = message.split("뇽뇽뇽뇽123뇽뇽뇽뇽")[0];
+		System.out.println("receiver : " + receiver);
+		String msg = message.split("뇽뇽뇽뇽123뇽뇽뇽뇽")[1];
+		System.out.println("msg : " + msg);
 		for(String tmp : onlineUser.keySet()) {
 			if(tmp.equals(receiver)) {
+				System.out.println(tmp);
 				onlineUser.get(tmp).getBasicRemote().sendText(msg);
 			}
 		}
@@ -44,6 +41,8 @@ public class WebSocket{
 
 	@OnClose
 	public void handleClose(Session session) {
+		String userid = session.getRequestParameterMap().get("loginId").get(0);
+		onlineUser.remove(userid);
 	}
 
 	public void handleError(Throwable t) {
