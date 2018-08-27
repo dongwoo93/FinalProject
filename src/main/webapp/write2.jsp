@@ -23,6 +23,12 @@
 
         //   }
         
+        document.addEventListener('keydown', function(event) {
+        	    if (event.keyCode === 13) {
+        	        event.preventDefault();
+        	    }
+        	}, true);
+        
          function imageInfo(obj){                 
                   
                   console.log(obj.width);
@@ -45,13 +51,9 @@
 
         $(document).ready(function() {
         	
-        	document.addEventListener('keydown', function(event) {
-        	    if (event.keyCode === 13) {
-        	        event.preventDefault();
-        	    }
-        	}, true);
         	
-        	console.log('XXAZSES');
+        	
+        	console.log('1xxxxssf31');
         	var globalBizFormEnabled = false;
         	        	
         	  <!-- 000000000000000000000000000000000000000000 -->        	  
@@ -235,7 +237,7 @@
          	   
          	   $("#searchfriend").val("");
          	   
-         	   return false;
+
             });
             
             
@@ -626,16 +628,17 @@
 
 				</div>
 				<div class="modal-footer">
-					<button id="personmodalbt" type=button>확인</button>
+					<button id="personmodalbt">확인</button>
 				</div>
 			</div>
 		</div>
-		<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
-			async defer></script>
+
 	</div>
 	<!--        사람태그하기 Modal 끝-->
-	
+			<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
+			async defer></script>
+			
 	<c:if test="${ memberBiz ne null }">
 	<!--       비즈니스 설정 Modal부분-->
 	<div id="bizModal" class="modal fade" tabindex="-1" role="dialog"
