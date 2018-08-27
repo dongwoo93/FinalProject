@@ -20,8 +20,10 @@ import com.google.gson.Gson;
 
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.MessengerDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.MessengerService;
+import kh.sns.interfaces.ProfileService;
 import kh.sns.websocket.WebSocket;
 
 @Controller
@@ -32,6 +34,8 @@ public class MessengerController {
 	
 	@Autowired
 	private MessengerService messengerService;
+	
+	@Autowired	private ProfileService profileService;
 	
 	
 	@RequestMapping("/dmfriendlist.do")
@@ -44,27 +48,36 @@ public class MessengerController {
 		List<MemberDTO> list = null;
 		List<MemberDTO> onlinefriendlist = new ArrayList<>();
 		List<MemberDTO> offlinefriendlist = new ArrayList<>();
+		List<String> onlinefriendimg = new ArrayList<>();
+		List<String> offlinefriendimg = new ArrayList<>();
+		
 		
 		try {
 			list = memberService.selectfollowlist(id,searchtext);
 			System.out.println("해당하는거잘찾았냐");
+			
+			for(MemberDTO tmp : list) {
+				if(WebSocket.onlineUser.containsKey(tmp.getId())) {
+					onlinefriendlist.add(tmp);
+					onlinefriendimg.add(profileService.selectOneProfileImage(tmp.getId()));
+				}
+				else {
+					offlinefriendlist.add(tmp);
+					offlinefriendimg.add(profileService.selectOneProfileImage(tmp.getId()));
+				}
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 
-		for(MemberDTO tmp : list) {
-			if(WebSocket.onlineUser.containsKey(tmp.getId())) {
-				onlinefriendlist.add(tmp);
-			}
-			else {
-				offlinefriendlist.add(tmp);
-			}
-		}
+		
 		
 		try {
 			List<Object> object = new ArrayList<>();
 			object.add(onlinefriendlist);
 			object.add(offlinefriendlist);
+			object.add(onlinefriendimg);
+			object.add(offlinefriendimg);
 			new Gson().toJson(object, response.getWriter());
 		}catch(Exception e1) {
 			e1.printStackTrace();
@@ -78,15 +91,20 @@ public class MessengerController {
 		System.out.println("아이디찾기들어옴");
 		ModelAndView mav = new ModelAndView();
 		MemberDTO dto = null;
+		String imgname = null;
+		List<String> result = new ArrayList<>();
 		try {
 			dto = memberService.selectUserId(nickname);
-			System.out.println("해당하는거잘찾음 ?");
+			imgname = profileService.selectOneProfileImage(dto.getId());
+			
+			result.add(dto.getId());
+			result.add(imgname);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			new Gson().toJson(dto.getId(), response.getWriter());
+			new Gson().toJson(result, response.getWriter());
 			
 		}catch(Exception e1) {
 			e1.printStackTrace();

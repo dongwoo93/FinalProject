@@ -11,7 +11,206 @@
 </style>
 <script src="resources/js/myarticle.js"></script>
 <script>
+
+	function getCaretPosition(editableDiv) {
+	    var caretPos = 0,
+	        sel, range;
+	    if (window.getSelection) {
+	        sel = window.getSelection();
+	        if (sel.rangeCount) {
+	            range = sel.getRangeAt(0);
+	
+	            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
+	            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
+	                caretPos = range.endOffset;
+	                // console.log("caretPos: " + caretPos)
+	
+	
+	                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
+	                var isEqualOrLower = false;
+	                while (i >= 0) {
+	                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
+	                        $(range.commonAncestorContainer).text()) {
+	                        i--;
+	                        continue;
+	                    } else {
+	                        while (i >= 0) {
+	                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
+	                            // console.log($impl.text());
+	                            caretPos += $impl.text().length
+	                            i--;
+	                        }
+	                        break;
+	                    }
+	                }
+	
+	            }
+	        }
+	
+	    } else if (document.selection && document.selection.createRange) {
+	        range = document.selection.createRange();
+	        if (range.parentElement() == editableDiv) {
+	
+	            var tempEl = document.createElement("span");
+	            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+	            var tempRange = range.duplicate();
+	            tempRange.moveToElementText(tempEl);
+	            tempRange.setEndPoint("EndToEnd", range);
+	            caretPos = tempRange.text.length;
+	        }
+	    }
+	
+	    return caretPos;
+	}
+	
+	var update = function () {
+	    $('#caretposition').val(getCaretPosition(this));
+		console.log(getCaretPosition(this))
+	    console.log(this)
+	};	
+	
+	function placeCaretAtEnd(el) {
+	    el.focus();
+	    if (typeof window.getSelection != "undefined"
+	            && typeof document.createRange != "undefined") {
+	        var range = document.createRange();
+	        range.selectNodeContents(el);
+	        range.collapse(false);
+	        var sel = window.getSelection();
+	        sel.removeAllRanges();
+	        sel.addRange(range);
+	    } else if (typeof document.body.createTextRange != "undefined") {
+	        var textRange = document.body.createTextRange();
+	        textRange.moveToElementText(el);
+	        textRange.collapse(false);
+	        textRange.select();
+	    }
+	}
+	
+	// moved from myarticle.js
+	function modComment(e) { 
+
+		 var comment_seq = $(e).attr("value");
+		 var board_seq = $(e).parent().attr("value");
+		 var modstate = $("#modstate"+comment_seq).val();
+		   
+		 if(modstate == "1") {
+			
+			 $("#commentmod"+comment_seq).html("완료");
+			 $("#commenttxt"+comment_seq).attr("contentEditable",true);
+		  	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
+		  	 $("#commenttxt"+comment_seq).focus();  
+		  	 
+		  	placeCaretAtEnd( document.getElementById("commenttxt"+comment_seq) );
+		  	 
+		  	 $("#modstate"+comment_seq).val("2");  
+		  	 $("#del"+comment_seq).attr("style","color:#00B8D4");
+			 $("#mod"+comment_seq).attr("style","color:#00B8D4");
+		 }
+		 
+		 
+		 else if(modstate=="2") {      
+			
+	  			 var txt = $("#commenttxt"+comment_seq).text();     
+	     	 	 
+	            	$.ajax({    
+	                      type: "POST",    
+	                      url: "commentmod.co",    
+	                      data: {comment_seq:comment_seq, comment_contents:txt},   
+	                      success : function() {
+	                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
+			                $("#commenttxt"+comment_seq).attr("style","border:none"); 
+			                $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
+			                $("#modstate"+comment_seq).val("1");  
+			                $("#ul"+comment_seq).hide().fadeIn(500);
+			                $("#del"+comment_seq).attr("style",false);
+			          		$("#mod"+comment_seq).attr("style",false);
+			          		$("#commentmod"+comment_seq).html("수정");
+	                      }  
+	                 }); //ajax 
+		 }
+	  
+	}
+
+
+
 $(document).ready(function(){
+	
+	var globalThisCommentIsFocusedOnFirst = true;
+	
+    /* ========================= editable div에 태그 적용 시작 ========================= */
+    
+    
+    $('#comment').focus(function() {
+    	if(globalThisCommentIsFocusedOnFirst){
+    		$("#comment").html("");
+        	globalThisCommentIsFocusedOnFirst = false;
+    	}
+    	
+    });
+    
+    $('#comment').focusout(function() {
+    	if($('#comment').text() == ""){
+    		$("#comment").html("<span class=text-muted>댓글 달기...</span>");
+    		globalThisCommentIsFocusedOnFirst = true;
+    	}
+    })
+
+    var map = {
+        16: false,
+        32: false
+    };
+    
+    function makeupHashtag (e) {
+
+        if ((e.keyCode === 32)) {
+            map[e.keyCode] = true;
+            
+            if(parseInt($('#caretposition').val()) == 0){
+           	 //                        	 
+            } else if (parseInt($('#caretposition').val()) == $(this).text().length){
+           	 // 
+            } else {
+           	 // 
+           	 return;
+            }
+            
+
+            var regex = /(#[^#\s,;<>.]+)/gi;
+            if (regex) {
+                var newtxt = "<span class=fugue>" + $(this).text()
+                    .replace(regex, "</span><span class=text-danger>" + "$1" +
+                        "</span><span class=fugue>") + "</span>"
+
+                console.log($(this).text().length);   
+                console.log(newtxt)   
+                newtxt += "<kz></kz>"
+                $(this).html(newtxt)
+                var el = this;
+                console.log("childNodes: " + el.childNodes.length);
+                var range = document.createRange();
+                var sel = window.getSelection();
+                range.setStart(el.lastChild, 0);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+
+                $(this).focusout();
+                $(this).focus();
+
+
+            }
+        }
+    }
+    
+    $('#comment').on("mousedown mouseup keydown keyup", update);
+    $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+    $('#comment').keyup(makeupHashtag)
+    $("div[id*='commenttxt']").keyup(makeupHashtag)
+
+    /* ========================= editable div에 태그 적용 끝 ========================= */
+	
+	
 
     $("#cancelFollow").click(function() {
 
@@ -355,14 +554,16 @@ $(document).ready(function(){
                                  
 //                                   $("#modalcontents").text(data.contents);  
 								var txt = data[0].contents;
-  								var regex = /(#[^#\s,;]+)/gi  ; 
-  								var newtxt =data[0].contents;  
-  								if(txt != " ") {      
-  								  
-  									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+  								var regex = /(#[^#\s,;<>. ]+)/gi;
+  								var dataContent0 = data[0].contents; 
+  								var newtxt = "";  
+  								if(txt != " ") {        								  
+  									 newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><span class=text-danger>" 
+  											 + "$1" + "</span><span class=fugue>") + "</span>";
+  									 newtxt += "<kz></kz>"
   								}        
 					          
-                               $("#modalcontents").html(newtxt);
+                                  $("#modalcontents").html(newtxt);
                              //  $("#modalcontents").html(data[0].contents);
                                   $("#seq").val(data[0].board_seq);
                                   $("#modalid2").text(data[0].id);
@@ -384,11 +585,13 @@ $(document).ready(function(){
                                        
                                   }
                                       
-                                  $(".commentline").remove();          
+                                  $(".commentline").remove(); 
                                   for(var i =0; i<data[2].length; i++){ 
                                 	  var txt = data[2][i].comment_contents;   
-                                      var regex = /(#[^#\s,;]+)/gi  ;            
-                                      var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
+                                      var regex = /(#[^#\s,;<>. ]+)/gi;           
+                                      var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><span class=text-danger>" 
+   											 + "$1" + "</span><span class=fugue>") + "</span>";  
+   											newtxt += "<kz></kz>"
                                     
                                 	  
                                 	  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='board.bo?id="+data[2][i].id+"&cat=1' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
@@ -396,6 +599,47 @@ $(document).ready(function(){
                                 			  +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
                                   }
                                            
+                                  $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+                                  $("div[id*='commenttxt']").keyup(function(e){
+                                	// =================== 복붙 =================== 
+                               	   if(e.keyCode === 32){
+                               		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+                                          } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+                                          } else {
+                                              return;
+                                          }
+
+                                          var regex = /(#[^#\s,;<>. ]+)/gi;
+                                          if (regex) {
+                                              var newtxt = "<span class=fugue>" + $(this).text()
+                                                  .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                                      "</span><span class=fugue>") + "</span>"
+
+                                              // console.log($('#editorDiv').text().length);   
+                                              // console.log(newtxt)   
+                                              newtxt += "<kz></kz>"
+                                              $(this).html(newtxt)
+                                              var el = this;
+                                              console.log("childNodes: " + el.childNodes.length);
+                                              var range = document.createRange();
+                                              var sel = window.getSelection();
+                                              range.setStart(el.lastChild, 0);
+                                              range.collapse(false);
+                                              sel.removeAllRanges();
+                                              sel.addRange(range);
+
+                                              $(this).focusout();
+                                              $(this).focus();
+                                              if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+                                              }
+
+                                          }
+                               	   } 
+                               	   
+                               	   
+                               	// =================== 복붙 =================== 
+                                  })
                                  
                               
                                   
@@ -555,35 +799,15 @@ $(document).ready(function(){
 
 					<!-- <input type="text" placeholder="댓글 달기..." class="creco" id="comment">  -->
 					<div contenteditable="true" class="editableDivCommentSection"
-						class="creco" id="comment">
+						class="creco insertfield" id="comment">
 						<span class=text-muted>댓글 달기...</span>
 					</div>
 					<input type=hidden id="caretposition" value="0">
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 					<script>
 					
-				var globalThisCommentIsFocusedOnFirst = true;
+				
 					
 				
 				  /* ========================= 댓글달기 ========================= */
@@ -610,9 +834,10 @@ $(document).ready(function(){
                                 /* $("#comment").val(""); */
                                 $("#comment").html("");
                                 
-                                var regex = /(#[^#\s,;]+)/gi  ;            
-                                var newtxt = comment_contents.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
-                              
+                                var regex = /(#[^#\s,;<>. ]+)/gi;            
+                                var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><span class=text-danger>" 
+											 + "$1" + "</span><span class=fugue>") + "</span>";          
+									newtxt += "<kz></kz>"
                                     
                                 
                                 $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
@@ -620,6 +845,48 @@ $(document).ready(function(){
                           			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
                                   
                                 $("#ul"+comment_seq).hide().fadeIn(500);     
+                                
+                                $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+                                $("div[id*='commenttxt']").keyup(function(e){
+                                	// =================== 복붙 =================== 
+                               	   if(e.keyCode === 32){
+                               		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+                                          } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+                                          } else {
+                                              return;
+                                          }
+
+                                          var regex = /(#[^#\s,;<>. ]+)/gi;
+                                          if (regex) {
+                                              var newtxt = "<span class=fugue>" + $(this).text()
+                                                  .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                                      "</span><span class=fugue>") + "</span>"
+
+                                              // console.log($('#editorDiv').text().length);   
+                                              // console.log(newtxt)   
+                                              newtxt += "<kz></kz>"
+                                              $(this).html(newtxt)
+                                              var el = this;
+                                              console.log("childNodes: " + el.childNodes.length);
+                                              var range = document.createRange();
+                                              var sel = window.getSelection();
+                                              range.setStart(el.lastChild, 0);
+                                              range.collapse(false);
+                                              sel.removeAllRanges();
+                                              sel.addRange(range);
+
+                                              $(this).focusout();
+                                              $(this).focus();
+                                              if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+                                              }
+
+                                          }
+                               	   } 
+                               	   
+                               	   
+                               	// =================== 복붙 =================== 
+                                  })
   
                                 var objDiv = document.getElementById("articlecomment");
                                 objDiv.scrollTop = objDiv.scrollHeight;    
@@ -631,142 +898,7 @@ $(document).ready(function(){
                     
                 });
                 
-                /* ========================= editable div에 태그 적용 시작 ========================= */
-                
-                
-                $('#comment').focus(function() {
-                	if(globalThisCommentIsFocusedOnFirst){
-                		$("#comment").html("");
-                    	globalThisCommentIsFocusedOnFirst = false;
-                	}
-                	
-                });
-                
-                $('#comment').focusout(function() {
-                	if($('#comment').text() == ""){
-                		$("#comment").html("<span class=text-muted>댓글 달기...</span>");
-                		globalThisCommentIsFocusedOnFirst = true;
-                	}
-                })
-                
-                function getCaretPosition(editableDiv) {
-                    var caretPos = 0,
-                        sel, range;
-                    if (window.getSelection) {
-                        sel = window.getSelection();
-                        if (sel.rangeCount) {
-                            range = sel.getRangeAt(0);
-
-                            // console.log("childs: " + range.commonAncestorContainer.parentNode.parentNode.childNodes.length)
-                            if (range.commonAncestorContainer.parentNode.parentNode == editableDiv) {
-                                caretPos = range.endOffset;
-                                // console.log("caretPos: " + caretPos)
-
-
-                                var i = range.commonAncestorContainer.parentNode.parentNode.childNodes.length - 1;
-                                var isEqualOrLower = false;
-                                while (i >= 0) {
-                                    if ($(range.commonAncestorContainer.parentNode.parentNode.childNodes[i]).text() !=
-                                        $(range.commonAncestorContainer).text()) {
-                                        i--;
-                                        continue;
-                                    } else {
-                                        while (i >= 0) {
-                                            var $impl = $(range.commonAncestorContainer.parentNode.parentNode.childNodes[i - 1])
-                                            // console.log($impl.text());
-                                            caretPos += $impl.text().length
-                                            i--;
-                                        }
-                                        break;
-                                    }
-                                }
-
-                            }
-                        }
-
-
-                    } else if (document.selection && document.selection.createRange) {
-                        range = document.selection.createRange();
-                        if (range.parentElement() == editableDiv) {
-
-                            var tempEl = document.createElement("span");
-                            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-                            var tempRange = range.duplicate();
-                            tempRange.moveToElementText(tempEl);
-                            tempRange.setEndPoint("EndToEnd", range);
-                            caretPos = tempRange.text.length;
-                        }
-                    }
-
-                    return caretPos;
-                }
-
-
-
-                 var update = function () {
-                    $('#caretposition').val(getCaretPosition(this));
-                };
-
-
-                $('#comment').on("mousedown mouseup keydown keyup", update);
-
-
-                var map = {
-                    16: false,
-                    32: false
-                };
-                $("#comment").keyup(function (e) {
-
-                    if ((e.keyCode === 32)) {
-                        map[e.keyCode] = true;
-                        
-                        if(parseInt($('#caretposition').val()) == 0){
-                       	 // alert('뭐?')                        	 
-                        } else if (parseInt($('#caretposition').val()) == $('#comment').text().length){
-                       	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
-                        } else {
-                       	 // alert('임마?')
-                       	 return;
-                        }
-                        
-
-                        var regex = /(#[^#\s,;<>.]+)/gi;
-                        if (regex) {
-                            var newtxt = "<span class=fugue>" + $('#comment').text()
-                                .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                    "</span><span class=fugue>") + "</span>"
-
-                            console.log($('#comment').text().length);   
-                            console.log(newtxt)   
-                            newtxt += "<kz></kz>"
-                            $('#comment').html(newtxt)
-                            var el = document.getElementById("comment");
-                            console.log("childNodes: " + el.childNodes.length);
-                            var range = document.createRange();
-                            var sel = window.getSelection();
-                            range.setStart(el.lastChild, 0);
-                            range.collapse(false);
-                            sel.removeAllRanges();
-                            sel.addRange(range);
-
-                            $('#comment').focusout();
-                            $('#comment').focus();
-                            if (parseInt($('#caretposition').val()) == $('#comment').text().length) {
-
-                            }
-
-                        }
-                    }
-                })
-                /* .keyup(function(e){   
-                                    if(e.keyCode === 32){   
-                                       map[e.keyCode] = false;             
-                   
-                                      }
-                                    console.log($('#comment').text().length);
-                   
-                                 }); */
-                /* ========================= editable div에 태그 적용 끝 ========================= */
+          
 
                 </script>
 
