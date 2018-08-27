@@ -7,8 +7,8 @@
 <script>
 	
 	$(function () {
-  
-		var ws = new WebSocket("ws://192.168.20.13/websocket?loginId=${sessionScope.loginId}");
+
+		var ws = new WebSocket("ws://192.168.20.24/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
@@ -20,7 +20,7 @@
 			var receivernickname = $("#dmnickname").text();
 			var receiverId = $("#userId").val();
 			if(receiverId == sender){
-		    	$("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
+		    	$("#message").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
 		    	var objDiv = document.getElementById("messagebox");
 		    	objDiv.scrollTop = objDiv.scrollHeight;
 		    	setRead(receiverId);
@@ -1273,33 +1273,33 @@
     </div>
     
     <div class="attachment-panel" style='overflow-x:scroll; white-space:nowrap'>
-    	<img src="/resources/images/imoticon/1.png" class="imoticon">
-    	<img src="/resources/images/imoticon/2.png" class="imoticon">
-    	<img src="/resources/images/imoticon/3.png" class="imoticon">
-    	<img src="/resources/images/imoticon/4.png" class="imoticon">
-    	<img src="/resources/images/imoticon/5.png" class="imoticon">
-    	<img src="/resources/images/imoticon/6.png" class="imoticon">
-    	<img src="/resources/images/imoticon/7.png" class="imoticon">
-    	<img src="/resources/images/imoticon/8.png" class="imoticon">
-    	<img src="/resources/images/imoticon/9.png" class="imoticon">
-    	<img src="/resources/images/imoticon/10.png" class="imoticon">
-    	<img src="/resources/images/imoticon/11.png" class="imoticon">
-    	<img src="/resources/images/imoticon/12.png" class="imoticon">
-    	<img src="/resources/images/imoticon/13.png" class="imoticon">
-    	<img src="/resources/images/imoticon/14.png" class="imoticon">
-    	<img src="/resources/images/imoticon/15.png" class="imoticon">
-    	<img src="/resources/images/imoticon/16.png" class="imoticon">
-    	<img src="/resources/images/imoticon/17.png" class="imoticon">
-    	<img src="/resources/images/imoticon/18.png" class="imoticon">
-    	<img src="/resources/images/imoticon/19.png" class="imoticon">
-    	<img src="/resources/images/imoticon/20.png" class="imoticon">
-    	<img src="/resources/images/imoticon/21.png" class="imoticon">
-    	<img src="/resources/images/imoticon/22.png" class="imoticon">
-    	<img src="/resources/images/imoticon/23.png" class="imoticon">
-    	<img src="/resources/images/imoticon/24.png" class="imoticon">
-    	<img src="/resources/images/imoticon/25.png" class="imoticon">
-    	<img src="/resources/images/imoticon/26.png" class="imoticon">
-    	<img src="/resources/images/imoticon/27.png" class="imoticon">
+    	<img src="resources/images/imoticon/1.png" class="imoticon">
+    	<img src="resources/images/imoticon/2.png" class="imoticon">
+    	<img src="resources/images/imoticon/3.png" class="imoticon">
+    	<img src="resources/images/imoticon/4.png" class="imoticon">
+    	<img src="resources/images/imoticon/5.png" class="imoticon">
+    	<img src="resources/images/imoticon/6.png" class="imoticon">
+    	<img src="resources/images/imoticon/7.png" class="imoticon">
+    	<img src="resources/images/imoticon/8.png" class="imoticon">
+    	<img src="resources/images/imoticon/9.png" class="imoticon">
+    	<img src="resources/images/imoticon/10.png" class="imoticon">
+    	<img src="resources/images/imoticon/11.png" class="imoticon">
+    	<img src="resources/images/imoticon/12.png" class="imoticon">
+    	<img src="resources/images/imoticon/13.png" class="imoticon">
+    	<img src="resources/images/imoticon/14.png" class="imoticon">
+    	<img src="resources/images/imoticon/15.png" class="imoticon">
+    	<img src="resources/images/imoticon/16.png" class="imoticon">
+    	<img src="resources/images/imoticon/17.png" class="imoticon">
+    	<img src="resources/images/imoticon/18.png" class="imoticon">
+    	<img src="resources/images/imoticon/19.png" class="imoticon">
+    	<img src="resources/images/imoticon/20.png" class="imoticon">
+    	<img src="resources/images/imoticon/21.png" class="imoticon">
+    	<img src="resources/images/imoticon/22.png" class="imoticon">
+    	<img src="resources/images/imoticon/23.png" class="imoticon">
+    	<img src="resources/images/imoticon/24.png" class="imoticon">
+    	<img src="resources/images/imoticon/25.png" class="imoticon">
+    	<img src="resources/images/imoticon/26.png" class="imoticon">
+    	<img src="resources/images/imoticon/27.png" class="imoticon">
     </div>
   </div>  
 </div>
