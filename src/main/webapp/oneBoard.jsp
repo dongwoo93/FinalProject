@@ -5,6 +5,12 @@
 <link rel="stylesheet" type="text/css" href="resources/css/oneboard.css">
 <script>
 
+function tag(e) {
+	var search = $(e).html().split("#")[1]; 
+	$(location).attr("href","search.bo?search="+search); 
+
+}
+
 function getCaretPosition(editableDiv) {
     var caretPos = 0,
         sel, range;
@@ -280,8 +286,8 @@ $("#comment").keypress(function(event){
 				success: function(seq){
 					
 					var regex = /(#[^#\s,;<>.]+)/gi;
-					var newtxt = "<span class=fugue>" + comment.replace(regex, "</span><span class=text-danger>" + "$1" +
-                        "</span><span class=fugue>") + "</span>"
+					var newtxt = "<span class=fugue>" + comment.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                        "</a><span class=fugue>") + "</span>"
                         newtxt += "<kz></kz>"
 					    
 					var start = $("#comment-contents");					
@@ -306,8 +312,8 @@ $("#comment").keypress(function(event){
                             var regex = /(#[^#\s,;<>. ]+)/gi;
                             if (regex) {
                                 var newtxt = "<span class=fugue>" + $(this).text()
-                                    .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                        "</span><span class=fugue>") + "</span>"
+                                    .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                        "</a><span class=fugue>") + "</span>"
 
                                 // console.log($('#editorDiv').text().length);   
                                 // console.log(newtxt)   
@@ -447,8 +453,8 @@ $("#comment").keypress(function(event){
 							                var regex = /(#[^#\s,;<>. ]+)/gi;
 							                if (regex) {
 							                    var newtxt = "<span class=fugue>" + $(this).text()
-							                        .replace(regex, "</span><span class=text-danger>" + "$1" +
-							                            "</span><span class=fugue>") + "</span>"
+							                        .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+							                            "</a><span class=fugue>") + "</span>"
 
 							                    // console.log($('#editorDiv').text().length);   
 							                    // console.log(newtxt)   
@@ -614,8 +620,8 @@ $("#comment").keypress(function(event){
                         		  var innerCode = ""
                                   if (regex) {
                                       innerCode = "<span class=fugue>" + originalText
-                                          .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                              "</span><span class=fugue>") + "</span>"
+                                          .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                              "</a><span class=fugue>") + "</span>"
                                       innerCode += "<kz></kz>"
                                       /* document.write(innerCode) */
                                       $('#contdiv').html(innerCode);
@@ -659,8 +665,8 @@ $("#comment").keypress(function(event){
                         		  var innerCode = ""
                                   if (regex) {
                                       innerCode = "<span class=fugue>" + originalText
-                                          .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                              "</span><span class=fugue>") + "</span>"
+                                          .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                              "</a><span class=fugue>") + "</span>"
                                       innerCode += "<kz></kz>"
                                       /* document.write(innerCode) */
                                       $("#commentSection${item.comment_seq}").html(innerCode)
