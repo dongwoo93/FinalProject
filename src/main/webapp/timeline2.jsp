@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-  
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 <script>
@@ -294,8 +293,8 @@
 		}  
 	
     }
-   
-    function commentleave(e) { 
+    
+    function commentleave(e) {
     	var seq = $(e).attr("value"); 
 		 
 		$("#ul"+seq).attr("style",false);            
@@ -314,7 +313,7 @@
                   data: {board_seq:board_seq,comment_seq:comment_seq},
                   success : function(cnt) {
                 	console.log(cnt);    
-                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });    
+                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
                    if(cnt>2){ 
                        $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
                        else {
@@ -538,20 +537,17 @@
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>  
-<!-- 								<div id="carousel-inner" class="carousel-inner "          -->
-<%-- 									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">   --%>
-										<div id="carousel-inner" class="carousel-inner"             
-									>  
-									<div id="firstItem" class="carousel-item active">        
-										<img class='boardimg'  width='100%'
+								</ul>
+								<div id="carousel-inner" class="carousel-inner">
+									<div id="firstItem" class="carousel-item active">
+										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
-											alt='' >  
+											alt=''>
 									</div>
-									<c:forEach begin="1" var="media" 
-										items="${result2[status.index]}" varStatus="status3">  
-										<div class="carousel-item" >
-											<img class='boardimg'  width='100%'  
+									<c:forEach begin="1" var="media"
+										items="${result2[status.index]}" varStatus="status3">
+										<div class="carousel-item">
+											<img class='boardimg' width='100%'
 												src="AttachedMedia/${media.system_file_name}" alt="">
 										</div>
 
@@ -640,10 +636,7 @@
 							           
 							  var txt = "${tmp.contents}"; 
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-							  var newtxt;
-								if(txt != null) {
-									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
-								}           
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");        
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 							$("#contdiv${tmp.board_seq}").html(newtxt);    
 							  
@@ -677,7 +670,7 @@
 												</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
-									
+
 													<ul id="ul${comment.comment_seq}" style="display: none"
 														value="${comment.comment_seq}"
 														onmouseover="commentover(this)"
@@ -781,7 +774,7 @@
                             						newtxt += "<kz></kz>";
                                             
                                                    
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}&cat=1'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                                               
@@ -856,81 +849,70 @@
 				</c:forEach>
 			</div>
 			<!-- board -->
-			
-			
-	
-			
-		
-			
-			<div style="position:fixed;border-radius: 1px;">	
-				
-				  <div class="container" id="float" style="width:300px;margin-top:55px;margin-left:30px;"> 
-				  <br>
-				  <div class="profile-image"> 
-						<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">	  				
-						<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-						
-				 </div>		 
-		   
-				  <hr class="_5mToa">	      				         
-				    <p class="text-center" style="font-family:'HelveticaNeue','Arial', sans-serif;font-size:15px;"><a id="followprev" style="color:#919191;" class="pointer pr-3">◀</a>추천 Follow를 추가하세요!!<a id="follownext" style="color:#919191" class="pointer pl-3">▶</a></p>
-				  <hr class="_5mToa">  
-				  
-				    
-				    <c:forEach  begin="0" end="${follow_size}" varStatus="status">
-<!-- 				      <div id="followContainer" class="myslides">   -->
-				      
-<%-- 				    	<c:forEach var="followtmp" items="${result3}" varStatus="memstatus" begin="parseInt(${status})" end=""> --%>
-				   
-<%-- 					  <div class="container recommendmem" id="follow${memstatus.index}">  --%>
-<!-- 					    <div class="profile-image">  -->
-<%-- 							<img class="ml-3 mr-2 pic" src="AttachedMedia/<c:out value='${profile_pic[followtmp.targetId]}'/>">  	   --%>
-<%-- 							<a class="mt-6 idtxt"  style="font-size:16px; font-family:'HelveticaNeue','Arial', sans-serif;" href="board.bo?id=${followtmp.targetId}">${followtmp.targetId}</a>						 --%>
-<!-- 				 		</div>				 			       -->
-<!-- 					  </div> -->
-					  
-<%-- 					  </c:forEach> --%>
-<!-- 					  </div>	 -->
-					</c:forEach>  
-					
-					<hr class="_5mToa">
-				</div> 
-				
-				
 
-				<script>
-// 				var slideIndex = 0; 
-// 				carousel();
- 
-// 				function carousel() {
-// 				    var i;
-// 				    var x = $(".myslides");  
-// 				    for (i = 0; i < x.length; i++) {
-// 				      x[i].style.display = "none"; 
-// 				    }
-// 				    slideIndex++;
-// 				    if (slideIndex > x.length) {slideIndex = 1} 
-// 				    x[slideIndex-1].style.display = "block"; 
-// 				    setTimeout(carousel, 2000); 
-// 				}
-				</script>
-			
-				
-				
-				
-				 <div class="pt-4 pb-3  " id="footer" style="font-size:5px;margin-left:20px;">
-		           <div class="container">
-		              <div class="row" >
-		                <div class="col-md-10">
-		                  <p>SocialWired.정보.지원.홍보.채용</p>
-		                  <p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어  </p>
-		                  <p>@2018SocialWired</p>
-		                </div>
-		              </div>
-		           </div>
-     			 </div>
-					
-		 
+
+
+
+
+
+			<div style="position: fixed; border-radius: 1px;">
+				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1"
+					end="1">
+					<div class="container" id="float"
+						style="width: 300px; margin-top: 55px; margin-left: 30px;">
+						<br>
+						<div class="profile-image">
+							<img class="ml-3 mr-2 pic"
+								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">
+							<a class="mt-6 idtxt"
+								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
+								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
+
+						</div>
+				</c:forEach>
+
+
+				<hr class="_5mToa">
+				<p class="text-center"
+					style="font-family: 'HelveticaNeue', 'Arial', sans-serif; font-size: 15px;">
+					<i class="far fa-arrow-alt-circle-left" style="font-size: 15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천
+					Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i
+						class="far fa-arrow-alt-circle-right" style="font-size: 15px;"></i>
+				</p>
+				<hr class="_5mToa">
+				<c:forEach var="followtmp" items="${result3}" varStatus="status"
+					begin="0" end="4">
+
+					<div class="container">
+
+						<div class="profile-image">
+							<img class="ml-3 mr-2 pic"
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">
+							<a class="mt-6 idtxt"
+								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
+						</div>
+
+					</div>
+
+				</c:forEach>
+				<hr class="_5mToa">
+
+
+			</div>
+
+			<div class="pt-4 pb-3  " id="footer"
+				style="font-size: 5px; margin-left: 20px;">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-10">
+							<p>SocialWired.정보.지원.홍보.채용</p>
+							<p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어</p>
+							<p>@2018SocialWired</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
 		</div>
 
