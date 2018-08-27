@@ -236,7 +236,7 @@ $(document).ready(function(){
 		$("#divinfo"+seq).attr("style","display:none;");
 }
 								</script>
- 
+
 
 
 
@@ -302,10 +302,20 @@ $(document).ready(function(){
 					</c:when>
 
 					<c:otherwise>
-						<a data-target="#profileimage" data-toggle="modal"
-							style="cursor: pointer;"> <img
-							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
-							width="152px" height="152px" style="object-fit: cover;"></a>
+						<c:choose>
+							<c:when test="${sessionScope.loginId == pageid}">
+								<a data-target="#profileimage" data-toggle="modal"
+									style="cursor: pointer;"> <img
+									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									width="152px" height="152px" style="object-fit: cover;"></a>
+							</c:when>
+							<c:otherwise>
+								<img
+									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									width="152px" height="152px" style="object-fit: cover;">
+							</c:otherwise>
+						</c:choose>
+
 					</c:otherwise>
 				</c:choose>
 
@@ -334,8 +344,7 @@ $(document).ready(function(){
 						<div class="profile-edit-btn" id="cancelFollow">팔로잉</div>
 						<div class="profile-edit-btn"
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
-							id="follow"
-							style="background-color: #35e0db; display: none;">팔로우</div>
+							id="follow" style="background-color: #35e0db; display: none;">팔로우</div>
 						<div class="profile-settings-btn">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -481,32 +490,35 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
-				</div>
-		</c:otherwise>
-	</c:choose>
-			<div class="container my ">  
+</div>
+</c:otherwise>
+</c:choose>
+<div class="container my ">
 
-				<div class="row">
-					<c:if test="${result.size() != 0}">  
+	<div class="row">
+		<c:if test="${result.size() != 0}">
 
-						<c:forEach var="tmp" items="${result}" varStatus="status">    
-       
-							  <div class="col-md-4 divitem pt-4" id="${tmp.board_seq}" value="${tmp.board_seq}" onmouseover="articleover(this)" onmouseleave="articleleave(this)">               
-                    <img src="AttachedMedia/${result2[status.index].system_file_name}" class="divimg pointer" > 
-							     
-                  	<div class="divinfo divimg" id="divinfo${tmp.board_seq}" style="display:none;" >                                                
-									<ul>
-										<li class="divicons"><i class="fas fa-heart"></i>
-											<c:out value="${likecount[tmp.board_seq]}" /></li>  
-										<li class="divicons"><i
-											class="fas fa-comment"></i> <c:out
-												value="${commentcount[tmp.board_seq]}" /></li>
-									</ul>
-								</div>
-								
-							
+			<c:forEach var="tmp" items="${result}" varStatus="status">
 
-								<script>
+				<div class="col-md-4 divitem pt-4" id="${tmp.board_seq}"
+					value="${tmp.board_seq}" onmouseover="articleover(this)"
+					onmouseleave="articleleave(this)">
+					<img src="AttachedMedia/${result2[status.index].system_file_name}"
+						class="divimg pointer">
+
+					<div class="divinfo divimg" id="divinfo${tmp.board_seq}"
+						style="display: none;">
+						<ul>
+							<li class="divicons"><i class="fas fa-heart"></i> <c:out
+									value="${likecount[tmp.board_seq]}" /></li>
+							<li class="divicons"><i class="fas fa-comment"></i> <c:out
+									value="${commentcount[tmp.board_seq]}" /></li>
+						</ul>
+					</div>
+
+
+
+					<script>
                
        
                        $("#${tmp.board_seq}").click(function() { 
@@ -674,17 +686,17 @@ $(document).ready(function(){
 
                      
              				</script>
-							</div>
-						</c:forEach>
-					</c:if>
 				</div>
+			</c:forEach>
+		</c:if>
+	</div>
 
-				<!--          <div class="spinner"></div> -->
+	<!--          <div class="spinner"></div> -->
 
-			</div>
+</div>
 
-		</c:otherwise>
-	</c:choose>
+</c:otherwise>
+</c:choose>
 
 </div>
 
@@ -707,27 +719,27 @@ $(document).ready(function(){
 		<br>
 
 
-		<div class="modal-content view"  
+		<div class="modal-content view"
 			style="flex-direction: row; width: 1000px; height: auto;">
 
 			<div class="modal-content view" style="width: 70%; height: auto;">
-				    
-					<div id="demo" class="carousel slide" data-ride="carousel"
-						data-interval="false">
-						<ul id="carousel-indicators" class="carousel-indicators">
-							<li id="firstli" data-target="#demo" data-slide-to="0"
-								class="active"></li>
-						</ul>
-						<div id="carousel-inner" class="carousel-inner">
-							<div id="firstItem" class="carousel-item active"></div>
-						</div>
-						<a id="carousel-prev" class="carousel-control-prev" href="#demo"
-							data-slide="prev"> <span class="carousel-control-prev-icon"></span>
-						</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
-							data-slide="next"> <span class="carousel-control-next-icon"></span>
-						</a>
+
+				<div id="demo" class="carousel slide" data-ride="carousel"
+					data-interval="false">
+					<ul id="carousel-indicators" class="carousel-indicators">
+						<li id="firstli" data-target="#demo" data-slide-to="0"
+							class="active"></li>
+					</ul>
+					<div id="carousel-inner" class="carousel-inner">
+						<div id="firstItem" class="carousel-item active"></div>
 					</div>
-				
+					<a id="carousel-prev" class="carousel-control-prev" href="#demo"
+						data-slide="prev"> <span class="carousel-control-prev-icon"></span>
+					</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
+						data-slide="next"> <span class="carousel-control-next-icon"></span>
+					</a>
+				</div>
+
 
 			</div>
 
