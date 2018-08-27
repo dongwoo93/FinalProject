@@ -820,7 +820,7 @@ ul {
 }
 .close{
    	 top : 2.5%;
-   	 font-size: 25px;
+   	 font-size: 25px;  
 }
 .pic{
 	width : 30px;
@@ -828,9 +828,9 @@ ul {
 }  
 
 .myslides {display:none;}   
-  
-.carousel-item.active, .carousel-item-next, .carousel-item-prev {
-    /* display: block; */
-    display: table-cell;
-    vertical-align: middle;
-}  
+    
+/* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
+/*     display: block; */
+/*     display: table-cell; */
+/*     vertical-align: middle; */
+/* }   */
