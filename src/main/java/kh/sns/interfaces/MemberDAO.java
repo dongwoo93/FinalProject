@@ -22,6 +22,7 @@ public interface MemberDAO {
 	
 	public int updateOneMemberPassword(MemberDTO member) throws Exception;
 	public List<MemberDTO> selectfriendlist(String id,String searchtext) throws Exception;
+	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception;
 	public List<MemberDTO> findMember(String searchtext) throws Exception;
 
 	public int checkEmailDuplicated(String email, String currentUserId) throws Exception;
@@ -29,6 +30,7 @@ public interface MemberDAO {
 	// My_aticle
 	public List<MemberDTO> myNick_Id(String id) throws Exception;
 	
+	public MemberDTO selectUserId(String nickname) throws Exception;
 
 //	boolean isIdExist(String id);
 }
