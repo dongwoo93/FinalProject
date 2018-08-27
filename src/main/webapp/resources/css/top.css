@@ -26,7 +26,17 @@
 	 
 	 } 
 	 
-	
+	 #totalreadcount{
+	 	  background-color:red;
+	 	  width:20px;
+	 	  position: absolute;
+		  color:white;
+		  font-size: 12px;
+		  text-align:center;
+   		  top: 10px;
+    	  right: 51.5rem;
+		  border-radius:5px;
+	 }
 
     #allwrapper{
       height:auto;
@@ -141,13 +151,14 @@
 	
 	#autodiv1{
 		display: flex;
+		margin-top: 5px;
+		margin-bottom: 5px;
 	}
 	
 	#autodiv0:hover{
-    background: #ff8a00;
-    border: none;
+    background: rgba(18, 187, 173, 0.5);
     color:#000;
-    border-radius:0;
+    border-radius: 1rem;
     font-weight: normal;
 	}
 	
@@ -156,10 +167,11 @@
 	}
 	
 	#searchimg {
-		margin-top: 10px;
-		    border-radius: 50%;
-		        width: 30px;
-    height: 30px;
+		margin-top: 6px;
+		margin-left: 10px;
+		border-radius: 50%;
+		width: 30px;
+        height: 30px;
 	}
 	
 	.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
@@ -172,8 +184,10 @@
 	
 	#autodiv0 {
 		cursor: pointer;
-		padding-left: 10px;
-		margin-bottom: 10px;
+		margin-left: 8px;
+		margin-right: 8px;
+		margin-top: 3px;
+		border-bottom: 0.5px solid #efe4e4;
 		
 	}
 	

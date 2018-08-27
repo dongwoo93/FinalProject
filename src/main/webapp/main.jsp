@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/main.css">
 <script src="resources/js/main.js"></script>
 <title>SoicalWired</title>
-
+     
 <script>
    if(${sessionScope.loginId != null}) {
       $(location).attr("href", "feed.bo");
@@ -22,7 +22,7 @@
 </script>
 </head>
 <body>
-
+ 
 
 
 <!-- <div id="formWrapper"> -->
@@ -50,7 +50,7 @@
       <p class="" id="ptag">We ♥ new friends</p>
       </div>
    
-      <form id="loginform" method="post">
+      <form id="loginform" method="post"> 
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">ID</p>
             <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
@@ -58,12 +58,12 @@
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">Password</p>
             <input type="password" name="pw" id="password" class="form-style" />
-            <!-- <div class="pw-view"><i class="fa fa-eye"></i></div> -->
             <br>
             <div id="result"></div>
             
             
          </div>
+         
          
          <div class="form-item">
          <p class="" style="font-weight:bold;"><a href="findPass.jsp" ><small>Forgot Password ?</small></a></p>   
@@ -78,6 +78,7 @@
          </div>
          
 <!--     </div> -->
+
    
    
    

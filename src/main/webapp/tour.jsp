@@ -219,8 +219,11 @@ function unmarkit(e) {
 // 											});
 					var text = $("#myContents${result.board_seq}").html();  
 									var regex = /(#[^#\s,;]+)/gi  ;              
-  							        var newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");          
-  					            	$("#myContents${result.board_seq}").html(newtxt);  
+									var newtxt;
+	  								if(txt != null) {
+	  									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+	  								}        
+  							        $("#myContents${result.board_seq}").html(newtxt);  
 								</script>
 					</div>
 			<!-- 이미지 -->

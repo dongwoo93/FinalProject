@@ -17,7 +17,29 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
 <script src="resources/js/top.js"></script>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+            url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
+            type: "get",
+            data: {id:"${sessionScope.loginId}"}, 
+            success: function(response) {
+            	if(response != 0){
+            		$("#totalreadcount").show();
+            		$("#totalreadcount").text(response);
+            	}
+            },
+            error: function() {
+                console.log("에러");
+            },
+            complete: function(){
+                console.log("AJAX완료");
+            } 
+        });
+	})
+</script>
 </head>
+
 
 <body>
 <script>
@@ -38,14 +60,18 @@ $(function() {
             	  console.log(data);
             	  response(
             			  $.map(data, function(item) {
-            		  return {
-            			  label: item.id,
-            			  value: item.id,
-            			  link: item.link,
-            			  name: item.name,
-            			  img: item.img
-            		  }
-            		  
+            				  
+            					  return {
+                        			  label: item.id,
+                        			  value: item.id,
+                        			  link: item.link,
+                        			  name: item.name,
+                        			  img: item.img,
+                        			  tag: item.tags,
+                        			  count: item.count,
+                        			  category : item.category
+                        		  }
+
             	  })
             	  );
             	  
@@ -54,17 +80,15 @@ $(function() {
             });
 
           },
-        minLength: 2,
         select: function(event, ui) {
             console.log(ui.item);
             if (ui.item && ui.item.value){
                 ui.item.value="";
-            } 
+            }
             window.location = ui.item.link;
         },
 
         focus: function(event, ui) {
-
             return false;
 
             //event.preventDefault();
@@ -73,7 +97,12 @@ $(function() {
 
     })
     .autocomplete("instance")._renderItem = function(div, item) {
-    	return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 18px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    	if(item.category == "People") {
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    	}else if(item.category == "Tag") {
+    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
+    	}
+    	
     };
     
     
@@ -101,7 +130,7 @@ $(function() {
                 <ul class="navbar-nav">
                 
                  <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-comment-alt nav-icon"></i></a>
+                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"></i><span id="totalreadcount" style='display:none;'></span></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
@@ -118,7 +147,7 @@ $(function() {
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a>
-          <a class="dropdown-item" href="profile.member">프로필 편집</a>
+          <a class="dropdown-item" href="profile.member?cat=0">프로필 편집</a>
           <a class="dropdown-item" href="calendar.bo">나의 게시판</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="logout.do">로그아웃</a>

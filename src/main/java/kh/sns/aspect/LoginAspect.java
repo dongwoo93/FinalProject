@@ -13,6 +13,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.sns.websocket.WebSocket;
+
 @Aspect
 @Controller
 public class LoginAspect {
@@ -58,11 +60,12 @@ public class LoginAspect {
 		                if (loginId == null || "".equals(loginId)) {
 		                    System.out.println("### Margo ==> in if loginId : "
 		                            + loginId);
+		                     WebSocket.onlineUser.remove(loginId);
 		                     throw new RuntimeException("먼저 로그인을 하셔야 합니다.");
 		                }          
 		        }catch(Exception e){
 		        	System.out.println("여기는LoginAspect");
-		        	throw new RuntimeException("먼저 로그인을 하셔야 합니다.");
+		        	e.printStackTrace();
 		 
 		        }      
 		        Object result = joinPoint.proceed();
