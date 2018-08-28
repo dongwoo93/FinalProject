@@ -12,6 +12,12 @@
 <script src="resources/js/myarticle.js"></script>
 <script>
 
+	function tag(e) {
+		var search = $(e).html().split("#")[1]; 
+		$(location).attr("href","search.bo?search="+search); 
+	
+	}
+
 	function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
 	        sel, range;
@@ -179,8 +185,8 @@ $(document).ready(function(){
             var regex = /(#[^#\s,;<>.]+)/gi;
             if (regex) {
                 var newtxt = "<span class=fugue>" + $(this).text()
-                    .replace(regex, "</span><span class=text-danger>" + "$1" +
-                        "</span><span class=fugue>") + "</span>"
+                    .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                        "</a><span class=fugue>") + "</span>"
 
                 console.log($(this).text().length);   
                 console.log(newtxt)   
@@ -205,9 +211,10 @@ $(document).ready(function(){
     
     $('#comment').on("mousedown mouseup keydown keyup", update);
     $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+    $('#modalcontents').on("mousedown mouseup keydown keyup", update);
     $('#comment').keyup(makeupHashtag)
     $("div[id*='commenttxt']").keyup(makeupHashtag)
-
+	$('#modalcontents').keyup(makeupHashtag)
     /* ========================= editable div에 태그 적용 끝 ========================= */
 	
 	
@@ -217,6 +224,25 @@ $(document).ready(function(){
       $("#exampleModalCenter").modal();                             
                     });
       
+    $(document).on('click', '.imgdel', function() {
+    	var fileName = $(this).attr('id');
+    	alert(fileName);
+    	var element = this;
+    	$.ajax({ 
+		      url : "deleteImg.profile", 
+		      type : "post", 
+		      data : { 
+		    	  system_file_name : fileName
+		      }, 
+		      success : function(resp) {
+		    	  $(element).parent().remove();    
+		      }, 
+		      error : function() { 
+		         console.log("에러 발생!"); 
+		         } 
+		      }) 
+        
+    });
   
 })
 
@@ -228,9 +254,32 @@ $(document).ready(function(){
 	function articleleave(e) {
 		var seq = $(e).attr("value"); 
 		$("#divinfo"+seq).attr("style","display:none;");
+		
+																$("#modifysubmitbtn").click(function(){
+																	var board_seq = $("#seq").val();
+																	var contents = $("#modalcontents").html();
+																	var contentsToText = $("#modalcontents").text()
+														
+																	$.ajax({
+																		type:"POST",
+																		url:"boardModify.bo",
+																		data: {board_seq:board_seq, contents:contentsToText},
+																		success: function(data)
+																		{
+																			if(data == 1){
+																				$("#modalcontents").html(contents);
+																				$("#modalcontents").attr("contentEditable","false");
+														
+																			}else {
+																				alert("다시 시도해주세요");
+																			}
+														
+																		}
+																	});
+																})
 }
 								</script>
- 
+
 
 
 
@@ -296,10 +345,20 @@ $(document).ready(function(){
 					</c:when>
 
 					<c:otherwise>
-						<a data-target="#profileimage" data-toggle="modal"
-							style="cursor: pointer;"> <img
-							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
-							width="152px" height="152px" style="object-fit: cover;"></a>
+						<c:choose>
+							<c:when test="${sessionScope.loginId == pageid}">
+								<a data-target="#profileimage" data-toggle="modal"
+									style="cursor: pointer;"> <img
+									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									width="152px" height="152px" style="object-fit: cover;"></a>
+							</c:when>
+							<c:otherwise>
+								<img
+									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									width="152px" height="152px" style="object-fit: cover;">
+							</c:otherwise>
+						</c:choose>
+
 					</c:otherwise>
 				</c:choose>
 
@@ -328,8 +387,7 @@ $(document).ready(function(){
 						<div class="profile-edit-btn" id="cancelFollow">팔로잉</div>
 						<div class="profile-edit-btn"
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
-							id="follow"
-							style="background-color: #35e0db; display: none;">팔로우</div>
+							id="follow" style="background-color: #35e0db; display: none;">팔로우</div>
 						<div class="profile-settings-btn">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -477,32 +535,35 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
-				</div>
-		</c:otherwise>
-	</c:choose>
-			<div class="container my ">  
+</div>
+</c:otherwise>
+</c:choose>
+<div class="container my ">
 
-				<div class="row">
-					<c:if test="${result.size() != 0}">  
+	<div class="row">
+		<c:if test="${result.size() != 0}">
 
-						<c:forEach var="tmp" items="${result}" varStatus="status">    
-       
-							  <div class="col-md-4 divitem pt-4" id="${tmp.board_seq}" value="${tmp.board_seq}" onmouseover="articleover(this)" onmouseleave="articleleave(this)">               
-                    <img src="AttachedMedia/${result2[status.index].system_file_name}" class="divimg pointer" > 
-							     
-                  	<div class="divinfo divimg" id="divinfo${tmp.board_seq}" style="display:none;" >                                                
-									<ul>
-										<li class="divicons"><i class="fas fa-heart"></i>
-											<c:out value="${likecount[tmp.board_seq]}" /></li>  
-										<li class="divicons"><i
-											class="fas fa-comment"></i> <c:out
-												value="${commentcount[tmp.board_seq]}" /></li>
-									</ul>
-								</div>
-								
-							
+			<c:forEach var="tmp" items="${result}" varStatus="status">
 
-								<script>
+				<div class="col-md-4 divitem pt-4" id="${tmp.board_seq}"
+					value="${tmp.board_seq}" onmouseover="articleover(this)"
+					onmouseleave="articleleave(this)">
+					<img src="AttachedMedia/${result2[status.index].system_file_name}"
+						class="divimg pointer">
+
+					<div class="divinfo divimg" id="divinfo${tmp.board_seq}"
+						style="display: none;">
+						<ul>
+							<li class="divicons"><i class="fas fa-heart"></i> <c:out
+									value="${likecount[tmp.board_seq]}" /></li>
+							<li class="divicons"><i class="fas fa-comment"></i> <c:out
+									value="${commentcount[tmp.board_seq]}" /></li>
+						</ul>
+					</div>
+
+
+
+					<script>
                
        
                        $("#${tmp.board_seq}").click(function() { 
@@ -560,8 +621,8 @@ $(document).ready(function(){
   								var dataContent0 = data[0].contents; 
   								var newtxt = "";  
   								if(txt != " ") {        								  
-  									 newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><span class=text-danger>" 
-  											 + "$1" + "</span><span class=fugue>") + "</span>";
+  									 newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+  											 + "$1" + "</a><span class=fugue>") + "</span>";
   									 newtxt += "<kz></kz>"
   								}        
 					          
@@ -591,8 +652,8 @@ $(document).ready(function(){
                                   for(var i =0; i<data[2].length; i++){ 
                                 	  var txt = data[2][i].comment_contents;   
                                       var regex = /(#[^#\s,;<>. ]+)/gi;           
-                                      var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><span class=text-danger>" 
-   											 + "$1" + "</span><span class=fugue>") + "</span>";  
+                                      var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+   											 + "$1" + "</a><span class=fugue>") + "</span>";  
    											newtxt += "<kz></kz>"
                                     
                                 	  
@@ -614,8 +675,8 @@ $(document).ready(function(){
                                           var regex = /(#[^#\s,;<>. ]+)/gi;
                                           if (regex) {
                                               var newtxt = "<span class=fugue>" + $(this).text()
-                                                  .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                                      "</span><span class=fugue>") + "</span>"
+                                                  .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                                      "</a><span class=fugue>") + "</span>"
 
                                               // console.log($('#editorDiv').text().length);   
                                               // console.log(newtxt)   
@@ -678,17 +739,17 @@ $(document).ready(function(){
 
                      
              				</script>
-							</div>
-						</c:forEach>
-					</c:if>
 				</div>
+			</c:forEach>
+		</c:if>
+	</div>
 
-				<!--          <div class="spinner"></div> -->
+	<!--          <div class="spinner"></div> -->
 
-			</div>
+</div>
 
-		</c:otherwise>
-	</c:choose>
+</c:otherwise>
+</c:choose>
 
 </div>
 
@@ -711,32 +772,59 @@ $(document).ready(function(){
 		<br>
 
 
-		<div class="modal-content view"  
+		<div class="modal-content view"
 			style="flex-direction: row; width: 1000px; height: auto;">
 
+			<!-- 			<div class="modal-content view" style="width: 70%; height: auto;"> -->
+
+			<!-- 					<div id="demo" class="carousel slide" data-ride="carousel" -->
+			<!-- 						data-interval="false"> -->
+			<!-- 						<ul id="carousel-indicators" class="carousel-indicators"> -->
+			<!-- 							<li id="firstli" data-target="#demo" data-slide-to="0" -->
+			<!-- 								class="active"></li> -->
+			<!-- 						</ul> -->
+			<!-- 						<div id="carousel-inner" class="carousel-inner" style="background-color:black;"> -->
+			<!-- 							<div id="firstItem" class="carousel-item active"></div> -->
+			<!-- 						</div> -->
+			<!-- 						<a id="carousel-prev" class="carousel-control-prev" href="#demo" -->
+			<!-- 							data-slide="prev"> <span class="carousel-control-prev-icon"></span> -->
+			<!-- 						</a> <a id="carousel-next" class="carousel-control-next" href="#demo" -->
+			<!-- 							data-slide="next"> <span class="carousel-control-next-icon"></span> -->
+			<!-- 						</a> -->
+			<!-- 					</div> -->
+			<!-- 					<a id="carousel-prev" class="carousel-control-prev" href="#demo" -->
+			<!-- 						data-slide="prev"> <span class="carousel-control-prev-icon"></span> -->
+			<!-- 					</a> <a id="carousel-next" class="carousel-control-next" href="#demo" -->
+			<!-- 						data-slide="next"> <span class="carousel-control-next-icon"></span> -->
+			<!-- 					</a> -->
+			<!-- 				</div> -->
+
+
+
 			<div class="modal-content view" style="width: 70%; height: auto;">
-				    
-					<div id="demo" class="carousel slide" data-ride="carousel"
-						data-interval="false">
-						<ul id="carousel-indicators" class="carousel-indicators">
-							<li id="firstli" data-target="#demo" data-slide-to="0"
-								class="active"></li>
-						</ul>
-						<div id="carousel-inner" class="carousel-inner">
-							<div id="firstItem" class="carousel-item active"></div>
-						</div>
-						<a id="carousel-prev" class="carousel-control-prev" href="#demo"
-							data-slide="prev"> <span class="carousel-control-prev-icon"></span>
-						</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
-							data-slide="next"> <span class="carousel-control-next-icon"></span>
-						</a>
+
+				<div id="demo" class="carousel slide" data-ride="carousel"
+					data-interval="false">
+					<ul id="carousel-indicators" class="carousel-indicators">
+						<li id="firstli" data-target="#demo" data-slide-to="0"
+							class="active"></li>
+					</ul>
+					<div id="carousel-inner" class="carousel-inner"
+						style="background-color: black;">
+						<div id="firstItem" class="carousel-item active"></div>
 					</div>
-				
+					<a id="carousel-prev" class="carousel-control-prev" href="#demo"
+						data-slide="prev"> <span class="carousel-control-prev-icon"></span>
+					</a> <a id="carousel-next" class="carousel-control-next" href="#demo"
+						data-slide="next"> <span class="carousel-control-next-icon"></span>
+					</a>
+				</div>
 
-			</div> 
-  
-			<div class="modal-content view" style="width: 300px;">
 
+			</div>
+
+
+			<div class="modal-content view" style="width: 30%; height: auto;">
 
 
 				<div class="hidden" id="hidden"></div>
@@ -837,8 +925,8 @@ $(document).ready(function(){
                                 $("#comment").html("");
                                 
                                 var regex = /(#[^#\s,;<>. ]+)/gi;            
-                                var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><span class=text-danger>" 
-											 + "$1" + "</span><span class=fugue>") + "</span>";          
+                                var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+											 + "$1" + "</a><span class=fugue>") + "</span>";          
 									newtxt += "<kz></kz>"
                                     
                                 
@@ -861,8 +949,8 @@ $(document).ready(function(){
                                           var regex = /(#[^#\s,;<>. ]+)/gi;
                                           if (regex) {
                                               var newtxt = "<span class=fugue>" + $(this).text()
-                                                  .replace(regex, "</span><span class=text-danger>" + "$1" +
-                                                      "</span><span class=fugue>") + "</span>"
+                                                  .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+                                                      "</a><span class=fugue>") + "</span>"
 
                                               // console.log($('#editorDiv').text().length);   
                                               // console.log(newtxt)   
@@ -947,84 +1035,61 @@ $(document).ready(function(){
 						</c:otherwise>
 					</c:choose>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 				</div>
 			</div>
 
 		</div>
 
-
-
-
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <form id="fileForm">
 	<div class="modal fade" id="profileimage" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-lg"
 			role="document">
-			<div class="modal-content">
+			<div class="modal-content"
+				style="font-family: NANUMBARUNPENR !important; font-size: 14px;">
 
 				<!-- Modal Header -->
-				<div class="modal-header">
-					<h4 class="modal-title">프로필 이미지</h4>
+				<div class="modal-header"
+					style="font-family: NANUMBARUNPENR !important; font-size: 14px;">
+					<h4 class="modal-title"
+						style="font-family: NANUMBARUNPENR !important; font-size: 14px;">프로필
+						이미지 등록하기</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
 				<!-- Modal body -->
 
-				<div class="modal-body">
-					<div style="max-height: 300px;">
+				<div class="modal-body"
+					style="border: 5px solid #eff1f4; font-family: NANUMBARUNPENR !important; font-size: 14px;">
+					<div style="max-height: 300px; border: 5px solid #eff1f4;">
 						<input id="inputimg" name="inputimg" type='file'
 							onchange="readURL(this);"> <img id="profileimg"
 							src="resources/images/Placeholder.png" alt="your image" />
+
 					</div>
 					<div class="dropdown-divider"></div>
 
 					<c:if test="${profileImg.size() > 1}">
 						<div class="alert alert-success">
-							  <strong>최근 프로필 사진</strong>
+							  <strong
+								style="font-family: NANUMBARUNPENR !important; font-size: 14px;">최근
+								프로필 사진</strong>
 						</div>
 						<div style="overflow-x: scroll; max-height: 300px; display: flex;">
 							<c:forEach items="${profileImg}" var="proimg">
 								<c:if test="${proimg.is_selected eq 'n'}">
-									<img onclick="updateImg('${proimg.system_file_name}')"
-										id="profileimg" src="AttachedMedia/${proimg.system_file_name}"
-										style="object-fit: cover; cursor: pointer;">
+									<div class="imgbtnwrap">
+										<img onclick="updateImg('${proimg.system_file_name}')"
+											id="profileimg"
+											src="AttachedMedia/${proimg.system_file_name}"
+											style="object-fit: cover; cursor: pointer;">
+										<button id="${proimg.system_file_name}" type="button" class="close imgdel" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
 								</c:if>
 							</c:forEach>
 						</div>
@@ -1032,9 +1097,12 @@ $(document).ready(function(){
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button id="savebtn" type="button" class="btn btn-primary">저장</button>
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">닫기</button>
+
+					<button type=button class="btn btn-light text-dark" id="savebtn"
+						style="font-weight: bold; width: 100px;">저장</button>
+					<button type=button class="btn btn-light text-dark"
+						data-dismiss="modal" style="font-weight: bold; width: 100px;">닫기</button>
+
 				</div>
 				<input id="hiddenimgname" type="hidden"> <input
 					id="hiddenid" type="hidden" value="${sessionScope.loginId}">
@@ -1043,6 +1111,9 @@ $(document).ready(function(){
 		</div>
 	</div>
 </form>
+
+
+
 <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-sm modal-dialog-centered"
 		role="document">
@@ -1064,8 +1135,9 @@ $(document).ready(function(){
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-primary footertbtn"
+				<button type="button" class="btn btn-outline-info footertbtn"
 					data-dismiss="modal">Close</button>
+
 			</div>
 		</div>
 

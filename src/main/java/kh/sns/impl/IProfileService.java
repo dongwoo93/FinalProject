@@ -68,6 +68,11 @@ public class IProfileService implements ProfileService {
 	public int updateProfileImages2(String systemFileName) throws Exception {
 		return pdao.updateProfileImages2(systemFileName);
 	}
+	
+	@Override
+	public int deleteProfileImage(String systemFileName) throws Exception {
+		return pdao.deleteProfileImage(systemFileName);
+	}
 
 	@Override
 	public List<Profile_ImageDTO> getAllProfileImage() throws Exception {

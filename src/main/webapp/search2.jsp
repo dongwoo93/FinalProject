@@ -201,38 +201,40 @@ function unmarkit(e) {
 													</i>
 												</p>
 											</c:otherwise>
-										</c:choose>
-									</c:otherwise>
-								</c:choose>
-							</h4>
-							<div class="dropdown-divider" id="modifydiv"></div>
-							<!-- 태그,글 보이기 -->
-							<div class="hidden" style="padding-left: 5px"
-								id="hidden${result.board_seq}">
-								<script> $("#myContents${result.board_seq}").attr("style","overflow:visible"); </script>
-								<p id="myContents${result.board_seq}">${result.contents}</p>
-								<script>    
-												var text = $("#myContents${result.board_seq}").html();  
-												var regex = /(#[^#\s,;]+)/gi  ;              
-												var newtxt;
-				  								if(txt != null) {
-				  									 newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
-				  								}        
-			  							        $("#myContents${result.board_seq}").html(newtxt);
-											</script>
-							</div>
-							<!-- 이미지 -->
-							<c:forEach begin="0" end="0" var="media"
-								items="${result2[status.index]}">
-								<a href="#"> <!--src='AttachedMedia/${media.system_file_name}'-->
-									<img class="card-img-top" id="card"
-									src='AttachedMedia/${media.system_file_name}'
-									alt="Card image cap">
-								</a>
-							</c:forEach>
-						</div>
-					</c:forEach>
-		</div>
+									</c:choose>	
+							</h4> <div class="dropdown-divider"  id="modifydiv"></div>
+								<!-- 태그,글 보이기 -->
+								<div class="hidden" style="padding-left: 5px" id="hidden${result.board_seq}">
+									<script> $("#myContents${result.board_seq}").attr("style","overflow:visible"); </script>
+										<p id="myContents${result.board_seq}">${result.contents}</p>
+											<script>    
+// 												var plus = "";    
+// 												var txt = "${result.contents}";       
+// 											    	if(txt.length > 48) {                
+// 											    		plus = "<p id='${result.board_seq}' >&nbsp-더보기</p>";
+// 									 		    	  }
+// 													$("#myContents${result.board_seq}:last-child").after("</p>"+plus);   			
+// 												   	$("#${result.board_seq}").click(function() { 
+// 												   		$("#myContents${result.board_seq}").attr("style","overflow:visible");  
+// 												   	});
+  
+									var txt = $("#myContents${result.board_seq}").html();  
+									var regex = /(#[^#\s,;]+)/gi;              
+									var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+	  								       
+  							        
+  							        
+  							        $("#myContents${result.board_seq}").html(newtxt);
+									</script>
+								</div>
+									<!-- 이미지 -->
+								<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
+									<a href="#" > <!--src='AttachedMedia/${media.system_file_name}'-->
+										<img class="card-img-top" id="card" src='AttachedMedia/${media.system_file_name}' alt="Card image cap"></a>
+								</c:forEach>
+					</div>
+				</c:forEach>
+			</div>
 		</c:when>
 		<c:otherwise>
 			<h1>검색 결과가 없습니다.</h1>

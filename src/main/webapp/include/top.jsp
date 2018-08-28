@@ -1,18 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
- <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css"> 
- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="https://v40.pingendo.com/assets/4.0.0/default/theme.css"
+	type="text/css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
@@ -42,11 +55,9 @@
 
 
 <body>
-<script>
-$(function() {
-
-    var searchResult = [];
-
+	<script>
+var curinput;
+$(function() {    
     $("#searchform").autocomplete({
     	source: function( request, response ) {
             $.ajax({
@@ -57,10 +68,10 @@ $(function() {
                 term: request.term
               },
               success: function(data) {
+            	  var cnt = 0;
             	  console.log(data);
             	  response(
             			  $.map(data, function(item) {
-            				  
             					  return {
                         			  label: item.id,
                         			  value: item.id,
@@ -69,9 +80,10 @@ $(function() {
                         			  img: item.img,
                         			  tag: item.tags,
                         			  count: item.count,
-                        			  category : item.category
+                        			  category : item.category,
+                        			  index: cnt++
+                        			  
                         		  }
-
             	  })
             	  );
             	  
@@ -82,25 +94,23 @@ $(function() {
           },
         select: function(event, ui) {
             console.log(ui.item);
-            if (ui.item && ui.item.value){
-                ui.item.value="";
-            }
+            
             window.location = ui.item.link;
         },
 
         focus: function(event, ui) {
-            return false;
-
-            //event.preventDefault();
-
+        	$(".div0").css("background", "none");
+        	$("#autodiv"+ui.item.index).css("background-color", "lightgrey");
+        	console.log(ui.item.index);
+        	return false;
         }
 
     })
     .autocomplete("instance")._renderItem = function(div, item) {
     	if(item.category == "People") {
-    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    		return $("<div class='div0' id='autodiv"+item.index+"'>").append("<div><div id='div1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
     	}else if(item.category == "Tag") {
-    		return $("<div id='autodiv0'>").append("<div id='autodiv1'><div id='autodiv1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
+    		return $("<div class='div0' id='autodiv"+item.index+"'>").append("<div><div id='div1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
     	}
     	
     };
@@ -146,11 +156,13 @@ $(function() {
           <i class="far fa-user nav-icon"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="board.bo?id=${sessionScope.loginId}&cat=1">내 계정</a>
-          <a class="dropdown-item" href="profile.member?cat=0">프로필 편집</a>
-          <a class="dropdown-item" href="calendar.bo">나의 게시판</a>
+         <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px; width:200px;" href="board.bo?id=${sessionScope.loginId}&cat=1"><i class="fas fa-user mr-1 pr-1 fa-1x"></i>내 계정</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="logout.do">로그아웃</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="calendar.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
         </div>
       </li>
                   

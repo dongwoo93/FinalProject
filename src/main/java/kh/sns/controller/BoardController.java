@@ -388,6 +388,12 @@ public class BoardController {
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
 		}
+		
+		for(BoardDTO dto : result) {
+			if(dto.getContents() == null) {
+				dto.setContents(" ");  
+			}
+		}
 
 		System.out.println("사이즈 : " + result.size());
 		mav.addObject("result", result);		// 검색어
