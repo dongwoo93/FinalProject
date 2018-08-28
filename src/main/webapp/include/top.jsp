@@ -133,7 +133,7 @@ $(function() {
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
-                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색어를 입력하세요">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="친구의이름과 #'키워드' 를검색하세요">
                 </form>
               </div>
               <div id="nav-icons">

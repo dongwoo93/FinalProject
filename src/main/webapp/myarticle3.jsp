@@ -365,10 +365,10 @@ $(document).ready(function(){
 
 					<div class="profile-user-settings">
 						<h2 class="profile-user-name">${pageid}</h2>
-						<div class="profile-edit-btn" id="cancelFollow">팔로잉</div>
+						<div class="profile-edit-btn btn btn-info" id="cancelFollow">팔로잉</div>
 						<div class="profile-edit-btn"
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
-							id="follow" style="background-color: #35e0db; display: none;">팔로우</div>
+							id="follow" style="background-color: #f3f3f3; display: none;">팔로우</div>
 						<div class="profile-settings-btn">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -381,12 +381,12 @@ $(document).ready(function(){
 
 					<div class="profile-user-settings">
 						<h2 class="profile-user-name">${pageid}</h2>
-						<div class="profile-edit-btn" id="cancelFollow"
+						<div class="profile-edit-btn btn btn-info" id="cancelFollow"
 							data-toggle="modal" data-target="#exampleModalCenter"
 							style="display: none;">팔로잉</div>
 						<div class="profile-edit-btn"
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
-							id="follow" style="background-color: #35e0db;">팔로우</div>
+							id="follow" style="background-color: #f3f3f3;">팔로우</div>
 						<div class="profile-settings-btn">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -404,8 +404,8 @@ $(document).ready(function(){
 			<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 				role="dialog" aria-labelledby="exampleModalCenterTitle"
 				aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
+				<div class="modal-dialog modal-dialog-centered" role="document" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
+					<div class="modal-content" style="border:5px solid #eff1f4;">
 						<div class="modal-header">
 
 							<button type="button" class="close" data-dismiss="modal"
@@ -413,14 +413,14 @@ $(document).ready(function(){
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
-							<h2>정말 팔로우를 취소하시겠습니까?</h2>
+						<div class="modal-body" style="border:1px solid #eff1f4;">
+							<h2 style="font-family: NANUMBARUNPENR !important;font-size: 14px;">정말 팔로우를 취소하시겠습니까?</h2>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary"
+							<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark"
 								data-dismiss="modal" id="yes"
 								onclick="unfollow('${sessionScope.loginId}', '${pageid}')">YES</button>
-							<button type="button" class="btn btn-secondary"
+							<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark"
 								data-dismiss="modal">Close</button>
 
 						</div>

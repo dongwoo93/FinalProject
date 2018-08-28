@@ -205,7 +205,11 @@ function unmarkit(e) {
 			</div>
 		</c:when>
 			<c:otherwise>
-				<h1>검색 결과가 없습니다.</h1>
+			<br>
+			<br>
+			<br>
+			<br>
+				<h1 style="font-family: NANUMBARUNPENR !important;">검색 결과가 없습니다.</h1>
 			</c:otherwise>
 	</c:choose>
 				<!-- choose문 끝나는 지점 -->
