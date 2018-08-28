@@ -42,4 +42,7 @@ public interface BoardService {
 	public List<Board_MediaDTO> getAllBoard2() throws Exception;
 	public List<String[]> selectTagCount() throws Exception;
 	public List<int[]> myBookmark(String id) throws Exception;
+	
+	//my_article_Tags
+	public List<int[]> myTags(String id) throws Exception;
 }
