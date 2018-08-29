@@ -41,6 +41,15 @@ public class WebSocket{
 				}
 			}
 		}
+		else if(!(message.contains("뇽")) && (message.startsWith("l"))) {
+			String id = message.split(":")[1];   
+			for(String tmp : onlineUser.keySet()) {
+				if(tmp.equals(id)) {
+					System.out.println(tmp);
+					onlineUser.get(tmp).getBasicRemote().sendText("l");
+				}
+			}
+		}
 		else {
 			System.out.println("zzlzllzlzll");
 		String receiver = message.split("뇽뇽뇽뇽123뇽뇽뇽뇽")[0];

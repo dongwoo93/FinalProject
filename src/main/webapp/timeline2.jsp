@@ -17,6 +17,8 @@ $(function () {
 			 
 			if(msg.data == 'c'){ 
 				alert("코멘트 달았엉 알림가자~~~");  
+			}else if(msg.data == 'l'){
+				alert("좋아요알림가자~~~~"); 
 			}
 			else{
 			var message = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[0];
@@ -197,8 +199,9 @@ $(function () {
 	}
     
     
-    function likeit(e) {
+    function likeit(e,id) {
        var board_seq = $(e).attr("value");
+     	var aid = id;        
        $.ajax({
           url : "like.bo",
           type : "get",
@@ -208,6 +211,7 @@ $(function () {
              is_liked : "y"
           },
           success : function(resp) {
+        	  ws.send("l:"+id);
              $(e).next().show();
              $(e).hide();
           },
@@ -248,6 +252,7 @@ $(function () {
              is_marked : "y"
           },
           success : function(resp) {
+        	  
              $(e).next().show();
              $(e).hide();
           },
@@ -585,7 +590,7 @@ $(function () {
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this)"></i>
+													onclick="likeit(this, '${tmp.id}')"></i>  
 												<i value="${tmp.board_seq}"
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
