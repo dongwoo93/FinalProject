@@ -18,21 +18,16 @@ import org.springframework.stereotype.Repository;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
 @Repository
-public class IBoardDAO implements BoardDAO  {
-
-	private static final String SAVE_PATH = "/upload";
-	private static final String PREFIX_URL = "/upload/"; 
+public class IBoardDAO implements BoardDAO  {	
 
 	@Autowired
-	private JdbcTemplate template;
-	
-	
-	
+	private JdbcTemplate template;	
 
 	@Override
 	public List<BoardDTO> getBoard(String id) throws Exception {	   	 
@@ -108,7 +103,7 @@ public class IBoardDAO implements BoardDAO  {
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where board_seq in (select board_seq from board_tags where tags=?)";
+		String sql = "select * from board where board_seq in (select board_seq from board_tags where tags=?) order by board_seq desc";
 		/*String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?)) or "
 				+ "(board_seq in (select board_seq from board_location where location_name=?)) order by board_seq desc";*/
 		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
@@ -182,10 +177,10 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public List<BoardDTO> getFeed(String id, int start, int end) {
 		String sql = "select * from (select board.*, rownum rn from board "
-				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by board_seq desc) "
+				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by writedate desc) "
 				+ "where (rn between ? and ?)";
 		
-		return template.query(sql, new String[] {id,id}, (rs, rowNum) -> {
+		return template.query(sql, new Object[] {id, id, start, end}, (rs, rowNum) -> {
 			BoardDTO dto = new  BoardDTO();
 			dto.setBoard_seq(rs.getInt("board_seq"));
 			dto.setContents(rs.getString("contents"));
@@ -370,5 +365,21 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 			}
 		});
 	}
+	
+	// my_aticle_Tag
+	   @Override
+	   public List<int[]> myTag(String id) throws Exception {
+	      String sql = "select board_seq from member_tags where member_tags=?";
+	      return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
+
+	         @Override
+	         public int[] mapRow(ResultSet rs, int arg1) throws SQLException {
+	            int[] listTag = {rs.getInt("board_seq")};
+	            System.out.println(listTag);
+	            return listTag;
+	         }
+	         
+	      });
+	   }
 
 }
