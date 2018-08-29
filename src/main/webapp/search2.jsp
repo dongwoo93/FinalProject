@@ -105,19 +105,18 @@ function unmarkit(e) {
 
 </script>
 	<!-- choose문 시작하는 지점 -->
-	<c:choose>
-		<c:when test="${result.size() > 0}">
+<c:choose>
+	<c:when test="${result.size() > 0}">
 		<c:choose>
-		<c:when test="${result.size() < 7}">
-		<div class="card-deck" style="height: 200px;">
-		</c:when>
-		<c:otherwise>
-		<div class="card-columns">
-		</c:otherwise>
+			<c:when test="${result.size() < 4}">
+				<div class="card-deck"  style=" width: 600px;">
+			</c:when>
+				<c:otherwise>
+					<div class="card-columns">
+				</c:otherwise>
 		</c:choose>
 
 				<c:forEach var="result" items="${result}" varStatus="status">
-				
 					<div class="card" id="card">
 						<h4 class="card-title" id="searchTop">
 							<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
@@ -216,7 +215,7 @@ function unmarkit(e) {
 									<!-- 이미지 -->
 								<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 									<a href="#" > <!--src='AttachedMedia/${media.system_file_name}'-->
-										<img class="card-img-top" id="card" 
+										<img class="card-img-top" id="card"
 											src='AttachedMedia/${media.system_file_name}' 
 											alt="Card image cap">
 									</a>

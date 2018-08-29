@@ -121,8 +121,15 @@ function unmarkit(e) {
 
 <!-- 카드 DIV -->
 <div id="contents">
-<div class="card-columns">
-	<c:forEach var="result" items="${result}" varStatus="status">
+	<c:choose>
+			<c:when test="${result.size() < 4}">
+				<div class="card-deck"  style=" width: 600px;">
+			</c:when>
+				<c:otherwise>
+					<div class="card-columns">
+				</c:otherwise>
+	</c:choose>
+<c:forEach var="result" items="${result}" varStatus="status">
 		<div class="card" id="card">
 			<h4 class="card-title" id="tourTop">
 				<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
