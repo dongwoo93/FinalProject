@@ -231,12 +231,10 @@
 		            
                 var realValue = $(".tags li:nth-child("+i+")").attr("id");
                		 $(".tag").append('<li class="addedTag">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
-               		$('#personModal').modal('hide');
+               		 $('#personModal').modal('hide');
                 }
          	   
          	   $("#searchfriend").val("");
-         	   
-
             });
             
             
@@ -475,7 +473,7 @@
 									<li class="list-group-item" style="border: 3px solid #eff1f4;"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a
 										onclick="placemodal()" style="cursor: pointer;" id="place">위치
-											태그하기</a></li>
+											태그하기</a><input type="hidden" id="lat"><input type="hidden" id="lng"></li>
 											
 									<li class="list-group-item" style="border: 3px solid #eff1f4;">
 									<i class="far fa-images"></i>
@@ -486,7 +484,7 @@
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
 								<c:if test="${ memberBiz ne null }">
-									<li class="list-group-item" style="border: 3px solid #eff1f4;" id="person"><i
+									<li class="list-group-item" style="border: 3px solid #eff1f4;"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="bizModal()" style="cursor: pointer;"> <span class="badge badge-pill badge-warning">biz</span> 비즈니스 설정하기</a></li>
 								</c:if>
@@ -627,16 +625,13 @@
 
 				</div>
 				<div class="modal-footer">
-					<button id="personmodalbt">확인</button>
+					<button type="button" id="personmodalbt">확인</button>
 				</div>
 			</div>
 		</div>
 
 	</div>
 	<!--        사람태그하기 Modal 끝-->
-			<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
-			async defer></script>
 			
 	<c:if test="${ memberBiz ne null }">
 	<!--       비즈니스 설정 Modal부분-->
@@ -745,6 +740,7 @@
 	</div>
 	</c:if>
 	<!--        비즈니스설정 Modal 끝-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete" async defer></script>
 
 	<script>
       var map;
@@ -838,6 +834,8 @@
                     lng: marker.getPosition().lng()
                   };
                   
+                  $("#lat").val(pos1.lat);
+                  $("#lng").val(pos1.lng);
                   
                   map.setCenter(pos1);
                   $('#placeModal').modal('hide');
@@ -853,6 +851,7 @@
           $('#bizModal').modal('show');
           
       }
+      
 
     </script>
     <%@ include file="include/bottom.jsp"%>
