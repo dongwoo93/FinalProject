@@ -207,7 +207,7 @@
 		</c:otherwise>
 	</c:choose>
 </c:if>    
-	<div class="py-5">
+	<div class="py-5" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 		<div class="container mywrap">
 		<br>         
 			<div class="row">        
@@ -274,10 +274,10 @@
 						<li class="nav-item">
 						<c:choose>
 						<c:when test="${category != 4}">
-							<a class="nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
+							<a class="nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile" style="font-weight : bold;"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
 						</c:when>
 						<c:otherwise>
-							<a class="active nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
+							<a class="active nav-link mp " href="#" data-toggle="pill" data-target="#bizProfile"style="font-weight : bold;"><span class="badge badge-pill badge-warning">biz</span> 비즈니스 프로필</a>
 						</c:otherwise>
 						</c:choose>
 						</li>
@@ -303,7 +303,7 @@
 						
 						<br>
 							<!-- profile form 시작 -->
-							<h3 class="text-center" style="font-weight:bold;">프로필 편집</h3>
+							<h3 class="text-center" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">프로필 편집</h3>
 							<form action="editProfileProc.member" method="post">
 <!-- 								<div class="form-group row in"> -->
 <!-- 									<label for="example-text-input" class="col-2 col-form-label" style="font-weight:bold;">이름</label> -->
@@ -389,8 +389,8 @@
 						</c:otherwise>
 						</c:choose>
 						
-							<h3 class="text-center" style="font-weight:bold;">비밀번호 변경</h3>
-							<div class="form-group">
+							<h3 class="text-center" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 18px;">비밀번호 변경</h3>
+							<div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 								<form action='passwordChangeProc.member' method=post id=pwdfrm>
 									<label for="inputBeforePassword" style="font-weight:bold;">이전 비밀번호</label> 
 									<input type="password" class="form-control" id="inputBeforePassword" placeholder="Password" name=beforePassword>
@@ -414,11 +414,11 @@
 						
 						<!-- 코멘트 설정 수정란 -->
 						<div class="tab-pane fade" id="tabthree" role="tabpanel">
-							<h3 style="font-weight:bold;">댓글 필터링</h3>
-							<p id="p"><strong style="font-weight:bold;">키워드 필터</strong></p>
+							<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">댓글 필터링</h3>
+							<p id="p"><strong style="font-weight:bold;font-family: NANUMBARUNPENR !important;">키워드 필터</strong></p>
 							<form>
 							 	<div class="form-group">
-							      <label for="exampleTextarea" style="font-weight:bold;">게시물에서 위에 입력한 단어나 문구가 포함된 댓글을 숨깁니다.</label>
+							      <label for="exampleTextarea" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">게시물에서 위에 입력한 단어나 문구가 포함된 댓글을 숨깁니다.</label>
 							      <textarea placeholder="쉼표(,)로 구분하여 키워드를 추가하세요." class="form-control" id="exampleTextarea" rows="5" ></textarea>
 							    </div>
 							</form>
@@ -426,9 +426,9 @@
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
 						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">기본 키워드 사용</strong>
+						           <strong style="font-weight:bold;font-family: NANUMBARUNPENR !important;">기본 키워드 사용</strong>
 						        </label>
-						        <p id="p"><small>게시물에서 자주 신고된 키워드가 포함된 댓글을 숨깁니다.</small></p>
+						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">게시물에서 자주 신고된 키워드가 포함된 댓글을 숨깁니다.</small></p>
 						    </div>
 						</div>
 						<!-- -- -->
@@ -442,8 +442,8 @@
 						</c:otherwise>
 						</c:choose>
 						
-							<h2 class="" style="font-weight:bold;">받아보기:</h2><br>
-							 <div class="form-check">
+							<h2 class="" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">받아보기:</h2><br>
+							 <div class="form-check" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y" 
 									${ profile.is_allow_email eq 'y' ? 'checked' : '' }>
@@ -451,7 +451,7 @@
 						        </label>
 						        <br>유용한 최신 정보를 빠짐없이 받아보세요.
 						      </div><br>
-						      <div class="form-check">
+						      <div class="form-check" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_sms value="y"  id=chkAllowSms
 						          ${ profile.is_allow_sms eq 'y' ? 'checked' : '' }>
@@ -506,54 +506,54 @@
 						</c:otherwise>
 						</c:choose>
 						
-							<h3 style="font-weight:bold;">계정 공개 범위: </h3>
-							<br><div class="form-check">&nbsp;&nbsp;
+							<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정 공개 범위: </h3>
+							<br><div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 18px;">&nbsp;&nbsp;
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_public value="n" id=chkAllowPublic
 						          ${ profile.is_allow_public eq 'n' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">비공개 계정</strong>
+						           <strong style="font-weight:bold;font-family: NANUMBARUNPENR !important;">비공개 계정</strong>
 						        </label>
-						        <p id="p"><small>계정이 비공개 상태인 경우 회원님이 승인한 사람만 SocialWired에서 회원님의 사진과 동영상을 볼 수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</small></p>
+						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">계정이 비공개 상태인 경우 회원님이 승인한 사람만 SocialWired에서 회원님의 사진과 동영상을 볼 수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</small></p>
 						    </div>
 						    <hr>
-						    <h3 style="font-weight:bold;">활동 상태: </h3>
-						    <br><div class="form-check">&nbsp;&nbsp;
+						    <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">활동 상태: </h3>
+						    <br><div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 18px;">&nbsp;&nbsp;
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_status value="y" id=chkAllowStatus
 						          ${ profile.is_allow_status eq 'y' ? 'checked' : '' }>
 						           <strong style="font-weight:bold;">활동 상태 표시</strong>
 						        </label>
-						        <p id="p"><small>SocialWired 앱에서 최근 활동한 시간 정보가 회원님이 팔로우하는 계정 및 메시지를 보낸 모든 사람에게 표시됩니다. 이 설정을 해제하면 다른 계정의 활동 상태를 볼 수 없습니다.</small></p>
+						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">SocialWired 앱에서 최근 활동한 시간 정보가 회원님이 팔로우하는 계정 및 메시지를 보낸 모든 사람에게 표시됩니다. 이 설정을 해제하면 다른 계정의 활동 상태를 볼 수 없습니다.</small></p>
 						    </div>
 						    <hr>
-						    <h3 style="font-weight:bold;">스토리 공유: </h3>
-						   <br><div class="form-check">&nbsp;&nbsp;
+						    <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">스토리 공유: </h3>
+						   <br><div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 18px;">&nbsp;&nbsp;
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
 						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
 						           <strong style="font-weight:bold;">공유 허용</strong>
 						        </label>
-						        <p id="p"><small>사람들이 회원님의 스토리를 메시지로 공유할 수 있습니다.</small></p>
+						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">사람들이 회원님의 스토리를 메시지로 공유할 수 있습니다.</small></p>
 						    </div>
 						    <hr>
 						    <!-- 댓글 설정 -->
 						    <div>
-						    	<h3 style="font-weight:bold;">댓글:</h3>
-						    	<a class="nav-link mp text-muted" href="#" id="editCommentPane">댓글 설정 수정</a>
+						    	<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">댓글:</h3>
+						    	<a class="nav-link mp text-muted" href="#" id="editCommentPane" style="font-weight:bold;font-family: NANUMBARUNPENR">댓글 설정 수정</a>
 						    </div>
 						    <!-- -- -->
 						    <hr>
 						     <!-- 내가 나온 사진 -->
 						    <fieldset class="form-group">
 						      <!-- <legend>Radio buttons</legend> -->
-						      <h3 style="font-weight:bold;">내가 나온 사진: </h3>
-						     <br> <div class="form-check">&nbsp;&nbsp;
+						      <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">내가 나온 사진: </h3>
+						     <br> <div class="form-check"  style="font-weight:bold;font-family: NANUMBARUNPENR !important;">&nbsp;&nbsp;
 						        <label class="form-check-label">
 						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
 						          	자동으로 추가
 						        </label>
 						      </div>
-						      <div class="form-check">
+						      <div class="form-check"  style="font-weight:bold;font-family: NANUMBARUNPENR !important;">
 						      <label class="form-check-label">&nbsp;&nbsp;
 						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
 						          	수동으로 추가
@@ -565,19 +565,19 @@
 						    <hr>
 						      <!-- 계정 데이터 설정 -->
 						    <div>
-						    	<h3 style="font-weight:bold;">계정 데이터: </h3>
-						    	<a href="#" class="nav-link mp text-muted" href="#" id="editPersonalLogPane">계정 데이터 보기</a>
+						    	<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정 데이터: </h3>
+						    	<a href="#" class="nav-link mp text-muted" href="#" id="editPersonalLogPane" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정 데이터 보기</a>
 						    </div>
 						    <!-- -- -->
 						    <hr>
-						 <h3 style="font-weight:bold;">2단계 인증: </h3>
-						<div class="form-check">							
+						 <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">2단계 인증: </h3>
+						<div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">							
 					        <br><label class="form-check-label">&nbsp;&nbsp;    
 					          <input class="form-check-input" type="checkbox" name=is_allow_login2 value="y" id=chkAllowLogin2
 					          ${ profile.is_allow_login2 eq 'y' ? 'checked' : '' }>
-					           <strong style="font-weight:bold;">보안 코드 필요</strong>
+					           <strong style="font-weight:bold;font-family: NANUMBARUNPENR !important;">보안 코드 필요</strong>
 					        </label>
-					        <p id="p"><small>이 옵션을 설정하면 회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드가 전송됩니다.</small></p>
+					        <p id="p"><small style="font-weight:bold;font-family: NANUMBARUNPENR !important;">이 옵션을 설정하면 회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드가 전송됩니다.</small></p>
 						  </div>
 						 <hr>
 						 
@@ -595,7 +595,7 @@
 							
 
 								<!-- business form 시작 -->
-							<h3 class="text-center" style="font-weight:bold;">비즈니스 프로필 편집</h3>
+							<h3 class="text-center" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">비즈니스 프로필 편집</h3>
 							<br>
 							<small>&nbsp;비즈니스 도구에 오신 것을 환영합니다. 고객이 프로필에 있는 버튼을 통해 바로 연락할 수 있도록 휴대폰 번호, 이메일 또는 위치정보를 추가하세요. 게시물을 홍보하여 비즈니스 성장을 도모할 수 있습니다.
 							<br><br>비즈니스 프로필에 입력된 정보는 일반 프로필 정보와는 별도로 취급됩니다.</small>
@@ -604,35 +604,35 @@
 							<form action="updateBizProfileProc.member" method="post">
 
 					         <div class="form-group">
-					           <label for="websiteField" style="font-weight:bold;" >비즈니스 웹 사이트</label>
+					           <label for="websiteField" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" >비즈니스 웹 사이트</label>
 					           <input type="text" class="form-control" value="${ memberBiz.bizWebsite }" id="bizWebsiteField" name=bizWebsite> 
 					        </div>
 
 								 <div class="form-group"> 
-     								 <label for="introduceArea" style="font-weight:bold;">비즈니스 이메일</label>
+     								 <label for="introduceArea" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">비즈니스 이메일</label>
      								 <input type="email" class="form-control" value="${ memberBiz.bizEmail }" id="bizEmailField" name=bizEmail> 	
    								 </div>
    			
 								<div class="form-group">		
-									<label for="InputEmail1" style="font-weight:bold;">비즈니스 전화번호</label>
+									<label for="InputEmail1" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">비즈니스 전화번호</label>
 										<input class="form-control" type="tel" value="${ memberBiz.bizPhone }" id="bizPhoneField" name="bizPhone">
 									<div id='duplResultArea'></div>
 								</div>						
 							<hr>
 							 &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="checkbox" name='isAllowEnterProfile' value="n" id=bizChkXXXXX ${ memberBiz.isAllowEnterProfile eq 'n' ? 'checked' : '' }>
 							<strong style="font-weight:bold;">타임라인 광고에서 프로필 페이지에서 불허</strong><br>
-						     <small>타임라인 광고에서 프로필 링크를 불허합니다(?) 비공개 계정 설정과는 다르며 공개 계정인 경우 프로필 페이지로 접속할 수 있습니다.</small>
+						     <small style="font-family: NANUMBARUNPENR !important;">타임라인 광고에서 프로필 링크를 불허합니다(?) 비공개 계정 설정과는 다르며 공개 계정인 경우 프로필 페이지로 접속할 수 있습니다.</small>
 				
-						     <hr>
+						     <hr style="font-weight:bold;font-family: NANUMBARUNPENR !important;">
 								잔액 결제하기: 돈이 있어야 광고를 하죠? 현재 잔액은 ￦<fmt:formatNumber>${ memberBiz.deposit }</fmt:formatNumber> 입니다. 
 								
-								&nbsp;&nbsp;<button type=button class="btn btn-light text-dark" style="font-weight:bold;">결제하기</button>
+								&nbsp;&nbsp;&nbsp;&nbsp;<button type=button class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">결제하기</button>
 								
 							<hr>
 								
 							<div class="form-group text-center "> 
-								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;">제출</button>
-								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">일반 계정으로 전환</button>
+								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">제출</button>
+								<button type=button class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">일반 계정으로 전환</button>
 								
 							</div>		
 									
