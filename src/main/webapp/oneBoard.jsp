@@ -124,7 +124,8 @@ function delComment(e){
 		data : { board_seq:${b.board_seq} , comment_seq : comment_seq },
 		url : "commentdel.co",
 		success: function(resp){
-			$(e).parent().parent().remove();
+			$(e).parent().parent().fadeOut(400,function() { $(this).remove(); }); 
+		
 		}
 			
 		
@@ -291,7 +292,7 @@ $("#comment").keypress(function(event){
                         newtxt += "<kz></kz>"
 					    
 					var start = $("#comment-contents");					
-					start.append('<ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="'
+					start.append('<ul class="commentline navbar-nav" id="ul'+seq+'" + onmouseover="commentover(this)" value="'
 							+ seq + '" onmouseleave="commentleave(this)"><li id="li1"><a href="#" id="writerId' + seq 
 							+'">'+session+'</a></li><li id="li2">' 
 							+ '<div contenteditable=false id="commentSection' + seq + '" readonly class="commenttxt">' + newtxt
@@ -299,7 +300,7 @@ $("#comment").keypress(function(event){
 							+ seq + '"></a></li><li id="li4"><a style="cursor:pointer;" onclick="modComment(this)" id="commentmod' 
 							+ seq + '"></a></li></ul>');
 					$('#comment').html("");
-					
+				    $("#ul"+seq).hide().fadeIn(500); 
 					$("#commentSection" + seq).keyup(function(e){
                  	   // =================== 복붙 =================== 
                  	   if(e.keyCode === 32){
@@ -612,7 +613,7 @@ $("#comment").keypress(function(event){
                            <a class="ml-1 idtxt" id="con"
                               href="">${b.id}</a>
 
-                           <div class='pl-3 mt-1' id="contdiv">
+                           <div class='pl-3' id="contdiv">
                            <%-- ${b.contents} --%>
                            	<script>
                         		  var regex = /(#[^#\s,;<>. ]+)/gi;
@@ -690,11 +691,11 @@ $("#comment").keypress(function(event){
 
                       
                            <!-- <input type="text" placeholder="댓글 달기..." name="comment_contents" class="creco  ml-2 " id="comment"> -->
-                           <div contenteditable=true class="creco" id="comment">댓글 달기...</div>
+                           <div contenteditable=true class="creco ml-3" id="comment">댓글 달기...</div>
                            <input type=hidden id=shifted_comment name=comment_contents>
                            <input type=hidden id="caretposition" value="0">
 
-                              <div class="btn-group bg-white">
+                              <div class="btn-group">
                                  <i id="modalBoardBtn" onclick="modal(this)" class="fas fa-ellipsis-h btn mr-1"
                                     data-toggle="modal"> </i>
                               </div>

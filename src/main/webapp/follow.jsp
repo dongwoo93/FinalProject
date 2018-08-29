@@ -49,7 +49,6 @@ function follow(id1, id2, index) {
 <div id="allwrapper" style="margin-top: 50px;">
 
 	<div class="container">
-
 		<hr class="_5mToa ">
 		<ul class="nav">
 			<li class="nav-item"><a class="nav-link"
@@ -176,9 +175,9 @@ function follow(id1, id2, index) {
 				<h2>정말 팔로우를 취소하시겠습니까?</h2>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal"
+				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
 					id="yes" onclick="">YES</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
 
 			</div>
 		</div>

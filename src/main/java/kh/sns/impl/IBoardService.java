@@ -10,12 +10,14 @@ import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.interfaces.BoardBusinessDAO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_LocationDAO;
 import kh.sns.interfaces.MemberBusinessDAO;
+import kh.sns.interfaces.ProfileDAO;
 import kh.sns.interfaces.Member_TagsDAO;
 
 @Service
@@ -24,12 +26,18 @@ public class IBoardService implements BoardService {
 	@Autowired	private BoardDAO dao;
 	@Autowired	private BoardBusinessDAO bbdao;
 	@Autowired	private MemberBusinessDAO mbdao;
+	@Autowired	private ProfileDAO proedao;
 	@Autowired  private Board_LocationDAO ldao;
 	@Autowired  private Member_TagsDAO mtdao;	
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		return dao.getFeed(id);
+	}
+	
+	@Override
+	public List<BoardDTO> getFeed(String id, int start, int end) {
+		return dao.getFeed(id, start, end);
 	}
 	
 	@Override
@@ -167,4 +175,10 @@ public class IBoardService implements BoardService {
 		return dao.myBookmark(id);
 	}
 	
+	// my_article_tags
+	   @Override
+	   public List<int[]> myTags(String id) throws Exception {
+	      return dao.myTag(id);
+	   }
+
 }
