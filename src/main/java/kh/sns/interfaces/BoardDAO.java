@@ -7,6 +7,7 @@ import kh.sns.dto.Board_MediaDTO;
 
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
@@ -40,4 +41,7 @@ public interface BoardDAO {
 	
 	// my_aticle_bookmark
 	public List<int[]> myBookmark(String id) throws Exception;
+	
+	//my_article_Tags
+	List<int[]> myTag(String id) throws Exception;
 }

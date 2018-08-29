@@ -49,21 +49,18 @@ function follow(id1, id2, index) {
 <div id="allwrapper" style="margin-top: 50px;">
 
 	<div class="container">
-
 		<hr class="_5mToa ">
-		<ul class="nav">
-			<li class="nav-item"><a class="nav-link"
-				href="followerlist.do?id=${pageid}&cat=1">팔로워</a></li>
-			<li class="nav-item"><a class="nav-link"
-				href="followlist.do?id=${pageid}&cat=1">팔로우</a></li>
-		</ul>
-
-		<div style="border: 0px solid black;">
+			<ul class="nav">
+				<li class="nav-item"><a class="nav-link"
+					href="followerlist.do?id=${pageid}&cat=1">팔로워</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="followlist.do?id=${pageid}&cat=1">팔로우</a></li>
+			</ul>
+		
+		<div style="border: 0px solid black; margin-top:50px;">
 			<c:forEach var="follow" items="${result}" varStatus="status">
-				<div class="container" style="width:40%">
-					<hr class="_5mToa">
-				
-						<img class="ml-3 mr-2 pic"
+				<div class="container" style="width:50%; margin-top: 20px;">
+						<img class="rounded-circle" id="img"
 							src="AttachedMedia/<c:out value='${profile_pic[follow.targetId]}'/>">
 						<a class="mt-6 idtxt"
 							style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
@@ -72,27 +69,27 @@ function follow(id1, id2, index) {
 							<c:when test="${sessionScope.loginId == follow.targetId}">
 							</c:when>
 							<c:when test="${isFollow[status.index]}">
-								<div class="profile-edit-btn float-right mt-2 mr-2"
-									id="cancelFollow${status.index}" style="height: 40px;">팔로잉</div>
-								<div class="profile-edit-btn float-right mt-2 mr-2"
+								<div class="btn btn-outline-primary btn"
+									id="cancelFollow${status.index}">팔로잉</div>
+								<div class="btn btn-outline-primary btn"
 									onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
 									id="follow${status.index}"
-									style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
+									style="background-color: #35e0db; display: none; color: black;">팔로우</div>
 							</c:when>
 
     
 							<c:otherwise>
-								<div class="profile-edit-btn float-right mt-2 mr-2"
+								<div class="btn btn-outline-primary btn"
 									id="cancelFollow${status.index}"
-									style="height: 40px; display: none;">팔로잉</div>
-								<div class="profile-edit-btn float-right mt-2 mr-2"
+									style="display: none;">팔로잉</div>
+								<div class="btn btn-outline-primary btn"
 									onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
-									id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
+									id="follow${status.index}" style="background-color: #35e0db; color: black;">팔로우</div>
 							</c:otherwise>
 						</c:choose>
 
 			
-					<hr class="_5mToa">
+					<hr class="_5mToa ">
 				</div>
 				<script>
 					$("#cancelFollow${status.index}").click(function() {
@@ -118,22 +115,22 @@ function follow(id1, id2, index) {
 						<c:when test="${sessionScope.loginId == follower.id}">
 						</c:when>
 						<c:when test="${isFollow[status.index]}">
-							<div class="profile-edit-btn float-right mt-2 mr-2"
-								id="cancelFollow${status.index}" style="height: 40px;">팔로잉</div>
-							<div class="profile-edit-btn float-right mt-2 mr-2"
+							<div class="btn btn-outline-primary btn"
+								id="cancelFollow${status.index}">팔로잉</div>
+							<div class="btn btn-outline-primary btn"
 								onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
 								id="follow${status.index}"
-								style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
+								style="background-color: #35e0db; display: none; color: black;">팔로우</div>
 						</c:when>
 
   
 						<c:otherwise>
-							<div class="profile-edit-btn float-right mt-2 mr-2"
+							<div class="btn btn-outline-primary btn"
 								id="cancelFollow${status.index}"
-								style="height: 40px; display: none;">팔로잉</div>
-							<div class="profile-edit-btn float-right mt-2 mr-2"
+								style="display: none;">팔로잉</div>
+							<div class="btn btn-outline-primary btn"
 								onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
-								id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
+								id="follow${status.index}" style="background-color: #35e0db; color: black;">팔로우</div>
 						</c:otherwise>
 					</c:choose>
 					 
@@ -172,9 +169,9 @@ function follow(id1, id2, index) {
 				<h2>정말 팔로우를 취소하시겠습니까?</h2>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal"
+				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
 					id="yes" onclick="">YES</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
 
 			</div>
 		</div>
