@@ -49,6 +49,31 @@
                 console.log("AJAX완료");
             } 
         });
+		
+		
+
+      	  
+    $.ajax({
+      	url : "alerting.top",
+      	type : "get",
+      	         
+      	success : function(resp) {        
+      	    
+      		for(var i=0; i<resp.length; i++){     
+      			var name = resp[i][3].split(" ")[0];  
+      			var cont = "님이"+resp[i][3].split("님이")[1];          
+      		     
+      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/"+resp[i][4]+"'></li></ul><div class='dropdown-divider'></div>");
+      		}
+      		  
+      	 },  
+      	 error : function() {
+      	 console.log("에러 발생!");
+      	 }
+      	  });
+        
+        
+      
 	})
 </script>
 </head>
@@ -150,15 +175,16 @@ $(function() {
                   </li>
                             <li class="nav-item dropdown">
                    
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-          <i class="far fa-heart nav-icon"></i>
-        </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-               
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="alerting.top"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
-          <div class="dropdown-divider"></div>  
+                    <a class="nav-link dropdown-toggle" href="#" id="alerticon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+          <i class="far fa-heart nav-icon"></i>    
+        </a>        	            
+                    <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:360px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
+         
+        
+           
            </div>
                   </li>
+          
                   
                   
                   <li class="nav-item dropdown">

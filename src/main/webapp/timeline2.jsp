@@ -280,7 +280,7 @@
 	var modstate = $("#modstate"+seq).val();    
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all background-color:#E1F5FE"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
 		
 		if(sessionid == boardid) {       
 		$("#commentdel"+seq).html("삭제"); 
