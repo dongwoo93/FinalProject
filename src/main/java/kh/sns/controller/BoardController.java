@@ -873,7 +873,7 @@ public class BoardController {
 	}
 	@RequestMapping("/calendar.bo")
 	public String goCalendar(HttpSession session){
-		return "redirect:calendar.jsp";   
+		return "redirect:calendar2.jsp";   
 	}
 
 	@RequestMapping("/deletefollow.do")
