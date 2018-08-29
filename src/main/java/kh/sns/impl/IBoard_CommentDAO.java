@@ -130,6 +130,17 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		});
 		return temp.get(0);
 	}
+	
+	public int getBoard_seq(int comment_seq) throws Exception {
+		String sql = "select board_seq from board_comment where comment_seq = ?";
+		return template.query(sql, new Integer[] {comment_seq},new RowMapper<Integer>() {
 
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getInt(1);
+			}
+		
+		}).get(0);
+		}  
+}  
 
-}

@@ -10,6 +10,7 @@ public class ProfileDTO {
 	private String is_allow_status;
 	private String is_allow_share;
 	private String is_allow_login2;
+	private String apply_date;
 	
 	
 	
@@ -18,7 +19,7 @@ public class ProfileDTO {
 	}
 
 	public ProfileDTO(String id, String website, String introduce, String is_allow_email, String is_allow_sms,
-			String is_allow_public, String is_allow_status, String is_allow_share, String is_allow_login2) {
+			String is_allow_public, String is_allow_status, String is_allow_share, String is_allow_login2, String apply_date) {
 		super();
 		this.id = id;
 		this.website = website;
@@ -29,6 +30,7 @@ public class ProfileDTO {
 		this.is_allow_status = is_allow_status;
 		this.is_allow_share = is_allow_share;
 		this.is_allow_login2 = is_allow_login2;
+		this.apply_date = apply_date;
 	}
 
 	public String getId() {
@@ -102,6 +104,16 @@ public class ProfileDTO {
 	public void setIs_allow_login2(String is_allow_login2) {
 		this.is_allow_login2 = is_allow_login2;
 	}
+	
+	
+
+	public String getApply_date() {
+		return apply_date;
+	}
+
+	public void setApply_date(String apply_date) {
+		this.apply_date = apply_date;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -111,7 +123,8 @@ public class ProfileDTO {
 		return "ProfileDTO [id=" + id + ", website=" + website + ", introduce=" + introduce + ", is_allow_email="
 				+ is_allow_email + ", is_allow_sms=" + is_allow_sms + ", is_allow_public=" + is_allow_public
 				+ ", is_allow_status=" + is_allow_status + ", is_allow_share=" + is_allow_share + ", is_allow_login2="
-				+ is_allow_login2 + "]";
+				+ is_allow_login2 + ",apply_date=" +apply_date +"]";
+	
 	}
 	
 	
