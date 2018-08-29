@@ -258,23 +258,23 @@ public class BoardController {
 		}	  
 		
 		/*
-		 * 	0: list, media, maplike, mapmark, commentlist, getAllProfilePic, 
-		 *  follow_list, follow_list.size()/5, 8: nextStart, maxImgHeight
-		 *  10: isAvailableMoreData
+		 * 	list, media, maplike, mapmark, commentlist, getAllProfilePic, 
+		 *  follow_list, follow_list.size_div_five, nextStart, maxImgHeight
+		 *  isAvailableMoreData
 		 */
 		
-		List<Object> outputJson = new ArrayList<>();
-		outputJson.add(list);	
-		outputJson.add(media);	
-		outputJson.add(maplike);
-		outputJson.add(mapmark);
-		outputJson.add(commentlist);
-		outputJson.add(getAllProfilePic);	
-		outputJson.add(follow_list);	
-		outputJson.add(follow_list.size()/5);
-		outputJson.add(nextStartNum);	
-		outputJson.add(maxImgHeight);
-		outputJson.add(isAvailableMoreData);
+		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("list", list);	
+		outputJson.put("media", media);	
+		outputJson.put("maplike", maplike);
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("commentlist", commentlist);
+		outputJson.put("getAllProfilePic", getAllProfilePic);	
+		outputJson.put("follow_list", follow_list);	
+		outputJson.put("follow_list_div_five", follow_list.size()/5);
+		outputJson.put("nextStartNum", nextStartNum);	
+		outputJson.put("maxImgHeight", maxImgHeight);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
 		
 		try {
 			new Gson().toJson(outputJson, response.getWriter());

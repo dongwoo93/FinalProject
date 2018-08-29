@@ -1340,33 +1340,39 @@ $(window).scroll(function(){
             data: {start: globalStartNum},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
             success: function(response) {
             	
-        		/*
-        		 * 	0: list, 1: media, 2: maplike, 3: mapmark, 4: commentlist, 5: getAllProfilePic, 
-        		 *  6: follow_list, 7: follow_list.size()/5, 8: nextStart, 9: maxImgHeight
-        		 *  10: isAvailableMoreData
-        		 *	Array: 0, 1, 6, 9
-        		 *	Object: 2, 4, 5
+        		/* 123456
+        		 * 	list, media, maplike, mapmark, commentlist, getAllProfilePic, 
+        		 *  follow_list, follow_list.size_div_five, nextStartNum, maxImgHeight
+        		 *  isAvailableMoreData
+        		 *	Array: list, media, maxImgHeight
+        		 *	Object(map): maplike, mapmark, commentlist, getAllProfilePic,
         		 *	Primitive: 7, 8, 10
         		 */
-            	
-            	if(response[10]){	// 가져올 게시글이 더 있나요?  
-            		var pp = 0;
-					for(i in response){
-						console.log(response[i]);
-         				for(obj in response[i]) {
-         					$('#board').append("<div>") 
-         					for(item in response[i][obj]){
-         						$('#board').append(response[i][obj][item]);         						
-         					}
-         					$('#board').append("<hr></div>");         				
-         				}
-					}   		
-            		
-					globalStartNum = response[8];
+        		console.log(response);
+           		if(response.isAvailableMoreData){	// 가져올 게시글이 더 있나요?  
+           			$('#board').append(true); 			            		
+            		for(i in response.list){
+            			for(item in response.list[i]){
+            				$('#board').append(response.list[i][item]); 
+            			}
+            			$('#board').append("<br>");
+            			for(j in response.media){
+            				for(k in response.media[j]){
+            					for(l in response.media[j][k]){
+            						$('#board').append(response.media[j][k][l]);
+            					}
+            						
+            				}
+            			}
+            			$('#board').append("<br>");
+            			$('#board').append("<hr>");
+            		} 
+            		globalStartNum = parseInt(response.nextStartNum);
+            		return true;
             	} else {
-            		console.log(response[10]);
-            		return;
-            	}
+            		console.log(false);
+            		return false;
+            	} 
 
             },
             error: function() {
