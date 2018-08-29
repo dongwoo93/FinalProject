@@ -32,18 +32,39 @@
         });
 
     function doSubmit(){
+    	var content = $('#eventName').val();
     	var startEnd = $("#eventDueDate").val();
     	var startTime = startEnd.split(' - ')[0];
     	var endTime = startEnd.split(' - ')[1];
+    	$.ajax({
+            url: 'insert.cal',
+            type: 'post',
+            data : {
+            	date_start : startTime,
+            	date_end : endTime,
+            	content : content
+             },
+            success: function (data) {
+            	if(data.result == 0) {
+            		alert("등록에 실패 하였습니다");
+            		$('#calendar').fullCalendar('unselect');
+            	}else {
+            		$("#calendar").fullCalendar('renderEvent',
+            		          {
+            						id: data.seq,
+            		              title: content,
+            		              start: new Date(startTime),
+            		              end: new Date(endTime)
+            		          },
+            		          true);
+            	}
+            },
+            error : function() {
+                console.log("에러 발생!");
+                }
+        });
       $("#createEventModal").modal('hide');
-      $("#calendar").fullCalendar('renderEvent',
-          {
-              title: $('#eventName').val(),
-              start: new Date(startTime),
-              end: new Date(endTime)
-
-          },
-          true);
+      
      }
 
     $('#calendar').fullCalendar({
@@ -76,12 +97,33 @@
         var title = prompt('Event Title:');
         var eventData;
         if (title) {
-          eventData = {
-            title: title,
-            start: start,
-            end: end
-          };
-          $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+        $.ajax({
+            url: 'insert.cal',
+            type: 'post',
+            data : {
+            	date_start : start.format(),
+            	date_end : end.format(),
+            	content : title
+             },
+            success: function (data) {
+            	if(data.result == 0) {
+            		alert("등록에 실패 하였습니다");
+            		$('#calendar').fullCalendar('unselect');
+            	}else {
+            		eventData = {
+            				id: data.seq,
+            	            title: title,
+            	            start: start,
+            	            end: end
+            	          };
+            		$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            	}
+            },
+            error : function() {
+                console.log("에러 발생!");
+                }
+        });
+        
         }
         $('#calendar').fullCalendar('unselect');
       },
@@ -93,86 +135,72 @@
     	    
     	  },
       eventDrop: function(event, delta, revertFunc) {
-
-    	    alert(event.title + " was dropped on " + event.start.format() + " ~ " + event.end.format());
-
     	    if (!confirm("일정을 변경 하시겠습니까?")) {
     	      revertFunc();
+    	    }else {
+    	    	$.ajax({
+    	            url: 'update.cal',
+    	            type: 'post',
+    	            data : {
+    	            	seq: event.id,
+    	            	date_start : event.start.format(),
+    	            	date_end : event.end.format(),
+    	            	content : event.title
+    	             },
+    	            success: function (data) {
+    	            	if(data == 0) {
+    	            		alert("등록에 실패 하였습니다");
+    	            		revertFunc();
+    	            	}
+    	            },
+    	            error : function() {
+    	                console.log("에러 발생!");
+    	                }
+    	        });
     	    }
 
     	  },
       eventResize: function(event, delta, revertFunc) {
 
-    	    alert(event.title + " end is now " + event.end.format());
-
     	    if (!confirm("일정을 변경 하시겠습니까?")) {
     	      revertFunc();
+    	    }else {
+    	    	$.ajax({
+    	            url: 'update.cal',
+    	            type: 'post',
+    	            data : {
+    	            	seq: event.id,
+    	            	date_start : event.start.format(),
+    	            	date_end : event.end.format(),
+    	            	content : event.title
+    	             },
+    	            success: function (data) {
+    	            	if(data == 0) {
+    	            		alert("등록에 실패 하였습니다");
+    	            		revertFunc();
+    	            	}
+    	            },
+    	            error : function() {
+    	                console.log("에러 발생!");
+    	                }
+    	        });
     	    }
 
     	  },
       googleCalendarApiKey: 'AIzaSyBLzmfo25SUyDaDRjI7wrhI1cyIhs6sYAc',
       eventSources : [
-    	  {
-    		  events: [
-                  {
-                      title: 'All Day Event',
-                      start: '2018-03-01'
-                    },
-                    {
-                      title: 'Long Event',
-                      start: '2018-03-07',
-                      end: '2018-03-10',
-                      description: 'This is a cool event'
-                    },
-                    {
-                      id: 999,
-                      title: 'Repeating Event',
-                      start: '2018-03-09T16:00:00',
-                      description: 'This is a cool event'
-                    },
-                    {
-                      id: 999,
-                      title: 'Repeating Event',
-                      start: '2018-03-16T16:00:00'
-                    },
-                    {
-                      title: 'Conference',
-                      start: '2018-03-11',
-                      end: '2018-03-13'
-                    },
-                    {
-                      title: 'Meeting',
-                      start: '2018-03-12T10:30:00',
-                      end: '2018-03-12T12:30:00'
-                    },
-                    {
-                      title: 'Lunch',
-                      start: '2018-03-12T12:00:00'
-                    },
-                    {
-                      title: 'Meeting',
-                      start: '2018-03-12T14:30:00'
-                    },
-                    {
-                      title: 'Happy Hour',
-                      start: '2018-03-12T17:30:00'
-                    },
-                    {
-                      title: 'Dinner',
-                      start: '2018-03-12T20:00:00'
-                    },
-                    {
-                      title: 'Birthday Party',
-                      start: '2018-03-13T07:00:00'
-                    },
-                    {
-                      title: 'Click for Google',
-                      url: 'http://google.com/',
-                      start: '2018-03-28'
-                    },
-                    
-                    ]
-          	},
+    	  	{
+    	  		 events: [
+    	  		<c:forEach var='event' items='${result}'>
+    	  	    { 	id: '${event.seq}',
+    	  	    	title: '${event.content}',
+    	  	    	start: '${event.date_start}',
+    	  	    	end: '${event.date_end}'
+    	  	    },
+    	  	  </c:forEach>
+    	  	    	{}
+    	  	]
+    	  	},
           	{
             	googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
             	color: 'red',
@@ -202,7 +230,6 @@
 </style>
 </head>
 <body>
-
 	<div id='calendar'></div>
 	<!-- Modal -->
 	<div id="createEventModal" class="modal fade">
@@ -246,7 +273,7 @@ $(function() {
     startDate: moment().startOf('hour'),
     endDate: moment().startOf('hour').add(32, 'hour'),
     locale: {
-      format: 'YYYY/MM/DD/ HH:mm',
+      format: 'YYYY-MM-DD HH:mm',
       "daysOfWeek": [
           "일",
           "월",

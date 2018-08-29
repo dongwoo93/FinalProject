@@ -488,7 +488,7 @@
 									<li class="list-group-item"  style="border: 3px solid #eff1f4;" id="person"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
-									<input type="hidden" value="" name="tags[]">
+									
 								<c:if test="${ memberBiz ne null }">
 									<li class="list-group-item" style="border: 3px solid #eff1f4;"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
