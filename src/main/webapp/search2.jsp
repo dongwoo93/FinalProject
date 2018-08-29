@@ -108,7 +108,7 @@ function unmarkit(e) {
 	<c:choose>
 		<c:when test="${result.size() > 0}">
 		<c:choose>
-		<c:when test="${result.size() < 3}">
+		<c:when test="${result.size() < 7}">
 		<div class="card-deck" style="height: 200px;">
 		</c:when>
 		<c:otherwise>
