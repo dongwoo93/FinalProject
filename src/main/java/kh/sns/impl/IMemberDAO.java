@@ -88,7 +88,7 @@ public class IMemberDAO implements MemberDAO {
 	
 	@Override
 	public int insertProfile(String id) throws Exception {
-		String sql = "insert into profile values(?,'','',default,default,default,default,default,default)";
+		String sql = "insert into profile values(?,'','',default,default,default,default,default,default,sysdate)";
 		return template.update(sql,id);
 	}
 
