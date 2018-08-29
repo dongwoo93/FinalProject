@@ -147,5 +147,11 @@ public class IBoardService implements BoardService {
 	public List<int[]> myBookmark(String id) throws Exception {
 		return dao.myBookmark(id);
 	}
+
+	@Override
+	public List<Object[]> alerting(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.alerting(id);
+	}
 	
 }
