@@ -24,16 +24,10 @@ import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
 @Repository
-public class IBoardDAO implements BoardDAO  {
-
-	private static final String SAVE_PATH = "/upload";
-	private static final String PREFIX_URL = "/upload/"; 
+public class IBoardDAO implements BoardDAO  {	
 
 	@Autowired
-	private JdbcTemplate template;
-	
-	
-	
+	private JdbcTemplate template;	
 
 	@Override
 	public List<BoardDTO> getBoard(String id) throws Exception {	   	 
@@ -183,10 +177,10 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public List<BoardDTO> getFeed(String id, int start, int end) {
 		String sql = "select * from (select board.*, rownum rn from board "
-				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by board_seq desc) "
+				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by writedate desc) "
 				+ "where (rn between ? and ?)";
 		
-		return template.query(sql, new String[] {id,id}, (rs, rowNum) -> {
+		return template.query(sql, new Object[] {id, id, start, end}, (rs, rowNum) -> {
 			BoardDTO dto = new  BoardDTO();
 			dto.setBoard_seq(rs.getInt("board_seq"));
 			dto.setContents(rs.getString("contents"));

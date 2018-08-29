@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -59,6 +60,8 @@ public class BoardController {
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
+	
+	static final int NAV_COUNT_PER_PAGE = 15; 
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -88,7 +91,8 @@ public class BoardController {
 		}
 
 		try {
-			list = boardService.getFeed(id);
+			/*list = boardService.getFeed(id);*/
+			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
 			for(int i = 0; i < list.size(); i++) {
 				media.add(boardService.search2(list.get(i).getBoard_seq()));
 			} 
@@ -144,6 +148,7 @@ public class BoardController {
 				maplike.put(tmp, "y");
 			}
 
+
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
@@ -159,6 +164,7 @@ public class BoardController {
 		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("result3", follow_list);
 		mav.addObject("follow_size", follow_list.size()/5);
+		mav.addObject("NAV_COUNT_PER_PAGE", NAV_COUNT_PER_PAGE);
 		System.out.println(follow_list.size()/5); 
 
 		mav.addObject("maxImgHeight",maxImgHeight);
@@ -167,6 +173,123 @@ public class BoardController {
 
 		return mav;
 	}
+	
+	@RequestMapping("/feedForJson.ajax")
+	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
+		
+		if(start == null) {
+			start = "15";
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+		
+		String id = (String) seesion.getAttribute("loginId");
+
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		List<Board_CommentDTO> list1 = new ArrayList<>();
+		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+		List<Integer> like = new ArrayList<>();
+		Map<Integer,String> maplike = new HashMap<>();
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer,String> mapmark = new HashMap<>();
+		List<List<Board_MediaDTO>> media = new ArrayList<>();
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<FollowInfo> follow_list = new ArrayList<>();
+
+		List<Integer> maxImgHeight = new ArrayList<>();
+		
+		int startInt = Integer.parseInt(start);
+		
+		boolean isAvailableMoreData = true;
+		int nextStartNum = startInt + NAV_COUNT_PER_PAGE;
+
+		try {
+			follow_list = member_followService.toFeed(id);	// 팔로우 리스트
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			list = boardService.getFeed(id, startInt, startInt + NAV_COUNT_PER_PAGE - 1);	// 게시글 리스트
+			System.out.println("@@listlnegth: " + list.size());
+			if(list.size() == 0) {
+				isAvailableMoreData = false;
+			}
+			for(int i = 0; i < list.size(); i++) {
+				media.add(boardService.search2(list.get(i).getBoard_seq()));	// 사진?
+			} 
+
+			list1 = board_commentService.getFeedComment(id);	// 게시글의 코멘트 작성자 아이디
+			like = board_likeService.searchLike(id);	// 좋아요
+			mark = board_bookmarkService.searchMark(id);	// 마크
+
+			profile_image = profileService.getAllProfileImage();	// 프로필 이미지
+
+			Set<Integer> seqlist = new HashSet<>();		
+			for(Board_CommentDTO dto : list1) {	
+				seqlist.add(dto.getBoard_seq());	// board_Seq
+				commentlist.put(dto.getBoard_seq(), new ArrayList<>());	// 게시글의 코멘트 본문
+			}  
+			
+			for(Board_CommentDTO dto : list1) {
+				for(int seq : seqlist) {
+					if(dto.getBoard_seq() == seq ) {
+						commentlist.get(seq).add(dto);  
+					} 
+				}
+			}
+
+			for(Profile_ImageDTO dto : profile_image) {
+				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+			};
+
+
+
+			for(int tmp : like) {
+				maplike.put(tmp, "y");
+			}
+			// 테스트 
+			maplike.put(489, "y");
+
+			for(int tmp : mark) {
+				mapmark.put(tmp, "y");
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}	  
+		
+		/*
+		 * 	list, media, maplike, mapmark, commentlist, getAllProfilePic, 
+		 *  follow_list, follow_list.size_div_five, nextStart, maxImgHeight
+		 *  isAvailableMoreData
+		 */
+		
+		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("list", list);	
+		outputJson.put("media", media);	
+		outputJson.put("maplike", maplike);
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("commentlist", commentlist);
+		outputJson.put("getAllProfilePic", getAllProfilePic);	
+		outputJson.put("follow_list", follow_list);	
+		outputJson.put("follow_list_div_five", follow_list.size()/5);
+		outputJson.put("nextStartNum", nextStartNum);	
+		outputJson.put("maxImgHeight", maxImgHeight);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
+		
+		try {
+			new Gson().toJson(outputJson, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
 
