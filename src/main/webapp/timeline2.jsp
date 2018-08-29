@@ -858,34 +858,45 @@
 
 
 			<div style="position: fixed; border-radius: 1px;">
-				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1"
-					end="1">
+			
 					<div class="container" id="float"
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
 						<br>
 						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">
+							<img class="ml-3 mr-2 pic"  
+								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>" width="50px" height="50px" >
 							<a class="mt-6 idtxt"
 								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
 								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
 
 						</div>
-				</c:forEach>
+			
 
 
 				<hr class="_5mToa">
-				<p class="text-center"
-					style="font-family: 'HelveticaNeue', 'Arial', sans-serif; font-size: 15px;">
-					<i class="far fa-arrow-alt-circle-left" style="font-size: 15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천
-					Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i
-						class="far fa-arrow-alt-circle-right" style="font-size: 15px;"></i>
+				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
+					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
-				<c:forEach var="followtmp" items="${result3}" varStatus="status"
-					begin="0" end="4">
+				<div id="followscroll" style="overflow-y: auto; height:230px; ">           
+				<c:choose>    
+				<c:when test="${result3.size() > 0}">  
+				<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+					<div class="container py-1">  
+					<ul class="navbar-nav">  
+					<li>	<img class="mr-3 pic"   
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					<li class="pt-2" style="width:45%;">	<a class="idtxt"            
+								style="font-size: 14px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"     
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
+					<li class="pt-2"><a id="followlink">follow</a></li>           	  
+					</ul>   
 
-					<div class="container">
+					</div>
+				</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="container" style="height:10%;">
 
 						<div class="profile-image">
 							<img class="ml-3 mr-2 pic"
@@ -894,14 +905,16 @@
 								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
 						</div>
-
 					</div>
-
-				</c:forEach>
+				</c:otherwise>
+				</c:choose>
+				</div>
 				<hr class="_5mToa">
 
 
 			</div>
+
+
 
 			<div class="pt-4 pb-3" id="footer"
 				style="font-size: 5px; margin-left: 20px;">
@@ -917,7 +930,7 @@
 			</div>
 
 		</div>
-
+  
 
 	</div>
 	<!-- container -->

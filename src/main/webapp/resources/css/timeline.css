@@ -830,10 +830,34 @@ ul {
 .pic{
 	width : 30px;
 	height : 30px;   
-}  
+}   
 
-.myslides {display:none;}   
+.myslides {display:none;}  
+
+#float {
+	
+background-color:white;  	
+} 
+
+idtxt {
+	color:#999999  ;  
+}
+a:link {
+	text-decoration:none;
+	color:#999999  
+}
     
+    #followlink{
+    background-color:#35e0db;
+    color:white;    
+    font-size:10px;  
+    padding: 0.5em 0.5em;   
+    text-decoration: none;
+  text-transform: uppercase;  
+  
+    
+    
+    }
 /* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
 /*     display: block; */
 /*     display: table-cell; */
