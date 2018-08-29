@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -258,30 +260,23 @@ public class BoardController {
 		result3.add(bookmark);
 		
 
-//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
-// 
-//		double maxheight = 0;
-//		double maxwidth = 0;
-//		for(Board_MediaDTO dto : result2) {
-//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//			double height = bimg.getHeight();
-//			double width = bimg.getWidth();
-//
-//			if(height > width) {
-//				maxwidth = 600 * width / height;
-//				maxheight = 600;
-//				
-//			}else {     
-//				
-//				maxheight = 600 * height / width;
-//				maxwidth = 600;
-//				
-//			}
-//		}
-//		System.out.println(maxheight + " : " + maxwidth);  
-//		
-//		result3.add(maxheight);
-//		result3.add(maxwidth);
+		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
+ 
+		double maxheight = 0;
+		double maxwidth = 0;
+		for(Board_MediaDTO dto : result2) {
+			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+			double height = bimg.getHeight();
+			double width = bimg.getWidth();
+
+			if(width>700) {
+				
+			}
+		}
+		System.out.println(maxheight + " : " + maxwidth);  
+		
+		result3.add(maxheight);
+		result3.add(maxwidth);
 
 		new Gson().toJson(result3,response.getWriter());
 
