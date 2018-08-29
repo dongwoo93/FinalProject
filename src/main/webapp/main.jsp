@@ -29,7 +29,7 @@
 <!--    <base href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/"> -->
 <!--    <div id="slider"> -->
 <!--       <figure> -->
-<!--       <img src="austin-fireworks.jpg" alt> -->
+<!--       <img src="austin-fireworks.jpg" alt> -->	
 <!--       <img src="taj-mahal_copy.jpg" alt> -->
 <!--       <img src="ibiza.jpg" alt> -->
 <!--       <img src="ankor-wat.jpg" alt> -->
@@ -79,9 +79,14 @@
          
 <!--     </div> -->
 
-
+   
+   
+   
  </div>
 
+
+   
+   
 
 </body>
 </html>
