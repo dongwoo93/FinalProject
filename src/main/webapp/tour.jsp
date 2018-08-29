@@ -121,8 +121,15 @@ function unmarkit(e) {
 
 <!-- 카드 DIV -->
 <div id="contents">
-<div class="card-columns">
-	<c:forEach var="result" items="${result}" varStatus="status">
+	<c:choose>
+			<c:when test="${result.size() < 4}">
+				<div class="card-deck"  style=" width: 600px;">
+			</c:when>
+				<c:otherwise>
+					<div class="card-columns">
+				</c:otherwise>
+	</c:choose>
+<c:forEach var="result" items="${result}" varStatus="status">
 		<div class="card" id="card">
 			<h4 class="card-title" id="tourTop">
 				<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
@@ -208,16 +215,7 @@ function unmarkit(e) {
 						<script> $("#myContents${result.board_seq}").attr("style","overflow:visible"); </script>
 							<p id="myContents${result.board_seq}">${result.contents}</p>
 								<script>    
-// 									var plus = "";    
-// 									var txt = "${result.contents}";       
-// 										if(txt.length > 48) {                
-// 										plus = "<p id='${result.board_seq}' >&nbsp-더보기</p>";
-// 									 	 }
-// 											$("#myContents${result.board_seq}:last-child").after("</p>"+plus);   			
-// 											$("#${result.board_seq}").click(function() { 
-// 												$("#myContents${result.board_seq}").attr("style","overflow:visible");  
-// 											});
-					var text = $("#myContents${result.board_seq}").html();  
+									var text = $("#myContents${result.board_seq}").html();  
 									var regex = /(#[^#\s,;]+)/gi  ;              
 									var newtxt;
 	  								if(txt != null) {

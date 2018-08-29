@@ -10,7 +10,7 @@
 	
 	$(function () {
 
-		var ws = new WebSocket("ws://192.168.20.1/websocket?loginId=${sessionScope.loginId}");
+		var ws = new WebSocket("ws://192.168.20.9/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
@@ -34,7 +34,7 @@
 				$("#alertmessenger").fadeIn(2000);
 				setTimeout(function(){
 					$("#alertmessenger").fadeOut(2000);
-				},4000); 
+				},4000);
 				reloadMessengerlist();
 			}
 		};
@@ -360,7 +360,7 @@
             	$.ajax({    
                       type: "POST",    
                       url: "commentmod.co",    
-                      data: {comment_seq:comment_seq, comment_contents:txt},   
+                      data: {board_seq : board_seq, comment_seq:comment_seq, comment_contents:txt},   
                       success : function() {
                     	$("#commenttxt"+comment_seq).attr("contentEditable",false);
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 

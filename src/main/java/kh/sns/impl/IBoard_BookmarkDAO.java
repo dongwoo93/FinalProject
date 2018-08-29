@@ -27,7 +27,7 @@ public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
 
 	@Override
 	public int insertBookmark(Board_BookmarkDTO dto) throws Exception {
-		String sql = "insert into board_bookmark values(?,?,?)";
+		String sql = "insert into board_bookmark values(?,?,?,default)";
 		return template.update(sql,dto.getBoard_seq(), dto.getId(),dto.getIs_marked());
 	}
 
@@ -66,6 +66,7 @@ public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
 						isBookmarked.setBoard_seq(rs.getInt("board_seq"));
 						isBookmarked.setId(rs.getString("id"));
 						isBookmarked.setIs_marked(rs.getString("is_marked"));
+						isBookmarked.setApply_date(rs.getString("apply_date"));
 						return isBookmarked;
 					}} );	
 				

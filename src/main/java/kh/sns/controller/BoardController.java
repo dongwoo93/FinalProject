@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -321,15 +323,22 @@ public class BoardController {
 			commentcount.put(tmp[0],tmp[1]);
 		}
 
-		if(cat.equals("1")) {
+		if(cat.equals("1")) { // 게시물
 			result = boardService.getBoard(id);
 		}
-		else if(cat.equals("2")) {
+		else if(cat.equals("2")) { // 찜콕
 			List<int[]> seqArr = boardService.myBookmark(id);
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
 		}
+		else if(cat.equals("3")) { // tag
+            List<int[]> tagArr = boardService.myTags(id);
+            for(int i = 0; tagArr.size() > i; i++) {
+               result.add(boardService.oneBoard(Integer.toString(tagArr.get(i)[0])));
+            }
+         }
+		
 		List<Board_MediaDTO> result2 = new ArrayList<>();
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
@@ -368,6 +377,41 @@ public class BoardController {
 		}
 
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
+		
+		
+		////////////////////////////////////////
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+
+		double maxwidth = 0;
+
+		
+		for(Board_MediaDTO dto : result2) {  
+			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+			
+			double width = bimg.getWidth();  
+			double height = bimg.getHeight();
+			
+			if(width < height) {
+				width = 600 * width / height;
+			}
+		
+			if(maxwidth<width) { 
+				maxwidth = width;
+				
+			}   
+	  
+		}
+	
+	
+		if(maxwidth > 600) {
+			maxwidth = 600;
+		}
+		
+
+		
+		
+		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
 		List<Object> result3 = new ArrayList<>();
@@ -377,7 +421,7 @@ public class BoardController {
 		result3.add(result2);
 		result3.add(commentlist); 
 
-		result3.add(like);
+		result3.add(like);  
 		result3.add(bookmark);
 		
 
@@ -438,9 +482,9 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
-		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<BoardDTO> result = boardService.search(search);					// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();					// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);				// 좋아요
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
@@ -478,7 +522,7 @@ public class BoardController {
 		mav.addObject("result", result);		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
-		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
 		mav.setViewName("search2.jsp");
 		return mav;

@@ -35,6 +35,7 @@ public class IProfileDAO implements ProfileDAO {
 			profile.setIs_allow_share(rs.getString("is_allow_share"));
 			profile.setIs_allow_sms(rs.getString("is_allow_sms"));
 			profile.setIs_allow_status(rs.getString("is_allow_status"));
+			profile.setApply_date(rs.getString("apply_date"));
 			
 			return profile;			
 		});	
@@ -68,7 +69,7 @@ public class IProfileDAO implements ProfileDAO {
 		if(is_allow_public.equals("n")) {    
 			result = true;
 		}
-		return result;
+		return result;  
 	}
 	
 	@Override
@@ -83,6 +84,7 @@ public class IProfileDAO implements ProfileDAO {
 				tmp.setOriginal_file_name(rs.getString(2));
 				tmp.setSystem_file_name(rs.getString(3));
 				tmp.setIs_selected(rs.getString(4));
+				tmp.setApply_date(rs.getString(5));
 				return tmp;
 			}
 		});
@@ -101,6 +103,7 @@ public class IProfileDAO implements ProfileDAO {
 				tmp.setOriginal_file_name(rs.getString(2));
 				tmp.setSystem_file_name(rs.getString(3));
 				tmp.setIs_selected(rs.getString(4));
+				tmp.setApply_date(rs.getString(5));
 				return tmp;
 			}
 		});
