@@ -509,6 +509,8 @@ $(document).ready(function(){
 												href="board.bo?id=${pageid}&cat=1">게시물</a></th>
 											<th class="text-center"><a
 												href="board.bo?id=${pageid}&cat=2">찜콕됨</a></th>
+											<th class="text-center"><a 
+												href="board.bo?id=${pageid}&cat=3">태그됨</a></th>
 										</tr>
 									</thead>
 								</table>
@@ -719,11 +721,19 @@ $(document).ready(function(){
                                 	  $("#markcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
                                   }else {
                                 	  $("#mark").attr("style", false);
-                                  }
-                            
-                                 }
-                            });
-                          
+                                  } 
+                                       
+                                  var width = data[5]+300;  
+                                  var width1 = parseInt(data[5]);
+                                  alert(width + " : " + width1)
+                                  $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
+                                 $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
+                                      
+                                 
+                                 $(".modalslide").attr("style", " height:590px;");               
+                                 }    
+                            }); 
+                           
                              $("#boardmodal").modal();                      
                        });
 
@@ -815,7 +825,6 @@ $(document).ready(function(){
 
 
 			<div class="modal-content view" style="width: 30%; height: auto;">
-
 
 
 				<div class="hidden" id="hidden"></div>

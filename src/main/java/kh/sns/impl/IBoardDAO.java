@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
@@ -108,7 +109,7 @@ public class IBoardDAO implements BoardDAO  {
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
-		String sql = "select * from board where board_seq in (select board_seq from board_tags where tags=?)";
+		String sql = "select * from board where board_seq in (select board_seq from board_tags where tags=?) order by board_seq desc";
 		/*String sql = "select * from board where (board_seq in (select board_seq from board_tags where tags=?)) or "
 				+ "(board_seq in (select board_seq from board_location where location_name=?)) order by board_seq desc";*/
 		return template.query(sql, new Object[] {keyword}, new RowMapper<BoardDTO>() {
@@ -370,5 +371,21 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 			}
 		});
 	}
+	
+	// my_aticle_Tag
+	   @Override
+	   public List<int[]> myTag(String id) throws Exception {
+	      String sql = "select board_seq from member_tags where member_tags=?";
+	      return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
+
+	         @Override
+	         public int[] mapRow(ResultSet rs, int arg1) throws SQLException {
+	            int[] listTag = {rs.getInt("board_seq")};
+	            System.out.println(listTag);
+	            return listTag;
+	         }
+	         
+	      });
+	   }
 
 }
