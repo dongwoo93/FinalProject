@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
+import kh.sns.interfaces.BoardDAO;
+import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_CommentService;
 
 @Controller
@@ -15,8 +18,9 @@ public class Board_CommentController {
 
    @Autowired
    private Board_CommentService boardcommentservice;
-
-
+   @Autowired
+   private BoardDAO boarddao;
+  
    @RequestMapping("/comment.co")
    public void insertComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response) {
       System.out.println(dto.getComment_seq());
@@ -24,12 +28,18 @@ public class Board_CommentController {
       dto.setId(id);
       
       int commentseq = 0;
-      int count = 0; 
+      
       try { 
          commentseq = this.boardcommentservice.getCommentSeq();
         // count = this.boardcommentservice.commentCount(dto.getBoard_seq());
          dto.setComment_seq(commentseq);
          int result =this.boardcommentservice.insertComment(dto);
+         
+         BoardDTO board_dto = new BoardDTO(dto.getBoard_seq(),dto.getComment_contents(),"","","","");
+         int[] hashTagResult = boarddao.insertHashTags(board_dto);   
+         ////////요기서 태그인설트들어가용
+         
+         
          
          if(result >0) {  
             System.out.println("success");
@@ -81,8 +91,13 @@ public class Board_CommentController {
    public void modComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response)  {
       System.out.println(dto.getComment_seq() + " : " + dto.getComment_contents());  
       int result = 0; 
-      try {
-         result = this.boardcommentservice.modComment(dto);   
+      try { 
+         result = this.boardcommentservice.modComment(dto);
+         
+         int board_seq =boardcommentservice.getBoard_seq(dto.getComment_seq());
+         BoardDTO board_dto = new BoardDTO(board_seq,dto.getComment_contents(),"","","","");
+         int[] hashTagResult = boarddao.insertHashTags(board_dto);      
+         ////////요기서 태그인설트들어가용  
          System.out.println(result);   
          if(result > 0 ) {
             System.out.println("mod success");   
