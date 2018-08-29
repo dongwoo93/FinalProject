@@ -903,18 +903,19 @@
 
 			</div>
 
-			<div class="pt-4 pb-3" id="footer"
-				style="font-size: 5px; margin-left: 20px;">
+<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
+			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<p>SocialWired.정보.지원.홍보.채용</p>
-							<p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어</p>
-							<p>@2018SocialWired</p>
+							<p><i class="far fa-copyright"></i>SocialWired about정보.홍보.채용</p>
+							<p>개인정보처리방침 .약관.플랫폼</p>
+							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>	
+<!-- 			</div> -->
 
 		</div>
 
