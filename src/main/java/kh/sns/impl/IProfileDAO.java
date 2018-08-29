@@ -131,6 +131,12 @@ public class IProfileDAO implements ProfileDAO {
 		String sql = "update profile_image set is_selected='y', apply_date=sysdate where system_file_name=?";
 		return template.update(sql, systemFileName);
 	}
+	
+	@Override
+	public int deleteProfileImage(String systemFileName) throws Exception {
+		String sql = "delete from profile_image where system_file_name=?";
+		return template.update(sql, systemFileName);
+	}
 
 	@Override
 	public List<Profile_ImageDTO> getAllProfileImage() throws Exception {
@@ -198,7 +204,5 @@ public class IProfileDAO implements ProfileDAO {
 			}
 		});
 	}
-
-	
 	
 }

@@ -5,6 +5,8 @@
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 <script>
+
+
 	
 	$(function () {
 
@@ -1322,6 +1324,16 @@ $(function(){
 	    $("#userId").val("");
 	    $("#dmnickname").text("");
 	  });   
+});
+
+$(window).scroll(function(){
+	// 486 ~ 851
+	if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+		// 내용
+		/* http://wjheo.tistory.com/entry/Spring-%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%AC%B4%ED%95%9C%EC%8A%A4%ED%81%AC%EB%A1%A4 */
+		console.log('무한스크롤');
+		$('#board').append('<div>ssssssssssssss</div>');	
+	}
 });
 </script>
                       
