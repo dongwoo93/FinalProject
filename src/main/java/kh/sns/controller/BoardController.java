@@ -146,6 +146,7 @@ public class BoardController {
 				maplike.put(tmp, "y");
 			}
 
+
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
@@ -248,6 +249,8 @@ public class BoardController {
 			for(int tmp : like) {
 				maplike.put(tmp, "y");
 			}
+			// 테스트 
+			maplike.put(489, "y");
 
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");

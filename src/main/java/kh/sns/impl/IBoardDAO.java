@@ -176,7 +176,7 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public List<BoardDTO> getFeed(String id, int start, int end) {
 		String sql = "select * from (select board.*, rownum rn from board "
-				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by board_seq desc) "
+				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by writedate desc) "
 				+ "where (rn between ? and ?)";
 		
 		return template.query(sql, new Object[] {id, id, start, end}, (rs, rowNum) -> {
