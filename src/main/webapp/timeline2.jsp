@@ -1326,13 +1326,57 @@ $(function(){
 	  });   
 });
 
+var globalStartNum = 16;
+
 $(window).scroll(function(){
 	// 486 ~ 851
 	if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
 		// 내용
 		/* http://wjheo.tistory.com/entry/Spring-%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%AC%B4%ED%95%9C%EC%8A%A4%ED%81%AC%EB%A1%A4 */
 		console.log('무한스크롤');
-		$('#board').append('<div>ssssssssssssss</div>');	
+		$.ajax({
+            url: "feedForJson.ajax", // 처리할 페이지(서블릿) 주소
+            type: "get",
+            data: {start: globalStartNum},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+            success: function(response) {
+            	
+        		/*
+        		 * 	0: list, 1: media, 2: maplike, 3: mapmark, 4: commentlist, 5: getAllProfilePic, 
+        		 *  6: follow_list, 7: follow_list.size()/5, 8: nextStart, 9: maxImgHeight
+        		 *  10: isAvailableMoreData
+        		 *	Array: 0, 1, 6, 9
+        		 *	Object: 2, 4, 5
+        		 *	Primitive: 7, 8, 10
+        		 */
+            	
+            	if(response[10]){	// 가져올 게시글이 더 있나요?  
+            		var pp = 0;
+					for(i in response){
+						console.log(response[i]);
+         				for(obj in response[i]) {
+         					$('#board').append("<div>") 
+         					for(item in response[i][obj]){
+         						$('#board').append(response[i][obj][item]);         						
+         					}
+         					$('#board').append("<hr></div>");         				
+         				}
+					}   		
+            		
+					globalStartNum = response[8];
+            	} else {
+            		console.log(response[10]);
+            		return;
+            	}
+
+            },
+            error: function() {
+                console.log("에러 발생");
+            },
+            complete: function(){
+            }
+        });
+
+		
 	}
 });
 </script>

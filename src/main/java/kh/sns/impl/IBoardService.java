@@ -28,6 +28,11 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
+	public List<BoardDTO> getFeed(String id, int start, int end) {
+		return dao.getFeed(id, start, end);
+	}
+	
+	@Override
 	public List<BoardDTO> getBoard(String id) throws Exception {
 		return this.dao.getBoard(id);
 	}
