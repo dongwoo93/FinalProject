@@ -601,11 +601,13 @@ $(document).ready(function(){
                               url: "boardView.bo",
                               data: {seq:seq},
                               success: function(data)         
-                              {
-                           	    
-                                 if(data[1].length == 1) {
+                              {     
+									alert(data[5]);  
+                            	  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
+                            	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
+                           	   if(data[1].length == 1) {
                                  $("#carousel-prev").hide();
-                              $("#carousel-next").hide();
+                              $("#carousel-next").hide();  
                                  }else {
                                     $("#carousel-prev").show();
                                     $("#carousel-next").show();
@@ -762,8 +764,7 @@ $(document).ready(function(){
 		<br>
 
 
-		<div class="modal-content view"
-			style="flex-direction: row; width: 1000px; height: auto;">
+		<div class="modal-content view modalall">
 
 			<!-- 			<div class="modal-content view" style="width: 70%; height: auto;"> -->
 
@@ -791,7 +792,7 @@ $(document).ready(function(){
 
 
 
-			<div class="modal-content view" style="width: 70%; height: auto;">
+			<div class="modal-content view modalmedia" >
 
 				<div id="demo" class="carousel slide" data-ride="carousel"
 					data-interval="false">
@@ -814,7 +815,7 @@ $(document).ready(function(){
 			</div>
 
 
-			<div class="modal-content view" style="width: 30%; height: auto;">
+			<div class="modal-content view" style="width: 300px; height: auto;">
 
 
 

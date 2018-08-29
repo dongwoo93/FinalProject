@@ -262,20 +262,29 @@ public class BoardController {
 
 		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
  
-		double maxheight = 0;
+		
 		double maxwidth = 0;
 		for(Board_MediaDTO dto : result2) {
 			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
 			double height = bimg.getHeight();
 			double width = bimg.getWidth();
+			
+			height = 600;
+			width = 600 * width / height;
 
-			if(width>700) {
-				
+			if(width > 700) {
+				width = 700;
+				height = 600 * 700 / height;
 			}
+			
+			if(maxwidth < width) {
+				maxwidth = width;
+			}
+			
 		}
-		System.out.println(maxheight + " : " + maxwidth);  
+		System.out.println(" : " + maxwidth);  
 		
-		result3.add(maxheight);
+
 		result3.add(maxwidth);
 
 		new Gson().toJson(result3,response.getWriter());
