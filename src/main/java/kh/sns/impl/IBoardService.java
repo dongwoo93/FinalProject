@@ -7,13 +7,16 @@ import org.springframework.stereotype.Service;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.Member_TagsDTO;
 import kh.sns.interfaces.BoardBusinessDAO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_LocationDAO;
 import kh.sns.interfaces.MemberBusinessDAO;
+import kh.sns.interfaces.Member_TagsDAO;
 
 @Service
 public class IBoardService implements BoardService {
@@ -21,6 +24,8 @@ public class IBoardService implements BoardService {
 	@Autowired	private BoardDAO dao;
 	@Autowired	private BoardBusinessDAO bbdao;
 	@Autowired	private MemberBusinessDAO mbdao;
+	@Autowired  private Board_LocationDAO ldao;
+	@Autowired  private Member_TagsDAO mtdao;	
 	
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
@@ -53,17 +58,31 @@ public class IBoardService implements BoardService {
 	
 	@Override	
 	// @Transactional("txManager")
-	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList, BoardBusinessDTO bbiz) throws Exception {
+	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList, BoardBusinessDTO bbiz,Board_LocationDTO locationdto,List<Member_TagsDTO> membertag) throws Exception {
 		
 		// 글 삽입
 		int contentResult = dao.insertNewBoardContent(boardContent);
 		int mediaResult = 1;
 		int bizResult = 1;
+		int mtagResult = 1;
+		int locationResult = 1;
 		
 		// 그림 등 삽입
 		if(contentResult == 1) {
 			int boardCurrVal = dao.selectBoardSeqRecentCurrVal();
 			System.out.println("boardCurrVal" + boardCurrVal);
+			
+			if(membertag != null) {
+				for(Member_TagsDTO tag : membertag) {
+					tag.setBoard_seq(boardCurrVal);
+					mtagResult *= mtdao.insertMembertag(tag);
+				}
+			}
+			
+			if(locationdto !=null) {
+				locationdto.setBoard_seq(boardCurrVal);
+				locationResult = ldao.insertLocation(locationdto);
+			}
 			
 			for(Board_MediaDTO media : boardMediaList) {
 				media.setBoard_seq(boardCurrVal);
@@ -95,7 +114,7 @@ public class IBoardService implements BoardService {
 			
 		} 			
 		
-		return contentResult * mediaResult * bizResult;
+		return contentResult * mediaResult * bizResult * locationResult * mtagResult;
 	}
 
 	@Override
