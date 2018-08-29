@@ -46,6 +46,7 @@ import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
+import kh.sns.interfaces.SearchService;
 
 @Controller
 public class BoardController {
@@ -59,6 +60,7 @@ public class BoardController {
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
+	@Autowired	private SearchService searchService;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -76,22 +78,18 @@ public class BoardController {
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-
 		List<Integer> maxImgHeight = new ArrayList<>();
+		List<String> trend = new ArrayList<>();
 
 
 		try {
 			follow_list = member_followService.toFeed(id);
-		} catch (Exception e1) {
-
-			e1.printStackTrace();
-		}
-
-		try {
 			list = boardService.getFeed(id);
 			for(int i = 0; i < list.size(); i++) {
 				media.add(boardService.search2(list.get(i).getBoard_seq()));
-			} 
+			}
+			
+			
 		//	String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
 
 
@@ -147,6 +145,8 @@ public class BoardController {
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
+			
+			trend = searchService.trend();
 
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -162,6 +162,7 @@ public class BoardController {
 		System.out.println(follow_list.size()/5); 
 
 		mav.addObject("maxImgHeight",maxImgHeight);
+		mav.addObject("trend", trend);
 		mav.setViewName("timeline2.jsp");
 
 
@@ -322,7 +323,7 @@ public class BoardController {
 	public ModelAndView search(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-
+		searchService.insertSearch(search);  
 		List<BoardDTO> result = boardService.search(search);		// 전체 글
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요

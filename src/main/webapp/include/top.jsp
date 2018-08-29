@@ -179,9 +179,7 @@ $(function() {
           <i class="far fa-heart nav-icon"></i>    
         </a>        	            
                     <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:360px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
-         
-        
-           
+     
            </div>
                   </li>
           

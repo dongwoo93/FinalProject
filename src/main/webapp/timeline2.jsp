@@ -2,21 +2,23 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<script> var currentId = "${sessionScope.loginId}"; </script>
+<script> var currentId = "${sessionScope.loginId}"; 
+var ws = new WebSocket("ws://localhost/websocket?loginId=${sessionScope.loginId}"); 
+</script>
 <script src="resources/js/timeline.js"></script>
 <script>
 
-
-	
-	$(function () {
-
-		var ws = new WebSocket("ws://192.168.20.1/websocket?loginId=${sessionScope.loginId}");
-		
+$(function () {
 		ws.onopen = function () {
 
 		};
 		
 		ws.onmessage = function (msg) {
+			 
+			if(msg.data == 'c'){ 
+				alert("코멘트 달았엉 알림가자~~~");  
+			}
+			else{
 			var message = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[0];
 			var sender = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[1];
 			var receivernickname = $("#dmnickname").text();
@@ -37,6 +39,7 @@
 				},4000); 
 				reloadMessengerlist();
 			}
+		}
 		};
 		
 	    ws.onclose = function (event) {
@@ -99,7 +102,13 @@
                 } 
             });
 	    }
+	    
+	 
 	});
+	
+	
+	
+	
 	
 	$(document).ready(function(){
 		$('.chatbox').hide();
@@ -765,7 +774,8 @@
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {       
+	                                              success : function(seq) {  
+	                                            	  
 	                                            	  $('#comment${tmp.board_seq}').html("");
 	                                              /*  $("#comment${tmp.board_seq}").val("");   */  
 	                                              var regex = /(#[^#\s,;<>.]+)/gi;            
@@ -776,10 +786,11 @@
                          						newtxt += "<kz></kz>";
                                             	
                                                 
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                                $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
-	                                               
+	                                            
+	                                                 ws.send("c:${tmp.id}");  
 	                                               $("#commenttxt" + seq).keyup(function(e){
 	                                            	   // =================== 복붙 =================== 
 	                                            	   if(e.keyCode === 32){
@@ -821,12 +832,7 @@
 	                                            	// =================== 복붙 =================== 
 	                                               });
 	                                               
-	                                               $("#commenttxt" + seq).keypress(function(e){
-														if(e.keyCode === 13) {
-														modComment(this);
-													 }
-													});
-	                                               
+	                                          
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
@@ -852,30 +858,21 @@
 			</div>
 			<!-- board -->
 
-
-
-
-
-
-			<div style="position: fixed; border-radius: 1px;">
-			
+			<div style="position: fixed; border-radius: 1px;">  
+			 
 					<div class="container float" id=""
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
-						<br>
-						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"  
-								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>" width="50px" height="50px" >
-							<a class="mt-6 idtxt"
-								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-				</div>
+					  
+						
 			<hr class="_5mToa">
 				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
 				<c:if test="${result3.size() > 0}">  
+				<div style="overflow-y:auto; height:230px;">    		
 		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+		
 					<div class="container py-1">  
 					<ul class="navbar-nav">  
 					<li>	<img class="mr-3 pic"   
@@ -886,42 +883,48 @@
 					<li class="pt-2"><a id="followlink">follow</a></li>           	  
 					</ul>   
 			</div>
+		  
 				</c:forEach>
-			   
+			   	</div>
 				</c:if><hr class="_5mToa">
 			</div>
 			
 			
-			 
-			<div class="container float" id=""  
-						style="width: 300px; margin-top: 55px; margin-left: 30px;">
-						<br>
-						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"  
-								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>" width="50px" height="50px" >
-							<a class="mt-6 idtxt"
-								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-				</div>
+			  
+			<div class="container float" id=""    
+						style="width: 300px; margin-top: 20px; margin-left: 30px;">
+					
 			<hr class="_5mToa">
 				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
 					실시간 트랜드..     
 				</p>
 				<hr class="_5mToa">
-				<c:if test="${result3.size() > 0}">  
-		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
-					<div class="container py-1">  
-					<ul class="navbar-nav">  
-					<li>	<img class="mr-3 pic"   
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
-					<li class="pt-2" style="width:45%;">	<a class="idtxt"            
+				<c:if test="${trend.size() > 0}">  
+		  
+		  	<div style="overflow-y:auto; height:230px;">    		
+		<c:forEach var="trend" items="${trend}" varStatus="status" >
+		
+					<div class="container" >     
+					<ul class="navbar-nav pointer" value="${trend}" onclick="trendsearch(this)">  
+					
+					<li class="pt-2" style="width:45%;">	<a class="trendrank"            
 								style="font-size: 14px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"     
-								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
-					<li class="pt-2"><a id="followlink">follow</a></li>           	  
+								href="">${status.count}</a></li>  
+					<li class="pt-2"><a id="keywordlink">${trend}</a></li>           	  
 					</ul>   
 			</div>
+			<script>
+			function trendsearch(e){   
+				var keyword = $(e).attr("value");  
+				$(location).attr("href","search.bo?search="+keyword);   
+			}
+			
+			</script>
+		  
 				</c:forEach>
-			         
+			   	</div>
+		  
+		  
 				</c:if><hr class="_5mToa">
 			</div>
 
