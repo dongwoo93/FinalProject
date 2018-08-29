@@ -568,11 +568,11 @@ $(document).ready(function(){
                     	    
                     	   var objDiv = document.getElementById("articlecomment");
                            objDiv.scrollTop = 0;            
-                           var seq = "${tmp.board_seq}";
-                           if(${status.count != 1}) {
-                           $("#prev").val(${result[status.index-1].board_seq});  }
-                           if(${status.count != result.size()}) {
-                           $("#next").val(${result[status.index+1].board_seq}); } 
+                          var seq = "${tmp.board_seq}";
+                          if(${status.count != 1}) {
+                          $("#prev").val(${result[status.index-1].board_seq});  }
+                          if(${status.count != result.size()}) {
+                          $("#next").val(${result[status.index+1].board_seq}); } 
                           
                           $("#hidden").val(${result[status.index].board_seq}); 
                           for(var i =0; i<list.length; i++) {
@@ -601,7 +601,7 @@ $(document).ready(function(){
                               url: "boardView.bo",
                               data: {seq:seq},
                               success: function(data)         
-                              {     
+                              {      
 									alert(data[5]);  
                             	  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
                             	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  

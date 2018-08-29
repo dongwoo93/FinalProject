@@ -859,7 +859,7 @@
 
 			<div style="position: fixed; border-radius: 1px;">
 			
-					<div class="container" id="float"
+					<div class="container float" id=""
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
 						<br>
 						<div class="profile-image">
@@ -868,20 +868,14 @@
 							<a class="mt-6 idtxt"
 								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
 								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-
-						</div>
-			
-
-
-				<hr class="_5mToa">
+				</div>
+			<hr class="_5mToa">
 				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
-				<div id="followscroll" style="overflow-y: auto; height:230px; ">           
-				<c:choose>    
-				<c:when test="${result3.size() > 0}">  
-				<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+				<c:if test="${result3.size() > 0}">  
+		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
 					<div class="container py-1">  
 					<ul class="navbar-nav">  
 					<li>	<img class="mr-3 pic"   
@@ -891,27 +885,44 @@
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
 					<li class="pt-2"><a id="followlink">follow</a></li>           	  
 					</ul>   
-
-					</div>
+			</div>
 				</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<div class="container" style="height:10%;">
-
+			   
+				</c:if><hr class="_5mToa">
+			</div>
+			
+			
+			 
+			<div class="container float" id=""  
+						style="width: 300px; margin-top: 55px; margin-left: 30px;">
+						<br>
 						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">
+							<img class="ml-3 mr-2 pic"  
+								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>" width="50px" height="50px" >
 							<a class="mt-6 idtxt"
 								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
-						</div>
-					</div>
-				</c:otherwise>
-				</c:choose>
+								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
 				</div>
+			<hr class="_5mToa">
+				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
+					실시간 트랜드..     
+				</p>
 				<hr class="_5mToa">
-
-
+				<c:if test="${result3.size() > 0}">  
+		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+					<div class="container py-1">  
+					<ul class="navbar-nav">  
+					<li>	<img class="mr-3 pic"   
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					<li class="pt-2" style="width:45%;">	<a class="idtxt"            
+								style="font-size: 14px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"     
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
+					<li class="pt-2"><a id="followlink">follow</a></li>           	  
+					</ul>   
+			</div>
+				</c:forEach>
+			         
+				</c:if><hr class="_5mToa">
 			</div>
 
 
