@@ -1063,7 +1063,7 @@ $(document).ready(function(){
 
 				<!-- Modal body -->
 
-				<div class="modal-body"
+				<div class="modal-body" 
 					style="border: 5px solid #eff1f4; font-family: NANUMBARUNPENR !important; font-size: 14px;">
 					<div style="max-height: 300px; border: 5px solid #eff1f4;">
 						<input id="inputimg" name="inputimg" type='file'

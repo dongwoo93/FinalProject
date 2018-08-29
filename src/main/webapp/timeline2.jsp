@@ -202,7 +202,7 @@ $(function () {
     function likeit(e,id) {
        var board_seq = $(e).attr("value");
      	var aid = id;        
-       $.ajax({
+       $.ajax({  
           url : "like.bo",
           type : "get",
           data : {
@@ -211,7 +211,7 @@ $(function () {
              is_liked : "y"
           },
           success : function(resp) {
-        	  ws.send("l:"+id);
+        	  ws.send("l:"+aid);
              $(e).next().show();
              $(e).hide();
           },

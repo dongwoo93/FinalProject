@@ -392,36 +392,36 @@ public class BoardController {
 		
 		
 		////////////////////////////////////////
-		
-		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
-
-		double maxwidth = 0;
-
-		
-		for(Board_MediaDTO dto : result2) {  
-			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-			
-			double width = bimg.getWidth();  
-			double height = bimg.getHeight();
-			
-			if(width < height) {
-				width = 600 * width / height;
-			}
-		
-			if(maxwidth<width) { 
-				maxwidth = width;
-				
-			}   
-	  
-		}
-	
-	
-		if(maxwidth > 600) {
-			maxwidth = 600;
-		}
-		
-
-		
+//		
+//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+//
+//		double maxwidth = 0;
+//
+//		
+//		for(Board_MediaDTO dto : result2) {  
+//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+//			
+//			double width = bimg.getWidth();  
+//			double height = bimg.getHeight();
+//			
+//			if(width < height) {
+//				width = 600 * width / height;
+//			}
+//		
+//			if(maxwidth<width) { 
+//				maxwidth = width;
+//				
+//			}   
+//	  
+//		}
+//	
+//	
+//		if(maxwidth > 600) {
+//			maxwidth = 600;
+//		}
+//		
+// 
+//		
 		
 		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
