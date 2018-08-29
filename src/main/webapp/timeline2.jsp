@@ -1313,6 +1313,12 @@
 		  <marquee><p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt" id='alertmsg'></p></marquee>
 		</div>
 	</div>
+ <!-- 좋아요 상태 모달 -->
+ <div class="modal" hidden?>
+ 
+ </div>
+ 
+ 
  
 <script>
 $(function(){

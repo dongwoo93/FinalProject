@@ -806,4 +806,50 @@ public class BoardController {
 		return mav;	
 	}
 
+	@RequestMapping("/alerting.top")
+	public void alerting(HttpSession seesion, HttpServletResponse resp) {
+		String sessionid = (String) seesion.getAttribute("loginId");
+		   resp.setCharacterEncoding("UTF-8");
+		   resp.setContentType("application/json");
+		
+		 try {
+			List<Object[]> result = boardService.alerting(sessionid);
+			
+			for(Object[] tmp : result) {
+				if((int)tmp[2]<60) {
+					tmp[2] = tmp[2]+"분";
+				} 
+				else if(((int)tmp[2] >= 60) && ((int)tmp[2] <1440)) {    
+					tmp[2] = (((int)tmp[2])/60) +"시간";
+				}
+				else if((int)tmp[2] >= 1440) {
+					tmp[2] = (((int)tmp[2])/1440) +"일";   
+				}
+				
+				tmp[1] = profileService.selectOneProfileImage(sessionid);
+				if((int)tmp[0] == 0) {
+					tmp[4] = "0";    
+				}else {    
+				tmp[4] = boardService.search2( (int)tmp[0] ).get(0).getSystem_file_name();
+				}
+				System.out.print(tmp[0] + " : ");
+				System.out.print(tmp[1] + " : ");
+				System.out.print(tmp[2] + " :" );
+				System.out.print(tmp[3]+ " : "); 
+				System.out.println(tmp[4]+ " : "); 
+				
+				
+				
+			}
+			new Gson.toJson(result,resp.getWriter());
+			
+			 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		 
+		
+	}
 }

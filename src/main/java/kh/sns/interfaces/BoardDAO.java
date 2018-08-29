@@ -40,4 +40,9 @@ public interface BoardDAO {
 	
 	// my_aticle_bookmark
 	public List<int[]> myBookmark(String id) throws Exception;
+	
+	//timeline alert
+	
+	public List<Object[]> alerting(String id) throws Exception;
+	
 }

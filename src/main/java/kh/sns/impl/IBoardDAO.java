@@ -1,14 +1,10 @@
 package kh.sns.impl;
 
-import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.aspectj.weaver.TemporaryTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,8 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.FollowInfo;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
@@ -357,7 +351,7 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 	}
 	
 	// my_aticle_bookmark
-	@Override
+	@Override 
 	public List<int[]> myBookmark(String id) throws Exception {
 		String sql = "select board_seq from board_bookmark where id=?";
 		return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
@@ -369,6 +363,27 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 				return list;
 			}
 		});
+	}
+
+	@Override  
+	public List<Object[]> alerting(String id) throws Exception {   
+		// TODO Auto-generated method stub  
+		 id = "zzz1";   
+		String sql = "(select board_seq, id, floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(apply_date,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 회원님의 사진을 좋아합니다.' as alert from board_like where (board_seq in(select board_seq from board where id=?)) and (id != ?)) union (select 0 as board_seq , id ,floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(follow_date,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 회원님을 팔로우하기 시작했습니다.' as alert from member_follow where target_id=?) union (select board_seq , id, floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(writedate,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 댓글을 남겼습니다 : '||comment_contents as alert from board_comment where (board_seq in(select board_seq from board where id=?)) and (id!=?)) order by applydate";
+		return template.query(sql, new String[] {id,id,id,id,id}, new RowMapper<Object[]>() {
+
+			@Override
+			public Object[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Object[] result = new Object[] {rs.getInt("board_seq"),rs.getString("id"),rs.getInt("applydate"), rs.getString("alert"),""};
+				
+				
+				
+				return result;
+			}
+			
+		});
+		
 	}
 
 }
