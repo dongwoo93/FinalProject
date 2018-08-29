@@ -178,6 +178,25 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
+	
+	@Override
+	public List<BoardDTO> getFeed(String id, int start, int end) {
+		String sql = "select * from (select board.*, rownum rn from board "
+				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by board_seq desc) "
+				+ "where (rn between ? and ?)";
+		
+		return template.query(sql, new String[] {id,id}, (rs, rowNum) -> {
+			BoardDTO dto = new  BoardDTO();
+			dto.setBoard_seq(rs.getInt("board_seq"));
+			dto.setContents(rs.getString("contents"));
+			dto.setId(rs.getString("id"));
+			dto.setWritedate(rs.getString("writedate"));
+			dto.setRead_count(rs.getString("read_count"));
+			dto.setIs_allow_comments(rs.getString("is_allow_comments"));
+			return dto;
+		});
+	}
+	
 
 	@Override
 	public int insertNewBoardContent(BoardDTO board) {
@@ -215,7 +234,7 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Override
 	public int[] insertHashTags(BoardDTO article) throws Exception {
-
+System.out.println(article.getBoard_seq() + " ::::::::::::");  
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
 		String sql = "insert into board_tags values(?, ?)";
@@ -243,7 +262,7 @@ public class IBoardDAO implements BoardDAO  {
 		String sql = "select * from board where board_seq = ?";
 		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
 
-			@Override
+			@Override   
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
 				BoardDTO article = new BoardDTO();

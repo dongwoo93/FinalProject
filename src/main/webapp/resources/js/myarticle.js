@@ -315,31 +315,13 @@ $(document).ready(function() {
 
 	})
 
-	$("#modifysubmitbtn").click(function(){
-		var board_seq = $("#seq").val();
-		var contents = $("#modalcontents").html();
-
-		$.ajax({
-			type:"POST",
-			url:"boardModify.bo",
-			data: {board_seq:board_seq, contents:contents},
-			success: function(data)
-			{
-				if(data == 1){
-					$("#modalcontents").val(contents);
-					$("#modalcontents").attr("contentEditable","false");
-
-				}else {
-					alert("다시 시도해주세요");
-				}
-
-			}
-		});
-	})
+	/*modifysubmitbtn*/
+	
 	
 	$("#savebtn").click(function() {  
 		if($('#inputimg').get(0).files.length != 0) {
-			var formData = new FormData($("#fileForm")[0]);
+			
+			
 			$.ajax({
 				type:"POST",
 				url:"uploadImg.profile",
@@ -357,20 +339,25 @@ $(document).ready(function() {
 			});
 		}else {
 			var fileName = $("#hiddenimgname").val();
-			var id = $("#hiddenid").val();
-			$.ajax({
-				type:"POST",
-				url:"updateImg.profile",
-				data: {system_file_name:fileName, id:id},
-				success: function(data) {
-					alert(data);
-					location.reload();
-				},
-				error : function(error) {
-	                console.log(error);
-	                console.log(error.status);
-	            }
-			});
+			if(fileName == "") {
+				alert("사진을 등록해주세요");
+			}else {
+				var id = $("#hiddenid").val();
+				$.ajax({
+					type:"POST",
+					url:"updateImg.profile",
+					data: {system_file_name:fileName, id:id},
+					success: function(data) {
+						alert(data);
+						location.reload();
+					},
+					error : function(error) {
+		                console.log(error);
+		                console.log(error.status);
+		            }
+				});
+			}
+			
 		}
 		
 	})
@@ -542,46 +529,7 @@ function delComment(e) {
      }); //ajax 
 }
 
-function modComment(e) { 
-
-	 var comment_seq = $(e).attr("value");
-	 var board_seq = $(e).parent().attr("value");
-	 var modstate = $("#modstate"+comment_seq).val();
-	   
-	 if(modstate == "1") {
-		
-		 $("#commentmod"+comment_seq).html("완료");
-	$("#commenttxt"+comment_seq).attr("contentEditable",true);
-  	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
-  	 $("#commenttxt"+comment_seq).focus();  
-  	 $("#modstate"+comment_seq).val("2");  
-  	 $("#del"+comment_seq).attr("style","color:#00B8D4");
-	 $("#mod"+comment_seq).attr("style","color:#00B8D4");
-	 }
-	 
-	 
-	 else if(modstate=="2") {      
-		
-  			 var txt = $("#commenttxt"+comment_seq).html();     
-     	 	 
-            	$.ajax({    
-                      type: "POST",    
-                      url: "commentmod.co",    
-                      data: {comment_seq:comment_seq, comment_contents:txt},   
-                      success : function() {
-                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
-		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
-		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-		                   $("#modstate"+comment_seq).val("1");  
-		                   $("#ul"+comment_seq).hide().fadeIn(500);
-		                   $("#del"+comment_seq).attr("style",false);
-		          		 $("#mod"+comment_seq).attr("style",false);
-		          		 $("#commentmod"+comment_seq).html("수정");
-                      }  
-                 }); //ajax 
-	 }
-  
-}
+/*function modComment*/
 
 	   
   

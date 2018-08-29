@@ -35,7 +35,7 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 	
 	@Override
 	public int insertLike(Board_LikeDTO dto) throws Exception {
-		String sql = "insert into board_like values(?,?,?)";
+		String sql = "insert into board_like values(?,?,?,default)";
 		return template.update(sql,dto.getBoard_seq(), dto.getId(),dto.getIs_liked());
 	}
 
@@ -80,7 +80,7 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 		// TODO Auto-generated method stub
 		int result = 0;
 		
-		String sql = "insert into board_like values(?,?,?)";
+		String sql = "insert into board_like values(?,?,?,default)";
 		result =template.update(sql, dto.getBoard_seq(), dto.getId() , dto.getIs_liked());
 		return result;
 	}
@@ -101,6 +101,7 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 				isLiked.setBoard_seq(rs.getInt("board_seq"));
 				isLiked.setId(rs.getString("id"));
 				isLiked.setIs_liked(rs.getString("is_liked"));
+				isLiked.setApply_date(rs.getString("apply_date"));
 				return isLiked;
 			}} );	
 		  
