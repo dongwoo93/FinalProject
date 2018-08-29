@@ -27,15 +27,19 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
+import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.Member_CalendarDTO;
+import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
@@ -44,6 +48,7 @@ import kh.sns.interfaces.Board_LikeService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
+import kh.sns.interfaces.Member_CalendarService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
 import kh.sns.interfaces.SearchService;
@@ -61,6 +66,9 @@ public class BoardController {
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
 	@Autowired	private SearchService searchService;
+	@Autowired	private Member_CalendarService calService;
+	
+	static final int NAV_COUNT_PER_PAGE = 15; 
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -84,7 +92,14 @@ public class BoardController {
 
 		try {
 			follow_list = member_followService.toFeed(id);
-			list = boardService.getFeed(id);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+
+		try {
+			/*list = boardService.getFeed(id);*/
+			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
 			for(int i = 0; i < list.size(); i++) {
 				media.add(boardService.search2(list.get(i).getBoard_seq()));
 			}
@@ -142,6 +157,7 @@ public class BoardController {
 				maplike.put(tmp, "y");
 			}
 
+
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
@@ -159,6 +175,7 @@ public class BoardController {
 		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("result3", follow_list);
 		mav.addObject("follow_size", follow_list.size()/5);
+		mav.addObject("NAV_COUNT_PER_PAGE", NAV_COUNT_PER_PAGE);
 		System.out.println(follow_list.size()/5); 
 
 		mav.addObject("maxImgHeight",maxImgHeight);
@@ -168,6 +185,123 @@ public class BoardController {
 
 		return mav;
 	}
+	
+	@RequestMapping("/feedForJson.ajax")
+	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
+		
+		if(start == null) {
+			start = "15";
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+		
+		String id = (String) seesion.getAttribute("loginId");
+
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		List<Board_CommentDTO> list1 = new ArrayList<>();
+		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
+		List<Integer> like = new ArrayList<>();
+		Map<Integer,String> maplike = new HashMap<>();
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer,String> mapmark = new HashMap<>();
+		List<List<Board_MediaDTO>> media = new ArrayList<>();
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<FollowInfo> follow_list = new ArrayList<>();
+
+		List<Integer> maxImgHeight = new ArrayList<>();
+		
+		int startInt = Integer.parseInt(start);
+		
+		boolean isAvailableMoreData = true;
+		int nextStartNum = startInt + NAV_COUNT_PER_PAGE;
+
+		try {
+			follow_list = member_followService.toFeed(id);	// 팔로우 리스트
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			list = boardService.getFeed(id, startInt, startInt + NAV_COUNT_PER_PAGE - 1);	// 게시글 리스트
+			System.out.println("@@listlnegth: " + list.size());
+			if(list.size() == 0) {
+				isAvailableMoreData = false;
+			}
+			for(int i = 0; i < list.size(); i++) {
+				media.add(boardService.search2(list.get(i).getBoard_seq()));	// 사진?
+			} 
+
+			list1 = board_commentService.getFeedComment(id);	// 게시글의 코멘트 작성자 아이디
+			like = board_likeService.searchLike(id);	// 좋아요
+			mark = board_bookmarkService.searchMark(id);	// 마크
+
+			profile_image = profileService.getAllProfileImage();	// 프로필 이미지
+
+			Set<Integer> seqlist = new HashSet<>();		
+			for(Board_CommentDTO dto : list1) {	
+				seqlist.add(dto.getBoard_seq());	// board_Seq
+				commentlist.put(dto.getBoard_seq(), new ArrayList<>());	// 게시글의 코멘트 본문
+			}  
+			
+			for(Board_CommentDTO dto : list1) {
+				for(int seq : seqlist) {
+					if(dto.getBoard_seq() == seq ) {
+						commentlist.get(seq).add(dto);  
+					} 
+				}
+			}
+
+			for(Profile_ImageDTO dto : profile_image) {
+				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+			};
+
+
+
+			for(int tmp : like) {
+				maplike.put(tmp, "y");
+			}
+			// 테스트 
+			maplike.put(489, "y");
+
+			for(int tmp : mark) {
+				mapmark.put(tmp, "y");
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}	  
+		
+		/*
+		 * 	list, media, maplike, mapmark, commentlist, getAllProfilePic, 
+		 *  follow_list, follow_list.size_div_five, nextStart, maxImgHeight
+		 *  isAvailableMoreData
+		 */
+		
+		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("list", list);	
+		outputJson.put("media", media);	
+		outputJson.put("maplike", maplike);
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("commentlist", commentlist);
+		outputJson.put("getAllProfilePic", getAllProfilePic);	
+		outputJson.put("follow_list", follow_list);	
+		outputJson.put("follow_list_div_five", follow_list.size()/5);
+		outputJson.put("nextStartNum", nextStartNum);	
+		outputJson.put("maxImgHeight", maxImgHeight);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
+		
+		try {
+			new Gson().toJson(outputJson, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
 
@@ -201,15 +335,22 @@ public class BoardController {
 			commentcount.put(tmp[0],tmp[1]);
 		}
 
-		if(cat.equals("1")) {
+		if(cat.equals("1")) { // 게시물
 			result = boardService.getBoard(id);
 		}
-		else if(cat.equals("2")) {
+		else if(cat.equals("2")) { // 찜콕
 			List<int[]> seqArr = boardService.myBookmark(id);
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
 		}
+		else if(cat.equals("3")) { // tag
+            List<int[]> tagArr = boardService.myTags(id);
+            for(int i = 0; tagArr.size() > i; i++) {
+               result.add(boardService.oneBoard(Integer.toString(tagArr.get(i)[0])));
+            }
+         }
+		
 		List<Board_MediaDTO> result2 = new ArrayList<>();
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
@@ -248,6 +389,41 @@ public class BoardController {
 		}
 
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
+		
+		
+		////////////////////////////////////////
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+
+		double maxwidth = 0;
+
+		
+		for(Board_MediaDTO dto : result2) {  
+			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+			
+			double width = bimg.getWidth();  
+			double height = bimg.getHeight();
+			
+			if(width < height) {
+				width = 600 * width / height;
+			}
+		
+			if(maxwidth<width) { 
+				maxwidth = width;
+				
+			}   
+	  
+		}
+	
+	
+		if(maxwidth > 600) {
+			maxwidth = 600;
+		}
+		
+
+		
+		
+		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
 		List<Object> result3 = new ArrayList<>();
@@ -257,7 +433,7 @@ public class BoardController {
 		result3.add(result2);
 		result3.add(commentlist); 
 
-		result3.add(like);
+		result3.add(like);  
 		result3.add(bookmark);
 		
 
@@ -364,7 +540,7 @@ public class BoardController {
 		mav.addObject("result", result);		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
-		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
 		mav.setViewName("search2.jsp");
 		return mav;
@@ -496,12 +672,41 @@ public class BoardController {
 			@RequestParam("costPerMille") String costPerMille,
 			@RequestParam("remainedPublicExposureCount") String remainedPublicExposureCount,
 			@RequestParam("costPerClick") String costPerClick,
+			@RequestParam(value="tags[]", defaultValue="") List<String> persontag,
+			@RequestParam("lat") String lat,
+			@RequestParam("lng") String lng,
+			@RequestParam("place") String place,
 			HttpServletResponse response) {	
 
 		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;		
 		List<MultipartFile> mfList = mhsr.getFiles("filename[]");		
 		List<Board_MediaDTO> fileList = new ArrayList<Board_MediaDTO>();
-
+		System.out.println(lat + "lat");
+		System.out.println(lng + "Ds");
+		System.out.println(place + "Dsaf");
+		
+		Board_LocationDTO locationdto =null;
+		
+		if(lat.equals("") && lng.equals("") && place.equals("")) {
+			
+		}else {
+			locationdto = new Board_LocationDTO(0,place,lat,lng);
+		}
+		
+		List<Member_TagsDTO> membertag = new ArrayList<>();
+		
+		if(persontag.isEmpty()) {
+			membertag = null;
+		}
+		else {
+			for(String tmp : persontag) {
+				Member_TagsDTO membertagdto = new Member_TagsDTO(0,tmp,"");
+				membertag.add(membertagdto);
+			}
+		}
+		
+		
+		
 		/*테스트용 에코 코드*/
 		/*System.out.println(request.getParameter("filters"));
 		System.out.println("enableBiz: " + enableBiz);
@@ -584,7 +789,7 @@ public class BoardController {
 		// 테스트용 (else는 나중에 삭제)
 		try {
 			if(request.getSession().getAttribute("loginId") != null) {				
-				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList, bbiz);
+				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList, bbiz,locationdto,membertag);
 			} else {
 				// 잘못된 접근과 관련된 코드..
 			}
@@ -714,8 +919,14 @@ public class BoardController {
 
 	}
 	@RequestMapping("/calendar.bo")
-	public String goCalendar(HttpSession session){
-		return "redirect:calendar.jsp";   
+	public ModelAndView goCalendar(HttpSession session) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		String sessionId = (String) session.getAttribute("loginId");
+		List<Member_CalendarDTO> result = calService.selectCalendar(sessionId);
+		mav.addObject("result", result);
+		mav.setViewName("calendar2.jsp");
+		return mav;
+		
 	}
 
 	@RequestMapping("/deletefollow.do")

@@ -49,7 +49,6 @@ function follow(id1, id2, index) {
 <div id="allwrapper" style="margin-top: 50px;">
 
 	<div class="container">
-
 		<hr class="_5mToa ">
 		<ul class="nav">
 			<li class="nav-item"><a class="nav-link"
@@ -57,97 +56,101 @@ function follow(id1, id2, index) {
 			<li class="nav-item"><a class="nav-link"
 				href="followlist.do?id=${pageid}&cat=1">팔로우</a></li>
 		</ul>
-
+		<hr class="_5mToa">
 		<div style="border: 0px solid black;">
-			<c:forEach var="follow" items="${result}" varStatus="status">
-				<div class="container" style="width:40%">
-					<hr class="_5mToa">
-				
-						<img class="ml-3 mr-2 pic"
-							src="AttachedMedia/<c:out value='${profile_pic[follow.targetId]}'/>">
-						<a class="mt-6 idtxt"
-							style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-							href="board.bo?id=${follow.targetId}&cat=1">${follow.targetId}</a>
+			<div class="container" style="width:100%">
+				<div class="row mt-2">
+					<c:forEach var="follow" items="${result}" varStatus="status">
+						<div href="board.bo?id=${follow.targetId}&cat=1" style="height:300px; background-color:white; border:0.5px solid #ccc;" class="col-md-2 mx-3 mb-3">
+							<div class="text-center mt-4" style="cursor:pointer;" onclick="goprofile(this)">
+								  <img class="" src="AttachedMedia/<c:out value='${profile_pic[follow.targetId]}'/>" style="border-radius:100%; width:120px; height:120px;">
+							</div>
+						    <h5 class="text-center mt-3">${follow.targetId}</h5>
+							<div class="text-center mt-5">
 						<c:choose>
 							<c:when test="${sessionScope.loginId == follow.targetId}">
 							</c:when>
 							<c:when test="${isFollow[status.index]}">
-								<div class="profile-edit-btn float-right mt-2 mr-2"
-									id="cancelFollow${status.index}" style="height: 40px;">팔로잉</div>
-								<div class="profile-edit-btn float-right mt-2 mr-2"
-									onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
-									id="follow${status.index}"
-									style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
+									
+								<button class="btn btn-outline-secondary" id="cancelFollow${status.index}">팔로잉</button>
+								<button class="btn btn-secondary" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
+										id="follow${status.index}" style="display:none;">팔로우 <i class="fas fa-plus"></i></button>
 							</c:when>
 
     
 							<c:otherwise>
-								<div class="profile-edit-btn float-right mt-2 mr-2"
-									id="cancelFollow${status.index}"
-									style="height: 40px; display: none;">팔로잉</div>
-								<div class="profile-edit-btn float-right mt-2 mr-2"
-									onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
-									id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
+									
+								<button class="btn btn-outline-secondary" id="cancelFollow${status.index}" style="display:none;">팔로잉</button>
+								<button class="btn btn-secondary" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')"
+										id="follow${status.index}">팔로우 <i class="fas fa-plus"></i></button>
 							</c:otherwise>
 						</c:choose>
+							
+							</div>
+						</div>
+						<script>
+							function goprofile(e){
+								var id = $(e).parent().find("h5").text();
+								$(location).attr("href","board.bo?id="+id+"&cat=1");
+							}
+							
+							$("#cancelFollow${status.index}").click(function() {
+								$("#yes").attr("onclick","unfollow('${sessionScope.loginId}', '${follower.id}', '${status.index}')");
+								$("#exampleModalCenter").modal();
+							});
+						</script>
+					 </c:forEach>
+					 </div>
 
-			
-					<hr class="_5mToa">
 				</div>
-				<script>
-					$("#cancelFollow${status.index}").click(function() {
-						$("#yes").attr("onclick","unfollow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')");
-						$("#exampleModalCenter").modal();
-					});
-				</script>
-			</c:forEach>
-		</div>
+			</div>
 
 
 		<div style="border: 0px solid black;">
-			<c:forEach var="follower" items="${result1}" varStatus="status">
-				<div class="container" style="width:40%">
-					<hr class="_5mToa">
-				
-					<img class="ml-3 mr-2 pic"
-						src="AttachedMedia/<c:out value='${profile_pic[follower.id]}'/>">
-					<a class="mt-6 idtxt"
-						style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-						href="board.bo?id=${follower.id}&cat=1">${follower.id}</a>
-					<c:choose>
-						<c:when test="${sessionScope.loginId == follower.id}">
-						</c:when>
-						<c:when test="${isFollow[status.index]}">
-							<div class="profile-edit-btn float-right mt-2 mr-2"
-								id="cancelFollow${status.index}" style="height: 40px;">팔로잉</div>
-							<div class="profile-edit-btn float-right mt-2 mr-2"
-								onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
-								id="follow${status.index}"
-								style="height: 40px; background-color: #35e0db; display: none;">팔로우</div>
-						</c:when>
-
-  
-						<c:otherwise>
-							<div class="profile-edit-btn float-right mt-2 mr-2"
-								id="cancelFollow${status.index}"
-								style="height: 40px; display: none;">팔로잉</div>
-							<div class="profile-edit-btn float-right mt-2 mr-2"
-								onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
-								id="follow${status.index}" style="height: 40px; background-color: #35e0db;">팔로우</div>
-						</c:otherwise>
-					</c:choose>
-					 
-					<hr class="_5mToa">
+			<div class="container" style="width:100%">
+				<div class="row mt-2">
+					<c:forEach var="follower" items="${result1}" varStatus="status">
+						<div href="board.bo?id=${follower.id}&cat=1" style="height:300px; background-color:white; border:0.5px solid #ccc;" class="col-md-2 mx-3 mb-3">
+							<div class="text-center mt-4" style="cursor:pointer;" onclick="goprofile(this)">
+								  <img class="" src="AttachedMedia/<c:out value='${profile_pic[follower.id]}'/>" style="border-radius:100%; width:120px; height:120px;">
+							</div>
+						    <h5 class="text-center mt-3">${follower.id}</h5>
+							<div class="text-center mt-5">
+							<c:choose>
+								<c:when test="${sessionScope.loginId == follower.id}">
+								</c:when>
+								<c:when test="${isFollow[status.index]}">
+									<button class="btn btn-outline-secondary" id="cancelFollow${status.index}">팔로잉</button>
+									<button class="btn btn-secondary" onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
+										id="follow${status.index}" style="display:none;">팔로우 <i class="fas fa-plus"></i></button>
+								</c:when>
+		
+		  
+								<c:otherwise>
+									<button class="btn btn-outline-secondary" id="cancelFollow${status.index}" style="display:none;">팔로잉</button>
+									<button class="btn btn-secondary" onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')"
+										id="follow${status.index}">팔로우 <i class="fas fa-plus"></i></button>
+								</c:otherwise>
+							</c:choose> 
+								
+							</div>
+						</div>
+						<script>
+							function goprofile(e){
+								var id = $(e).parent().find("h5").text();
+								$(location).attr("href","board.bo?id="+id+"&cat=1");
+							}
+							
+							$("#cancelFollow${status.index}").click(function() {
+								$("#yes").attr("onclick","unfollow('${sessionScope.loginId}', '${follower.id}', '${status.index}')");
+								$("#exampleModalCenter").modal();
+							});
+						</script>
+					 </c:forEach>
+					 </div>
 				</div>
-				<script>
-					$("#cancelFollow${status.index}").click(function() {
-						$("#yes").attr("onclick","unfollow('${sessionScope.loginId}', '${follower.id}', '${status.index}')");
-						$("#exampleModalCenter").modal();
-					});
-				</script>
-			</c:forEach>
 		</div>
-
+		<hr class="_5mToa">
 	</div>
 
 </div>
@@ -172,9 +175,9 @@ function follow(id1, id2, index) {
 				<h2>정말 팔로우를 취소하시겠습니까?</h2>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal"
+				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
 					id="yes" onclick="">YES</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
 
 			</div>
 		</div>
