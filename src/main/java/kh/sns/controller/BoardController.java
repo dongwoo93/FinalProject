@@ -268,19 +268,23 @@ public class BoardController {
 			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
 			double height = bimg.getHeight();
 			double width = bimg.getWidth();
-			
-			height = 600;
+			System.out.println(height + " : " + width);
 			width = 600 * width / height;
+			height = 600;
+			 
+			System.out.println(height + " : " + width);
 
 			if(width > 700) {
-				width = 700;
 				height = 600 * 700 / height;
+				width = 700;
+				
+				System.out.println(height + " : " + width);
 			}
 			
 			if(maxwidth < width) {
 				maxwidth = width;
 			}
-			
+			 
 		}
 		System.out.println(" : " + maxwidth);  
 		
