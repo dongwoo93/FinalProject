@@ -21,6 +21,7 @@ public class IMessengerDAO implements MessengerDAO{
 
 	@Override
 	public int insertMessage(MessengerDTO dto) throws Exception{
+		System.out.println(dto.getSender()); 
 		String sql = "insert into messenger values(messenger_seq.nextval,?,?,?,default,default) ";
 		return template.update(sql,dto.getSender(),dto.getReceiver(),dto.getMessage());
 	} 

@@ -50,9 +50,7 @@
             } 
         });
 		
-		
-
-      	  
+  
     $.ajax({
       	url : "alerting.top",
       	type : "get",
@@ -62,18 +60,15 @@
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
       			var cont = "님이"+resp[i][3].split("님이")[1];          
-      		     
-      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/"+resp[i][4]+"'></li></ul><div class='dropdown-divider'></div>");
-      		}
-      		  
+      		       
+      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/a'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/a'></li></ul><div class='dropdown-divider'></div>");
+      		}		  
       	 },  
       	 error : function() {
       	 console.log("에러 발생!");
       	 }
       	  });
-        
-        
-      
+
 	})
 </script>
 </head>
