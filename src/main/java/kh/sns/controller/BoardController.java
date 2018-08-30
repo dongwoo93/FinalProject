@@ -608,11 +608,11 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
-		mav.setViewName("search2.jsp");
+		mav.setViewName("NewFile.jsp");
 		return mav;
 	}
 
-	//tour(둘러보기)
+	//tour(둘러보기)  
 	@RequestMapping("/tour.bo")
 	public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 		ModelAndView mav = new ModelAndView();

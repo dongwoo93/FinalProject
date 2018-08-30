@@ -31,7 +31,26 @@
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
 <script src="resources/js/top.js"></script>
 <script>
+
+function myarticle(e) {
+	var id = $(e).attr("value");
+	$(location).attr("href", "board.bo?id="+id+"&cat=1");
+
+}
+
+function btnevent(e) {
+	window.event.cancelBubble = true;
+	alert("헤헿");  
+}
+
+
+
+
+
+
 	$(document).ready(function(){
+		
+		
 		$.ajax({
             url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",
@@ -60,15 +79,14 @@
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
       			var cont = "님이"+resp[i][3].split("님이")[1];          
-      		       
-      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/a'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/a'></li></ul><div class='dropdown-divider'></div>");
-
-      			var myvar = '<h5 class="text-center mt-1" style="background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">???</h5>'+
-      			'							<h5 class="text-center mt-1" onclick="follow(\'${sessionScope.loginId}\', \'${follower.id}\', \'${status.index}\')"'+
-      			'										id="follow${status.index}" style="display:none;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">??? <i class="fas fa-plus"></i></h5>';
-      				
-
-      		}		  
+      		      if(resp[i][0] == '0') {
+      		    	   
+      		    	$("#alertcont:last-child").append("<ul onclick='myarticle(this)' value='"+name+"' class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><button onclick='btnevent(this)'>follow</button></li></ul><div class='dropdown-divider'></div>");
+      	      		
+      		      }else{  
+      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img style='width:30px; height:30px;' src='AttachedMedia/"+resp[i][4]+"'></li></ul><div class='dropdown-divider'></div>");
+      		
+      		      }	}	  
       	 },  
       	 error : function() {
       	 console.log("에러 발생!");
@@ -134,7 +152,7 @@ $(function() {
     })
     .autocomplete("instance")._renderItem = function(div, item) {
     	if(item.category == "People") {
-    		return $("<div class='div0' id='autodiv"+item.index+"'>").append("<div><div id='div1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
+    		return $("<div class='div0' id='autodiv"+item.index+"'>").append("<div><div id='div1'><img  id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>"+item.label+"</span><br><span style='color: gray;'>"+item.name+"</span></div></div></div>").appendTo(div);
     	}else if(item.category == "Tag") {
     		return $("<div class='div0' id='autodiv"+item.index+"'>").append("<div><div id='div1'><img id='searchimg' src='"+item.img+"'><div id='textdiv'><span style='color: black; font-weight: bold; font-size: 16px;'>#"+item.tag+"</span><br><span style='color: gray;'>게시물 "+item.count+"개</span></div></div></div>").appendTo(div);
     	}
