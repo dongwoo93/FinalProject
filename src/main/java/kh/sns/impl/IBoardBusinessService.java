@@ -54,4 +54,9 @@ public class IBoardBusinessService implements BoardBusinessService {
 		return bbdao.updateAnEvaluationResult(bbiz);
 	}
 	
+	@Override
+	public List<BoardBusinessDTO> pickAds(int count) throws Exception {
+		return bbdao.pickAds(count);
+	}
+	
 }
