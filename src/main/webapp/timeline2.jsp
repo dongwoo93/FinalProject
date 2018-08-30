@@ -676,7 +676,7 @@
 											<c:if test="${ -1 * (ad.boardSeq) eq tmp.board_seq }">
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
-														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">Instagram Profile 가기</a>
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
 														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
@@ -1542,7 +1542,7 @@ $(window).scroll(function(){
 	            		divStr += "</p>"
 	            		divStr += "<input type=hidden value='" + boardSeq + ">"
 	            		
-	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" + boardSeq  		
+	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
 	            		
 						for(item in r.commentlist){

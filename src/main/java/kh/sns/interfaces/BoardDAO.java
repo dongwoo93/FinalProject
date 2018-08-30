@@ -51,4 +51,9 @@ public interface BoardDAO {
 	
 	public List<Object[]> alerting(String id) throws Exception;
 	
+	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception;
+	public List<int[]> getLikeSortByRange(int start, int end) throws Exception;
+	public List<String[]> getTagSortByRange(int start, int end) throws Exception;
+	
+	
 }
