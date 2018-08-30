@@ -310,7 +310,7 @@ function getCaretPosition(editableDiv) {
 						<div class="profile-image">
 							<img class="ml-3 mr-2 pic"
 								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
-							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
+							
 							<br> 
 							<c:choose>
 								<c:when test="${tmp.thisArticleForAd eq 1}">
@@ -327,36 +327,7 @@ function getCaretPosition(editableDiv) {
 							
 						</div>
 						<div class="mt-2" id="boardimg">
-							<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>
-
-
-							<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
-
-							<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
-							<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
-
-							<script>      
-										
-// 										var height= $("#feedimg${status.index}a${status3.index}").height()
-										
-// 										var maxheight = $("#maxheight${status.index}").val();
-										
-										
-// 										if(parseInt(maxheight) < height){
-											
-// 										$("#maxheight${status.index}").val(height);
-  
-// 										var realmax= $("#maxheight${status.index}").val();   
-										 
-										
-// 										}     
-										
-// 										var realmax= $("#maxheight${status.index}").val(); 
-// 										$("#myCarousel${status.index}").attr("style"," height:"+realmax+"px;");  
-										
-										</script>
-							<%-- 									</c:forEach> --%>
-
+							
 
 
 							<div id="myCarousel${status.index}" class="carousel slide"
@@ -369,8 +340,9 @@ function getCaretPosition(editableDiv) {
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-								<div id="carousel-inner" class="carousel-inner">
+								</ul>  
+								<div id="carousel-inner" class="carousel-inner" 
+								style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
 									<div id="firstItem" class="carousel-item active">
 										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -601,6 +573,98 @@ function getCaretPosition(editableDiv) {
 
 
 							</div>
+
+
+
+<script>
+
+$('#comment${tmp.board_seq}').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+       var text = $("#comment${tmp.board_seq}").text();
+       if(text == ""){
+          alert("댓글을 입력해주세요");
+       }
+       else {  
+           $.ajax({ 
+                  type: "POST",  
+                  url: "comment.co",    
+                  data: {board_seq:${tmp.board_seq}, comment_contents : text},
+                  success : function(seq) {  
+                	  
+                	  $('#comment${tmp.board_seq}').html("");
+                  /*  $("#comment${tmp.board_seq}").val("");   */  
+                  var regex = /(#[^#\s,;<>.]+)/gi;            
+               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+                var newtxt = "<span class=fugue>" + text.replace(
+  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+										"</a><span class=fugue>") + "</span>";
+					newtxt += "<kz></kz>";
+            	
+                
+                    $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+                   $("#ul"+seq).hide().fadeIn(500);  
+                
+                     ws.send("comment:${tmp.id}");  
+                   $("#commenttxt" + seq).keyup(function(e){
+                	   // =================== 복붙 =================== 
+                	   if(e.keyCode === 32){
+                		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+                           } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+                           } else {
+                               return;
+                           }
+
+                           var regex = /(#[^#\s,;<>. ]+)/gi;
+                           if (regex) {
+                               var newtxt = "<span class=fugue>" + $(this).text()
+                                   .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                       "</span><span class=fugue>") + "</span>"
+
+                               // console.log($('#editorDiv').text().length);   
+                               // console.log(newtxt)   
+                               newtxt += "<kz></kz>"
+                               $(this).html(newtxt)
+                               var el = this;
+                               console.log("childNodes: " + el.childNodes.length);
+                               var range = document.createRange();
+                               var sel = window.getSelection();
+                               range.setStart(el.lastChild, 0);
+                               range.collapse(false);
+                               sel.removeAllRanges();
+                               sel.addRange(range);
+
+                               $(this).focusout();
+                               $(this).focus();
+                               if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+                               }
+
+                           }
+                	   } 
+                	   
+                	   
+                	// =================== 복붙 =================== 
+                   });
+                   
+              
+				  }
+             }); //ajax 
+           }    
+        }  
+    });   
+</script>
+
+
+
+
+
+
+
+
+
+
 
 <!-- 여기다 그 스크립트 -->
 						</div>

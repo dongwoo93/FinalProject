@@ -618,7 +618,7 @@ $(document).ready(function(){
                               data: {seq:seq},
                               success: function(data)         
                               {      
-									alert(data[5]);  
+									  
                             	  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
                             	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
                            	   if(data[1].length == 1) {
@@ -738,15 +738,8 @@ $(document).ready(function(){
                                   }else {
                                 	  $("#mark").attr("style", false);
                                   } 
-                                       
-                                  var width = data[5]+300;  
-                                  var width1 = parseInt(data[5]);
-//                                   alert(width + " : " + width1)
-                                  $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
-                                 $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
-                                      
-                                 
-                                 $(".modalslide").attr("style", " height:590px;");               
+                    
+                                
                                  }    
                             }); 
                            

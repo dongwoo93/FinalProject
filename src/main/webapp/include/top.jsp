@@ -49,18 +49,12 @@ function btnevent(){
 	   }else{
 	   event.cancelBubble = true; 
 	   }
-	      
+	        
 	}
  
 
 	$(document).ready(function(){
 		
-
-		
-		 $("button").click(function(event){
-		        event.stopPropagation();
-		        alert("옭");
-		    });
 		$.ajax({
             url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",
@@ -85,7 +79,7 @@ function btnevent(){
       	type : "get",
       	         
       	success : function(resp) {        
-      	    
+      	
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
       			var cont = "님이"+resp[i][3].split("님이")[1];                     

@@ -155,25 +155,25 @@ public class BoardController {
 			}
 			
 			
-		//	String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");    
+	 
+  
+			for(List<Board_MediaDTO> mlist : media) { 
+				double max = 0;
+				for(Board_MediaDTO dto : mlist) { 
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+					double height = bimg.getHeight();
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+					System.out.println("height : " + height);
+					if(max<height) { 
+						max = height;
+					}
 
-
-//			for(List<Board_MediaDTO> mlist : media) { 
-//				double max = 0;
-//				for(Board_MediaDTO dto : mlist) {
-//					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//					double height = bimg.getHeight();
-//					double width = bimg.getWidth();
-//					height = 600*height/width;   
-//					System.out.println("height : " + height);
-//					if(max<height) { 
-//						max = height;
-//					}
-//
-//				}
-//				maxImgHeight.add((int)max);   
-//				System.out.println("max:" + max);     
-//			}
+				}
+				maxImgHeight.add((int)max);   
+				System.out.println("max:" + max);     
+			}
 
 
 			list1 = board_commentService.getFeedComment(id);
