@@ -574,10 +574,20 @@
 							<img class="ml-3 mr-2 pic"
 								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
 							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-							<br> <a class="mt-1 idtxt" id="id"
-								href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South
-								Korea
-							</a>
+							<br> 
+							<c:choose>
+								<c:when test="${tmp.thisArticleForAd eq 1}">
+									<a class="mt-1 idtxt" id="id"
+										href="board.bo?id=${tmp.id}&cat=1">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a class="mt-1 idtxt" id="id"
+										href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South Korea
+									</a>
+								</c:otherwise>
+							</c:choose>
+							
 						</div>
 						<div class="mt-2" id="boardimg">
 							<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>
@@ -613,8 +623,8 @@
 
 
 							<div id="myCarousel${status.index}" class="carousel slide"
-								data-ride="carousel" data-interval="false">
-								<ul id="carousel-indicators" class="carousel-indicators">
+								data-ride="carousel" data-interval="false" style="z-index: 5;">
+								<ul id="carousel-indicators" class="carousel-indicators" >
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
 									<c:forEach begin="1" var="media"
@@ -649,7 +659,31 @@
 								</a>
 							</div>
 
-						</div>
+						</div>						
+
+						<c:if test="${ tmp.thisArticleForAd eq 1 }">
+							<div class=row style="z-index: 199; position: relative;">
+								<div class=col-12>
+									<div class="btn btn-secondary btn-lg btn-block">
+										<c:forEach var="ad" items="${ adList }">
+											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
+												<c:choose>
+													<c:when test="${ ad.moreInfoWebsite eq null }">
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">Instagram Profile 가기</a>
+													</c:when>
+													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
+														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
+													</c:when>
+													<c:otherwise>
+														<a href="${ ad.moreInfoWebsite }" class="text-light">더 알아보기</a>
+													</c:otherwise>
+												</c:choose>
+											</c:if> 
+										</c:forEach>
+									</div>
+								</div>
+							</div>
+						</c:if>
 
 
 						<div id="cont">
@@ -706,8 +740,6 @@
 									</a>
 								</div>
 							</nav>
-
-
 
 							<div id="contcenter" class="mt-2 mx-3 pb-2">
 								<!-- 글내용자리 -->

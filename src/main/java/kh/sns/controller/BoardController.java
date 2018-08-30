@@ -38,9 +38,11 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
+import kh.sns.interfaces.BoardBusinessService;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -65,6 +67,7 @@ public class BoardController {
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
 	@Autowired	private Member_CalendarService calService;
+	@Autowired	private BoardBusinessService bbs;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
 
@@ -86,7 +89,10 @@ public class BoardController {
 		List<FollowInfo> follow_list = new ArrayList<>();
 
 		List<Integer> maxImgHeight = new ArrayList<>();
-
+		
+		List<BoardBusinessDTO> adList = new ArrayList<>();
+		List<BoardDTO> adFeedList = new ArrayList<>();
+		List<String> membersNick = new ArrayList<>();
 
 		try {
 			follow_list = member_followService.toFeed(id);
@@ -98,6 +104,50 @@ public class BoardController {
 		try {
 			/*list = boardService.getFeed(id);*/
 			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
+			int pickAdsCount = NAV_COUNT_PER_PAGE / 5;
+			if(list.size() < 5) {
+				adList = bbs.pickAds(1);
+			} else if (list.size() < 10) {
+				adList = bbs.pickAds(2);
+			} else {
+				adList = bbs.pickAds(pickAdsCount);
+			}
+			
+			
+			// ================== 임시 ================== 
+			adList.forEach(System.out::println);
+			
+			int[] ads = new int[adList.size()];
+			for(int i = 0; i < ads.length; i++) {
+				ads[i] = adList.get(i).getBoardSeq();
+			}
+			
+			adFeedList = boardService.getFeedForAd(ads);
+			
+			int x = (NAV_COUNT_PER_PAGE / 3) - 1;
+			for(BoardDTO b : adFeedList) {
+				b.setThisArticleForAd(1);
+
+				try {
+					list.add(x, b);
+				} catch(IndexOutOfBoundsException e) {
+					list.add(list.size(), b);
+				}
+
+				x += (x + 1);
+			}
+								
+			adFeedList.forEach(System.out::println);
+			list.forEach(System.out::println);
+			
+			membersNick = new ArrayList<>();
+			for(BoardDTO b : list) {
+				membersNick.add(memService.getOneMember(b.getId()).getNickname());
+			}
+			membersNick.forEach(System.out::println);
+			// ========================================
+			
+			
 			for(int i = 0; i < list.size(); i++) {
 				media.add(boardService.search2(list.get(i).getBoard_seq()));
 			} 
@@ -170,6 +220,12 @@ public class BoardController {
 		mav.addObject("result3", follow_list);
 		mav.addObject("follow_size", follow_list.size()/5);
 		mav.addObject("NAV_COUNT_PER_PAGE", NAV_COUNT_PER_PAGE);
+		
+		// 광고 관련 
+		mav.addObject("adList", adList);
+		mav.addObject("membersNick", membersNick);
+		
+		
 		System.out.println(follow_list.size()/5); 
 
 		mav.addObject("maxImgHeight",maxImgHeight);

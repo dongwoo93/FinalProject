@@ -36,8 +36,13 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDTO> getFeed(String id, int start, int end) {
+	public List<BoardDTO> getFeed(String id, int start, int end) throws Exception{
 		return dao.getFeed(id, start, end);
+	}
+	
+	@Override
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception {
+		return dao.getFeedForAd(picks);
 	}
 	
 	@Override

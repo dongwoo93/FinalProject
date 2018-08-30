@@ -2,6 +2,7 @@ package kh.sns.interfaces;
 
 import java.util.List;
 
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 
@@ -11,7 +12,9 @@ import kh.sns.dto.Profile_ImageDTO;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
-	public List<BoardDTO> getFeed(String id, int start, int end);	// 범위로 읽어들이기
+	public List<BoardDTO> getFeed(String id, int start, int end) throws Exception;	// 범위로 읽어들이기
+	
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception;
 	
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
@@ -43,5 +46,6 @@ public interface BoardDAO {
 	public List<int[]> myBookmark(String id) throws Exception;
 	
 	//my_article_Tags
-	List<int[]> myTag(String id) throws Exception;
+	List<int[]> myTag(String id) throws Exception;	
+	
 }
