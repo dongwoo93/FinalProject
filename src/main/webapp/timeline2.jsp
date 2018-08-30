@@ -709,7 +709,8 @@
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
-									<a class="navbar-brand"> <c:choose>
+									<a class="navbar-brand"> 
+									<c:choose>    
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
@@ -729,7 +730,8 @@
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
-										</c:choose> <i class="far fa-comment icon"></i>
+										</c:choose>  
+										 <i class="far fa-comment icon"></i>
 									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
 											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
 

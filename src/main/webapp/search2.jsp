@@ -3,12 +3,126 @@
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/search.css">
 
+<script>
+/* 좋아요 Script */
+function likeit(e) {
+   var board_seq = $(e).attr("value");
+   $.ajax({
+      url : "like.bo",
+      type : "get",
+      data : {
+         board_seq : board_seq,
+         id : "${sessionScope.loginId}",
+         is_liked : "y"
+      },
+      success : function(resp) {
+         console.log("들어왔니" +resp);
+         $(e).next().show();
+         $(e).hide(); 
+         /* 좋아요 카운트 */
+         if(resp != 0) {
+            $("#count"+board_seq).text(resp + "명이 좋아합니다");
+         }else {
+            $("#count"+board_seq).text("");
+         }
+         
+      },  
+      error : function() {
+         console.log("에러 발생!");
+         }
+      })
+}
 
-<div id="allwrapper">
-	<div id="centerwrapper">
-		<div class="container" id="contents">
+function unlikeit(e) {
+   var board_seq = $(e).attr("value");
+   $.ajax({
+      url : "like.bo",
+      type : "get",
+      data : {
+         board_seq : board_seq,
+         id : "${sessionScope.loginId}",
+         is_liked : "n"
+      },
+      success : function(resp) {
+         console.log(resp);  
+         $(e).prev().show();
+         $(e).hide(); 
+         /* 좋아요 카운트 */
+         if(resp != 0) {
+            $("#count"+board_seq).text(resp + "명이 좋아합니다");
+         }else {
+            $("#count"+board_seq).text("");
+         }
+         
+      },
+      error : function() {
+         console.log("에러 발생!");
+         }
+      })
+}
+/* 북마크 Script */
+function markit(e) {
+       var board_seq = $(e).attr("value");
+       $.ajax({
+          url : "bookmark.bo",
+          type : "get",
+          data : {
+             board_seq : board_seq,
+             id : "${sessionScope.loginId}",
+             is_marked : "y"
+          },
+          success : function(resp) {
+             $(e).next().show();
+             $(e).hide();
+          },
+          error : function() {
+             console.log("에러 발생!");
+             }
+          })
+    }
 
-<c:choose>
+function unmarkit(e) {
+       var board_seq = $(e).attr("value");
+       $.ajax({
+          url : "bookmark.bo",
+          type : "get",
+          data : {
+             board_seq : board_seq,
+             id : "${sessionScope.loginId}",
+             is_marked : "n"
+          },
+          success : function(resp) {
+             $(e).prev().show();
+             $(e).hide();   
+          },
+          error : function() {
+             console.log("에러 발생!");
+             }
+          })
+    }
+
+</script>
+
+
+
+
+		<div class="container">
+		
+		
+			
+		<table class="table">  
+									<thead>
+										<tr>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="search.bo?search=${search}" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">바둑판</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="search1.bo?search=${search}" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">피드</a></th> 
+										</tr>
+									</thead>
+								</table>
+		
+
+<c:choose> 
 <c:when test="${result.size() <0}">
 	<h1>검색 결과가 없습니다.</h1>
 </c:when>
@@ -237,9 +351,7 @@
 
 </c:otherwise>
 </c:choose> 
-</div> <!-- container -->
-</div>  <!-- centerwrapperr -->
-</div> <!-- allwrapper -->
+</div> <!-- container -->  
 
 
 
