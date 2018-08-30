@@ -49,7 +49,6 @@ function deleteEvent() {
 }
 
   $(document).ready(function() {
-	  
 	  $('#submitButton').on('click', function(e){
 		  var content = $('#eventName').val();
 		  if(content == "") {
@@ -318,6 +317,7 @@ function deleteEvent() {
 	color: white;
 	font-size: 2rem;
 	margin-right: 20px;
+	display:inline-block;
 }
 
 .calicon:hover {
@@ -338,6 +338,7 @@ function deleteEvent() {
     left: 50%;
     margin-left: -150px;
 }
+
 </style>
 </head>
 <body>
@@ -387,8 +388,9 @@ function deleteEvent() {
 				<div id="calHeader" class="modal-header">
 					<h4 id="calTitle" class="modal-title"></h4>
 					<div>
-						<i class="fas fa-pencil-alt calicon"></i> <i
-							onclick="deleteEvent()" class="far fa-trash-alt calicon"></i>
+					<i class="fas fa-pencil-alt calicon" title="수정"></i>
+						<i onclick="deleteEvent()" class="far fa-trash-alt calicon" title="삭제"></i>
+						
 						<button type="button" id="closeCal" class="close"
 							data-dismiss="modal">&times;</button>
 					</div>
