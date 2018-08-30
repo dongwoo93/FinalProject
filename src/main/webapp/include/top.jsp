@@ -156,14 +156,14 @@ $(function() {
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
-                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색어를 입력하세요">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="친구의이름과 #'키워드' 를검색하세요">
                 </form>
               </div>
-              <div id="nav-icons">
+              <div id="nav-icons"> 
                 <ul class="navbar-nav">
                 
                  <li class="nav-item">
-                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"></i><span id="totalreadcount" style='display:none;'></span></a>
+                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"><span id="totalreadcount" style='display:none;'></span></i></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
