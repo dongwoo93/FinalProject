@@ -44,4 +44,8 @@ public interface BoardDAO {
 	
 	//my_article_Tags
 	List<int[]> myTag(String id) throws Exception;
+	
+	
+	public List<Object[]> alerting(String id) throws Exception;
+	
 }
