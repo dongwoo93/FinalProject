@@ -47,4 +47,7 @@ public interface BoardService {
 	
 	//my_article_Tags
 	public List<int[]> myTags(String id) throws Exception;
+	
+	//alert
+	public List<Object[]> alerting(String id) throws Exception;
 }
