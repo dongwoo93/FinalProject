@@ -1327,13 +1327,246 @@ $(function(){
 	  });   
 });
 
+var globalStartNum = 16;
+
 $(window).scroll(function(){
 	// 486 ~ 851
 	if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
 		// 내용
 		/* http://wjheo.tistory.com/entry/Spring-%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%AC%B4%ED%95%9C%EC%8A%A4%ED%81%AC%EB%A1%A4 */
-		console.log('무한스크롤');
-		$('#board').append('<div>ssssssssssssss</div>');	
+		console.log('xxxxxx');
+		$.ajax({
+            url: "feedForJson.ajax", // 처리할 페이지(서블릿) 주소
+            type: "get",
+            data: {start: globalStartNum},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+            success: function(r) {
+            	
+        		/* 123456
+        		 * 	list, media, maplike, mapmark, commentlist, getAllProfilePic, 
+        		 *  follow_list, follow_list.size_div_five, nextStartNum, maxImgHeight
+        		 *  isAvailableMoreData
+        		 *	Array: list, media, maxImgHeight
+        		 *	Object(map): maplike, mapmark, commentlist, getAllProfilePic,
+        		 *	Primitive: 7, 8, 10
+        		 */
+        		console.log(r);
+           		if(r.isAvailableMoreData){	// 가져올 게시글이 더 있나요?  
+           			/* $('#board').append(true); 			            		
+            		for(i in response.list){
+            			for(item in response.list[i]){
+            				$('#board').append(response.list[i][item]); 
+            			}
+            			$('#board').append("<br>");
+            			for(j in response.media){
+            				for(k in response.media[j]){
+            					for(l in response.media[j][k]){
+            						$('#board').append(response.media[j][k][l]);
+            					}
+            						
+            				}
+            			}
+            			$('#board').append("<br>");
+            			$('#board').append("<hr>");
+            		}  */
+            		
+            		copyStartOfNum = globalStartNum
+            		var kn = 0;
+            		for(i in r.list){
+            			var id = r.list[i].id
+            			var boardSeq = r.list[i].board_seq;
+            			console.log(id)            			
+            			
+	            		var divStr = "<div class='py-2 my-5' data-aos='fade-up' data-aos-once='true' id='feed'>" 
+	            		+ "<div class='profile-image'>"
+	            		+ "<img class='ml-3 mr-2 pic' src='AttachedMedia/" + r.getAllProfilePic[id] + "'>"
+	            		+ "<br> <a class='mt-1 idtxt' id='id'	href='board.bo?id=" + id + "&cat=1'>" + id + "<br>Dangsan.South Korea</a>"
+	            		+ "</div>"	// 프로필 이미지 div 끝
+	            				
+	            		+	"<div class='mt-2' id='boardimg'>"
+	            		+		"<div id='myCarousel" + copyStartOfNum + "' class='carousel slide' data-ride='carousel' data-interval='false'>"
+	            		+			"<ul id='carousel-indicators' class='carousel-indicators'>"
+	            		+				"<li id='firstli' data-target='#myCarousel" + copyStartOfNum + "' data-slide-to='0' class='active'></li>"
+	            		
+	            		for(ix = 1; ix < r.media[kn].length; ix++){
+	            			divStr += "<li data-target='#myCarousel" + copyStartOfNum + "' data-slide-to='" + ix + "'></li>"
+	            		}
+	            		divStr += "</ul>"
+	            			            		
+	            		
+	            		divStr += "<div id='carousel-inner' class='carousel-inner'>"
+					            		+ "<div id='firstItem' class='carousel-item active'>"
+					            				+ "<img class='boardimg' width='100%' src='AttachedMedia/" + r.media[kn][0].system_file_name + "' alt=''>"
+			            				+ "</div>"	// firstItem의 끝
+	            		
+	            		for(ix = 1; ix < r.media[kn].length; ix++ ){
+	            			divStr += "<div class='carousel-item'>"
+	            			+ "<img class='boardimg' width='100%' src='AttachedMedia/" + r.media[kn][ix].system_file_name + "' alt=''>"
+	            			+ "</div>"
+	            		}
+			            				
+			           	divStr += "</div>"	// divInner의 끝
+	            		
+	            		if(r.media[kn].length > 1){
+	            			divStr += "<a id='carousel-prev" + copyStartOfNum + "' class='carousel-control-prev' href='#myCarousel" + copyStartOfNum + "' data-slide='prev'> <span class='carousel-control-prev-icon'></span></a>" 
+				           	divStr += "<a id='carousel-next" + copyStartOfNum + "' class='carousel-control-next' href='#myCarousel" + copyStartOfNum + "' data-slide='next'> <span class='carousel-control-next-icon'></span></a>"
+	            		}
+			           	
+                        
+                        divStr += "</div>"	// myCarousel div 의 끝
+	            		
+	            		divStr += "</div>"	// boardImg의 끝
+	            		
+	            		divStr += "<div id='cont'>"
+	            		+ "<nav class='navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1'>"
+	            		+ "<div class='container'>"
+	            		+ "<a class='navbar-brand'>"
+						
+	            		/* console.log(r.maplike)
+	            		console.log(boardSeq + ": " + r.maplike.hasOwnProperty(boardSeq)) */
+	            		if(r.maplike.hasOwnProperty(boardSeq)){
+	            			divStr += "<i value='" + boardSeq + "' style='display: none;' id='likeit' class='far fa-heart icon mr-1 pointer' onclick='likeit(this)'></i>" 
+	            			+ "<i value='" + boardSeq + "' style='font-weight: bold; color: red;' id='likecancel' class='far fa-heart icon mr-1 pointer' onclick='unlikeit(this)'></i>"
+	            		} else {
+	            			divStr += "  <i value='" + boardSeq + "' id='likeit' class='far fa-heart icon mr-1 pointer' onclick='likeit(this)'></i>"
+	                            	+ "<i value='" + boardSeq + "' style='font-weight: bold; color: red; display: none;' id='likecancel' class='far fa-heart icon mr-1 pointer' onclick='unlikeit(this)'></i>"
+	            		}
+	            		divStr += "<i class='far fa-comment icon'></i> "
+	            		divStr += "</a>"
+	            		
+	            		divStr += "<a class='btn navbar-btn ml-2 text-white '>"
+	            		
+	            		if(r.mapmark.hasOwnProperty(boardSeq)){
+	            			divStr +=  "<i value='" + boardSeq + "' id='mark' class='far fa-bookmark icon pointer' style='display: none;' onclick='markit(this)'></i>"
+	            			+ "<i value='" + boardSeq + "' style='font-weight: bold; color: #00B8D4;' id='markcancel' class='far fa-bookmark icon pointer' onclick='unmarkit(this)'></i>"
+	            		} else {
+	            			divStr += "<i value='" + boardSeq + "' id='mark' class='far fa-bookmark icon pointer' onclick='markit(this)'></i>"
+	                            	+ "<i value='" + boardSeq + "' style='font-weight: bold; color: #00B8D4; display: none;' id='markcancel' class='far fa-bookmark icon pointer' onclick='unmarkit(this)'></i>"
+	            		}
+	            		
+	            		divStr += "</a>"
+	            		
+	            		divStr += "</div>"	// container div의 끝
+	            		+ "</nav>"
+	            		
+	            		divStr += "<div id='contcenter' class='mt-2 mx-3 pb-2'>"
+	            		+ "<div class='navbar-nav'>"
+	            		+ "<a class='ml-1 idtxt' id='con${tmp.board_seq}' href='board.bo?id=${tmp.id}&cat=1' style='font-size: 14px;'>" + id + "</a>"
+	            		
+	            		var regex = /(#[^#\s,;<>.]+)/gi;
+	            		var txt = r.list[i].contents
+	            		if(txt != null){
+	            			var newContent = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + '$1' + '</a>');
+	            			divStr += "<div class='pl-3' id='" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + newContent + "</div>"
+	            		} else {
+	            			divStr += "<div class='pl-3' id='" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + "null" + "</div>"
+	            		}
+	            		
+	            		
+	            		function tag(e) {
+	                        var search = $(e).html().split('#')[1];
+	                        $(location).attr('href', 'search.bo?search=' + search);
+
+	                    }
+	            		
+	            		divStr += "</div>"	// navbar-nav div의 끝
+	            		divStr += "<p class='text-info pointer pt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
+	            		
+	            		divStr += "</p>"
+	            		divStr += "<input type=hidden value='" + boardSeq + ">"
+	            		
+	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>"  		
+	            		
+	            		
+						for(item in r.commentlist){
+							if(item == boardSeq) {	
+								
+								//  보완 test='${commenttmp.value.size() > 2 }'
+								if(r.commentlist[item].length > 2){
+									// pure script
+									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+										var num = 0;
+									/* $(document).ready(function(){
+										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+										var num = 0;
+									}) */
+									
+								}
+								
+								for(elem in r.commentlist[item]){
+									console.log(r.commentlist[item][elem])
+									var commentSeq = r.commentlist[item][elem].comment_seq;
+									var commentId = r.commentlist[item][elem].id;
+									var commentContent = r.commentlist[item][elem].comment_contents;
+									console.log("comc: " + commentContent)
+																		// display: none
+									divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									divStr += "<li id='li1'><a href='board.bo?id=" + commentId + "&cat=1'>" + commentId + "</a></li>"
+									divStr += "<li id='li2'>"
+									var newComment = '<span class=fugue>' 
+										+ commentContent.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + '$1' + '</a><span class=fugue>');
+									newComment += '<kz></kz>';
+									divStr += "<div id='commenttxt" + commentSeq + "' class='commenttxt txt" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + newComment + "</div>"
+									divStr += "</li>"
+									divStr += "<li id='li3'><a id='commentdel" + commentSeq + "' value='" + boardSeq + ":" + commentSeq + "' onclick='delComment(this)' class='pointer'></a></li>"
+									divStr += "<li id='li4'><a id='commentmod" + commentSeq + "' value='" + commentSeq + "' onclick='modComment(this)' class='pointer'></a></li>"
+                                    
+									divStr += "</ul>"
+									+ "<input type=hidden id='modstate${comment.comment_seq}' value='1'>"
+									
+									// pure script
+									/* $('#ul' + r.commentlist[item][0].comment_seq).attr('style', false);
+                                    $('#ul' + r.commentlist[item][1].comment_seq).attr('style', false); */
+                                    
+                                    
+								}
+									
+							}
+						}
+	            		divStr += "</div>"	// comment-content div의 끝
+	                        + "<p class='text-info pointer pt-3 pl-1' id='commenthide" + boardSeq + "' onclick='commenthide(this)'></p>"
+	                        + "<input type=hidden value='" + boardSeq + "'>"
+	                        
+	            		divStr += "</div>"	// div contcenter의 끝
+	            		
+	            		divStr += "<div class='crecodiv pl-2 py-2 navbar-nav'>"
+		            		divStr += "<div contenteditable=true class='creco ml-2 insertfield' id='comment" + boardSeq + "'>"
+		            		divStr += "<span class=text-muted>댓글 달기...</span>"
+		            		divStr += "</div>"
+		            		
+		            		divStr += "<div class='btn-group bg-white'>"
+		            		divStr += "<i id='modalBoardBtn" + boardSeq + "' value='" + boardSeq + ":" + id + "' onclick='modal(this)' class='fas fa-ellipsis-h btn mr-1' data-toggle='modal'> </i>"
+		            		divStr += "</div>"
+		            	divStr += "</div>"	// crecodiv pl-2 py-2 navbar-nav div의 끝
+		            	
+		            	
+	            		
+
+	            		
+	            		divStr += "</div>" // div cont의 끝
+	            		divStr += "</div>"	// feed의 끝 (전체 끝)
+	            		
+	            		
+	            		copyStartOfNum++;
+	            		kn++;
+	            		$('#board').append(divStr);
+            		}          		
+            		
+            		globalStartNum = parseInt(r.nextStartNum);
+            		return true;
+            	} else {
+            		console.log(false);
+            		return false;
+            	} 
+
+            },
+            error: function() {
+                console.log("에러 발생");
+            },
+            complete: function(){
+            }
+        });
+
+		
 	}
 });
 </script>
