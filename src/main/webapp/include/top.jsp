@@ -62,6 +62,12 @@
       			var cont = "님이"+resp[i][3].split("님이")[1];          
       		       
       			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/a'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/a'></li></ul><div class='dropdown-divider'></div>");
+
+      			var myvar = '<h5 class="text-center mt-1" style="background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">???</h5>'+
+      			'							<h5 class="text-center mt-1" onclick="follow(\'${sessionScope.loginId}\', \'${follower.id}\', \'${status.index}\')"'+
+      			'										id="follow${status.index}" style="display:none;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">??? <i class="fas fa-plus"></i></h5>';
+      				
+
       		}		  
       	 },  
       	 error : function() {

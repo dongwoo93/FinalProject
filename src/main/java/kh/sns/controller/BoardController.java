@@ -27,7 +27,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -38,7 +40,6 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
-import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
@@ -1098,8 +1099,11 @@ public class BoardController {
 		String sessionid = (String) seesion.getAttribute("loginId");
 		   resp.setCharacterEncoding("UTF-8");
 		   resp.setContentType("application/json");
+		   List<FollowInfo> follow_list = new ArrayList<>();
+		   JsonArray jsonArr = new JsonArray();
 		
 		 try {
+			 follow_list = member_followService.followList(sessionid);
 			List<Object[]> result = boardService.alerting(sessionid);
 			
 			for(Object[] tmp : result) {
@@ -1123,10 +1127,7 @@ public class BoardController {
 				System.out.print(tmp[1] + " : ");
 				System.out.print(tmp[2] + " :" );
 				System.out.print(tmp[3]+ " : "); 
-				System.out.println(tmp[4]+ " : "); 
-				
-				
-				
+				System.out.println(tmp[4]+ " : ");
 			}
 			new Gson().toJson(result,resp.getWriter());
 			
