@@ -9,21 +9,52 @@
 <script>
 
 
-	
-	
-	
-	
-	$(document).ready(function(){
-		$('.chatbox').hide();
-		
-		$("#allwrapper").click(function(){
-			closeDm();
-		});
-	});
-  
-    AOS.init();
-    
-	function getCaretPosition(editableDiv) {
+function likeit(e) {   
+	 var board_seq = $(e).attr("value");
+	    
+   $.ajax({  
+      url : "like.bo",
+      type : "get",
+      data : {
+         board_seq : board_seq,
+         id : currentId,
+         is_liked : "y"
+      },
+      success : function(resp) {  
+    	  ws.send("like:"+resp); 
+         $(e).next().show();
+         $(e).hide();
+      },
+      error : function() {
+         console.log("에러 발생!");
+         }
+      })
+}   
+
+function unlikeit(e) {    
+   var board_seq = $(e).attr("value");
+   $.ajax({
+      url : "like.bo",
+      type : "get",
+      data : {
+         board_seq : board_seq,
+         id : currentId,
+         is_liked : "n"
+      },
+      success : function(resp) {
+         $(e).prev().show();
+         $(e).hide();
+         
+      },
+      error : function() {
+         console.log("에러 발생!");
+         }
+      })
+}
+
+/////////// like & unlike + real time alert
+
+function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
 	        sel, range;
 	    if (window.getSelection) {
@@ -98,219 +129,7 @@
 	        textRange.select();
 	    }
 	}
-    
-    
-    function likeit(e,id) {
-       var board_seq = $(e).attr("value");
-     	var aid = id;        
-       $.ajax({  
-          url : "like.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_liked : "y"
-          },
-          success : function(resp) { 
-        	  ws.send("l:"+aid);
-             $(e).next().show();
-             $(e).hide();
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
 
-    function unlikeit(e) {
-       var board_seq = $(e).attr("value");
-       $.ajax({
-          url : "like.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_liked : "n"
-          },
-          success : function(resp) {
-             $(e).prev().show();
-             $(e).hide();
-             
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-    function markit(e) {
-       var board_seq = $(e).attr("value");
-       $.ajax({
-          url : "bookmark.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_marked : "y"
-          },
-          success : function(resp) {
-        	  
-             $(e).next().show();
-             $(e).hide();
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-
-    function unmarkit(e) {
-       var board_seq = $(e).attr("value");
-       $.ajax({
-          url : "bookmark.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_marked : "n"
-          },
-          success : function(resp) {
-             $(e).prev().show();
-             $(e).hide();
-             
-             
-             
-             
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-    
-    function commentover(e) { 
-    	
-	var seq = $(e).attr("value"); 
-    var sessionid = $("#sessionid").val();
-	var boardid = $("#boardid").val(); 
-	var modstate = $("#modstate"+seq).val();    
-	
-		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
-		
-		if(sessionid == boardid) {       
-		$("#commentdel"+seq).html("삭제"); 
-		
-		if(modstate == "1") {
-			$("#commentmod"+seq).html("수정");
-		} 
-		else if(modstate =="2") {  
-			$("#commentmod"+seq).html("완료");
-		}
-		
-		}  
-	
-    }
-    
-    function commentleave(e) {
-    	var seq = $(e).attr("value"); 
-		 
-		$("#ul"+seq).attr("style",false);            
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all"); 
-		$("#commentdel"+seq).html("");   
-		$("#commentmod"+seq).html("");
-  
-    }
-    
-    function delComment(e) {
-			var board_seq = $(e).attr("value").split(":")[0]; 
-			var comment_seq = $(e).attr("value").split(":")[1];
-        	$.ajax({
-                  type: "POST",  
-                  url: "commentdel.co",      
-                  data: {board_seq:board_seq,comment_seq:comment_seq},
-                  success : function(cnt) {
-                	console.log(cnt);    
-                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
-                   if(cnt>2){ 
-                       $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
-                       else {
-                    	   $("#myComment"+board_seq).html("");  
-                       }
-                  }
-                    
-             }) //ajax 
-    }
-
-    function modComment(e) { 
-      	 var comment_seq;
-      	 if($(e).attr("value") != null){
-      		comment_seq = $(e).attr("value"); 
-      	 } else {
-      		 comment_seq = $(e).attr("id").replace("commenttxt", "");
-      	 }
-      	 
-      	 var modstate = $("#modstate"+comment_seq).val();   
-		
-		
-		if(modstate == "1") {	// 수정중
-			$("#commentmod"+comment_seq).html("완료");
-			 $("#commenttxt"+comment_seq).attr("contentEditable",true);	
-			 
-          	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
-          	 $("#commenttxt"+comment_seq).focus();  
-          	 
-          	 placeCaretAtEnd( document.getElementById("commenttxt"+comment_seq) );
-			 
-          	
-          	 $("#modstate"+comment_seq).val("2");    
-
-		}
-		else if(modstate=="2") {	// 수정 완료하고 싶을 때
-			$("#commentmod"+comment_seq).html("수정");   
-			 var txt = $("#commenttxt"+comment_seq).text();
-  			 if(txt == ""){
-                 alert("댓글을 입력해주세요");
-              }
-              else {  
-            	$.ajax({    
-                      type: "POST",    
-                      url: "commentmod.co",    
-                      data: {board_seq : board_seq, comment_seq:comment_seq, comment_contents:txt},   
-                      success : function() {
-                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
-		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
-		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-		                   $("#modstate"+comment_seq).val("1");   
-		                   $("#ul"+comment_seq).hide().fadeIn(500);  
-		                   
-                      }  
-                 }); //ajax 
-                 }
-			
-		}
-      
-    }
-    
-    
-    function goBoard(){
-    	var board_seq = $("#modalseq").val();
-    	
-    	$(location).attr('href','oneBoard.do?board_seq='+board_seq);
-    }
-    	
-    function commentdisplay(e) {   
-    	var board_seq = $(e).next().val(); 
-    	$(".co"+board_seq).attr("style",false);      
-    	$("#commenthide"+board_seq).html("접기");    
-     
-    }
-    
-    function commenthide(e) {  
-    	var board_seq = $(e).next().val(); 
-    	$(".co"+board_seq).attr("style","display:none;");    
-    	$("#commenthide"+board_seq).html("");
-    }
-    
     $(document).ready(function(){
     	
     	var globalThisCommentIsFocusedOnFirst = true;
@@ -491,8 +310,8 @@
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this, '${tmp.id}')"></i>  
-												<i value="${tmp.board_seq}"
+													onclick="likeit(this)"></i>  
+												<i value="${tmp.board_seq}"  
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
@@ -584,13 +403,13 @@
                      $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
                      var num = 0;
                      </script>
-												</c:if>
+								 				</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
 
 													<ul id="ul${comment.comment_seq}" style="display: none"
-														value="${comment.comment_seq}"
-														onmouseover="commentover(this)"
+														value="${comment.comment_seq}"  
+														onmouseover="commentover(this,'${comment.id}')"  
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a
@@ -602,7 +421,7 @@
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
-															onclick="delComment(this)" class="pointer"></a></li>
+								 							onclick="delComment(this)" class="pointer"></a></li>
 														<li id='li4'><a id='commentmod${comment.comment_seq}'
 															value="${comment.comment_seq}" onclick="modComment(this)"
 															class="pointer"></a></li>
@@ -696,7 +515,7 @@
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
 	                                            
-	                                                 ws.send("c:${tmp.id}");  
+	                                                 ws.send("comment:${tmp.id}");  
 	                                               $("#commenttxt" + seq).keyup(function(e){
 	                                            	   // =================== 복붙 =================== 
 	                                            	   if(e.keyCode === 32){
@@ -1067,11 +886,7 @@
 					}
 					
 
-					function closeDm() {
-					    document.getElementById("dm").style.width = "0";
-					    document.getElementById("allwrapper").style.marginLeft= "0";
-					    document.getElementById("footer").style.marginLeft = "0";
-					}
+				
 					
 					function openmessage(e){
 						var nickname = $(e).find("#usernickname").val();
@@ -1173,7 +988,7 @@
 <!--          DM메세지창 -->
                  <div class="chatbox-holder">
   
-  <div class="chatbox group-chat">
+  <div class="chatbox group-chat" style="display:none;">
     <div class="chatbox-top">
       <div class="chatbox-avatar">
         <a target="_blank" href=""><img src="루이.jpg" /></a>

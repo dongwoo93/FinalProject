@@ -9,6 +9,9 @@
 	text-align: left;
 }
 </style>
+<script> var currentId = "${sessionScope.loginId}";
+</script>
+<script src="resources/js/top.js"></script>    
 <script src="resources/js/myarticle.js"></script>
 <script>
 
@@ -862,7 +865,7 @@ $(document).ready(function(){
 
 				<div class="bg-white" id="a">
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="navbar-brand "
-						href="#"> <i id="likeit" style="display: none;"
+						href="#"> <i id="likeit" style="display: none;"      
 						class="far fa-heart icon mr-1 pointer" onclick="likeit(this)"></i>
 						<i style="font-weight: bold; color: red; display: none;"
 						id="likecancel" class="far fa-heart icon mr-1 pointer"

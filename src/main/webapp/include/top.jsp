@@ -59,10 +59,14 @@
       	    
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
-      			var cont = "님이"+resp[i][3].split("님이")[1];          
-      		       
-      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/a'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/a'></li></ul><div class='dropdown-divider'></div>");
-      		}		  
+      			var cont = "님이"+resp[i][3].split("님이")[1];                 
+      		     if(resp[i][4] == '0') {
+      		    	$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"' style='width:30px; height:30px; border-radius: 50%;'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><button>follow</button></li></ul><div class='dropdown-divider'></div>");
+      	      		
+      		     } else{  
+      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"' style='width:30px; height:30px; border-radius: 50%;'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/"+resp[i][4]+"' style='width:30px; height:30px;'></li></ul><div class='dropdown-divider'></div>");
+      		
+      		     }}		  
       	 },  
       	 error : function() {
       	 console.log("에러 발생!");
@@ -102,7 +106,6 @@ $(function() {
                         			  count: item.count,
                         			  category : item.category,
                         			  index: cnt++
-                        			  
                         		  }
             	  })
             	  );
