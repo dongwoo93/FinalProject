@@ -289,6 +289,40 @@ public class IBoardDAO implements BoardDAO  {
 		});
 
 	}
+	
+	// tour For JSON
+	@Override
+	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception {
+		
+		String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
+
+			return template.query(sql, new Object[] {start, end} , new RowMapper<BoardDTO>() {
+
+				@Override
+				public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					BoardDTO tmp = new BoardDTO();
+					tmp.setBoard_seq(rs.getInt(1));
+					tmp.setContents(rs.getString(2));
+					tmp.setId(rs.getString(3));
+					tmp.setWritedate(rs.getString(4));
+					tmp.setRead_count(rs.getString(5));
+					tmp.setIs_allow_comments(rs.getString(6));
+					return tmp;
+				}
+			});
+	}
+	
+	@Override
+	public List<int[]> getLikeSortByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<String[]> getTagSortByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// tour 사진
 	@Override
