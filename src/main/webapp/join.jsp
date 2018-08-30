@@ -538,9 +538,7 @@ $("#sign").click(function(){
 				                   if(data==1){
 				                
 				                	   idCheck=0;
-				                	   var start = $(".id");
-				   						start.after('<div class="mt-2" id="chId"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" ></i></div>');
-				                	
+				                	   $("#chId").css("display",true);
 
 
 				                	   alert("이미 사용중인 아이디 입니다");
@@ -654,7 +652,7 @@ $("#sign").click(function(){
 				                success: function(data) {
 				                    console.log("AJAX Request 성공");
 				                    console.log(data);
-				                    if(data==2){
+				                    if(data>0){
 						              
 				                    		emailCheck=0;
 					                	   var start = $(".email");
@@ -756,7 +754,8 @@ $(location).attr("href", "main.jsp");
 								<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id"
 									name="id" onblur="checkId()" type="text" class="validate"
 									required> <label for="id">ID 4~19자리(영문 숫자 혼합)</label>
-
+<div class="mt-2" id="chId" style="display:none;"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" ></i></div>;
+				                	
 
 
 							</div>
