@@ -38,18 +38,18 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
-import kh.sns.interfaces.Board_LocationService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
+import kh.sns.interfaces.Member_CalendarService;
 import kh.sns.interfaces.Member_FollowService;
-import kh.sns.interfaces.Member_TagsService;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -64,6 +64,7 @@ public class BoardController {
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
+	@Autowired	private Member_CalendarService calService;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
 
@@ -658,7 +659,7 @@ public class BoardController {
 			@RequestParam("costPerMille") String costPerMille,
 			@RequestParam("remainedPublicExposureCount") String remainedPublicExposureCount,
 			@RequestParam("costPerClick") String costPerClick,
-			@RequestParam("tags[]") List<String> persontag,
+			@RequestParam(value="tags[]", defaultValue="") List<String> persontag,
 			@RequestParam("lat") String lat,
 			@RequestParam("lng") String lng,
 			@RequestParam("place") String place,
@@ -905,8 +906,14 @@ public class BoardController {
 
 	}
 	@RequestMapping("/calendar.bo")
-	public String goCalendar(HttpSession session){
-		return "redirect:calendar.jsp";   
+	public ModelAndView goCalendar(HttpSession session) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		String sessionId = (String) session.getAttribute("loginId");
+		List<Member_CalendarDTO> result = calService.selectCalendar(sessionId);
+		mav.addObject("result", result);
+		mav.setViewName("calendar2.jsp");
+		return mav;
+		
 	}
 
 	@RequestMapping("/deletefollow.do")

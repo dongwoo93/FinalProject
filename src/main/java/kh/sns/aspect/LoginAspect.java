@@ -60,12 +60,11 @@ public class LoginAspect {
 		                if (loginId == null || "".equals(loginId)) {
 		                    System.out.println("### Margo ==> in if loginId : "
 		                            + loginId);
-		                     WebSocket.onlineUser.remove(loginId);
-		                     throw new RuntimeException("먼저 로그인을 하셔야 합니다.");
+		                     throw new RuntimeException();
 		                }          
 		        }catch(Exception e){
 		        	System.out.println("여기는LoginAspect");
-		        	e.printStackTrace();
+		        	 throw new RuntimeException();
 		 
 		        }      
 		        Object result = joinPoint.proceed();
