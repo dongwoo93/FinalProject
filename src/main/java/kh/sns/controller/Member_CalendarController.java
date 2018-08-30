@@ -74,5 +74,26 @@ public class Member_CalendarController {
 			}
 		}
 	}
-
+	
+	@RequestMapping("/delete.cal")
+	public void deleteCalendar(HttpSession session, HttpServletResponse response, String id) {
+		response.setCharacterEncoding("UTF-8");
+		int result = 0;
+		try {
+			result = service.deleteCalendar(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				response.getWriter().print(result);
+				response.getWriter().flush();
+				response.getWriter().close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
 }

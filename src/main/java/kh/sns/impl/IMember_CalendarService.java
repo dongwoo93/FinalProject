@@ -34,5 +34,10 @@ public class IMember_CalendarService implements Member_CalendarService {
 	public String getCalendarSeq() throws Exception {
 		return dao.getCalendarSeq();
 	}
+
+	@Override
+	public int deleteCalendar(String seq) throws Exception {
+		return dao.deleteCalendar(seq);
+	}
 	
 }
