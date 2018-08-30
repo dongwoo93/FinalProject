@@ -74,4 +74,29 @@ public class IBoardBusinessDAO implements BoardBusinessDAO {
 		return t.update(sql, bbiz.getIsAllowed(), bbiz.getRejectedMessage(), bbiz.getBoardBizSeq());
 	}
 	
+	@Override
+	public List<BoardBusinessDTO> pickAds(int count) throws Exception {
+		String sql = "select bss.*, rownum "
+				+ "from (select bs.*, dbms_random.random "
+				+ "from (select b.* from board_business b where is_allowed='y' ) bs "
+				+ "order by dbms_random.random) bss "
+				+ "where rownum between 1 and ?";
+		return t.query(sql, new Object[] {count}, (rs, rowNum) -> {
+			BoardBusinessDTO bbiz = new BoardBusinessDTO();
+			bbiz.setBoardBizSeq(rs.getInt("board_biz_seq"));
+			bbiz.setBoardSeq(rs.getInt("board_seq"));
+			bbiz.setClickCount(rs.getInt("click_count"));
+			bbiz.setCostPerClick(rs.getInt("cost_per_click"));
+			bbiz.setCostPerMille(rs.getInt("cost_per_mille"));
+			bbiz.setIsWebsitePurposeOfPurchase(rs.getString("is_website_purpose_of_purchase"));
+			bbiz.setMoreInfoWebsite(rs.getString("more_info_website"));
+			bbiz.setRemainedPublicExposureCount(rs.getInt("remained_public_exposure_count"));
+			bbiz.setIsAllowed(rs.getString("is_allowed"));
+			bbiz.setRejectedMessage(rs.getString("rejected_message"));
+			bbiz.setRequestDate(rs.getString("requestdate"));	// 변수명 실수
+			bbiz.setDisposedDate(rs.getString("disposeddate"));	// 변수명 실수
+			return bbiz;
+		});
+	}
+	
 }
