@@ -126,20 +126,22 @@ public class BoardController {
 			
 			adFeedList = boardService.getFeedForAd(ads);
 			
-			int x = (NAV_COUNT_PER_PAGE / 3) - 1;
+			int x = (NAV_COUNT_PER_PAGE / 3);
+			int p = 1;
 			for(BoardDTO b : adFeedList) {
 				b.setThisArticleForAd(1);
-
+				b.setBoard_seq(-1 * b.getBoard_seq());
 				try {
 					list.add(x, b);
 				} catch(IndexOutOfBoundsException e) {
-					list.add(list.size(), b);
+					list.add(b);
 				}
 
-				x += (x + 1);
+				x += ((NAV_COUNT_PER_PAGE / 3) + p++);
 			}
 								
 			adFeedList.forEach(System.out::println);
+			System.out.println();
 			list.forEach(System.out::println);
 			
 			membersNick = new ArrayList<>();
@@ -151,7 +153,13 @@ public class BoardController {
 			
 			
 			for(int i = 0; i < list.size(); i++) {
-				media.add(boardService.search2(list.get(i).getBoard_seq()));
+				if(list.get(i).getBoard_seq() < 0) {
+					media.add(boardService.search2(-1 * list.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				}
+				
 			}
 			
 			
