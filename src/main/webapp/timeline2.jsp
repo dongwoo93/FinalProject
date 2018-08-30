@@ -2,104 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<script> var currentId = "${sessionScope.loginId}"; </script>
+<script> var currentId = "${sessionScope.loginId}";
+</script>
+<script src="resources/js/top.js"></script>
 <script src="resources/js/timeline.js"></script>
 <script>
 
 
 	
-	$(function () {
-
-		var ws = new WebSocket("ws://192.168.20.9/websocket?loginId=${sessionScope.loginId}");
-		
-		ws.onopen = function () {
-
-		};
-		
-		ws.onmessage = function (msg) {
-			var message = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[0];
-			var sender = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[1];
-			var receivernickname = $("#dmnickname").text();
-			var receiverId = $("#userId").val();
-			if(receiverId == sender){
-		    	$("#message").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
-		    	var objDiv = document.getElementById("messagebox");
-		    	objDiv.scrollTop = objDiv.scrollHeight;
-		    	setRead(receiverId);
-			}
-			else{
-				$("#alertsender").text(sender);
-				$("#alertmsg").html(message);
-				 
-				$("#alertmessenger").fadeIn(2000);
-				setTimeout(function(){
-					$("#alertmessenger").fadeOut(2000);
-				},4000);
-				reloadMessengerlist();
-			}
-		};
-		
-	    ws.onclose = function (event) {
-	    	$("#userId").val("");
-	    };
-	    
-	    $("#sendDm").keydown(function(key) {
-			var message = $("#sendDm").val(); 
-			var receiver = $("#userId").val();
-			if (key.keyCode == 13) {
-				$("#sendDm").val("");
-				sendMsg(message,receiver);
-			}
-		});
-	    
-	    $(".imoticon").dblclick(function(){
-	    	var url = $(this).attr("src");
-	    	var message = "<img src="+url+" class='imoticon'>"
-	    	var receiver = $("#userId").val();
-	    	sendMsg(message,receiver);
-	    });
-	    
-	    $("#dmSearch").keyup(function(){
-			console.log("늘림");
-        	 var searchtext = $(this).val();
-        	 reloadFriendlist(searchtext);
-        });
-	    
-	    function sendMsg(message,receiver){
-	    	$.ajax({
-                url: "insertMessage.do", // 처리할 페이지(서블릿) 주소
-                type: "get",
-                data: {message:message,receiver:receiver,sender:"${sessionScope.loginId}"}, 
-                success: function(response) {
-                	console.log(response);
-                	if(response == "전송실패"){
-                		   alert("전송실패");
-                	}
-                	else{
-                		var date = response.split("#")[0];
-                		var time = response.split("#")[1];
-                		var objDiv = document.getElementById("messagebox");
-                		var lastdate = $(".dmdate").last().text();
-                		ws.send(receiver+"뇽뇽뇽뇽123뇽뇽뇽뇽"+message+"뇽뇽뇽뇽321뇽뇽뇽뇽${sessionScope.loginId}");
-                		console.log(lastdate);
-                		if(lastdate != date){
-                			
-		                $("#messagebox").append("<div class='message-box-holder text-center dmdate' style='display:inline;'>"+date+"</div>");
-                		}
-	                	$("#messagebox").append("<div class='message-box-holder'><div class='message-box'>"+message+"</div><div class='mt-2'>"+time+"</div></div>");
-                        objDiv.scrollTop = objDiv.scrollHeight;
-                        reloadMessengerlist();
-                	}
-                },
-                error: function() {
-                    console.log("에러");
-                },
-                complete: function(){
-                    console.log("AJAX완료");
-                } 
-            });
-	    }
-	});
+	
+	
 	
 	$(document).ready(function(){
 		$('.chatbox').hide();
@@ -188,9 +100,10 @@
 	}
     
     
-    function likeit(e) {
+    function likeit(e,id) {
        var board_seq = $(e).attr("value");
-       $.ajax({
+     	var aid = id;        
+       $.ajax({  
           url : "like.bo",
           type : "get",
           data : {
@@ -198,7 +111,8 @@
              id : "${sessionScope.loginId}",
              is_liked : "y"
           },
-          success : function(resp) {
+          success : function(resp) { 
+        	  ws.send("l:"+aid);
              $(e).next().show();
              $(e).hide();
           },
@@ -239,6 +153,7 @@
              is_marked : "y"
           },
           success : function(resp) {
+        	  
              $(e).next().show();
              $(e).hide();
           },
@@ -280,7 +195,7 @@
 	var modstate = $("#modstate"+seq).val();    
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all background-color:#E1F5FE"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
 		
 		if(sessionid == boardid) {       
 		$("#commentdel"+seq).html("삭제"); 
@@ -576,7 +491,7 @@
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this)"></i>
+													onclick="likeit(this, '${tmp.id}')"></i>  
 												<i value="${tmp.board_seq}"
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
@@ -765,7 +680,8 @@
 	                                              type: "POST",  
 	                                              url: "comment.co",    
 	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {       
+	                                              success : function(seq) {  
+	                                            	  
 	                                            	  $('#comment${tmp.board_seq}').html("");
 	                                              /*  $("#comment${tmp.board_seq}").val("");   */  
 	                                              var regex = /(#[^#\s,;<>.]+)/gi;            
@@ -776,10 +692,11 @@
                          						newtxt += "<kz></kz>";
                                             	
                                                 
-	                                               $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                                                $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                                               $("#ul"+seq).hide().fadeIn(500);  
-	                                               
+	                                            
+	                                                 ws.send("c:${tmp.id}");  
 	                                               $("#commenttxt" + seq).keyup(function(e){
 	                                            	   // =================== 복붙 =================== 
 	                                            	   if(e.keyCode === 32){
@@ -821,12 +738,7 @@
 	                                            	// =================== 복붙 =================== 
 	                                               });
 	                                               
-	                                               $("#commenttxt" + seq).keypress(function(e){
-														if(e.keyCode === 13) {
-														modComment(this);
-													 }
-													});
-	                                               
+	                                          
 	                            				  }
 		                                     }); //ajax 
 		                                   }    
@@ -852,56 +764,77 @@
 			</div>
 			<!-- board -->
 
-
-
-
-
-
-			<div style="position: fixed; border-radius: 1px;">
-				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1"
-					end="1">
-					<div class="container" id="float"
+			<div style="position: fixed; border-radius: 1px;">  
+			 
+					<div class="container float" id=""
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
-						<br>
-						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">
-							<a class="mt-6 idtxt"
-								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-
-						</div>
-				</c:forEach>
-
-
-				<hr class="_5mToa">
-				<p class="text-center"
-					style="font-family: 'HelveticaNeue', 'Arial', sans-serif; font-size: 15px;">
-					<i class="far fa-arrow-alt-circle-left" style="font-size: 15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천
-					Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i
-						class="far fa-arrow-alt-circle-right" style="font-size: 15px;"></i>
+					  
+						
+			<hr class="_5mToa">
+				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
+					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
-				<c:forEach var="followtmp" items="${result3}" varStatus="status"
-					begin="0" end="4">
-
-					<div class="container">
-
-						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">
-							<a class="mt-6 idtxt"
-								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
-						</div>
-
-					</div>
-
-				</c:forEach>
-				<hr class="_5mToa">
-
-
+				<c:if test="${result3.size() > 0}">  
+				<div style="overflow-y:auto; height:230px;">    		
+		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+		
+					<div class="container py-1">  
+					<ul class="navbar-nav">  
+					<li>	<img class="mr-3 pic"   
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					<li class="pt-2" style="width:45%;">	<a class="idtxt"            
+								style="font-size: 14px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"     
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
+					<li class="pt-2"><a id="followlink">follow</a></li>           	  
+					</ul>   
 			</div>
+		  
+				</c:forEach>
+			   	</div>
+				</c:if><hr class="_5mToa">
+			</div>
+			
+			
+			  
+			<div class="container float" id=""    
+						style="width: 300px; margin-top: 20px; margin-left: 30px;">
+					
+			<hr class="_5mToa">
+				<p class="" style="font-family: 'HelveticaNeue', 'Arial', sans-serif;font-size: 15px;">
+					실시간 트랜드..     
+				</p>
+				<hr class="_5mToa">
+				<c:if test="${trend.size() > 0}">  
+		  
+		  	<div style="overflow-y:auto; height:230px;">    		
+		<c:forEach var="trend" items="${trend}" varStatus="status" >
+		
+					<div class="container" >     
+					<ul class="navbar-nav pointer" value="${trend}" onclick="trendsearch(this)">  
+					
+					<li class="pt-2" style="width:45%;">	<a class="trendrank"            
+								style="font-size: 14px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"     
+								href="">${status.count}</a></li>  
+					<li class="pt-2"><a id="keywordlink">${trend}</a></li>           	  
+					</ul>   
+			</div>
+			<script>
+			function trendsearch(e){   
+				var keyword = $(e).attr("value");  
+				$(location).attr("href","search.bo?search="+keyword);   
+			}
+			
+			</script>
+		  
+				</c:forEach>
+			   	</div>
+		  
+		  
+				</c:if><hr class="_5mToa">
+			</div>
+
+
 
 			<div class="pt-4 pb-3" id="footer"
 				style="font-size: 5px; margin-left: 20px;">
@@ -917,7 +850,7 @@
 			</div>
 
 		</div>
-
+  
 
 	</div>
 	<!-- container -->
@@ -1313,6 +1246,7 @@
 		  <marquee><p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt" id='alertmsg'></p></marquee>
 		</div>
 	</div>
+
  
 <script>
 $(function(){
