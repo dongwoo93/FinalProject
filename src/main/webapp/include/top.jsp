@@ -31,7 +31,36 @@
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
 <script src="resources/js/top.js"></script>
 <script>
+
+function article(e) {
+  
+	var id = $(e).attr("value");
+	$(location).attr("href","board.bo?id="+id+"&cat=1");   
+}
+
+function oneboard(e) {     
+	$(location).attr("href","oneBoard.do?board_seq="+e);   
+}
+
+function btnevent(){ 
+	   var event = window.event;
+	   if(event.stopPropagation()){
+	   event.stopPropagation(); 
+	   }else{
+	   event.cancelBubble = true; 
+	   }
+	      
+	}
+ 
+
 	$(document).ready(function(){
+		
+
+		
+		 $("button").click(function(event){
+		        event.stopPropagation();
+		        alert("옭");
+		    });
 		$.ajax({
             url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",
@@ -51,7 +80,7 @@
         });
 		
   
-    $.ajax({
+    $.ajax({ 
       	url : "alerting.top",
       	type : "get",
       	         
@@ -59,13 +88,15 @@
       	    
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
-      			var cont = "님이"+resp[i][3].split("님이")[1];                 
-      		     if(resp[i][4] == '0') {
-      		    	$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"' style='width:30px; height:30px; border-radius: 50%;'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><button>follow</button></li></ul><div class='dropdown-divider'></div>");
-      	      		
-      		     } else{  
-      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"' style='width:30px; height:30px; border-radius: 50%;'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/"+resp[i][4]+"' style='width:30px; height:30px;'></li></ul><div class='dropdown-divider'></div>");
-      		
+      			var cont = "님이"+resp[i][3].split("님이")[1];                     
+      		     if(resp[i][4] == '0') {       
+      		    	$("#alertcont:last-child").append("<ul class='dropdown-item navbar pointer' style='font-family: NANUMBARUNPENR !important;font-size: 14px;' onclick='article(this)' value='"+name+"'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"' style='width:30px; height:30px; border-radius: 50%;'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><button value='"+name+"' type='button' onclick='btnevent()'>follow</button></li></ul><div class='dropdown-divider'></div>");
+      	       
+      	      		  
+      		     } else{      
+      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar pointer' id='"+resp[i][0]+"' style='font-family: NANUMBARUNPENR !important;font-size: 14px;' onclick='oneboard("+resp[i][0]+")'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"' style='width:30px; height:30px; border-radius: 50%;'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/"+resp[i][4]+"' style='width:30px; height:30px;'></li></ul><div class='dropdown-divider'></div>");
+      			
+      				
       		     }}		  
       	 },  
       	 error : function() {
