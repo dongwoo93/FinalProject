@@ -10,7 +10,7 @@
 	
 	$(function () {
 
-		var ws = new WebSocket("ws://192.168.20.9/websocket?loginId=${sessionScope.loginId}");
+		var ws = new WebSocket("ws://192.168.20.1/websocket?loginId=${sessionScope.loginId}");
 		
 		ws.onopen = function () {
 
@@ -908,8 +908,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<p><i class="far fa-copyright"></i>SocialWired about정보.홍보.채용</p>
-							<p>개인정보처리방침 .약관.플랫폼</p>
+							<a href="footinfo.jsp"><p><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
