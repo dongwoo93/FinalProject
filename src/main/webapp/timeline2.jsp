@@ -2,7 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
-<script> var currentId = "${sessionScope.loginId}"; </script>
+<script> var currentId = "${sessionScope.loginId}";
+</script>
+<script src="resources/js/top.js"></script>
 <script src="resources/js/timeline.js"></script>
 <script>
 
@@ -99,6 +101,8 @@
 	    }
 	});
 	
+	
+	
 	$(document).ready(function(){
 		$('.chatbox').hide();
 		
@@ -186,9 +190,10 @@
 	}
     
     
-    function likeit(e) {
+    function likeit(e,id) {
        var board_seq = $(e).attr("value");
-       $.ajax({
+     	var aid = id;        
+       $.ajax({  
           url : "like.bo",
           type : "get",
           data : {
@@ -196,7 +201,8 @@
              id : "${sessionScope.loginId}",
              is_liked : "y"
           },
-          success : function(resp) {
+          success : function(resp) { 
+        	  ws.send("l:"+aid);
              $(e).next().show();
              $(e).hide();
           },
@@ -237,6 +243,7 @@
              is_marked : "y"
           },
           success : function(resp) {
+        	  
              $(e).next().show();
              $(e).hide();
           },
@@ -278,7 +285,7 @@
 	var modstate = $("#modstate"+seq).val();    
 	
 		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all background-color:#E1F5FE"); 
+		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
 		
 		if(sessionid == boardid) {       
 		$("#commentdel"+seq).html("삭제"); 
@@ -693,7 +700,7 @@
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this)"></i>
+													onclick="likeit(this, '${tmp.id}')"></i>  
 												<i value="${tmp.board_seq}"
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
@@ -883,72 +890,93 @@
 			</div>
 			<!-- board -->
 
-
-
-
-
-
-			<div style="position: fixed; border-radius: 1px;">
-				<c:forEach var="tmp" items="${result}" varStatus="status" begin="1"
-					end="1">
-					<div class="container" id="float"
+			<div style="position: fixed; border-radius: 1px;">  
+			 
+					<div class="container float" id=""
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
-						<br>
-						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[sessionScope.loginId]}'/>">
-							<a class="mt-6 idtxt"
-								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${sessionScope.loginId}&cat=1">${sessionScope.loginId}</a>
-
-						</div>
-				</c:forEach>
-
-
-				<hr class="_5mToa">
-				<p class="text-center"
-					style="font-family: 'HelveticaNeue', 'Arial', sans-serif; font-size: 15px;">
-					<i class="far fa-arrow-alt-circle-left" style="font-size: 15px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;추천
-					Follow를 추가하세요!!&nbsp;&nbsp;&nbsp;&nbsp;<i
-						class="far fa-arrow-alt-circle-right" style="font-size: 15px;"></i>
+					  
+						
+			<hr class="_5mToa">
+				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
-				<c:forEach var="followtmp" items="${result3}" varStatus="status"
-					begin="0" end="4">
-
-					<div class="container">
-
-						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>">
-							<a class="mt-6 idtxt"
-								style="font-size: 16px; font-family: 'HelveticaNeue', 'Arial', sans-serif;"
-								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
-						</div>
-
-					</div>
-
+				<c:if test="${result3.size() > 0}">  
+				<div style="overflow-y:auto; height:230px; font-family:NANUMBARUNPENR !important;font-size: 14px;"">    		
+		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+		
+					<div class="container py-1">  
+					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
+					<li>	<img class="mr-3 pic"   
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
+								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
+					<li class="pt-2"><a id="followlink" style="font-family:NANUMBARUNPENR !important;font-size: 10px;">follow</a></li>           	  
+					</ul>   
+			</div>
+		  
 				</c:forEach>
+			   	</div>
+				</c:if><hr class="_5mToa">
+			</div>
+			
+			
+			  
+			<div class="container float" id=""    
+						style="width: 300px; margin-top: 20px; margin-left: 30px;">
+					
+			<hr class="_5mToa">
+				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+					실시간 #트랜드     
+				</p>
 				<hr class="_5mToa">
-
-
+				<c:if test="${trend.size() > 0}">  
+		  
+		  	<div style="overflow-y:auto; height:230px;">    		
+		<c:forEach var="trend" items="${trend}" varStatus="status" >
+		
+					<div class="container" >     
+					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
+					
+					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								href="">${status.count}</a></li>  
+					<li class="pt-2"><a id="keywordlink" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					</ul>   
+			</div>
+			<script>
+			function trendsearch(e){   
+				var keyword = $(e).attr("value");  
+				$(location).attr("href","search.bo?search="+keyword);   
+			}
+			
+			</script>
+		  
+				</c:forEach>
+			   	</div>
+		  
+		  
+				</c:if><hr class="_5mToa">
 			</div>
 
-			<div class="pt-4 pb-3" id="footer"
-				style="font-size: 5px; margin-left: 20px;">
+
+
+<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
+			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<p>SocialWired.정보.지원.홍보.채용</p>
-							<p>정보개인정보처리방침 .약관.디렉터리.프로필.해시태그언어</p>
-							<p>@2018SocialWired</p>
+							<a href="footinfo.jsp"><p><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>	
+<!-- 			</div> -->
 
 		</div>
-
+  
 
 	</div>
 	<!-- container -->
@@ -1344,6 +1372,7 @@
 		  <marquee><p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt" id='alertmsg'></p></marquee>
 		</div>
 	</div>
+
  
 <script>
 $(function(){

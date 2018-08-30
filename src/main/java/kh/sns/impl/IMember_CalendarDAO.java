@@ -62,4 +62,10 @@ public class IMember_CalendarDAO implements Member_CalendarDAO {
 		}).get(0);
 	}
 
+	@Override
+	public int deleteCalendar(String seq) throws Exception {
+		String sql ="delete from member_calendar where seq=?";
+		return template.update(sql, seq);
+	}
+
 }

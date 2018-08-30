@@ -53,6 +53,7 @@ import kh.sns.interfaces.Member_BlockService;
 import kh.sns.interfaces.Member_CalendarService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
+import kh.sns.interfaces.SearchService;
 
 @Controller
 public class BoardController {
@@ -66,6 +67,7 @@ public class BoardController {
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
+	@Autowired	private SearchService searchService;
 	@Autowired	private Member_CalendarService calService;
 	@Autowired	private BoardBusinessService bbs;
 	
@@ -87,8 +89,8 @@ public class BoardController {
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-
 		List<Integer> maxImgHeight = new ArrayList<>();
+		List<String> trend = new ArrayList<>();
 		
 		List<BoardBusinessDTO> adList = new ArrayList<>();
 		List<BoardDTO> adFeedList = new ArrayList<>();
@@ -150,7 +152,9 @@ public class BoardController {
 			
 			for(int i = 0; i < list.size(); i++) {
 				media.add(boardService.search2(list.get(i).getBoard_seq()));
-			} 
+			}
+			
+			
 		//	String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
 
 
@@ -207,6 +211,8 @@ public class BoardController {
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
+			
+			trend = searchService.trend();
 
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -229,6 +235,7 @@ public class BoardController {
 		System.out.println(follow_list.size()/5); 
 
 		mav.addObject("maxImgHeight",maxImgHeight);
+		mav.addObject("trend", trend);
 		mav.setViewName("timeline2.jsp");
 
 
@@ -441,36 +448,36 @@ public class BoardController {
 		
 		
 		////////////////////////////////////////
-		
-		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
-
-		double maxwidth = 0;
-
-		
-		for(Board_MediaDTO dto : result2) {  
-			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-			
-			double width = bimg.getWidth();  
-			double height = bimg.getHeight();
-			
-			if(width < height) {
-				width = 600 * width / height;
-			}
-		
-			if(maxwidth<width) { 
-				maxwidth = width;
-				
-			}   
-	  
-		}
-	
-	
-		if(maxwidth > 600) {
-			maxwidth = 600;
-		}
-		
-
-		
+//		
+//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
+//
+//		double maxwidth = 0;
+//
+//		
+//		for(Board_MediaDTO dto : result2) {  
+//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+//			
+//			double width = bimg.getWidth();  
+//			double height = bimg.getHeight();
+//			
+//			if(width < height) {
+//				width = 600 * width / height;
+//			}
+//		
+//			if(maxwidth<width) { 
+//				maxwidth = width;
+//				
+//			}   
+//	  
+//		}
+//	
+//	
+//		if(maxwidth > 600) {
+//			maxwidth = 600;
+//		}
+//		
+// 
+//		
 		
 		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
@@ -486,30 +493,36 @@ public class BoardController {
 		result3.add(bookmark);
 		
 
-//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
-// 
-//		double maxheight = 0;
-//		double maxwidth = 0;
-//		for(Board_MediaDTO dto : result2) {
-//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//			double height = bimg.getHeight();
-//			double width = bimg.getWidth();
-//
-//			if(height > width) {
-//				maxwidth = 600 * width / height;
-//				maxheight = 600;
-//				
-//			}else {     
-//				
-//				maxheight = 600 * height / width;
-//				maxwidth = 600;
-//				
-//			}
-//		}
-//		System.out.println(maxheight + " : " + maxwidth);  
-//		
-//		result3.add(maxheight);
-//		result3.add(maxwidth);
+		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
+ 
+		
+		double maxwidth = 0;
+		for(Board_MediaDTO dto : result2) {
+			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+			double height = bimg.getHeight();
+			double width = bimg.getWidth();
+			System.out.println(height + " : " + width);
+			width = 600 * width / height;
+			height = 600;
+			 
+			System.out.println(height + " : " + width);
+
+			if(width > 700) {
+				height = 600 * 700 / height;
+				width = 700;
+				
+				System.out.println(height + " : " + width);
+			}
+			
+			if(maxwidth < width) {
+				maxwidth = width;
+			}
+			 
+		}
+		System.out.println(" : " + maxwidth);  
+		
+
+		result3.add(maxwidth);
 
 		new Gson().toJson(result3,response.getWriter());
 
@@ -542,10 +555,10 @@ public class BoardController {
 	public ModelAndView search(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-
-		List<BoardDTO> result = boardService.search(search);					// 전체 글
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();					// 사진 
-		List<Integer> result3 = board_likeService.searchLike(id);				// 좋아요
+		searchService.insertSearch(search);  
+		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
@@ -1068,5 +1081,54 @@ public class BoardController {
 
 		return mav;	
 	}
+	
+	@RequestMapping("/alerting.top")
+	public void alerting(HttpSession seesion, HttpServletResponse resp) {
+		String sessionid = (String) seesion.getAttribute("loginId");
+		   resp.setCharacterEncoding("UTF-8");
+		   resp.setContentType("application/json");
+		
+		 try {
+			List<Object[]> result = boardService.alerting(sessionid);
+			
+			for(Object[] tmp : result) {
+				if((int)tmp[2]<60) {
+					tmp[2] = tmp[2]+"분";
+				} 
+				else if(((int)tmp[2] >= 60) && ((int)tmp[2] <1440)) {    
+					tmp[2] = (((int)tmp[2])/60) +"시간";
+				}
+				else if((int)tmp[2] >= 1440) {
+					tmp[2] = (((int)tmp[2])/1440) +"일";   
+				}
+				
+				tmp[1] = profileService.selectOneProfileImage(sessionid);
+				if((int)tmp[0] == 0) {
+					tmp[4] = "0";    
+				}else {    
+				tmp[4] = boardService.search2( (int)tmp[0] ).get(0).getSystem_file_name();
+				}
+				System.out.print(tmp[0] + " : ");
+				System.out.print(tmp[1] + " : ");
+				System.out.print(tmp[2] + " :" );
+				System.out.print(tmp[3]+ " : "); 
+				System.out.println(tmp[4]+ " : "); 
+				
+				
+				
+			}
+			new Gson().toJson(result,resp.getWriter());
+			
+			 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		 
+		
+	}
+	
+	
 
 }

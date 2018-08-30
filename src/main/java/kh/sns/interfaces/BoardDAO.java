@@ -46,6 +46,9 @@ public interface BoardDAO {
 	public List<int[]> myBookmark(String id) throws Exception;
 	
 	//my_article_Tags
-	List<int[]> myTag(String id) throws Exception;	
+	List<int[]> myTag(String id) throws Exception;
+	
+	
+	public List<Object[]> alerting(String id) throws Exception;
 	
 }

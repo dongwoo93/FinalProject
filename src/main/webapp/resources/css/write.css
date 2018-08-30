@@ -74,7 +74,7 @@ html{
 	border-radius: 8px;
 }
 
-.pac-controls label {
+.c-controls label {
 	font-family: Roboto;
 	font-size: 13px;
 	font-weight: 300;
@@ -152,7 +152,8 @@ span.tagRemove:hover {
 }
 
 #persondagmodal {
-	height: 500px;
+	height: 200px;
+	
 }
 
 

@@ -320,8 +320,7 @@ $(document).ready(function() {
 	
 	$("#savebtn").click(function() {  
 		if($('#inputimg').get(0).files.length != 0) {
-			
-			
+			var formData = new FormData($("#fileForm")[0]);
 			$.ajax({
 				type:"POST",
 				url:"uploadImg.profile",
