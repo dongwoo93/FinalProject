@@ -572,11 +572,11 @@
 
 	<!--       사람태그하기 Modal부분-->
 	<div id="personModal" class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		aria-labelledby="myLargeModalLabel" aria-hidden="true"  style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">
+					<h5 class="modal-title" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 						<i class="fas fa-users tagicon mr-2"></i>사람 태그하기
 					</h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -625,15 +625,15 @@
 						<div class="col-7">
 							<div class="tab-content">
 								<ul class="tags">
-
+									<br> &nbsp;
 								</ul>
 							</div>
 						</div>
 					</div>
 
 				</div>
-				<div class="modal-footer" id="personmodalbt">
-					<button type="button" class="btn btn-outline-secondary">태그완료</button>
+				<div class="modal-footer" id="personmodalbt">					
+					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;">태그완료</button>
 				</div>
 			</div>
 		</div>
@@ -644,11 +644,11 @@
 	<c:if test="${ memberBiz ne null }">
 	<!--       비즈니스 설정 Modal부분-->
 	<div id="bizModal" class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		aria-labelledby="myLargeModalLabel" aria-hidden="true" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">
+					<h5 class="modal-title" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 						게시물 홍보하기
 					</h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -661,10 +661,10 @@
 					<div class="row">
 						<div class="col-12">
 							<fieldset class="form-group">
-						      <legend>게시물을 홍보하여 비즈니스 성장을 도모하기</legend>
+						      <legend style="font-family: NANUMBARUNPENR !important;font-size: 14px;">게시물을 홍보하여 비즈니스 성장을 도모하기</legend>
 						      <div class="form-check">
 						        <label class="form-check-label">
-						          <input id="enableBiz" class="form-check-input" type="checkbox" value="y" >
+						          <input id="enableBiz" class="form-check-input" type="checkbox" value="y" style="font-family: NANUMBARUNPENR !important;font-size: 14px;" >
 						         이 게시물을 홍보합니다.
 						        </label>
 						      </div>
@@ -673,22 +673,22 @@
 
 						</div>
 					</div>
-					<div class="row"><hr></div>
+<!-- 					<div class="row"><hr></div> -->
 					<form id="bizform">
 					<div class="row">
 						<div class="col-12">							
 						    
 						    <div class="form-group">
-							  <label class="col-form-label" for="moreInfoWebsite">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
+							  <label class="col-form-label" for="moreInfoWebsite" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
 							  <input type="text" class="form-control" placeholder="http://example.com/?shopid=12" id="moreInfoWebsite">
-							  <small class="form-text text-muted">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>
+							  <small class="form-text text-muted" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>
 							</div>
 					
 							<fieldset class="form-group">
 						      <!-- <legend>특정 상품의 판매를 목적으로 하는 페이지</legend> -->
 						      <div class="form-check">
 						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" id="isWebsitePurposeOfPurchase" >
+						          <input class="form-check-input" type="checkbox" id="isWebsitePurposeOfPurchase" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 						          페이지가 특정 상품의 판매를 목적으로 하는 경우 이 체크란을 반드시 클릭해주세요. 
 						        </label>
 						      </div>
@@ -702,7 +702,7 @@
 								    				</c:forEach>							    						
 								    			</datalist>
 						    
-						      <div class="form-group">
+						      <div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 							    <label for="formControlRange">1회 노출단가 결정: ￦<span id="rangeSpan">50</span>  </label>
 							    <input type="range" class="form-control-range" id="exposureRange" min="10" max="100" value="50" step="10" list="tickmarks" >
 							   						 
@@ -710,7 +710,7 @@
 							    					
 							  </div>
 							  
-							  <div class="form-group">
+							  <div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 								  <fieldset>
 								    <label class="control-label" for="exposureCount">총 노출횟수</label>
 								    <input class="form-control" id="exposureCount" type="text" placeholder="Readonly input here…" readonly >
@@ -718,7 +718,7 @@
 								  </fieldset>
 								</div>
 							  
-							    <div class="form-group">
+							    <div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 								  <fieldset>
 								    <label class="control-label" for="costPerClick">클릭당 단가(￦)</label>
 								    <input class="form-control" id="costPerClick" type="text" placeholder="Readonly input here…" readonly >
@@ -726,7 +726,7 @@
 								  </fieldset>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 								  <fieldset>
 								    <label class="control-label" for="costPerClick">총 결제금액(￦)</label>
 								    <input class="form-control" id="totalCost" type="text" placeholder="Readonly input here…" readonly >
@@ -741,7 +741,8 @@
 			
 				</div>
 				<div class="modal-footer">
-					<button id="bizconfirm" class="btn btn-primary"  data-dismiss="modal">확인</button>
+					<button id="bizconfirm" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" data-dismiss="modal">확인</button>
+					
 				</div>
 			</div>
 		</div>
