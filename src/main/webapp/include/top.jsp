@@ -50,9 +50,7 @@
             } 
         });
 		
-		
-
-      	  
+  
     $.ajax({
       	url : "alerting.top",
       	type : "get",
@@ -62,18 +60,15 @@
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
       			var cont = "님이"+resp[i][3].split("님이")[1];          
-      		     
-      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/"+resp[i][4]+"'></li></ul><div class='dropdown-divider'></div>");
-      		}
-      		  
+      		       
+      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/a'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/a'></li></ul><div class='dropdown-divider'></div>");
+      		}		  
       	 },  
       	 error : function() {
       	 console.log("에러 발생!");
       	 }
       	  });
-        
-        
-      
+
 	})
 </script>
 </head>
@@ -158,14 +153,14 @@ $(function() {
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
-                  <input id="searchform" class="form-control" name="search" type="text" placeholder="검색어를 입력하세요">
+                  <input id="searchform" class="form-control" name="search" type="text" placeholder="친구의이름과 #'키워드' 를검색하세요">
                 </form>
               </div>
-              <div id="nav-icons">
+              <div id="nav-icons"> 
                 <ul class="navbar-nav">
                 
                  <li class="nav-item">
-                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"></i><span id="totalreadcount" style='display:none;'></span></a>
+                    <a class="nav-link" onclick="openDm()"><i class="far fa-comment-alt nav-icon"><span id="totalreadcount" style='display:none;'></span></i></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
@@ -185,7 +180,7 @@ $(function() {
           
                   
                   
-                  <li class="nav-item dropdown">
+       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
           <i class="far fa-user nav-icon"></i>
         </a>

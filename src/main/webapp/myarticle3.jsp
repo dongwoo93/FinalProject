@@ -10,6 +10,8 @@
 }
 </style>
 <script src="resources/js/myarticle.js"></script>
+
+
 <script>
 
 	function tag(e) {
@@ -277,7 +279,7 @@ $(document).ready(function(){
 																		}
 																	});
 																})
-}
+															}
 								</script>
 
 
@@ -314,6 +316,9 @@ $(document).ready(function(){
 	</c:forEach>
 </c:if>
 
+
+
+	
 <div id="allwrapper">
 
 
@@ -371,7 +376,7 @@ $(document).ready(function(){
 					<div class="profile-user-settings">
 						<h2 class="profile-user-name">${pageid}</h2>
 						<div class="profile-edit-btn" id="toMy">프로필 편집</div>
-						<div class="profile-edit-btn" id="">나의 게시판</div>
+						<div class="profile-edit-btn" id="myRoom"><a href="myroom.jsp"style="color: #151515;">나의게시판</a></div>
 						<i class="fas fa-user-cog" data-toggle="modal"
 							data-target="#settingModal"
 							style="font-size: 20px; margin-left: 15px; cursor: pointer;"></i>
@@ -385,9 +390,9 @@ $(document).ready(function(){
 					<div class="profile-user-settings">
 						<h2 class="profile-user-name">${pageid}</h2>
 						<div class="profile-edit-btn" id="cancelFollow">팔로잉</div>
-						<div class="profile-edit-btn"
+						<div class="profile-edit-btn btn btn-info"
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
-							id="follow" style="background-color: #35e0db; display: none;">팔로우</div>
+							id="follow" style="background-color: #f3f3f3; display: none;">팔로우&nbsp;<i class="fas fa-plus"></i></div>
 						<div class="profile-settings-btn">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -403,9 +408,9 @@ $(document).ready(function(){
 						<div class="profile-edit-btn" id="cancelFollow"
 							data-toggle="modal" data-target="#exampleModalCenter"
 							style="display: none;">팔로잉</div>
-						<div class="profile-edit-btn"
+						<div class="profile-edit-btn btn btn-info"
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
-							id="follow" style="background-color: #35e0db;">팔로우</div>
+							id="follow" style="background-color: #f3f3f3;">팔로우&nbsp;<i class="fas fa-plus"></i></div>
 						<div class="profile-settings-btn">
 							<i class="fas fa-undo-alt"></i>
 						</div>
@@ -423,8 +428,8 @@ $(document).ready(function(){
 			<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 				role="dialog" aria-labelledby="exampleModalCenterTitle"
 				aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
+				<div class="modal-dialog modal-dialog-centered" role="document" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
+					<div class="modal-content" style="border:5px solid #eff1f4;">
 						<div class="modal-header">
 
 							<button type="button" class="close" data-dismiss="modal"
@@ -432,20 +437,26 @@ $(document).ready(function(){
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
-							<h2>정말 팔로우를 취소하시겠습니까?</h2>
+						<div class="modal-body text-center" style="border:5px solid #eff1f4;font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 14px;">
+								<h4 class="modal-title"
+						style="font-family: NANUMBARUNPENR !important;font-weight:bold;font-size: 14px;">
+						정말 팔로우를 취소하시겠습니까?</h4>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary"
+							<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark"
 								data-dismiss="modal" id="yes"
 								onclick="unfollow('${sessionScope.loginId}', '${pageid}')">YES</button>
-							<button type="button" class="btn btn-secondary"
+							<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark"
 								data-dismiss="modal">Close</button>
 
 						</div>
 					</div>
 				</div>
 			</div>
+			
+			
+			
+			
 
 
 
@@ -505,12 +516,12 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center"><a
-												href="board.bo?id=${pageid}&cat=1">게시물</a></th>
-											<th class="text-center"><a
-												href="board.bo?id=${pageid}&cat=2">찜콕됨</a></th>
-											<th class="text-center"><a 
-												href="board.bo?id=${pageid}&cat=3">태그됨</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="board.bo?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="board.bo?id=${pageid}&cat=2" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">찜콕됨</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+												href="board.bo?id=${pageid}&cat=3" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">태그됨</a></th>
 										</tr>
 									</thead>
 								</table>
@@ -527,7 +538,7 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center"><a href="">게시물</a></th>
+											<th class="text-center"  style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
 
 										</tr>
 									</thead>
@@ -727,7 +738,7 @@ $(document).ready(function(){
                                        
                                   var width = data[5]+300;  
                                   var width1 = parseInt(data[5]);
-                                  alert(width + " : " + width1)
+//                                   alert(width + " : " + width1)
                                   $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
                                  $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
                                       
@@ -1144,4 +1155,7 @@ $(document).ready(function(){
 
 	</div>
 </div>
+
+
+
 <%@ include file="include/bottom.jsp"%>

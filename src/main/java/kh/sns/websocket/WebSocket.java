@@ -41,7 +41,7 @@ public class WebSocket{
 					onlineUser.get(tmp).getBasicRemote().sendText("c");
 				}
 			}
-		}
+		}  
 		else if(!(message.contains("뇽")) && (message.startsWith("l"))) {
 			String id = message.split(":")[1];   
 			for(String tmp : onlineUser.keySet()) {

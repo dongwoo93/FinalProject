@@ -16,9 +16,39 @@
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script>
+function myAlertBottom(msg){
+	$("#alertmsg").text(msg);
+	  $(".myAlert-bottom").fadeIn();
+	  setTimeout(function(){
+	    $(".myAlert-bottom").fadeOut(); 
+	  }, 2000);
+	}
+
+function deleteEvent() {
+	var id = $('#hiddenid').val();
+	$.ajax({
+        url : "delete.cal",
+        type : "post",
+        data : {
+           id : id
+        },
+        success : function(resp) {
+        	if(resp == 0) {
+        		alert("삭제에 실패 하였습니다");
+        		$('#calendar').fullCalendar('unselect');
+        	}else {
+        		$("#calModal").modal("hide");
+        		$('#calendar').fullCalendar('removeEvents', id);
+        		myAlertBottom("일정이 삭제 되었습니다");
+        	}
+        },
+        error : function() {
+           console.log("에러 발생!");
+           }
+        })
+}
 
   $(document).ready(function() {
-	  
 	  $('#submitButton').on('click', function(e){
 		  var content = $('#eventName').val();
 		  if(content == "") {
@@ -57,6 +87,7 @@
             		              end: new Date(endTime)
             		          },
             		          true);
+            		myAlertBottom("일정이 등록 되었습니다");
             	}
             },
             error : function() {
@@ -117,6 +148,7 @@
             	            end: end
             	          };
             		$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            		myAlertBottom("일정이 등록 되었습니다");
             	}
             },
             error : function() {
@@ -130,8 +162,16 @@
       editable: true,
       eventLimit: true, // allow "more" link when too many events
       eventClick: function(event) {
-    	   
-    	      return false;
+    	  if($(this).css("background-color")== "rgb(255, 0, 0)") {
+    		  $("#calHeader").css("background-color", "red");
+    	  }else {
+    		  $("#calHeader").css("background-color", "#3a87ad");
+    	  }
+    	  $(".fc-event").removeAttr("href");
+    	  $("#hiddenid").val(event.id);
+    	  $("#calModal").modal("show");
+    	  $("#calTitle").text(event.title);
+    	  $("#timecontent").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
     	    
     	  },
       eventDrop: function(event, delta, revertFunc) {
@@ -152,6 +192,7 @@
     	            		alert("등록에 실패 하였습니다");
     	            		revertFunc();
     	            	}
+    	            	myAlertBottom("일정이 변경 되었습니다");
     	            },
     	            error : function() {
     	                console.log("에러 발생!");
@@ -160,6 +201,25 @@
     	    }
 
     	  },
+    	  /* eventDragStop: function(event,jsEvent) {
+
+    		    var trashEl = jQuery('#calendarTrash');
+    		    var ofs = trashEl.offset();
+
+    		    var x1 = ofs.left;
+    		    var x2 = ofs.left + trashEl.outerWidth(true);
+    		    var y1 = ofs.top;
+    		    var y2 = ofs.top + trashEl.outerHeight(true);
+
+    		    if (jsEvent.pageX >= x1 && jsEvent.pageX<= x2 &&
+    		        jsEvent.pageY >= y1 && jsEvent.pageY <= y2) {
+    		    	if (!confirm("일정을 삭제 하시겠습니까?")) {
+    		    	}else {
+    		    		$('#calendar').fullCalendar('removeEvents', event.id);
+    		    	}
+    		        
+    		    }
+    		}, */
       eventResize: function(event, delta, revertFunc) {
 
     	    if (!confirm("일정을 변경 하시겠습니까?")) {
@@ -179,6 +239,7 @@
     	            		alert("등록에 실패 하였습니다");
     	            		revertFunc();
     	            	}
+    	            	myAlertBottom("일정이 변경 되었습니다");
     	            },
     	            error : function() {
     	                console.log("에러 발생!");
@@ -227,10 +288,62 @@
 	color: #fff !important;
 	text-decoration: none;
 }
+
+#calBody {
+	font-size: 1.2rem;
+}
+
+#timediv {
+	display: flex;
+}
+
+#timecontent {
+	padding-left: 20px;
+}
+
+#calTitle {
+	padding-top: 50px;
+	padding-left: 50px;
+	padding-bottom: 10px;
+	color: white;
+}
+
+#closeCal {
+	font-size: 2.2rem;
+	color: white;
+}
+
+.calicon {
+	color: white;
+	font-size: 2rem;
+	margin-right: 20px;
+	display:inline-block;
+}
+
+.calicon:hover {
+	color: black;
+}
+
+#calHeader {
+	background-color: #3a87ad;
+}
+
+.myAlert-bottom {
+	position: absolute;
+    max-width: 300px;
+    /* min-height: 300px; */
+    /* background: #063; */
+    bottom: 0px;
+    right: 25%;
+    left: 50%;
+    margin-left: -150px;
+}
+
 </style>
 </head>
 <body>
 	<div id='calendar'></div>
+	<!-- <div id="calendarTrash" class="calendar-trash"><img src="resources/images/trash.png" /></div> -->
 	<!-- Modal -->
 	<div id="createEventModal" class="modal fade">
 		<div class="modal-dialog modal-dialog-centered">
@@ -263,6 +376,43 @@
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- The Modal -->
+	<div class="modal" id="calModal">
+		<input id="hiddenid" type="hidden" value="">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div id="calHeader" class="modal-header">
+					<h4 id="calTitle" class="modal-title"></h4>
+					<div>
+					<i class="fas fa-pencil-alt calicon" title="수정"></i>
+						<i onclick="deleteEvent()" class="far fa-trash-alt calicon" title="삭제"></i>
+						
+						<button type="button" id="closeCal" class="close"
+							data-dismiss="modal">&times;</button>
+					</div>
+				</div>
+
+				<!-- Modal body -->
+				<div id="calBody" class="modal-body">
+					<div id="timediv">
+						<div id="clockdiv">
+							<i class="far fa-clock"></i>
+						</div>
+						<div id="timecontent"></div>
+					</div>
+					<div></div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="myAlert-bottom alert alert-primary" style="display: none;">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<span id="alertmsg"></span>
 	</div>
 
 
@@ -300,6 +450,7 @@ $(function() {
     }
   });
 });
+
 </script>
 
 </body>

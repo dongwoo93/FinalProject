@@ -26,7 +26,6 @@ public class IBoardService implements BoardService {
 	@Autowired	private BoardDAO dao;
 	@Autowired	private BoardBusinessDAO bbdao;
 	@Autowired	private MemberBusinessDAO mbdao;
-	@Autowired	private ProfileDAO proedao;
 	@Autowired  private Board_LocationDAO ldao;
 	@Autowired  private Member_TagsDAO mtdao;	
 	
@@ -36,8 +35,13 @@ public class IBoardService implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDTO> getFeed(String id, int start, int end) {
+	public List<BoardDTO> getFeed(String id, int start, int end) throws Exception{
 		return dao.getFeed(id, start, end);
+	}
+	
+	@Override
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception {
+		return dao.getFeedForAd(picks);
 	}
 	
 	@Override

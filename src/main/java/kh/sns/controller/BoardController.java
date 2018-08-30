@@ -38,9 +38,11 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
+import kh.sns.interfaces.BoardBusinessService;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -67,8 +69,10 @@ public class BoardController {
 	@Autowired	private MemberService memService;
 	@Autowired	private SearchService searchService;
 	@Autowired	private Member_CalendarService calService;
+	@Autowired	private BoardBusinessService bbs;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
+	static final int TOUR_PER_PAGE = 15;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -88,7 +92,10 @@ public class BoardController {
 		List<FollowInfo> follow_list = new ArrayList<>();
 		List<Integer> maxImgHeight = new ArrayList<>();
 		List<String> trend = new ArrayList<>();
-
+		
+		List<BoardBusinessDTO> adList = new ArrayList<>();
+		List<BoardDTO> adFeedList = new ArrayList<>();
+		List<String> membersNick = new ArrayList<>();
 
 		try {
 			follow_list = member_followService.toFeed(id);
@@ -100,8 +107,60 @@ public class BoardController {
 		try {
 			/*list = boardService.getFeed(id);*/
 			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
+			int pickAdsCount = NAV_COUNT_PER_PAGE / 5;
+			if(list.size() < 5) {
+				adList = bbs.pickAds(1);
+			} else if (list.size() < 10) {
+				adList = bbs.pickAds(2);
+			} else {
+				adList = bbs.pickAds(pickAdsCount);
+			}
+			
+			
+			// ================== 임시 ================== 
+			adList.forEach(System.out::println);
+			
+			int[] ads = new int[adList.size()];
+			for(int i = 0; i < ads.length; i++) {
+				ads[i] = adList.get(i).getBoardSeq();
+			}
+			
+			adFeedList = boardService.getFeedForAd(ads);
+			
+			int x = (NAV_COUNT_PER_PAGE / 3);
+			int p = 1;
+			for(BoardDTO b : adFeedList) {
+				b.setThisArticleForAd(1);
+				b.setBoard_seq(-1 * b.getBoard_seq());
+				try {
+					list.add(x, b);
+				} catch(IndexOutOfBoundsException e) {
+					list.add(b);
+				}
+
+				x += ((NAV_COUNT_PER_PAGE / 3) + p++);
+			}
+								
+			adFeedList.forEach(System.out::println);
+			System.out.println();
+			list.forEach(System.out::println);
+			
+			membersNick = new ArrayList<>();
+			for(BoardDTO b : list) {
+				membersNick.add(memService.getOneMember(b.getId()).getNickname());
+			}
+			membersNick.forEach(System.out::println);
+			// ========================================
+			
+			
 			for(int i = 0; i < list.size(); i++) {
-				media.add(boardService.search2(list.get(i).getBoard_seq()));
+				if(list.get(i).getBoard_seq() < 0) {
+					media.add(boardService.search2(-1 * list.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				}
+				
 			}
 			
 			
@@ -133,7 +192,7 @@ public class BoardController {
 			profile_image = profileService.getAllProfileImage();
 
 			Set<Integer> seqlist = new HashSet<>();
-			for(Board_CommentDTO dto : list1) {	
+			for(Board_CommentDTO dto : list1) {					
 				seqlist.add(dto.getBoard_seq());
 				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
 
@@ -176,6 +235,12 @@ public class BoardController {
 		mav.addObject("result3", follow_list);
 		mav.addObject("follow_size", follow_list.size()/5);
 		mav.addObject("NAV_COUNT_PER_PAGE", NAV_COUNT_PER_PAGE);
+		
+		// 광고 관련 
+		mav.addObject("adList", adList);
+		mav.addObject("membersNick", membersNick);
+		
+		
 		System.out.println(follow_list.size()/5); 
 
 		mav.addObject("maxImgHeight",maxImgHeight);
@@ -190,7 +255,7 @@ public class BoardController {
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
 		
 		if(start == null) {
-			start = "15";
+			start = String.valueOf(NAV_COUNT_PER_PAGE);
 		} 
 		
 		response.setCharacterEncoding("UTF8");
@@ -618,6 +683,78 @@ public class BoardController {
 		mav.setViewName("tour.jsp");
 		return mav;
 	}
+	
+	@RequestMapping("/tourForJson.ajax")
+	public void tourForJson(HttpServletResponse response, HttpServletRequest request, HttpSession session, String start, String cat) throws Exception {
+		if(start == null) {
+			start = String.valueOf(TOUR_PER_PAGE);
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+        
+        String id = (String)session.getAttribute("loginId");
+		String category = null;
+
+		List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer, String> mapmark = new HashMap<>();
+		mark = board_bookmarkService.searchMark(id);
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
+
+		// 최신글
+		if(cat.equals("1")) {
+			result = boardService.getAllBoard();
+			category = "최신글";
+		}
+
+		// 좋아요 
+		else if(cat.equals("2")) {
+			category = "좋아요 순";
+			List<int[]> seqArr = board_likeService.bestLike();
+			for(int i = 0; seqArr.size() > i; i++) {
+				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+			}
+		}
+
+		// 인기 태그
+		else if(cat.equals("3")) {
+			category = "인기 태그 순";
+			List<String[]> tagArr = boardService.selectTagCount();
+			for(int i = 0; i < tagArr.size(); i++) {
+				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
+					System.out.println(tagArr.get(i)[2].split(",")[j]);
+				}
+			}
+		}
+
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+		}
+
+		// 누를때
+		for(int tmp : result3) {
+			map.put(tmp, "y");
+		}
+
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
+		
+	}
 
 	@RequestMapping("/mypage.bo")
 	public ModelAndView toMypage(HttpSession seesion, HttpServletResponse response){
@@ -931,8 +1068,11 @@ public class BoardController {
 
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response, HttpSession seesion) throws Exception {
+		System.out.println(fi.getId() + " : " + fi.getTargetId());
+		System.out.println("컨트롤러 들어옴");
 		response.setCharacterEncoding("UTF-8");
 		int result = member_followService.deleteFollowInfo(fi);
+		System.out.println("result" + result);
 		if(result == 1) {
 			response.getWriter().print("팔로우 취소 완료");
 		}else {
