@@ -22,5 +22,6 @@ public interface Board_LikeService {
 			//dus
 			public int insertLiko(Board_LikeDTO dto) throws Exception;
 			public Board_LikeDTO isLiked(String id, int board_seq) throws Exception;
+		
 			
 }
