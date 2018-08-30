@@ -841,7 +841,7 @@ public class BoardController {
 				
 				
 			}
-			new Gson.toJson(result,resp.getWriter());
+			new Gson().toJson(result,resp.getWriter());
 			
 			 
 		} catch (Exception e) {
