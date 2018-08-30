@@ -4,13 +4,14 @@ import java.util.List;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
-import kh.sns.dto.Board_LikeDTO;
+import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 
 import kh.sns.dto.Board_TagsDTO;
 
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.Profile_ImageDTO;
+import kh.sns.dto.Member_TagsDTO;
 	
 public interface BoardService {
 	
@@ -23,7 +24,7 @@ public interface BoardService {
 	public int modifyBoard(BoardDTO dto) throws Exception;
 
 
-	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList, BoardBusinessDTO bbiz) throws Exception;
+	public int insertNewArticle(BoardDTO boardContent, List<Board_MediaDTO> boardMediaList, BoardBusinessDTO bbiz,Board_LocationDTO locationdto,List<Member_TagsDTO> membertag) throws Exception;
 	public BoardDTO getBoardModal(String seq) throws Exception;
 	
 	

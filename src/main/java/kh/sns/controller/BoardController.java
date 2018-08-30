@@ -34,9 +34,12 @@ import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_BookmarkDTO;
 import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.Board_LikeDTO;
+import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.Member_CalendarDTO;
+import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
@@ -45,6 +48,7 @@ import kh.sns.interfaces.Board_LikeService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
+import kh.sns.interfaces.Member_CalendarService;
 import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.ProfileService;
 
@@ -60,6 +64,7 @@ public class BoardController {
 	@Autowired	private ProfileService profileService;
 	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private MemberService memService;
+	@Autowired	private Member_CalendarService calService;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
 
@@ -654,12 +659,41 @@ public class BoardController {
 			@RequestParam("costPerMille") String costPerMille,
 			@RequestParam("remainedPublicExposureCount") String remainedPublicExposureCount,
 			@RequestParam("costPerClick") String costPerClick,
+			@RequestParam(value="tags[]", defaultValue="") List<String> persontag,
+			@RequestParam("lat") String lat,
+			@RequestParam("lng") String lng,
+			@RequestParam("place") String place,
 			HttpServletResponse response) {	
 
 		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;		
 		List<MultipartFile> mfList = mhsr.getFiles("filename[]");		
 		List<Board_MediaDTO> fileList = new ArrayList<Board_MediaDTO>();
-
+		System.out.println(lat + "lat");
+		System.out.println(lng + "Ds");
+		System.out.println(place + "Dsaf");
+		
+		Board_LocationDTO locationdto =null;
+		
+		if(lat.equals("") && lng.equals("") && place.equals("")) {
+			
+		}else {
+			locationdto = new Board_LocationDTO(0,place,lat,lng);
+		}
+		
+		List<Member_TagsDTO> membertag = new ArrayList<>();
+		
+		if(persontag.isEmpty()) {
+			membertag = null;
+		}
+		else {
+			for(String tmp : persontag) {
+				Member_TagsDTO membertagdto = new Member_TagsDTO(0,tmp,"");
+				membertag.add(membertagdto);
+			}
+		}
+		
+		
+		
 		/*테스트용 에코 코드*/
 		/*System.out.println(request.getParameter("filters"));
 		System.out.println("enableBiz: " + enableBiz);
@@ -742,7 +776,7 @@ public class BoardController {
 		// 테스트용 (else는 나중에 삭제)
 		try {
 			if(request.getSession().getAttribute("loginId") != null) {				
-				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList, bbiz);
+				boardService.insertNewArticle(new BoardDTO(0, contents, request.getSession().getAttribute("loginId").toString(), "", "", ""), fileList, bbiz,locationdto,membertag);
 			} else {
 				// 잘못된 접근과 관련된 코드..
 			}
@@ -872,8 +906,14 @@ public class BoardController {
 
 	}
 	@RequestMapping("/calendar.bo")
-	public String goCalendar(HttpSession session){
-		return "redirect:calendar.jsp";   
+	public ModelAndView goCalendar(HttpSession session) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		String sessionId = (String) session.getAttribute("loginId");
+		List<Member_CalendarDTO> result = calService.selectCalendar(sessionId);
+		mav.addObject("result", result);
+		mav.setViewName("calendar2.jsp");
+		return mav;
+		
 	}
 
 	@RequestMapping("/deletefollow.do")

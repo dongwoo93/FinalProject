@@ -15,6 +15,7 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/websocket")
 public class WebSocket{
 	public static Map<String,Session> onlineUser = new HashMap<>();
+	public static Map<String, String> ipMap = new HashMap<>();
 	
 
 	@OnOpen
