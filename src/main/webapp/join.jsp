@@ -247,8 +247,18 @@ $("document").ready(function(){
 		
 		$(".validate").val("");
 		$("#confirm").prop("disabled", false);
-		$(".phoneinput").remove();       
+		$(".phoneinput").remove();
+		$("input[name=phone]").attr("readonly",false);
+		$("#chIdOk").hide();
+		$("#chIdFalse").hide();
+
+		$("#chNickOk").hide();
+		$("#chNickFalse").hide();
+
+		$("#chEmailOk").hide();
+		$("#chEmailFalse").hide();	
 	});
+	
 	
 $("#back").click(function(){
 		
@@ -258,18 +268,23 @@ $("#back").click(function(){
 	
 $("#id").click(function(){
 	
-	$("#chId").remove();	
+	$("#chIdOk").hide();
+	$("#chIdFalse").hide();
 	
 });	
 
 $("#nick").click(function(){
 	
-	$("#chNick").remove();	
+
+	$("#chNickOk").hide();
+	$("#chNickFalse").hide();
 	
 });	
 $("#email").click(function(){
 	
-	$("#chEmail").remove();	
+
+	$("#chEmailOk").hide();
+	$("#chEmailFalse").hide();	
 	
 });	
 
@@ -440,6 +455,7 @@ $("#sign").click(function(){
 						if((!data=="")){
 							alert("인증번호 전송완료");
 							$("input[name=phone]").attr("readonly",true);
+							$("input[name=phone]").css("border-bottom-color","#4caf50");
 						var start = $(".confirm");
 						
 						start.after(
@@ -452,7 +468,7 @@ $("#sign").click(function(){
 							if(insert==data){
 								$("#certification").css("background-color", "#ccff33");
 								 $("input[name=certification]").attr("readonly",true);
-									
+								 $("#certification").css("border-bottom-color","#4caf50");
 								phoneConfirm=1;		
 								alert("인증 성공");
 							}else{
@@ -538,10 +554,9 @@ $("#sign").click(function(){
 				                   if(data==1){
 				                
 				                	   idCheck=0;
-				                	   $("#chId").css("display",true);
-
-
-				                	   alert("이미 사용중인 아이디 입니다");
+				                	   $("#chIdFalse").show();
+				                	   $("#chIdOk").hide();
+				                	  
 				                	   
 				                	   $("#id").val("");
 				                	   $("#id").focus();
@@ -550,10 +565,9 @@ $("#sign").click(function(){
 				                   }else if(data==0){
 				               
 				                	   idCheck=1;
-		                	   var start = $(".id");
-				   				start.after(
-				   						'<div class="mt-2" id="chId"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" ></i></div>');
-				                	   alert("사용 가능한 아이디 입니다.");
+				                	   $("#chIdOk").show();
+				                	   $("#chIdFalse").hide();
+				                	 
 				                	   
 				                   }
 				                   
@@ -575,7 +589,7 @@ $("#sign").click(function(){
 						console.log(idCheck);
 					}
 				},
-				500);
+				350);
 }
  
  function checkNick() {
@@ -596,25 +610,18 @@ $("#sign").click(function(){
 				                    if(data==1){
 						                
 					                	   nickCheck=0;
-					                	   var start = $(".nick");
-					   						start.after('<div class="mt-2" id="chNick"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>');
-					                	
-
-
-					                	   alert("이미 사용중인 닉네임 입니다");
-					                	   
+					                	   $("#chNickFalse").show();
+					                	   $("#chNickOk").hide();
 					                	   $("#nick").val("");
 					                	   $("#nick").focus();
 					                	   
 					   						
 					                   }else if(data==0){
-					               
+
+					                	   $("#chNickFalse").hide();
+					                	   $("#chNickOk").show();
 					                	   nickCheck=1;
-			                	   var start = $(".nick");
-					   				start.after(
-					   						'<div class="mt-2" id="chNick"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" id="chId"></i></div>');
-					                	   alert("사용 가능한 닉네임 입니다.");
-					                	   
+			                	  
 					                   }
 				                },
 				                error: function() {
@@ -628,11 +635,13 @@ $("#sign").click(function(){
 						console.log(nickCheck);
 					} else {
 						console.log("떙");
+						 $("#chNickFalse").show();
+	                	   $("#chNickOk").hide();
 						nickCheck=0;
 						console.log(nickCheck);
 					}
 				},
-				500);
+				350);
 }
  
  function checkEmail() {
@@ -655,24 +664,18 @@ $("#sign").click(function(){
 				                    if(data>0){
 						              
 				                    		emailCheck=0;
-					                	   var start = $(".email");
-					   						start.after('<div class="mt-2" id="chEmail"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>');
-					                	
-
-
-					                	   alert("이미 사용중인 이메일 입니다");
-					                	   
+				                    		$("#chEmailFalse").show();
+						                	   $("#chEmailOk").hide();
 					                	   $("#email").val("");
 					                	   $("#email").focus();
 					                	   
 					   						
 					                   }else if(data==0){
-					               
+					                	   $("#chEmailFalse").hide();
+					                	   $("#chEmailOk").show();
+				                	   
 					                	   emailCheck=1;
-			                	   var start = $(".email");
-					   				start.after('<div class="mt-2" id="chEmail"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" id="chId"></i></div>');
-					                	   alert("사용 가능한 이메일 입니다.");
-					                	   
+			                	   	   
 					                   }                 
 				                },
 				                error: function() {
@@ -687,11 +690,14 @@ $("#sign").click(function(){
 						console.log(emailCheck);
 					} else {
 						console.log("떙");
+				  		$("#chEmailFalse").show();
+	                	   $("#chEmailOk").hide();
+           
 						emailCheck=0;
 						console.log(emailCheck);
 					}
 				},
-				500);
+				350);
 }
  
  
@@ -753,19 +759,21 @@ $(location).attr("href", "main.jsp");
 
 								<input pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$" id="id"
 									name="id" onblur="checkId()" type="text" class="validate"
-									required> <label for="id">ID 4~19자리(영문 숫자 혼합)</label>
-<div class="mt-2" id="chId" style="display:none;"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" ></i></div>;
-				                	
-
+									required><label for="id">ID 4~19자리(영문 숫자 혼합)</label>
+  
 
 							</div>
-
+<div class="mt-2" id="chIdFalse" style="display:none;"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" ></i></div>
+				                	
+		        <div class="mt-2" id="chIdOk" style="display:none;"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" ></i></div>
+		
 
 							<div class="input-field col s6 name">
 								<input id="name" name="name" type="text" minlength="2"
 									onblur="checkName()" class="validate" required> <label
 									for="name">Name 한글만 입력 해 주세요</label>
 							</div>
+						
 						</div>
 						<div class="row">
 
@@ -783,7 +791,7 @@ $(location).attr("href", "main.jsp");
 
 							</div>
 
-
+   
 
 						</div>
 						<div class="row">
@@ -793,13 +801,19 @@ $(location).attr("href", "main.jsp");
 									pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
 									class="validate" required> <label for="email">Email</label>
 							</div>
+							
+							<div class="mt-2" id="chEmailFalse" style="display:none;"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>
+							<div class="mt-2" id="chEmailOk" style="display:none;"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" id="chId"></i></div>
+							
 						</div>
 						<div class="row">
 							<div class="input-field col s12 nick">
 								<input id="nick" onblur="checkNick()" name="nickname"
 									type="text" pattern="^[A-Za-z]{1}[A-Za-z0-9]{3,19}$"
 									class="validate" required> <label for="nick">Nickname 4~19자리(영문 숫자 혼합)</label>
-							</div>
+							</div><div class="mt-2" id="chNickFalse" style="display:none;"><i class="fas fa-ban mt-4" style="color:red; font-size:30px" id="chId"></i></div>
+							<div class="mt-2" id="chNickOk" style="display:none;"><i class="fas fa-check-square mt-4" style="color:green; font-size:30px" id="chId"></i></div>
+							
 						</div>
 						<div class="row confirm">
 							<div class="input-field col s9 phone">
