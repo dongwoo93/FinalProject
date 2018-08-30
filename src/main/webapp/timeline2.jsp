@@ -500,7 +500,7 @@
 											"</a><span class=fugue>") + "</span>";
 						newtxt += "<kz></kz>";	            	
 	                
-	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}&cat=1'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                   $("#ul"+seq).hide().fadeIn(500);  
 	                   
@@ -590,7 +590,7 @@
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${tmp.id}<br>Dangsan.South Korea
 									</a>
 								</c:otherwise>
 							</c:choose>
@@ -673,7 +673,7 @@
 								<div class=col-12>
 									<div class="btn btn-secondary btn-lg btn-block">
 										<c:forEach var="ad" items="${ adList }">
-											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
+											<c:if test="${ -1 * (ad.boardSeq) eq tmp.board_seq }">
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
 														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">Instagram Profile 가기</a>
@@ -752,7 +752,7 @@
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;color: #4f70ce;">${tmp.id}</a>
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}"
 										style="word-wrap: break-word; word-break: break-all"></div>
@@ -773,13 +773,16 @@
 		</script>
 								</div>
 								<!-- 글내용자리 -->
-
+							<c:if test="${ tmp.thisArticleForAd ne 1 }">
 								<p class="text-info pointer pt-4 mb-1"
 									id="myComment${tmp.board_seq}" onclick="commentdisplay(this)"></p>
 								<input type=hidden value="${tmp.board_seq}">
+								
+							
 								<div class="comment-contents"
 									id="comment-contents${tmp.board_seq}">
-
+								
+								
 									<!-- 댓글자리 -->
 
 									<c:forEach var="commenttmp" items="${commentresult}">
@@ -843,13 +846,14 @@
 								<p class="text-info pointer pt-3 pl-1"
 									id="commenthide${tmp.board_seq}" onclick="commenthide(this)"></p>
 								<input type=hidden value="${tmp.board_seq}">
+							</c:if>
 							</div>
 
 
 
 							<!--               -->
 
-
+						<c:if test="${ tmp.thisArticleForAd ne 1 }">
 							<div class="crecodiv pl-2 py-2 navbar-nav">
 
 
@@ -871,7 +875,7 @@
 
 
 							</div>
-
+						</c:if>
 <!-- 여기다 그 스크립트 -->
 						</div>
 						<!--cont  -->
@@ -896,7 +900,8 @@
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
 					  
 						
-			<hr class="_5mToa">
+<!-- 			<hr class="_5mToa"> -->
+<br>
 				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
@@ -926,7 +931,8 @@
 			<div class="container float" id=""    
 						style="width: 300px; margin-top: 20px; margin-left: 30px;">
 					
-			<hr class="_5mToa">
+<!-- 			<hr class="_5mToa"> -->
+<br>
 				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					실시간 #트랜드     
 				</p>
@@ -939,10 +945,10 @@
 					<div class="container" >     
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
-					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
 								href="">${status.count}</a></li>  
-					<li class="pt-2"><a id="keywordlink" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					<li class="pt-2"><a id="keywordlink" style="color:#4f70ce;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
 			</div>
 			<script>
@@ -967,7 +973,8 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<a href="footinfo.jsp"><p><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<a href="footinfo.jsp"><p style="color:#dc3545;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+						
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
