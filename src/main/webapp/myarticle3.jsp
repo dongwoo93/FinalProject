@@ -727,7 +727,7 @@ $(document).ready(function(){
                                        
                                   var width = data[5]+300;  
                                   var width1 = parseInt(data[5]);
-                                  alert(width + " : " + width1)
+//                                   alert(width + " : " + width1)
                                   $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
                                  $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
                                       
