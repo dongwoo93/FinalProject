@@ -834,7 +834,7 @@ ul {
 }   
 
 .myslides {display:none;}  
-
+  
 .float {
 	
 background-color: #FAFAFA; 	
@@ -857,10 +857,10 @@ a:link {
   text-transform: uppercase;  
   
     
-    
+        
     }
-/* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
-/*     display: block; */
-/*     display: table-cell; */
-/*     vertical-align: middle; */
-/* }   */
+.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+    display: block;
+    display: table-cell;  
+    vertical-align: middle;
+}  

@@ -639,37 +639,7 @@
 							
 						</div>
 						<div class="mt-2" id="boardimg">
-							<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>
-
-
-							<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
-
-							<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
-							<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
-
-							<script>      
-										
-// 										var height= $("#feedimg${status.index}a${status3.index}").height()
-										
-// 										var maxheight = $("#maxheight${status.index}").val();
-										
-										
-// 										if(parseInt(maxheight) < height){
-											
-// 										$("#maxheight${status.index}").val(height);
-  
-// 										var realmax= $("#maxheight${status.index}").val();   
-										 
-										
-// 										}     
-										
-// 										var realmax= $("#maxheight${status.index}").val(); 
-// 										$("#myCarousel${status.index}").attr("style"," height:"+realmax+"px;");  
-										
-										</script>
-							<%-- 									</c:forEach> --%>
-
-
+						
 
 							<div id="myCarousel${status.index}" class="carousel slide"
 								data-ride="carousel" data-interval="false" style="z-index: 5;">
@@ -681,8 +651,9 @@
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-								<div id="carousel-inner" class="carousel-inner">
+								</ul>  
+								<div id="carousel-inner" class="carousel-inner"
+								style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
 									<div id="firstItem" class="carousel-item active">
 										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -732,7 +703,7 @@
 									</div>
 								</div>
 							</div>
-						</c:if>
+						</c:if> 
 
 
 						<div id="cont">

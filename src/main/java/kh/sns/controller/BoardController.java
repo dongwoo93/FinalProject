@@ -165,25 +165,26 @@ public class BoardController {
 			}
 			
 			
-		//	String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia"); 
 
 
-//			for(List<Board_MediaDTO> mlist : media) { 
-//				double max = 0;
-//				for(Board_MediaDTO dto : mlist) {
-//					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//					double height = bimg.getHeight();
-//					double width = bimg.getWidth();
-//					height = 600*height/width;   
-//					System.out.println("height : " + height);
-//					if(max<height) { 
-//						max = height;
-//					}
-//
-//				}
-//				maxImgHeight.add((int)max);   
-//				System.out.println("max:" + max);     
-//			}
+			for(List<Board_MediaDTO> mlist : media) { 
+				double max = 0;
+				for(Board_MediaDTO dto : mlist) {
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+					System.out.println(realPath+dto.getSystem_file_name());
+					double height = bimg.getHeight();
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+					System.out.println("height : " + height);
+					if(max<height) { 
+						max = height;
+					}
+
+				}
+				maxImgHeight.add((int)max);   
+				System.out.println("max:" + max);     
+			}
 
 
 			list1 = board_commentService.getFeedComment(id);
@@ -456,39 +457,7 @@ public class BoardController {
 
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
 		
-		
-		////////////////////////////////////////
-//		
-//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
-//
-//		double maxwidth = 0;
-//
-//		
-//		for(Board_MediaDTO dto : result2) {  
-//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//			
-//			double width = bimg.getWidth();  
-//			double height = bimg.getHeight();
-//			
-//			if(width < height) {
-//				width = 600 * width / height;
-//			}
-//		
-//			if(maxwidth<width) { 
-//				maxwidth = width;
-//				
-//			}   
-//	  
-//		}
-//	
-//	
-//		if(maxwidth > 600) {
-//			maxwidth = 600;
-//		}
-//		
-// 
-//		
-		
+
 		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
@@ -528,7 +497,7 @@ public class BoardController {
 				maxwidth = width;
 			}
 			 
-		}
+		} 
 		System.out.println(" : " + maxwidth);  
 		
 
@@ -603,13 +572,14 @@ public class BoardController {
 		}
 
 		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result);		// 검색어
+		mav.addObject("result", result); 		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
 		mav.setViewName("NewFile.jsp");
 		return mav;
+		
 	}
 
 	//tour(둘러보기)  
