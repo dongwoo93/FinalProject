@@ -1,5 +1,7 @@
 package kh.sns.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,10 @@ public class IBoard_LocationService implements Board_LocationService{
 	@Override
 	public int insertLocation(Board_LocationDTO dto) throws Exception {
 		return board_locationdao.insertLocation(dto);
+	}
+	
+	@Override
+	public List<Board_LocationDTO> selectLocation(String id) throws Exception {
+		return board_locationdao.selectLocation(id);
 	}
 }

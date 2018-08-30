@@ -189,7 +189,7 @@ $(function() {
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="calendar.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="mymap.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
         </div>
