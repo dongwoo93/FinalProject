@@ -987,8 +987,11 @@ public class BoardController {
 
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response, HttpSession seesion) throws Exception {
+		System.out.println(fi.getId() + " : " + fi.getTargetId());
+		System.out.println("컨트롤러 들어옴");
 		response.setCharacterEncoding("UTF-8");
 		int result = member_followService.deleteFollowInfo(fi);
+		System.out.println("result" + result);
 		if(result == 1) {
 			response.getWriter().print("팔로우 취소 완료");
 		}else {
