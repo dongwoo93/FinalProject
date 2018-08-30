@@ -396,5 +396,10 @@ padding-left:3%;
     font-size: 2rem;
     color: red;
 }
+
+a:link {
+	text-decoration: none;
+
+}
    
   
