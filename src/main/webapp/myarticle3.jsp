@@ -615,7 +615,7 @@ $(document).ready(function(){
                               data: {seq:seq},
                               success: function(data)         
                               {      
-									alert(data[5]);  
+									(data[5]);  
                             	  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
                             	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
                            	   if(data[1].length == 1) {
@@ -813,7 +813,7 @@ $(document).ready(function(){
 
 
 
-			<div class="modal-content view modalmedia" >
+			<div class="modal-content view modalmedia" style="background-color: black;">
 
 				<div id="demo" class="carousel slide" data-ride="carousel"
 					data-interval="false">
@@ -836,7 +836,7 @@ $(document).ready(function(){
 			</div>
 
 
-			<div class="modal-content view" style="width: 300px; height: auto;">
+			<div class="modal-content view" style="width: 400px; height: auto;">
 
 
 				<div class="hidden" id="hidden"></div>
