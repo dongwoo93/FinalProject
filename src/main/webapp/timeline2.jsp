@@ -590,7 +590,7 @@
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${tmp.id}<br>Dangsan.South Korea
 									</a>
 								</c:otherwise>
 							</c:choose>
