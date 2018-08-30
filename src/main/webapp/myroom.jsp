@@ -18,18 +18,17 @@
 			              <i class="fas fa-map-marked-alt fa-5x"></i>
 			            </div>
 			            <div class="col-8">
-			              <h1 class="mt-3" ><b>나의 지도</b></h1>
+			              <h1 class="mt-3"><b>나의 지도</b></h1>
 			            </div>
 			          </div>
 			        </div>
 			        <div class="py-5 col-md-6" style="border:5px solid #ccc;font-family: NANUMBARUNPENR !important;font-size: 14px;height:300px;">
 			          <div class="row">
 			            <div class="text-center col-4">
-			              <i class="d-block mx-auto fa fa-5x fa-map-o"></i>
+			              <i class="far fa-calendar-alt fa-5x"></i>
 			            </div>
 			            <div class="col-8">
-			              <h5 class="mb-3 text-primary">
-			                <b>Find your way</b>
+			               <h1 class="mt-3"><b>나의 일정</b></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>

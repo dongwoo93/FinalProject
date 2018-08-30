@@ -68,7 +68,7 @@ div#form{
    top:50%;
    margin-left:-200px;
    margin-top:-300px;
-   opacity : 0.9;
+/*    opacity : 0.9; */
 }
 div.form-item{position: relative; display: block; margin-bottom: 40px;}
  input{transition: all .2s ease;}
