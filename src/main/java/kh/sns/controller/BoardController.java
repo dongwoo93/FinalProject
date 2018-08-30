@@ -73,6 +73,7 @@ public class BoardController {
 	@Autowired	private BoardBusinessService bbs;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
+	static final int TOUR_PER_PAGE = 15;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -192,7 +193,7 @@ public class BoardController {
 			profile_image = profileService.getAllProfileImage();
 
 			Set<Integer> seqlist = new HashSet<>();
-			for(Board_CommentDTO dto : list1) {	
+			for(Board_CommentDTO dto : list1) {					
 				seqlist.add(dto.getBoard_seq());
 				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
 
@@ -255,7 +256,7 @@ public class BoardController {
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
 		
 		if(start == null) {
-			start = "15";
+			start = String.valueOf(NAV_COUNT_PER_PAGE);
 		} 
 		
 		response.setCharacterEncoding("UTF8");
@@ -682,6 +683,78 @@ public class BoardController {
 		mav.addObject("result4",countlike);		// 조회
 		mav.setViewName("tour.jsp");
 		return mav;
+	}
+	
+	@RequestMapping("/tourForJson.ajax")
+	public void tourForJson(HttpServletResponse response, HttpServletRequest request, HttpSession session, String start, String cat) throws Exception {
+		if(start == null) {
+			start = String.valueOf(TOUR_PER_PAGE);
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+        
+        String id = (String)session.getAttribute("loginId");
+		String category = null;
+
+		List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer, String> mapmark = new HashMap<>();
+		mark = board_bookmarkService.searchMark(id);
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
+
+		// 최신글
+		if(cat.equals("1")) {
+			result = boardService.getAllBoard();
+			category = "최신글";
+		}
+
+		// 좋아요 
+		else if(cat.equals("2")) {
+			category = "좋아요 순";
+			List<int[]> seqArr = board_likeService.bestLike();
+			for(int i = 0; seqArr.size() > i; i++) {
+				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+			}
+		}
+
+		// 인기 태그
+		else if(cat.equals("3")) {
+			category = "인기 태그 순";
+			List<String[]> tagArr = boardService.selectTagCount();
+			for(int i = 0; i < tagArr.size(); i++) {
+				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
+					System.out.println(tagArr.get(i)[2].split(",")[j]);
+				}
+			}
+		}
+
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+		}
+
+		// 누를때
+		for(int tmp : result3) {
+			map.put(tmp, "y");
+		}
+
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
+		
 	}
 
 	@RequestMapping("/mypage.bo")
