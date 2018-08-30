@@ -79,22 +79,25 @@ $(document).ready(function() {
 
       })*/
 
-   $("#toMy").click(function() {
-      $(location).attr("href", "profile.member?cat=0");
-   })
+	$("#toMy").click(function() {
+		$(location).attr("href", "profile.member?cat=0");
+	})
+	
+		
 
-   $("#goNext").click(function() {
-   
-         
-      $(".first").remove();
-      $("#firstli").attr('class', 'active');
-      $("#firstItem").attr('class', 'carousel-item active');
-      if($("#carousel-indicators li:nth-child(2)").length) {
-         $(".element").remove();
-      }     
-      var seq = $("#next").val();
-      
-       $("#likeit").val(seq);
+	
+	$("#goNext").click(function() {
+	
+		   
+		$(".first").remove();
+		$("#firstli").attr('class', 'active');
+		$("#firstItem").attr('class', 'carousel-item active');
+		if($("#carousel-indicators li:nth-child(2)").length) {
+			$(".element").remove();
+		}  	
+		var seq = $("#next").val();
+		
+	    $("#likeit").val(seq);
         $("#likecancel").val(seq); 
         $("#mark").val(seq);
         $("#markcancel").val(seq);
@@ -315,53 +318,52 @@ $(document).ready(function() {
 
    })
 
-   /*modifysubmitbtn*/
-   
-   
-   $("#savebtn").click(function() {  
-      if($('#inputimg').get(0).files.length != 0) {
-         
-         
-         $.ajax({
-            type:"POST",
-            url:"uploadImg.profile",
-            data: formData,
-            processData : false,
-               contentType : false,
-            success: function(data) {
-               alert(data);
-               location.reload();
-            },
-            error : function(error) {
-                   console.log(error);
-                   console.log(error.status);
-               }
-         });
-      }else {
-         var fileName = $("#hiddenimgname").val();
-         if(fileName == "") {
-            alert("사진을 등록해주세요");
-         }else {
-            var id = $("#hiddenid").val();
-            $.ajax({
-               type:"POST",
-               url:"updateImg.profile",
-               data: {system_file_name:fileName, id:id},
-               success: function(data) {
-                  alert(data);
-                  location.reload();
-               },
-               error : function(error) {
-                      console.log(error);
-                      console.log(error.status);
-                  }
-            });
-         }
-         
-      }
-      
-   })
-   
+	/*modifysubmitbtn*/
+	
+	
+	$("#savebtn").click(function() {  
+		if($('#inputimg').get(0).files.length != 0) {
+			var formData = new FormData($("#fileForm")[0]);
+			$.ajax({
+				type:"POST",
+				url:"uploadImg.profile",
+				data: formData,
+				processData : false,
+	            contentType : false,
+				success: function(data) {
+					alert(data);
+					location.reload();
+				},
+				error : function(error) {
+	                console.log(error);
+	                console.log(error.status);
+	            }
+			});
+		}else {
+			var fileName = $("#hiddenimgname").val();
+			if(fileName == "") {
+				alert("사진을 등록해주세요");
+			}else {
+				var id = $("#hiddenid").val();
+				$.ajax({
+					type:"POST",
+					url:"updateImg.profile",
+					data: {system_file_name:fileName, id:id},
+					success: function(data) {
+						alert(data);
+						location.reload();
+					},
+					error : function(error) {
+		                console.log(error);
+		                console.log(error.status);
+		            }
+				});
+			}
+			
+		}
+		
+	})
+	
 
 })
 

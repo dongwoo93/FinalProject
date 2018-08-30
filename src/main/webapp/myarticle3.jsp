@@ -13,6 +13,8 @@
 </script>
 <script src="resources/js/top.js"></script>    
 <script src="resources/js/myarticle.js"></script>
+
+
 <script>
 
 	function tag(e) {
@@ -280,7 +282,7 @@ $(document).ready(function(){
 																		}
 																	});
 																})
-}
+															}
 								</script>
 
 
@@ -317,6 +319,9 @@ $(document).ready(function(){
 	</c:forEach>
 </c:if>
 
+
+
+	
 <div id="allwrapper">
 
 
@@ -374,7 +379,7 @@ $(document).ready(function(){
 					<div class="profile-user-settings">
 						<h2 class="profile-user-name">${pageid}</h2>
 						<div class="profile-edit-btn" id="toMy">프로필 편집</div>
-						<div class="profile-edit-btn" id="">나의 게시판</div>
+						<div class="profile-edit-btn" id="myRoom"><a href="myroom.jsp"style="color: #151515;">나의게시판</a></div>
 						<i class="fas fa-user-cog" data-toggle="modal"
 							data-target="#settingModal"
 							style="font-size: 20px; margin-left: 15px; cursor: pointer;"></i>
@@ -514,12 +519,12 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center"><a
-												href="board.bo?id=${pageid}&cat=1">게시물</a></th>
-											<th class="text-center"><a
-												href="board.bo?id=${pageid}&cat=2">찜콕됨</a></th>
-											<th class="text-center"><a 
-												href="board.bo?id=${pageid}&cat=3">태그됨</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="board.bo?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="board.bo?id=${pageid}&cat=2" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">찜콕됨</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+												href="board.bo?id=${pageid}&cat=3" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">태그됨</a></th>
 										</tr>
 									</thead>
 								</table>
@@ -536,7 +541,7 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center"><a href="">게시물</a></th>
+											<th class="text-center"  style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
 
 										</tr>
 									</thead>
@@ -1153,4 +1158,7 @@ $(document).ready(function(){
 
 	</div>
 </div>
+
+
+
 <%@ include file="include/bottom.jsp"%>

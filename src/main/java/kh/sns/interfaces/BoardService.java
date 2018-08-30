@@ -16,7 +16,9 @@ import kh.sns.dto.Member_TagsDTO;
 public interface BoardService {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception;
-	public List<BoardDTO> getFeed(String id, int start, int end);
+	public List<BoardDTO> getFeed(String id, int start, int end) throws Exception;
+	
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception;
 	
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
