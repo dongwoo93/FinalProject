@@ -231,14 +231,12 @@
 								</c:forEach>
 					</div>
 					</div>
-	
+	     
 				</c:forEach>
 </div>
 
 </c:otherwise>
-</c:choose>
-
-
+</c:choose> 
 </div> <!-- container -->
 </div>  <!-- centerwrapperr -->
 </div> <!-- allwrapper -->
