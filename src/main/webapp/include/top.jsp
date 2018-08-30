@@ -31,7 +31,31 @@
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
 <script src="resources/js/top.js"></script>
 <script>
+
+
+</script>
+
+<script>
 	$(document).ready(function(){
+	
+		$.ajax({
+            url: "alertCount.do", // 처리할 페이지(서블릿) 주소
+            type: "get",
+            data: {id:"${sessionScope.loginId}"}, 
+            success: function(response) {
+            	if(response != 0){
+            		$("#totalreadcount2").show();
+            		$("#totalreadcount2").text(response);
+            	}
+            },
+            error: function() {
+                console.log("에러");
+            },
+            complete: function(){
+                console.log("AJAX완료");
+            } 
+        });
+		
 		$.ajax({
             url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",
@@ -56,12 +80,13 @@
       	type : "get",
       	         
       	success : function(resp) {        
-      	    
+      	
       		for(var i=0; i<resp.length; i++){     
       			var name = resp[i][3].split(" ")[0];  
       			var cont = "님이"+resp[i][3].split("님이")[1];          
       		       
       			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img src='AttachedMedia/a'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img src='AttachedMedia/a'></li></ul><div class='dropdown-divider'></div>");
+      		
       		}		  
       	 },  
       	 error : function() {
@@ -171,14 +196,18 @@ $(function() {
                             <li class="nav-item dropdown">
                    
                     <a class="nav-link dropdown-toggle" href="#" id="alerticon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-          <i class="far fa-heart nav-icon"></i>    
-        </a>        	            
+          <i class="far fa-heart nav-icon">
+          <span id="totalreadcount2" ><i class="fas fa-comment-alt fa-flip-vertical fa-2x"></i></span>
+        </i>   
+             
+        </a>      
+     	            
                     <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:360px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
      
            </div>
                   </li>
           
-                  
+                    
                   
                   <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
