@@ -590,7 +590,7 @@
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${tmp.id}<br>Dangsan.South Korea
 									</a>
 								</c:otherwise>
 							</c:choose>
@@ -752,7 +752,7 @@
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;color: #4f70ce;">${tmp.id}</a>
 
 									<div class='pl-3' id="contdiv${tmp.board_seq}"
 										style="word-wrap: break-word; word-break: break-all"></div>
@@ -896,7 +896,8 @@
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
 					  
 						
-			<hr class="_5mToa">
+<!-- 			<hr class="_5mToa"> -->
+<br>
 				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
@@ -926,7 +927,8 @@
 			<div class="container float" id=""    
 						style="width: 300px; margin-top: 20px; margin-left: 30px;">
 					
-			<hr class="_5mToa">
+<!-- 			<hr class="_5mToa"> -->
+<br>
 				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					실시간 #트랜드     
 				</p>
@@ -939,10 +941,10 @@
 					<div class="container" >     
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
-					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
 								href="">${status.count}</a></li>  
-					<li class="pt-2"><a id="keywordlink" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					<li class="pt-2"><a id="keywordlink" style="color:#4f70ce;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
 			</div>
 			<script>
@@ -967,7 +969,8 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<a href="footinfo.jsp"><p><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<a href="footinfo.jsp"><p style="color:#dc3545;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+						
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
