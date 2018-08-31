@@ -105,7 +105,7 @@ function btnevent(e, id1, id2, isFollow, index) {
             } 
         });
 		
-  
+      
     $.ajax({
       	url : "alerting.top",
       	type : "get",
@@ -168,7 +168,6 @@ $(function() {
                         			  count: item.count,
                         			  category : item.category,
                         			  index: cnt++
-                        			  
                         		  }
             	  })
             	  );
@@ -231,19 +230,28 @@ $(function() {
                   <li class="nav-item">
                     <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item">  
                     <a class="nav-link" href="tour.bo?cat=1"><i class="far fa-compass nav-icon"></i></a>
                   </li>
                             <li class="nav-item dropdown">
                    
                     <a class="nav-link dropdown-toggle" href="#" id="alerticon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-          <i class="far fa-heart nav-icon"></i>    
-        </a>        	            
+          <i class="far fa-heart nav-icon">
+        </i>     
+        <!-- 알림 (하트,댓글) -->
+              <span id="totalreadcount2" class="fa-stack" style="display:none;">   
+    <i class="fas fa-comment-alt fa-flip-vertical fa-stack-2x" style="color:red"></i>  
+    <i class="fab fas fa-bell text-white fa-stack-1x fa-inverse mt-1" style="font-size:13px;"><span id="countAlert" class="ml-1"></span></i>
+    
+  </span>
+        </a>       
+     	             
                     <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:360px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
      
            </div>
                   </li>
           
+                    
                   
                   
        <li class="nav-item dropdown">

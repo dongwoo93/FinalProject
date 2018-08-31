@@ -31,26 +31,27 @@ public class WebSocket{
 	@OnMessage 
 	public void handleMessage(String message) throws Exception{
 		System.out.println(message + "!!!!!!!!!!::::::::");   
-		if(!(message.contains("뇽")) && (message.startsWith("c")) ) {     
+		if((message.startsWith("comment")) ) {     
 			System.out.println("어어어어억ㅋ");
 			
 			String id = message.split(":")[1];   
-			for(String tmp : onlineUser.keySet()) {
+			for(String tmp : onlineUser.keySet()) {   
 				if(tmp.equals(id)) {
 					System.out.println(tmp);
-					onlineUser.get(tmp).getBasicRemote().sendText("c");
+					onlineUser.get(tmp).getBasicRemote().sendText("comment");
 				}
 			}
 		}  
-		else if(!(message.contains("뇽")) && (message.startsWith("l"))) {
+		else if(message.startsWith("like:")) {
 			String id = message.split(":")[1];   
 			for(String tmp : onlineUser.keySet()) {
 				if(tmp.equals(id)) {
 					System.out.println(tmp);
-					onlineUser.get(tmp).getBasicRemote().sendText("l");
+					onlineUser.get(tmp).getBasicRemote().sendText("like");
 				}
 			}
 		}
+		
 		else {
 			System.out.println("zzlzllzlzll");
 		String receiver = message.split("뇽뇽뇽뇽123뇽뇽뇽뇽")[0];
