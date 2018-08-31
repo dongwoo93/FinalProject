@@ -172,7 +172,15 @@
     	$('#changeBizBtn').click(function(){
     		$('.modal-title').text('비즈니스 계정으로 전환')
     		/* $('.modal-body').html() */
-    		 $(".modal").modal();
+    		 $("#buzmodal").modal();  
+    		 
+    	})
+    	
+    	
+    	$('#changePrivate').click(function(){
+    		$('.modal-title').text('잠시 계정 비활성화')
+    		/* $('.modal-body').html() */
+    		 $("#private").modal();
     		 
     	})
     	
@@ -211,7 +219,7 @@
 		<div class="container mywrap">
 		<br>         
 			<div class="row">        
-				<div class="col-4">                            
+				<div class="col-3">                            
 				<img class="rounded-circle" alt='profile' width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
@@ -290,7 +298,7 @@
 				
 				<!--  -->
 				
-				<div class="col-8" id="info">
+				<div class="col-9" id="info">
 					<div class="tab-content">
 					<c:choose>
 						<c:when test="${category != 0}">
@@ -369,7 +377,7 @@
 								
 							<div class="form-group text-center "> 
 								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;">제출</button>
-								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">계정을 일시적으로 비활성화</button>
+								<button type=button class="btn btn-light text-dark" style="font-weight:bold;" id="changePrivate">계정을 일시적으로 비활성화</button>
 								<c:if test="${ memberBiz eq null }">
 									<button type=button class="btn btn-light text-dark" style="font-weight:bold;" id="changeBizBtn">비즈니스 계정으로 전환</button>
 								</c:if>
@@ -461,42 +469,43 @@
 						      </div><br>
 						</div>
 						
-<!-- 						<div class="tab-pane fade" id="tabfive" role="tabpanel"> -->
-<!-- 							<div class=row> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>계정 정보</h1> -->
-<!-- 										<p>가입한 날짜<br><span class="text-muted">1800년 01월 01일</span></p> -->
-<!-- 										<p>계정 공개 범위 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>비밀번호 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이메일 주소 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 전화번호 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>생년월일<br><span class="text-muted">여기에 표시할 정보가 없습니다.</span></p> -->
-<!-- 									<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>프로필 정보</h1> -->
-<!-- 										<p>이전 사용자 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 소개 텍스트 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>소개의 이전 링크 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>연결관계</h1> -->
-<!-- 										<p>현재 팔로우 요청 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님을 팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 해시태그 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님이 차단한 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>활동</h1> -->
-<!-- 										<p>로그인 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>로그아웃 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>검색 내역 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>광고</h1> -->
-<!-- 										<p>광고 관심사 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
+						<div class="tab-pane fade" id="tabfive" role="tabpanel" >
+							<div class=row>
+								<div class=col-6 style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
+									<h1 style="font-family: NANUMBARUNPENR !important;">계정 정보</h1>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">가입한 날짜<br><span class="text-muted">1800년 01월 01일</span></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">계정 공개 범위 변경 사항 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">비밀번호 변경 사항 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">이전 이메일 주소 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">이전 전화번호 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">생년월일<br><span class="text-muted">여기에 표시할 정보가 없습니다.</span></p>
+									<hr> hr은 나중에 공백으로 대체
+									<h1 style="font-family: NANUMBARUNPENR !important;">프로필 정보</h1>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">이전 사용자 이름 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">이전 이름 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">이전 소개 텍스트 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">소개의 이전 링크 <br><a href="#">모두 보기</a></p>
+								</div>
+								<div class=col-6 style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
+									<h1 style="font-family: NANUMBARUNPENR !important;">연결관계</h1>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">현재 팔로우 요청 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">회원님을 팔로우하는 계정 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">팔로우하는 계정 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">팔로우하는 해시태그 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">회원님이 차단한 계정 <br><a href="#">모두 보기</a></p>
+										<hr> hr은 나중에 공백으로 대체
+									<h1 style="font-family: NANUMBARUNPENR !important;">활동</h1>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">로그인 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">로그아웃 <br><a href="#">모두 보기</a></p>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">검색 내역 <br><a href="#">모두 보기</a></p>
+										<hr> hr은 나중에 공백으로 대체
+									<h1 style="font-family: NANUMBARUNPENR !important;">광고</h1>
+										<p style="border:5px solid #dee2e6; border-radius:5px;font-size: 18px;">광고 관심사 <br><a href="#">모두 보기</a></p>
+								</div>
 								
-<!-- 							</div> -->
-<!-- 						</div> -->
+							</div>
+						</div>
+						
 						<c:choose>
 						<c:when test="${category != 3}">
 						<div class="tab-pane fade" id="privacyTab" role="tabpanel">
@@ -653,7 +662,7 @@
 	</div>
 	
 	
-													<div class="modal">
+													<div class="modal" id="buzmodal">
 													  <div class="modal-dialog" role="document">
 													    <div class="modal-content">
 													      <div class="modal-header">
@@ -673,11 +682,70 @@
 													      </div>
 													      <div class="modal-footer">
 													      	<form action='changeBizAccount.profile' method=post>
-													        	<button type="submit" class="btn btn-primary">비즈니스 계정으로 전환</button>
+													        	<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">비즈니스 계정으로 전환</button>
+													        </form>
+													        <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" data-dismiss="modal">Close</button>
+													      </div>
+													    </div>
+													  </div>
+													</div>
+													
+													
+													
+													<div class="modal" id="private">
+													  <div class="modal-dialog" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h5 class="modal-title">Modal title</h5>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													          <span aria-hidden="true">&times;</span>
+													        </button>
+													      </div>
+													      <div class="modal-body">
+													      	<table style="padding: 4px" >                           
+													      		<tr style="border-bottom:1px solid lightgray; " >     
+													      		<td style="width: 80%;" ><p>hyong__star님, 안녕하세요! <br><br>계정을 삭제하지 않고 비활성화할 수 있습니다.비활성화하면 다시 로그인하여 재활성화할 때까지 계정이 숨겨집니다. <br><br>계정은 일주일에 한 번만 비활성화할 수 있습니다.</p></td>
+													      		</tr>
+													    	   
+													      		<tr style="border-bottom:1px solid lightgray; ">           
+													      		 
+													      		<td><br><p>계정을 비활성화하시는 이유가 무엇인가요?
+													      		<br>              
+													      		<select style="width:100%; margin-top:10px; padding-bottom:5px;">   
+													      		<option disabled selected value>선택</option>    
+													      		<option value="volvo">새로운 계정을 만들었습니다</option>
+													      		<option value="volvo">개인 정보 보호 문제</option>   
+  																<option value="volvo">인스타그램이 유용하지 않습니다</option>
+  																<option value="volvo">광고가 너무 많음</option>
+  																<option value="volvo">기타</option>
+  																
+ 														
+																</select> 
+																<br><br>
+																계속하려면 비밀번호를 다시 입력하세요  &nbsp;&nbsp;&nbsp;&nbsp;              
+																<input type=text placeholder="password" style="width:50%;">   
+													      		<br><a href="#">비밀번호를 잊으셨나요?</a>          
+																 </p>      
+																
+																</td>
+													      		</tr>
+													      		<tr> <td><br>   
+													      		<p>아래 버튼을 누르면 다시 로그인하여 계정을 재활성화할 때까지 사진, 댓글, 좋아요가 숨겨집니다.   </p>
+													      		</td></tr>
+													      	
+													     	
+													      	</table>
+													           
+													      </div>
+													      <div class="modal-footer">
+													      	<form action='changeBizAccount.profile' method=post>
+													        	<button type="submit" class="btn btn-primary">계정을 잠시 비활성화</button>
 													        </form>
 													        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 													      </div>
 													    </div>
 													  </div>
 													</div>
+													
+													
 	<%@ include file="include/bottom.jsp"%>

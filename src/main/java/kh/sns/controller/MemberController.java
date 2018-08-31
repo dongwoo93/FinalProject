@@ -78,7 +78,7 @@ public class MemberController {
 		WebSocket.onlineUser.remove(id);
 		session.invalidate(); 
 		LogUtil log = new LogUtil(); 
-		log.insertLog(id,"logout");   
+		log.insertLog(id,"logout","");   
 		mav.setViewName("redirect:main.jsp");
 		return mav;
 	}
