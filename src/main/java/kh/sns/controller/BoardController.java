@@ -220,7 +220,8 @@ public class BoardController {
 				System.out.println(tmp);
 			}
 
-
+		
+		      
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}

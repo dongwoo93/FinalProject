@@ -220,7 +220,8 @@ function getCaretPosition(editableDiv) {
 	                  type: "POST",  
 	                  url: "comment.co",    
 	                  data: {board_seq : toBoardSeq, comment_contents : text},
-	                  success : function(seq) {       
+	                  success : function(seq) {
+	                	 
 	                	  $(obj).html("");
 	                  /*  $("#comment${tmp.board_seq}").val("");   */  
 	                  var regex = /(#[^#\s,;<>.]+)/gi;            

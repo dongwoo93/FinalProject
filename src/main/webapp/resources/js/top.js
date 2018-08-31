@@ -8,8 +8,10 @@ $(function () {
 		    
 		if(msg.data == 'comment'){ 
 			alert("코멘트 달았엉 알림가자~~~");  
-		}else if(msg.data == 'like'){
-			alert("좋아요알림가자~~~~"); 
+		}else if(msg.data == 'l'){
+			$("#totalreadcount2").attr("style",false);
+			$("#countAlert").html("1");   
+			
 		}
 		
 		else{  
