@@ -118,6 +118,11 @@ public class IMemberService implements MemberService{
 		return dao.findMember(searchtext);
 	}
 	
+	@Override
+	public List<MemberDTO> selectfollowlist(String id,String searchtext) throws Exception{
+		return this.dao.selectfollowlist(id,searchtext);
+	}
+	
 	// My_aticle
 	@Override
 	public List<MemberDTO> myNick_Id(String id) throws Exception {
@@ -132,6 +137,12 @@ public class IMemberService implements MemberService{
 //		
 //		return this.isIdExist(id);
 //	}
+	
+	@Override
+	public MemberDTO selectUserId(String nickname) throws Exception {
+		
+		return dao.selectUserId(nickname);
+	}
 	
 }
 

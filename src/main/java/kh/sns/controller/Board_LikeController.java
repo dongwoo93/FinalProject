@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LikeDTO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_LikeService;

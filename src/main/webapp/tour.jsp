@@ -107,22 +107,32 @@ function unmarkit(e) {
 
 <div class="dropdown">
 	<div class="dropdown-divider" id="tagmenu"></div>
-		<label class="top">둘러보기</label>
-			<button class="btn btn-outline-primary dropdown-toggle down" type="button" id="dropdownMenuButton" 
+		<label class="top" style="font-size: 12px;font-family: NANUMBARUNPENR !important;">둘러보기</label>
+			<button class="btn btn-light text-dark dropdown-toggle down" type="button" id="dropdownMenuButton" 
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${category}</button>
 			<div class="dropdown-divider" id="tagmenu"></div>
-				<div class="dropdown-menu itemMenu" aria-labelledby="dropdownMenuButton">
-				<a href="tour.bo?cat=1" class="dropdown-item" style="cursor: pointer;">최신글</a>
-				    <a href="tour.bo?cat=2" class="dropdown-item" style="cursor: pointer;">좋아요</a>
-				    <a href="tour.bo?cat=3" class="dropdown-item" style="cursor: pointer;">인기 태그 순</a>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a href="tour.bo?cat=1" class="dropdown-item" style="cursor: pointer;font-family: NANUMBARUNPENR !important;font-size: 14px;width:150px;"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>최신글</a>
+				<div class="dropdown-divider"></div>
+				<a href="tour.bo?cat=2" class="dropdown-item" style="cursor: pointer;font-family: NANUMBARUNPENR !important;font-size: 14px;"><i class="fas fa-heart mr-1 pr-1 fa-1x"></i>좋아요</a>
+				<div class="dropdown-divider"></div>
+				<a href="tour.bo?cat=3" class="dropdown-item" style="cursor: pointer;font-family: NANUMBARUNPENR !important;font-size: 14px;"><i class="fas fa-tags mr-1 pr-1 fa-1x"></i>인기 태그 순</a>
 				</div>
+		
 </div>
 
 
 <!-- 카드 DIV -->
 <div id="contents">
-<div class="card-columns">
-	<c:forEach var="result" items="${result}" varStatus="status">
+	<c:choose>
+			<c:when test="${result.size() < 4}">
+				<div class="card-deck"  style=" width: 600px;">
+			</c:when>
+				<c:otherwise>
+					<div class="card-columns">
+				</c:otherwise>
+	</c:choose>
+<c:forEach var="result" items="${result}" varStatus="status">
 		<div class="card" id="card">
 			<h4 class="card-title" id="tourTop">
 				<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
@@ -208,16 +218,7 @@ function unmarkit(e) {
 						<script> $("#myContents${result.board_seq}").attr("style","overflow:visible"); </script>
 							<p id="myContents${result.board_seq}">${result.contents}</p>
 								<script>    
-// 									var plus = "";    
-// 									var txt = "${result.contents}";       
-// 										if(txt.length > 48) {                
-// 										plus = "<p id='${result.board_seq}' >&nbsp-더보기</p>";
-// 									 	 }
-// 											$("#myContents${result.board_seq}:last-child").after("</p>"+plus);   			
-// 											$("#${result.board_seq}").click(function() { 
-// 												$("#myContents${result.board_seq}").attr("style","overflow:visible");  
-// 											});
-					var text = $("#myContents${result.board_seq}").html();  
+									var text = $("#myContents${result.board_seq}").html();  
 									var regex = /(#[^#\s,;]+)/gi  ;              
 									var newtxt;
 	  								if(txt != null) {

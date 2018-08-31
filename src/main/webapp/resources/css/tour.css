@@ -1,3 +1,8 @@
+@CHARSET "UTF-8";
+
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
 	
 	.dropdown{
 	 	max-width: 100rem;
@@ -51,6 +56,7 @@
 	
 	#card {
 		border-radius: 3px 3px 5px 5px;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	}
 	
 	#ids{

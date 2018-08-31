@@ -23,6 +23,12 @@
 
         //   }
         
+        document.addEventListener('keydown', function(event) {
+        	    if (event.keyCode === 13) {
+        	        event.preventDefault();
+        	    }
+        	}, true);
+        
          function imageInfo(obj){                 
                   
                   console.log(obj.width);
@@ -44,10 +50,12 @@
         
 
         $(document).ready(function() {
-        	console.log('x111ddd111');
+        	
+        	
+        	
+        	console.log('1xxxxssf31');
         	var globalBizFormEnabled = false;
-        	        	
-        	  <!-- 000000000000000000000000000000000000000000 -->        	  
+        	        	  	  
               function getCaretPosition(editableDiv) {   
                   var caretPos = 0, sel, range;   
                   if (window.getSelection) {   
@@ -184,8 +192,8 @@
               		filterOutput += ($('.imgWidth100').eq(i).attr('id') + ":")
               		filterOutput += $('.imgWidth100').eq(i).attr('class').replace("imgWidth100", ";").replace(" ", "")
               	}
-                $('#contentsHidden').val($('#editorDiv').text())   
-                $('#filtersHidden').val(filterOutput)  
+                $('#contentsHidden').val($('#editorDiv').text());
+                $('#filtersHidden').val(filterOutput);
                 $('#frm').submit();   
               });
    
@@ -213,20 +221,25 @@
                  });
             });
             
-            $("#personmodalbt").click(function(){
+            $("#personmodalbt").click(function(e){
          	   var textValue = $(".tags li").length;
-         	   alert(textValue);
-         	   $("#person *").remove();
-         	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
+         	   if(textValue == 0){
+         		  $('#personModal').modal('hide');
+         	   }else{
+         		  
+             	   $("#person *").remove();
+             	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
 
-         	   for(var i = 1; i<textValue+1;i++){
-		            
-                var realValue = $(".tags li:nth-child("+i+")").attr("id");
-               		 $(".tag").append('<li class="addedTag">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
-               		$('#personModal').modal('hide');
-                }
-         	   
-         	   $("#searchfriend").val("");
+             	   for(var i = 1; i<textValue+1;i++){
+    		            
+                    var realValue = $(".tags li:nth-child("+i+")").attr("id");
+                   		 $(".tag").append('<li class="addedTag">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
+                   		 $('#personModal').modal('hide');
+                    }
+             	   
+             	   $("#searchfriend").val("");
+         	   }
+         	  
             });
             
             
@@ -369,24 +382,16 @@
 			<!-- form 시작 -->
 			<div id="centerwrapper" class="pt-3">
 				<div class="container" id="contents">
+					<span style="font-family: NANUMBARUNPENR !important;font-size: 15px;background-color: #F5F4F4;">Picture</span>
 					<div class="row">
 						<div class="col-md-7 align-self-center">
-							<!-- -->
-<!-- 							<input type="file" class="btn" multiple=multiple id="fileSelect" -->
-<!-- 								name="filename[]"> <i class="far fa-images"></i> -->
-							<!-- -->
-							<!--                        <img class="d-block img-fluid" src="https://pingendo.github.io/templates/sections/assets/gallery_14.jpg" style="width: 100%;" id='frontImage'>-->
-
-								<div class="filebox">  
-								<input type="file" class="btn btn-light"  multiple id="fileSelect"
-								name="filename[]"> <i class="far fa-images"></i>
-								</div>
-								
+	
 
 							<div id="attachDiv" style="height: 600px;">
 								<div id="carouselAttachDiv" class="carousel slide "
 									data-ride="carousel" data-interval="false">
 									<div class="carousel-inner" id=attachDivInner></div>
+									<br>
 									<a id=leftCarouselBtn class="carousel-control-prev" href="#carouselAttachDiv"
 										role="button" data-slide="prev"> <span
 										class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -458,33 +463,42 @@
 
 							
 						</div>
+					
 						<div class="col-md-5" id="writeform">
-							<div class="card">
-		<!-- 글쓰기 칸 -->
-								<div class="card-body" contenteditable="true" id="editorDiv"></div>
+								
+							<div class="card" style="border: 5px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;">
+							
+							<!-- 글쓰기 칸 -->
+							<span style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">Contents</span>
+								<div class="card-body" contenteditable="true" id="editorDiv" style="overflow:auto;"></div>
 								<input type=hidden id="caretposition" value="0">
 								<input type=hidden name=contents id=contentsHidden> 
 								<input type=hidden name=filters id=filtersHidden>
 								<ul class="list-group list-group-flush">
-									<li class="list-group-item"><i
+									<li class="list-group-item" style="border: 3px solid #eff1f4;"><i
 										class="fas fa-map-marker-alt tagicon mr-3"></i><a
 										onclick="placemodal()" style="cursor: pointer;" id="place">위치
-											태그하기</a></li>
-									<li class="list-group-item" id="person"><i
+											태그하기</a><input type="hidden" id="lat" name="lat"><input type="hidden" id="lng" name="lng"><input type="hidden" id="placetag" name="place"></li>
+											
+									<li class="list-group-item" style="border: 3px solid #eff1f4;">
+									<i class="far fa-images"></i>
+									&nbsp;&nbsp;<input type="file" class="" multiple id="fileSelect" name="filename[]"> 									
+									</li>		
+											
+									<li class="list-group-item"  style="border: 3px solid #eff1f4;" id="person"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="personmodal()" style="cursor: pointer;">사람 태그하기</a></li>
+									
 								<c:if test="${ memberBiz ne null }">
-									<li class="list-group-item" id="person"><i
+									<li class="list-group-item" style="border: 3px solid #eff1f4;"><i
 										class="fas fa-users tagicon mr-2 pr-1"></i><a
 										onclick="bizModal()" style="cursor: pointer;"> <span class="badge badge-pill badge-warning">biz</span> 비즈니스 설정하기</a></li>
 								</c:if>
 								</ul>
 							</div>
-							<div class="py-3">
-								<button type="button" id="submitbutton">
-									<i class="fas fa-arrow-right fa-2x"></i>
+							<div class="py-3 text-right">
+								<button type="button" id="submitbutton" style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">등록하기			
 								</button>
-								<!-- <button type=button id="testButton">테스트</button> -->
 							</div>
 						</div>
 					</div>
@@ -558,11 +572,11 @@
 
 	<!--       사람태그하기 Modal부분-->
 	<div id="personModal" class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		aria-labelledby="myLargeModalLabel" aria-hidden="true"  style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">
+					<h5 class="modal-title" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 						<i class="fas fa-users tagicon mr-2"></i>사람 태그하기
 					</h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -591,8 +605,10 @@
 		                        	   }
 		                           }
 		                           
+		          
+		                           
 		                           if(index == 1){
-		                        	   $(".tags").append('<li class="addedTag" id="'+text+'">' + text + '<span class="tagRemove" onclick="$(this).parent().remove();">x</span><input type="hidden" value="' + text + '" name="tags[]"></li>');
+		                        	   $(".tags").append('<li class="addedTag" id="'+text+'">' + text + '<span class="tagRemove" onclick="$(this).parent().remove();">x</span></li>');
 		                           }
 		                        
 	                           }
@@ -609,32 +625,30 @@
 						<div class="col-7">
 							<div class="tab-content">
 								<ul class="tags">
-
+									<br> &nbsp;
 								</ul>
 							</div>
 						</div>
 					</div>
 
 				</div>
-				<div class="modal-footer">
-					<button id="personmodalbt">확인</button>
+				<div class="modal-footer" id="personmodalbt">					
+					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;">태그완료</button>
 				</div>
 			</div>
 		</div>
-		<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete"
-			async defer></script>
+
 	</div>
 	<!--        사람태그하기 Modal 끝-->
-	
+			
 	<c:if test="${ memberBiz ne null }">
 	<!--       비즈니스 설정 Modal부분-->
 	<div id="bizModal" class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		aria-labelledby="myLargeModalLabel" aria-hidden="true" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">
+					<h5 class="modal-title" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 						게시물 홍보하기
 					</h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -647,10 +661,10 @@
 					<div class="row">
 						<div class="col-12">
 							<fieldset class="form-group">
-						      <legend>게시물을 홍보하여 비즈니스 성장을 도모하기</legend>
+						      <legend style="font-family: NANUMBARUNPENR !important;font-size: 14px;">게시물을 홍보하여 비즈니스 성장을 도모하기</legend>
 						      <div class="form-check">
 						        <label class="form-check-label">
-						          <input id="enableBiz" class="form-check-input" type="checkbox" value="y" >
+						          <input id="enableBiz" class="form-check-input" type="checkbox" value="y" style="font-family: NANUMBARUNPENR !important;font-size: 14px;" >
 						         이 게시물을 홍보합니다.
 						        </label>
 						      </div>
@@ -659,22 +673,22 @@
 
 						</div>
 					</div>
-					<div class="row"><hr></div>
+<!-- 					<div class="row"><hr></div> -->
 					<form id="bizform">
 					<div class="row">
 						<div class="col-12">							
 						    
 						    <div class="form-group">
-							  <label class="col-form-label" for="moreInfoWebsite">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
+							  <label class="col-form-label" for="moreInfoWebsite" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
 							  <input type="text" class="form-control" placeholder="http://example.com/?shopid=12" id="moreInfoWebsite">
-							  <small class="form-text text-muted">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>
+							  <small class="form-text text-muted" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>
 							</div>
 					
 							<fieldset class="form-group">
 						      <!-- <legend>특정 상품의 판매를 목적으로 하는 페이지</legend> -->
 						      <div class="form-check">
 						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" id="isWebsitePurposeOfPurchase" >
+						          <input class="form-check-input" type="checkbox" id="isWebsitePurposeOfPurchase" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 						          페이지가 특정 상품의 판매를 목적으로 하는 경우 이 체크란을 반드시 클릭해주세요. 
 						        </label>
 						      </div>
@@ -688,7 +702,7 @@
 								    				</c:forEach>							    						
 								    			</datalist>
 						    
-						      <div class="form-group">
+						      <div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 							    <label for="formControlRange">1회 노출단가 결정: ￦<span id="rangeSpan">50</span>  </label>
 							    <input type="range" class="form-control-range" id="exposureRange" min="10" max="100" value="50" step="10" list="tickmarks" >
 							   						 
@@ -696,7 +710,7 @@
 							    					
 							  </div>
 							  
-							  <div class="form-group">
+							  <div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 								  <fieldset>
 								    <label class="control-label" for="exposureCount">총 노출횟수</label>
 								    <input class="form-control" id="exposureCount" type="text" placeholder="Readonly input here…" readonly >
@@ -704,7 +718,7 @@
 								  </fieldset>
 								</div>
 							  
-							    <div class="form-group">
+							    <div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 								  <fieldset>
 								    <label class="control-label" for="costPerClick">클릭당 단가(￦)</label>
 								    <input class="form-control" id="costPerClick" type="text" placeholder="Readonly input here…" readonly >
@@ -712,7 +726,7 @@
 								  </fieldset>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
 								  <fieldset>
 								    <label class="control-label" for="costPerClick">총 결제금액(￦)</label>
 								    <input class="form-control" id="totalCost" type="text" placeholder="Readonly input here…" readonly >
@@ -727,13 +741,15 @@
 			
 				</div>
 				<div class="modal-footer">
-					<button id="bizconfirm" class="btn btn-primary"  data-dismiss="modal">확인</button>
+					<button id="bizconfirm" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" data-dismiss="modal">확인</button>
+					
 				</div>
 			</div>
 		</div>
 	</div>
 	</c:if>
 	<!--        비즈니스설정 Modal 끝-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete" async defer></script>
 
 	<script>
       var map;
@@ -741,20 +757,20 @@
       function placemodal() {
           
           $('#placeModal').modal('show');
-          if(i == 1){
-              if (navigator.geolocation) {
-                  navigator.geolocation.getCurrentPosition(function(position) {
-                        var pos = {
-                          lat: position.coords.latitude,
-                          lng: position.coords.longitude
-                        };
+//           if(i == 1){
+//               if (navigator.geolocation) {
+//                   navigator.geolocation.getCurrentPosition(function(position) {
+//                         var pos = {
+//                           lat: position.coords.latitude,
+//                           lng: position.coords.longitude
+//                         };
 
-                        map.setCenter(pos);
-                  });
-                } else {
-                  alert("현재위치를 표시할 수 없습니다.");
-                }
-          }
+//                         map.setCenter(pos);
+//                   });
+//                 } else {
+//                   alert("현재위치를 표시할 수 없습니다.");
+//                 }
+//           }
           
           i++;
       }
@@ -822,11 +838,14 @@
             
              marker.addListener('click', function() {
                   $("#place").text(place.name);
+                  $("#placetag").val(place.name);
                   var pos1 = {
                     lat: marker.getPosition().lat(),
                     lng: marker.getPosition().lng()
                   };
                   
+                  $("#lat").val(pos1.lat);
+                  $("#lng").val(pos1.lng);
                   
                   map.setCenter(pos1);
                   $('#placeModal').modal('hide');
@@ -842,6 +861,7 @@
           $('#bizModal').modal('show');
           
       }
+      
 
     </script>
     <%@ include file="include/bottom.jsp"%>

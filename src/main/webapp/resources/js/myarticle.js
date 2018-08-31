@@ -1,4 +1,4 @@
-	function follow(id1, id2) { 
+	function follow(id1, id2) {
 		   var id = id1; 
 		   var targetId = id2; 
 		   $.ajax({ 
@@ -19,7 +19,7 @@
 		      }) 
 		} 
 		 
-		function unfollow(id1, id2) { 
+		function unfollow(id1, id2) {
 		   var id = id1; 
 		   var targetId = id2; 
 		   $.ajax({ 
@@ -82,17 +82,21 @@ $(document).ready(function() {
 	$("#toMy").click(function() {
 		$(location).attr("href", "profile.member?cat=0");
 	})
-
-	$("#goNext").click(function() {
 	
 		
+
+	
+	$("#goNext").click(function() {
+	
+		   
 		$(".first").remove();
 		$("#firstli").attr('class', 'active');
 		$("#firstItem").attr('class', 'carousel-item active');
 		if($("#carousel-indicators li:nth-child(2)").length) {
 			$(".element").remove();
-		}
+		}  	
 		var seq = $("#next").val();
+		
 	    $("#likeit").val(seq);
         $("#likecancel").val(seq); 
         $("#mark").val(seq);
@@ -136,7 +140,7 @@ $(document).ready(function() {
 				$("#modalid").text(data[0].id);	        	   
 				var txt = data[0].contents;
 					var regex = /(#[^#\s,;]+)/gi  ;  
-					var newtxt;
+					var newtxt = data[0].contents;
 					if(txt != null) {
 						newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
 					}
@@ -203,7 +207,7 @@ $(document).ready(function() {
 			$(".element").remove();
 		}
 		var seq = $("#prev").val();
-	   
+		
 		var prevSeq;
 		var nextSeq;
 		for(var i =0; i<list.length; i++) {
@@ -244,7 +248,7 @@ $(document).ready(function() {
 				$("#modalid").text(data[0].id);	 
 				var txt = data[0].contents;
 				var regex = /(#[^#\s,;]+)/gi;
-				var newtxt;
+				var newtxt = data[0].contents;     
 				if(txt != null) {
 					newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
 				}
@@ -303,8 +307,8 @@ $(document).ready(function() {
 	})
 	
 	$("#delete").click(function(){
-		var seq = document.getElementById("hidden").value;
-		location.href = "boardDelete.bo?seq="+seq;
+		var seq = document.getElementById("hidden").value;  
+		location.href = "boardDelete.bo?seq="+seq+"&cat=1";   
 
 	})
 
@@ -314,29 +318,10 @@ $(document).ready(function() {
 
 	})
 
-	$("#modifysubmitbtn").click(function(){
-		var board_seq = $("#seq").val();
-		var contents = $("#modalcontents").html();
-
-		$.ajax({
-			type:"POST",
-			url:"boardModify.bo",
-			data: {board_seq:board_seq, contents:contents},
-			success: function(data)
-			{
-				if(data == 1){
-					$("#modalcontents").val(contents);
-					$("#modalcontents").attr("contentEditable","false");
-
-				}else {
-					alert("다시 시도해주세요");
-				}
-
-			}
-		});
-	})
+	/*modifysubmitbtn*/
 	
-	$("#savebtn").click(function() {
+	
+	$("#savebtn").click(function() {  
 		if($('#inputimg').get(0).files.length != 0) {
 			var formData = new FormData($("#fileForm")[0]);
 			$.ajax({
@@ -356,20 +341,25 @@ $(document).ready(function() {
 			});
 		}else {
 			var fileName = $("#hiddenimgname").val();
-			var id = $("#hiddenid").val();
-			$.ajax({
-				type:"POST",
-				url:"updateImg.profile",
-				data: {system_file_name:fileName, id:id},
-				success: function(data) {
-					alert(data);
-					location.reload();
-				},
-				error : function(error) {
-	                console.log(error);
-	                console.log(error.status);
-	            }
-			});
+			if(fileName == "") {
+				alert("사진을 등록해주세요");
+			}else {
+				var id = $("#hiddenid").val();
+				$.ajax({
+					type:"POST",
+					url:"updateImg.profile",
+					data: {system_file_name:fileName, id:id},
+					success: function(data) {
+						alert(data);
+						location.reload();
+					},
+					error : function(error) {
+		                console.log(error);
+		                console.log(error.status);
+		            }
+				});
+			}
+			
 		}
 		
 	})
@@ -541,49 +531,7 @@ function delComment(e) {
      }); //ajax 
 }
 
-function modComment(e) { 
+/*function modComment*/
 
-	 var comment_seq = $(e).attr("value");
-	 var board_seq = $(e).parent().attr("value");
-	 var modstate = $("#modstate"+comment_seq).val();
-	   
-	 if(modstate == "1") {
-		
-		 $("#commentmod"+comment_seq).html("완료");
-	$("#commenttxt"+comment_seq).attr("contentEditable",true);
-  	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
-  	 $("#commenttxt"+comment_seq).focus();  
-  	 $("#modstate"+comment_seq).val("2");  
-  	 $("#del"+comment_seq).attr("style","color:#00B8D4");
-	 $("#mod"+comment_seq).attr("style","color:#00B8D4");
-	 }
-	 
-	 
-	 else if(modstate=="2") {      
-		
-  			 var txt = $("#commenttxt"+comment_seq).html();     
-     	 	 
-            	$.ajax({    
-                      type: "POST",    
-                      url: "commentmod.co",    
-                      data: {comment_seq:comment_seq, comment_contents:txt},   
-                      success : function() {
-                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
-		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
-		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-		                   $("#modstate"+comment_seq).val("1");  
-		                   $("#ul"+comment_seq).hide().fadeIn(500);
-		                   $("#del"+comment_seq).attr("style",false);
-		          		 $("#mod"+comment_seq).attr("style",false);
-		          		 $("#commentmod"+comment_seq).html("수정");
-                      }  
-                 }); //ajax 
-	 }
-  
-}
-
-
-	
- 
 	   
   

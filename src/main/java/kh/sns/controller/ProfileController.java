@@ -3,9 +3,7 @@ package kh.sns.controller;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,17 +12,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
+import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
-import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.ProfileService;
 
 @Controller
@@ -163,6 +160,22 @@ public class ProfileController {
 			response.getWriter().print("적용 완료");
 		}else {
 			response.getWriter().print("적용 실패");
+		}
+		
+		response.getWriter().flush();
+        response.getWriter().close();
+	}
+	
+	@RequestMapping("/deleteImg.profile")
+	public void deleteProfileImage(HttpServletResponse response, Profile_ImageDTO dto, HttpSession seesion) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		
+		int deleteImg = profileService.deleteProfileImage(dto.getSystem_file_name());
+
+		if(deleteImg > 0) {
+
+		}else {
+			response.getWriter().print("삭제 실패");
 		}
 		
 		response.getWriter().flush();
