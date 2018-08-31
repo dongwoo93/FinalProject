@@ -116,6 +116,29 @@ public class IBoardDAO implements BoardDAO  {
 
 		});
 	}
+	
+	@Override
+	public List<BoardDTO> search(String keyword, int start, int end) {
+		String sql = "select mid.* from (select inn.*, rownum rn "
+				+ "from (select * from board where board_seq in (select board_seq from board_tags where tags = ?) "
+				+ "order by board_seq desc) inn) mid where rn between ? and ?";
+		
+		return template.query(sql, new Object[] {keyword, start, end}, new RowMapper<BoardDTO>() {
+
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO tmp = new BoardDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setContents(rs.getString(2));
+				tmp.setId(rs.getString(3));
+				tmp.setWritedate(rs.getString(4));
+				tmp.setRead_count(rs.getString(5));
+				tmp.setIs_allow_comments(rs.getString(6));
+				return tmp;
+			}
+
+		});
+	}
 
 	@Override
 	public List<Board_MediaDTO> search2(int seq) throws Exception {

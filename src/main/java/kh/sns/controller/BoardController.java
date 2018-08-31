@@ -73,7 +73,8 @@ public class BoardController {
 	@Autowired	private BoardBusinessService bbs;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
-	static final int TOUR_PER_PAGE = 30;
+	static final int TOUR_PER_PAGE = 15;
+	static final int SEARCH_PER_PAGE = 15;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -538,12 +539,12 @@ public class BoardController {
 
 	//Search(검색)
 	@RequestMapping("/search.bo")
-	public ModelAndView search(HttpSession session, String search) throws Exception{
-		
+	public ModelAndView search(HttpServletRequest request, HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-		searchService.insertSearch(id,search);  
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		searchService.insertSearch(search);  
+		/*List<BoardDTO> result = boardService.search(search);*/		// 전체 글
+		List<BoardDTO> result = boardService.search(search, 1, SEARCH_PER_PAGE);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
 		List<Integer> mark = new ArrayList<>();
@@ -578,6 +579,17 @@ public class BoardController {
 				dto.setContents(" ");  
 			}
 		}
+		
+		/* tour.bo의 오브젝트
+		mav.addObject("bookmark", mapmark);
+		mav.addObject("category", category);	// 카테고리
+		mav.addObject("result", result);		// 전체 
+		mav.addObject("result2", result2);		// 사진 
+		mav.addObject("result3", map);			// 누를때
+		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
+		 */
 
 		System.out.println("사이즈 : " + result.size());
 		mav.addObject("result", result); 		// 검색어
@@ -585,29 +597,9 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
-		mav.addObject("search", search); 
-		mav.setViewName("NewFile.jsp");   
-		return mav;  
-		
+		mav.setViewName("NewFile.jsp");
+		return mav;
 	}
-	
-	
-	@RequestMapping("/search1.bo")
-	public ModelAndView search1(HttpSession session, String search) throws Exception{
-		ModelAndView mav = new ModelAndView();
-		String id = (String)session.getAttribute("loginId");
-		 
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
-		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
-		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
-		List<Integer> mark = new ArrayList<>();
-		Map<Integer,String> mapmark = new HashMap<>();
-		mark = board_bookmarkService.searchMark(id);
-		for(int tmp : mark) {
-			mapmark.put(tmp, "y");
-		}
-		//////////////////////////////
-		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
 
 		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
@@ -720,7 +712,7 @@ public class BoardController {
 	
 	// 무한스크롤 적용
 	@RequestMapping("/tour.bo")
-	public ModelAndView copyOfGoTour(HttpSession session, String cat, String c) throws Exception {
+	public ModelAndView copyOfGoTour(HttpServletRequest request, HttpSession session, String cat, String c) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 		String category = null;
@@ -799,6 +791,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
 		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
 		return mav;
 	}

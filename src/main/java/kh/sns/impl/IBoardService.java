@@ -207,5 +207,10 @@ public class IBoardService implements BoardService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<BoardDTO> search(String keyword, int start, int end) throws Exception {
+		return dao.search(keyword, start, end);
+	}
 
 }
