@@ -583,7 +583,7 @@ public class BoardController {
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
 		mav.addObject("search", search); 
-		mav.setViewName("search2.jsp");
+		mav.setViewName("NewFile.jsp");   
 		return mav;  
 		
 	}
