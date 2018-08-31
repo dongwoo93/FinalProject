@@ -73,7 +73,8 @@ public class BoardController {
 	@Autowired	private BoardBusinessService bbs;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
-	static final int TOUR_PER_PAGE = 30;
+	static final int TOUR_PER_PAGE = 15;
+	static final int SEARCH_PER_PAGE = 15;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -165,29 +166,31 @@ public class BoardController {
 			}
 			
 			
-		//	String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/"); 
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia"); 
 
 
-//			for(List<Board_MediaDTO> mlist : media) { 
-//				double max = 0;
-//				for(Board_MediaDTO dto : mlist) {
-//					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//					double height = bimg.getHeight();
-//					double width = bimg.getWidth();
-//					height = 600*height/width;   
-//					System.out.println("height : " + height);
-//					if(max<height) { 
-//						max = height;
-//					}
-//
-//				}
-//				maxImgHeight.add((int)max);   
-//				System.out.println("max:" + max);     
-//			}
+			for(List<Board_MediaDTO> mlist : media) { 
+				double max = 0;
+				for(Board_MediaDTO dto : mlist) {
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+					System.out.println(realPath+dto.getSystem_file_name());
+					double height = bimg.getHeight();
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+					;
+					if(max<height) { 
+						max = height;
+					}
+
+				}
+				maxImgHeight.add((int)max);   
+				System.out.println("max:" + max);     
+			}
 
 
 			list1 = board_commentService.getFeedComment(id);
 			like = board_likeService.searchLike(id);
+			System.out.println("like 사이즈 : " +  like.size());
 			mark = board_bookmarkService.searchMark(id);
 
 			profile_image = profileService.getAllProfileImage();
@@ -213,11 +216,13 @@ public class BoardController {
 
 
 
-			for(int tmp : like) {
+			for(int tmp : like) {  
 				maplike.put(tmp, "y");
+				System.out.println(tmp);
 			}
 
-
+		
+		      
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
@@ -243,7 +248,8 @@ public class BoardController {
 		
 		
 		System.out.println(follow_list.size()/5); 
-
+		System.out.println("맵라이크 : " + maplike.size());
+		System.out.println("like 사이즈 : " +  like.size());
 		mav.addObject("maxImgHeight",maxImgHeight);
 		mav.addObject("trend", trend);
 		mav.setViewName("timeline2.jsp");
@@ -403,18 +409,21 @@ public class BoardController {
 
 		if(cat.equals("1")) { // 게시물
 			result = boardService.getBoard(id);
+			mav.addObject("category", "myboard");
 		}
 		else if(cat.equals("2")) { // 찜콕
 			List<int[]> seqArr = boardService.myBookmark(id);
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
+			mav.addObject("category", "bookmarkboard");
 		}
 		else if(cat.equals("3")) { // tag
             List<int[]> tagArr = boardService.myTags(id);
             for(int i = 0; tagArr.size() > i; i++) {
                result.add(boardService.oneBoard(Integer.toString(tagArr.get(i)[0])));
             }
+            mav.addObject("category", "tagboard");
          }
 		
 		List<Board_MediaDTO> result2 = new ArrayList<>();
@@ -456,39 +465,7 @@ public class BoardController {
 
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
 		
-		
-		////////////////////////////////////////
-//		
-//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
-//
-//		double maxwidth = 0;
-//
-//		
-//		for(Board_MediaDTO dto : result2) {  
-//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//			
-//			double width = bimg.getWidth();  
-//			double height = bimg.getHeight();
-//			
-//			if(width < height) {
-//				width = 600 * width / height;
-//			}
-//		
-//			if(maxwidth<width) { 
-//				maxwidth = width;
-//				
-//			}   
-//	  
-//		}
-//	
-//	
-//		if(maxwidth > 600) {
-//			maxwidth = 600;
-//		}
-//		
-// 
-//		
-		
+
 		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
@@ -528,7 +505,7 @@ public class BoardController {
 				maxwidth = width;
 			}
 			 
-		}
+		} 
 		System.out.println(" : " + maxwidth);  
 		
 
@@ -562,11 +539,12 @@ public class BoardController {
 
 	//Search(검색)
 	@RequestMapping("/search.bo")
-	public ModelAndView search(HttpSession session, String search) throws Exception{
+	public ModelAndView search(HttpServletRequest request, HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 		searchService.insertSearch(search);  
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		/*List<BoardDTO> result = boardService.search(search);*/		// 전체 글
+		List<BoardDTO> result = boardService.search(search, 1, SEARCH_PER_PAGE);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
 		List<Integer> mark = new ArrayList<>();
@@ -601,9 +579,20 @@ public class BoardController {
 				dto.setContents(" ");  
 			}
 		}
+		
+		/* tour.bo의 오브젝트
+		mav.addObject("bookmark", mapmark);
+		mav.addObject("category", category);	// 카테고리
+		mav.addObject("result", result);		// 전체 
+		mav.addObject("result2", result2);		// 사진 
+		mav.addObject("result3", map);			// 누를때
+		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
+		 */
 
 		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result);		// 검색어
+		mav.addObject("result", result); 		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
@@ -611,6 +600,42 @@ public class BoardController {
 		mav.setViewName("NewFile.jsp");
 		return mav;
 	}
+
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+		}
+
+		// 누를때
+		for(int tmp : result3) {
+			map.put(tmp, "y");
+		}
+
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
+		for(BoardDTO dto : result) {
+			if(dto.getContents() == null) {
+				dto.setContents(" ");  
+			}
+		}
+
+		System.out.println("사이즈 : " + result.size());
+		mav.addObject("result", result); 		// 검색어
+		mav.addObject("result2", result2);		// 사진
+		mav.addObject("like", map);			// 누를때
+		mav.addObject("result4", countlike);	// 조회
+		mav.addObject("bookmark", mapmark);
+		mav.addObject("search", search); 
+		mav.setViewName("search1.jsp");  
+		return mav;  
+	}
+	
 
 	//tour(둘러보기)  
 	@RequestMapping("/old_tour.bo")
@@ -687,7 +712,7 @@ public class BoardController {
 	
 	// 무한스크롤 적용
 	@RequestMapping("/tour.bo")
-	public ModelAndView copyOfGoTour(HttpSession session, String cat, String c) throws Exception {
+	public ModelAndView copyOfGoTour(HttpServletRequest request, HttpSession session, String cat, String c) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 		String category = null;
@@ -766,6 +791,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
 		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
 		return mav;
 	}

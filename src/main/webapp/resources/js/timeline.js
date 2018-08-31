@@ -1,4 +1,7 @@
-	function follow(id1, id2) {
+
+
+
+function follow(id1, id2) {
 		var id = id1;
 		var targetId = id2;
 		$.ajax({

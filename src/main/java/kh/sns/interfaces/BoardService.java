@@ -57,5 +57,6 @@ public interface BoardService {
 	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception;
 	public List<int[]> getLikeSortByRange(int start, int end) throws Exception;
 	public List<String[]> getTagSortByRange(int start, int end) throws Exception;
+	public List<BoardDTO> search(String keyword, int start, int end) throws Exception;
 
 }

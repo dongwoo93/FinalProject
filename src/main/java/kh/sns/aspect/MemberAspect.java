@@ -2,12 +2,14 @@ package kh.sns.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import kh.sns.dto.Board_CommentDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.util.EncryptUtils;
 import kh.sns.util.LogUtil;
@@ -31,7 +33,7 @@ public class MemberAspect {
    @Pointcut("execution(* kh.sns.impl.*Service.updateOneMemberPassword(..))")  
    public void updatePwEncrypt() {}
    //마이페이지에서 비밀번호 변경
-   
+
    @Around("insertEncrypt()")
    public int insertEncrypt(ProceedingJoinPoint pjp) {
 	   
@@ -42,7 +44,7 @@ public class MemberAspect {
       try {
         result = (Integer)pjp.proceed(new Object[] {dto}); // before after branch 분기점
          LogUtil log = new LogUtil();
-         log.insertLog(dto.getId(),"join");  
+         log.insertLog(dto.getId(),"join","");  
       } catch (Throwable e) {
          e.printStackTrace();
       }  
@@ -61,7 +63,7 @@ public class MemberAspect {
 	      try {
 	        result = (Integer)pjp.proceed(new Object[] {dto}); // before after branch 분기점
 	         LogUtil log = new LogUtil();
-	         log.insertLog(dto.getId(),"login");  
+	         log.insertLog(dto.getId(),"login","");  
 	      } catch (Throwable e) {
 	         e.printStackTrace();
 	      } 
