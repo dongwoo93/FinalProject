@@ -1192,7 +1192,7 @@ $(function(){
 	  });   
 });
 
-var globalStartNum = 16;
+var globalStartNum = ${NAV_COUNT_PER_PAGE + 1};
 
 
 
