@@ -217,7 +217,8 @@ public class BoardController {
 				maplike.put(tmp, "y");
 			}
 
-
+		
+		      
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}

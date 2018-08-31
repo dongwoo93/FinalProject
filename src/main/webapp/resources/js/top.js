@@ -8,7 +8,9 @@ $(function () {
 		if(msg.data == 'c'){ 
 			alert("코멘트 달았엉 알림가자~~~");  
 		}else if(msg.data == 'l'){
-			alert("좋아요알림가자~~~~"); 
+			$("#totalreadcount2").attr("style",false);
+			$("#countAlert").html("1");   
+			
 		}
 		else{  
 		var message = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[0];

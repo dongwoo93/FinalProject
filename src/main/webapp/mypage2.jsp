@@ -211,7 +211,7 @@
 		<div class="container mywrap">
 		<br>         
 			<div class="row">        
-				<div class="col-4">                            
+				<div class="col-3">                            
 				<img class="rounded-circle" alt='profile' width="40" height="35" src="AttachedMedia/${profile_pic}">
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;">${member.id}</span> 
@@ -290,7 +290,7 @@
 				
 				<!--  -->
 				
-				<div class="col-8" id="info">
+				<div class="col-9" id="info">
 					<div class="tab-content">
 					<c:choose>
 						<c:when test="${category != 0}">
@@ -460,43 +460,43 @@
 						        <br>SMS로 알림을 받아보세요.
 						      </div><br>
 						</div>
-						
-<!-- 						<div class="tab-pane fade" id="tabfive" role="tabpanel"> -->
-<!-- 							<div class=row> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>계정 정보</h1> -->
-<!-- 										<p>가입한 날짜<br><span class="text-muted">1800년 01월 01일</span></p> -->
-<!-- 										<p>계정 공개 범위 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>비밀번호 변경 사항 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이메일 주소 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 전화번호 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>생년월일<br><span class="text-muted">여기에 표시할 정보가 없습니다.</span></p> -->
-<!-- 									<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>프로필 정보</h1> -->
-<!-- 										<p>이전 사용자 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 이름 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>이전 소개 텍스트 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>소개의 이전 링크 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
-<!-- 								<div class=col-6> -->
-<!-- 									<h1>연결관계</h1> -->
-<!-- 										<p>현재 팔로우 요청 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님을 팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>팔로우하는 해시태그 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>회원님이 차단한 계정 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>활동</h1> -->
-<!-- 										<p>로그인 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>로그아웃 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<p>검색 내역 <br><a href="#">모두 보기</a></p> -->
-<!-- 										<hr> hr은 나중에 공백으로 대체 -->
-<!-- 									<h1>광고</h1> -->
-<!-- 										<p>광고 관심사 <br><a href="#">모두 보기</a></p> -->
-<!-- 								</div> -->
+						   
+						<div class="tab-pane fade" id="tabfive" role="tabpanel">
+							<div class=row>
+								<div class=col-6>
+									<h1>계정 정보</h1>
+										<p>가입한 날짜<br><span class="text-muted">1800년 01월 01일</span></p>
+										<p>계정 공개 범위 변경 사항 <br><a href="#">모두 보기</a></p>
+										<p>비밀번호 변경 사항 <br><a href="#">모두 보기</a></p>
+										<p>이전 이메일 주소 <br><a href="#">모두 보기</a></p>
+										<p>이전 전화번호 <br><a href="#">모두 보기</a></p>
+										<p>생년월일<br><span class="text-muted">여기에 표시할 정보가 없습니다.</span></p>
+									<hr> hr은 나중에 공백으로 대체
+									<h1>프로필 정보</h1>
+										<p>이전 사용자 이름 <br><a href="#">모두 보기</a></p>
+										<p>이전 이름 <br><a href="#">모두 보기</a></p>
+										<p>이전 소개 텍스트 <br><a href="#">모두 보기</a></p>
+										<p>소개의 이전 링크 <br><a href="#">모두 보기</a></p>
+								</div>
+								<div class=col-6>
+									<h1>연결관계</h1>
+										<p>현재 팔로우 요청 <br><a href="#">모두 보기</a></p>
+										<p>회원님을 팔로우하는 계정 <br><a href="#">모두 보기</a></p>
+										<p>팔로우하는 계정 <br><a href="#">모두 보기</a></p>
+										<p>팔로우하는 해시태그 <br><a href="#">모두 보기</a></p>
+										<p>회원님이 차단한 계정 <br><a href="#">모두 보기</a></p>
+										<hr> hr은 나중에 공백으로 대체
+									<h1>활동</h1>
+										<p>로그인 <br><a href="#">모두 보기</a></p>
+										<p>로그아웃 <br><a href="#">모두 보기</a></p>
+										<p>검색 내역 <br><a href="#">모두 보기</a></p>
+										<hr> hr은 나중에 공백으로 대체
+									<h1>광고</h1>
+										<p>광고 관심사 <br><a href="#">모두 보기</a></p>
+								</div>
 								
-<!-- 							</div> -->
-<!-- 						</div> -->
+							</div>
+						</div>
 						<c:choose>
 						<c:when test="${category != 3}">
 						<div class="tab-pane fade" id="privacyTab" role="tabpanel">

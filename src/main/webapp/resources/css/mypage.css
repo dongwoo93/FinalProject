@@ -165,7 +165,8 @@ html,body {
 }
 
 .mywrap {
-	border: 2px solid #ccc;
+    border: 0.3px solid #e3e0e0;
+    background-color: white;   
 	
 
 }
