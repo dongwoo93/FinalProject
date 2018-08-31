@@ -859,8 +859,8 @@ a:link {
     
         
     }
-.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+/* .carousel-item.active, .carousel-item-next, .carousel-item-prev {
     display: block;
     display: table-cell;  
     vertical-align: middle;
-}  
+}   */
