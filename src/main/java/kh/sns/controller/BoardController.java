@@ -723,6 +723,7 @@ public class BoardController {
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
+			
 		}
 
 //		// 인기 태그
@@ -801,19 +802,23 @@ public class BoardController {
 		// 최신글
 		if(cat.equals("1")) {
 			result = boardService.getBoardByRange(startInt, startInt + TOUR_PER_PAGE - 1);
-			category = "최신글";
-		}
-		
-		if(result.size() == 0) {
-			isAvailableMoreData = false;
-		}
+			if(result.size() == 0) {
+				isAvailableMoreData = false;
+			}
+			category = "최신글";		
+		}		
+
 
 		// 좋아요 
 		else if(cat.equals("2")) {
 			category = "좋아요 순";
-			List<int[]> seqArr = board_likeService.bestLike();
+			List<int[]> seqArr = board_likeService.bestLike(startInt, startInt + TOUR_PER_PAGE - 1);
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+			}
+
+			if(result.size() == 0) {
+				isAvailableMoreData = false;
 			}
 		}
 

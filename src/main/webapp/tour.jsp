@@ -253,10 +253,11 @@ function unmarkit(e) {
 			$.ajax({
 	            url: "tourForJson.ajax", // 처리할 페이지(서블릿) 주소
 	            type: "get",
-	            data: {start: globalStartNum},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+	            data: {start: globalStartNum, category: '${param.cat}'},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 	            success: function(r) {
 	            
 	        		console.log(r);
+	        		console.log("cat: ${param.cat}")
 	           		if(r.isAvailableMoreData){	// 가져올 게시글이 더 있나요?           		
 	            		var c = "";
 	           			// c += "<div class='card-columns'>"
@@ -282,8 +283,33 @@ function unmarkit(e) {
 		           		 	}
 		           		 	
 		           		 	// 좋아요
-		           		 	// if: result3.containsKey(result.board_seq)
-		           		 	
+		           		 	// if: result3(map).containsKey(result.board_seq)
+		           		 	if( typeof r.map[boardSeq] != "undefined" ){
+		           		 		c += "<i value='" + boardSeq + "' style='cursor: pointer; display: none;'" 
+		           		 		c += "id='likeit' class='far fa-heart icon mr-1' onclick='likeit(this)'></i>"
+								c += "<i value='" + boardSeq + "' style='color: red; cursor: pointer;' id='likecancel'"
+								c += "class='fas fa-heart' onclick='unlikeit(this)'></i>"
+								
+								// if: countlike[result.board_seq] != null
+								if(typeof r.countlike[board_seq] != "undefined" && r.countlike[board_seq] != null){
+									c += "<p id='p'><i value='" + boardSeq + "' id='count" + boardSeq + "'>"
+									c += r.countlike[board_seq] + "명이 좋아합니다." + "</i></p>"
+								} else {
+									c += "<p id='p'><i value='" + boardSeq + "' id='count" + boardSeq + "'></i></p>"
+								}								
+		           		 	} else {
+		           		 		c += "<i value='" + boardSeq + "' style='cursor: pointer;' id='likeit' "
+		           		 		c += "class='far fa-heart icon mr-1' onclick='likeit(this)'></i><i value='" + boardSeq + "' " 
+		           		 		c += "style='color: red; display: none; cursor: pointer;' id='likecancel' class='fas fa-heart'  "
+		                   		c += "onclick='unlikeit(this)'></i>"
+		                   		// if: countlike[result.board_seq] != null
+									if(typeof r.countlike[board_seq] != "undefined" && r.countlike[board_seq] != null){
+										c += "<p id='p'><i value='" + boardSeq + "' id='count" + boardSeq + "'>"
+										c += r.countlike[board_seq] + "명이 좋아합니다." + "</i></p>"
+									} else {
+										c += "<p id='p'><i value='" + boardSeq + "' id='count" + boardSeq + "'></i></p>"
+									}	
+		           		 	}
 		           					
 		           			c += "</h4>" 
 		           			
@@ -313,16 +339,8 @@ function unmarkit(e) {
 							}
 	           				
 	           				// c += "</a>"
-		           			
-		           			
-		           			
-		           			
-		           		 	
-		           		 	
 		           		 	c += "</div>"	// hidden div 끝
 		           		 	c += "</div>"	// modifydiv 끝
-		           			
-		           			
 		           			c += "</div>"	// card div 끝
 	           			}  			
 	           			
