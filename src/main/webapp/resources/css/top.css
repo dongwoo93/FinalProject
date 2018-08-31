@@ -47,13 +47,13 @@ body {
 }
   
 #totalreadcount2 { 
-	position: relative;
-	color: white;
-	font-size: 17px;
-	text-align: center;
-	top: 30px;
-	left: -30px;
-	display: inline-block;
+   position: absolute;
+   color: white;
+   font-size: 17px;
+   text-align: center;
+   top: 35px;
+   left:7px;
+   display: inline-block;
 }
 
 #allwrapper {
