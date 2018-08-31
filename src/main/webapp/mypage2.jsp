@@ -172,7 +172,15 @@
     	$('#changeBizBtn').click(function(){
     		$('.modal-title').text('비즈니스 계정으로 전환')
     		/* $('.modal-body').html() */
-    		 $(".modal").modal();
+    		 $("#buzmodal").modal();  
+    		 
+    	})
+    	
+    	
+    	$('#changePrivate').click(function(){
+    		$('.modal-title').text('잠시 계정 비활성화')
+    		/* $('.modal-body').html() */
+    		 $("#private").modal();
     		 
     	})
     	
@@ -369,7 +377,7 @@
 								
 							<div class="form-group text-center "> 
 								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;">제출</button>
-								<button type=button class="btn btn-light text-dark" style="font-weight:bold;">계정을 일시적으로 비활성화</button>
+								<button type=button class="btn btn-light text-dark" style="font-weight:bold;" id="changePrivate">계정을 일시적으로 비활성화</button>
 								<c:if test="${ memberBiz eq null }">
 									<button type=button class="btn btn-light text-dark" style="font-weight:bold;" id="changeBizBtn">비즈니스 계정으로 전환</button>
 								</c:if>
@@ -653,7 +661,7 @@
 	</div>
 	
 	
-													<div class="modal">
+													<div class="modal" id="buzmodal">
 													  <div class="modal-dialog" role="document">
 													    <div class="modal-content">
 													      <div class="modal-header">
@@ -680,4 +688,56 @@
 													    </div>
 													  </div>
 													</div>
+													
+													
+													
+													<div class="modal" id="private">
+													  <div class="modal-dialog" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h5 class="modal-title">Modal title</h5>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													          <span aria-hidden="true">&times;</span>
+													        </button>
+													      </div>
+													      <div class="modal-body">
+													      	<table style="padding: 4px" >                           
+													      		<tr style="border-bottom:1px solid lightgray; " >     
+													      		<td style="width: 80%;" ><p>hyong__star님, 안녕하세요! <br><br>계정을 삭제하지 않고 비활성화할 수 있습니다.비활성화하면 다시 로그인하여 재활성화할 때까지 계정이 숨겨집니다. <br><br>계정은 일주일에 한 번만 비활성화할 수 있습니다.</p></td>
+													      		</tr>
+													    	
+													      		<tr>        
+													      		 
+													      		<td><br><p>계정을 비활성화하시는 이유가 무엇인가요?
+													      		<br>         
+													      		<select style="width:100%; margin-top:10px;">      
+  																<option value="volvo">인스타그램이 유용하지 않습니다</option>
+ 																 <option value="saab">2</option>
+  																	<option value="mercedes">#</option>
+ 																	 <option value="audi">$</option>
+																</select> 
+																<br><br>
+																계속하려면 비밀번호를 다시 입력하세요  &nbsp;&nbsp;&nbsp;&nbsp;              
+																<input type=text placeholder="password" style="width:50%;">   
+													      		<br><a href="#">비밀번호를 잊으셨나요?</a>          
+																 </p> 
+																
+																</td>
+													      		</tr>
+													      		
+													     	
+													      	</table>
+													           
+													      </div>
+													      <div class="modal-footer">
+													      	<form action='changeBizAccount.profile' method=post>
+													        	<button type="submit" class="btn btn-primary">계정을 잠시 비활성화</button>
+													        </form>
+													        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													      </div>
+													    </div>
+													  </div>
+													</div>
+													
+													
 	<%@ include file="include/bottom.jsp"%>
