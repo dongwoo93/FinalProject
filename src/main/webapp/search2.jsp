@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     <%@ include file="include/top.jsp"%>
     <link rel="stylesheet" type="text/css" href="resources/css/search.css">
+   
+   
     <div id="allwrapper">
 		<div id="centerwrapper">
 			<div class="container" id="contents">

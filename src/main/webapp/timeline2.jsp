@@ -101,6 +101,48 @@
 	    }
 	});
 	
+	function follow(id1, id2, index) {
+		   var id = id1; 
+		   var targetId = id2; 
+		   $.ajax({ 
+		      url : "follow.do", 
+		      type : "post", 
+		      data : { 
+		         id : id, 
+		         targetId : targetId, 
+		      }, 
+		      success : function(resp) { 
+		         $("#cancelFollow"+index).show(); 
+		         $("#follow"+index).hide(); 
+		          
+		      }, 
+		      error : function() { 
+		         console.log("에러 발생!"); 
+		         } 
+		      }) 
+		} 
+		 
+		function unfollow(id1, id2, index) {
+		   var id = id1; 
+		   var targetId = id2; 
+		   $.ajax({ 
+		      url : "deletefollow.do", 
+		      type : "post", 
+		      data : { 
+		         id : id, 
+		         targetId : targetId, 
+		      }, 
+		      success : function(resp) { 
+		         $("#follow"+index).show(); 
+		         $("#cancelFollow"+index).hide(); 
+		          
+		      }, 
+		      error : function() { 
+		         console.log("에러 발생!"); 
+		         } 
+		      }) 
+		}
+	
 	
 	
 	$(document).ready(function(){
@@ -676,7 +718,7 @@
 											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
-														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">Instagram Profile 가기</a>
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
 														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
@@ -913,7 +955,12 @@
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
-					<li class="pt-2"><a id="followlink" style="font-family:NANUMBARUNPENR !important;font-size: 10px;">follow</a></li>           	  
+					<li onclick="follow('${sessionScope.loginId}', '${followtmp.id}', '${status.index}')" id="follow${status.index}" class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5></li>
+					<li onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', '${status.index}')" id="cancelFollow${status.index}" style="display:none " class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로잉</h5></li>        	  
+					
+					
 					</ul>   
 			</div>
 		  
@@ -1538,7 +1585,7 @@ $(window).scroll(function(){
 	            		divStr += "</p>"
 	            		divStr += "<input type=hidden value='" + boardSeq + ">"
 	            		
-	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" + boardSeq  		
+	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
 	            		
 						for(item in r.commentlist){

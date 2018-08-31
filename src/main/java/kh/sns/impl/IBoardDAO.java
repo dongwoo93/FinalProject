@@ -289,6 +289,40 @@ public class IBoardDAO implements BoardDAO  {
 		});
 
 	}
+	
+	// tour For JSON
+	@Override
+	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception {
+		
+		String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
+
+			return template.query(sql, new Object[] {start, end} , new RowMapper<BoardDTO>() {
+
+				@Override
+				public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					BoardDTO tmp = new BoardDTO();
+					tmp.setBoard_seq(rs.getInt(1));
+					tmp.setContents(rs.getString(2));
+					tmp.setId(rs.getString(3));
+					tmp.setWritedate(rs.getString(4));
+					tmp.setRead_count(rs.getString(5));
+					tmp.setIs_allow_comments(rs.getString(6));
+					return tmp;
+				}
+			});
+	}
+	
+	@Override
+	public List<int[]> getLikeSortByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<String[]> getTagSortByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// tour 사진
 	@Override
@@ -409,15 +443,14 @@ public class IBoardDAO implements BoardDAO  {
 
 	@Override  
 	public List<Object[]> alerting(String id) throws Exception {   
-		// TODO Auto-generated method stub  
-		 id = "zzz1";   
+		// TODO Auto-generated method stub    
 		String sql = "(select board_seq, id, floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(apply_date,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 회원님의 사진을 좋아합니다.' as alert from board_like where (board_seq in(select board_seq from board where id=?)) and (id != ?)) union (select 0 as board_seq , id ,floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(follow_date,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 회원님을 팔로우하기 시작했습니다.' as alert from member_follow where target_id=?) union (select board_seq , id, floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(writedate,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 댓글을 남겼습니다 : '||comment_contents as alert from board_comment where (board_seq in(select board_seq from board where id=?)) and (id!=?)) order by applydate";
 		return template.query(sql, new String[] {id,id,id,id,id}, new RowMapper<Object[]>() {
 
 			@Override
 			public Object[] mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
-				Object[] result = new Object[] {rs.getInt("board_seq"),rs.getString("id"),rs.getInt("applydate"), rs.getString("alert"),""};
+				Object[] result = new Object[] {rs.getInt("board_seq"),rs.getString("id"),rs.getInt("applydate"), rs.getString("alert"),"","n"};
 				
 				
 				
