@@ -1038,7 +1038,6 @@
 </div>
 <!--  allwrapper-->
 
-<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark" data-dismiss="modal">Close</button>
 <div class="modal fade" id="changeBoardModal" tabindex="-1"
 	role="dialog"></div>
 
