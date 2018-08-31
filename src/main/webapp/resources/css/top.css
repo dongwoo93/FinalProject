@@ -50,7 +50,7 @@
 	 /* 하트  */
 	  #totalreadcount2{
 	 	 
-	 	 
+	 	   
 	 	  position: relative;   
 		  color:white;     
 		 
@@ -60,6 +60,9 @@
 		  left:-30px;
 		     
 		  display:inline-block;
+	 }
+	 #modData{
+	 	left:-35px;
 	 }
 
     #allwrapper{
