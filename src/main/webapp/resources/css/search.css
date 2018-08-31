@@ -18,7 +18,7 @@
 	margin-bottom: 20px;
 }
 
-#mark, #markcancel, #likeit, #likecancel {
+#mark, #markcancel, .lk, .lkc {
 	float: right;
 	font-size: 15px;
 	margin-right: 5px;
