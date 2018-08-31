@@ -15,4 +15,6 @@ public interface BoardBusinessService {
 	public List<BoardBusinessDTO> getBoardBizByRange() throws Exception;
 	
 	public int updateAnEvaluationResult(BoardBusinessDTO bbiz) throws Exception;
+	
+	public List<BoardBusinessDTO> pickAds(int count) throws Exception;
 }

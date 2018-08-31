@@ -29,20 +29,22 @@
 		 min-height: 100vh;
 		 padding-bottom: 3rem;  
 		background-color:#F5F4F4;
-		 
+		
 	 
 	 } 
 	 
 	 #totalreadcount{
 	 	  background-color:red;
 	 	  width:20px;
-	 	  position: absolute;
+	 	  position: relative;
 		  color:white;
+		  padding-top:4px;
 		  font-size: 12px;
 		  text-align:center;
-   		  top: 10px;
-    	  right: 51.5rem;
+		  top:-20px;
+		  left:-10px;
 		  border-radius:5px;
+		  display:inline-block;
 	 }
 
     #allwrapper{

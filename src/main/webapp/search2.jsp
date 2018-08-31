@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     <%@ include file="include/top.jsp"%>
     <link rel="stylesheet" type="text/css" href="resources/css/search.css">
+   
+   
     <div id="allwrapper">
 		<div id="centerwrapper">
 			<div class="container" id="contents">
@@ -224,9 +226,13 @@ function unmarkit(e) {
 				</c:forEach>
 			</div>
 		</c:when>
-				<c:otherwise>
-					<h1>검색 결과가 없습니다.</h1>
-				</c:otherwise>
+			<c:otherwise>
+			<br>
+			<br>
+			<br>
+			<br>
+				<h1 style="font-family: NANUMBARUNPENR !important;">검색 결과가 없습니다.</h1>
+			</c:otherwise>
 	</c:choose>
 				<!-- choose문 끝나는 지점 -->
 

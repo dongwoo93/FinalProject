@@ -1,39 +1,27 @@
 package kh.sns.impl;
 
-import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.aspectj.weaver.TemporaryTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
-import kh.sns.dto.FollowInfo;
-import kh.sns.dto.Profile_ImageDTO;
-import kh.sns.dto.Board_TagsDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
 
 @Repository
-public class IBoardDAO implements BoardDAO  {
-
-	private static final String SAVE_PATH = "/upload";
-	private static final String PREFIX_URL = "/upload/"; 
+public class IBoardDAO implements BoardDAO  {	
 
 	@Autowired
-	private JdbcTemplate template;
-	
-	
-	
+	private JdbcTemplate template;	
 
 	@Override
 	public List<BoardDTO> getBoard(String id) throws Exception {	   	 
@@ -53,7 +41,7 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
-	
+
 	public String boardCount(String id) throws Exception {
 		String sql = "select count(*) from board where id = ?";
 		return template.query(sql, new Object[] {id}, new RowMapper<String>() {
@@ -64,14 +52,14 @@ public class IBoardDAO implements BoardDAO  {
 				return tmp;
 			}
 		}).get(0);
-		
+
 	}
-	
+
 	@Override
 	public BoardDTO getBoardModal(String seq) throws Exception {
 		System.out.println(seq + " d에에에엑");  
 		String sql = "select * from board where board_seq=?";
-		
+
 		return template.query(sql, new Object[] {seq}, new RowMapper<BoardDTO>() {
 
 			@Override
@@ -87,25 +75,25 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		}).get(0);
 	}
-	
-	
-	
 
-		@Override
-		public int deleteBoard(int seq) {
-			String sql = "delete from board where board_seq = ? ";
-			return template.update(sql, seq);
-		}
-	
-		
 
-		@Override
-		public int modifyBoard(BoardDTO dto) throws Exception {
-			String sql = "update board set contents = ? where board_seq = ?";  
-			return template.update(sql, dto.getContents(), dto.getBoard_seq());
-		}
 
-		
+
+	@Override
+	public int deleteBoard(int seq) {
+		String sql = "delete from board where board_seq = ? ";
+		return template.update(sql, seq);
+	}
+
+
+
+	@Override
+	public int modifyBoard(BoardDTO dto) throws Exception {
+		String sql = "update board set contents = ? where board_seq = ?";  
+		return template.update(sql, dto.getContents(), dto.getBoard_seq());
+	}
+
+
 	// Search 
 	@Override
 	public List<BoardDTO> search(String keyword) {
@@ -118,6 +106,7 @@ public class IBoardDAO implements BoardDAO  {
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				BoardDTO tmp = new BoardDTO();
 				tmp.setBoard_seq(rs.getInt(1));
+				
 				tmp.setContents(rs.getString(2));
 				tmp.setId(rs.getString(3));
 				tmp.setWritedate(rs.getString(4));
@@ -128,7 +117,7 @@ public class IBoardDAO implements BoardDAO  {
 
 		});
 	}
-	
+
 	@Override
 	public List<Board_MediaDTO> search2(int seq) throws Exception {
 		String sql = "select * from board_media where board_seq=? order by media_seq";
@@ -146,7 +135,7 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
-	
+
 	@Override
 	public List<String[]> getTag(String keyword) throws Exception {
 		String sql = "select bt.tags, COUNT(DISTINCT(b.board_seq)) from board b, board_tags bt where bt.tags like '%'||?||'%' and bt.board_seq = b.board_seq group by bt.tags";
@@ -160,7 +149,7 @@ public class IBoardDAO implements BoardDAO  {
 
 		});
 	}
-	
+
 	@Override
 	public List<BoardDTO> getFeed(String id) throws Exception {
 		String sql = "select * from board where (id in (select target_id from member_follow where id=?)) or (id=?) order by board_seq desc";
@@ -179,14 +168,14 @@ public class IBoardDAO implements BoardDAO  {
 			}
 		});
 	}
-	
+
 	@Override
 	public List<BoardDTO> getFeed(String id, int start, int end) {
 		String sql = "select * from (select board.*, rownum rn from board "
 				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by board_seq desc) "
 				+ "where (rn between ? and ?)";
-		
-		return template.query(sql, new String[] {id,id}, (rs, rowNum) -> {
+
+		return template.query(sql, new Object[] {id, id, start, end}, (rs, rowNum) -> {
 			BoardDTO dto = new  BoardDTO();
 			dto.setBoard_seq(rs.getInt("board_seq"));
 			dto.setContents(rs.getString("contents"));
@@ -197,7 +186,7 @@ public class IBoardDAO implements BoardDAO  {
 			return dto;
 		});
 	}
-	
+
 
 	@Override
 	public int insertNewBoardContent(BoardDTO board) {
@@ -227,39 +216,39 @@ public class IBoardDAO implements BoardDAO  {
 		List<Integer> temp = template.query(sql, (rs, rowNum) -> {
 			return rs.getInt(1);	
 		});
-				
+
 		return temp.get(0);
 	}
-	
-	
+
+
 
 	@Override
 	public int[] insertHashTags(BoardDTO article) throws Exception {
-System.out.println(article.getBoard_seq() + " ::::::::::::");  
+		System.out.println(article.getBoard_seq() + " ::::::::::::");  
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
 		String sql = "insert into board_tags values(?, ?)";
 		return template.batchUpdate(sql, new BatchPreparedStatementSetter() {			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				
+
 				ps.setInt(1, article.getBoard_seq());
 				ps.setString(2, hashTagList.get(i));
-				
+
 			}
 
 			@Override
 			public int getBatchSize() {
 				return hashTagList.size();
 			}
-			
+
 		});
 	}
-	
+
 
 	@Override
 	public BoardDTO oneBoard(String board_seq) throws Exception {
-		
+
 		String sql = "select * from board where board_seq = ?";
 		List<BoardDTO> result =  template.query(sql, new String[] {board_seq}, new RowMapper<BoardDTO>() {
 
@@ -276,11 +265,11 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 				return article;
 			}
 		});
-		
+
 		return result.get(0);
-		}
-	
-	
+	}
+
+
 	//tour
 	@Override
 	public List<BoardDTO> getAllBoard() throws Exception {
@@ -299,9 +288,43 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 				return tmp;
 			}
 		});
-		
+
 	}
 	
+	// tour For JSON
+	@Override
+	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception {
+		
+		String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
+
+			return template.query(sql, new Object[] {start, end} , new RowMapper<BoardDTO>() {
+
+				@Override
+				public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					BoardDTO tmp = new BoardDTO();
+					tmp.setBoard_seq(rs.getInt(1));
+					tmp.setContents(rs.getString(2));
+					tmp.setId(rs.getString(3));
+					tmp.setWritedate(rs.getString(4));
+					tmp.setRead_count(rs.getString(5));
+					tmp.setIs_allow_comments(rs.getString(6));
+					return tmp;
+				}
+			});
+	}
+	
+	@Override
+	public List<int[]> getLikeSortByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<String[]> getTagSortByRange(int start, int end) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	// tour 사진
 	@Override
 	public List<Board_MediaDTO> getAllBoard2() throws Exception {
@@ -320,31 +343,31 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 			}
 		});
 	}
-	
+
 	// TOUR TAG 인기순 
 	@Override
 	public List<String[]> selectTagCount() throws Exception {
 		String sql = "SELECT T10.TAGS"  			// STEP03 : 여러개의 ROW를 1개의 셀로 합치기
-				   + "     , T10.CNT"  
-				   + "     , LISTAGG(T10.BOARD_SEQ,',') WITHIN GROUP (ORDER BY T10.BOARD_SEQ)" 
-				   + " FROM ("  					// STEP02 : TAGS별 건수가 많은 순으로 임의 번호 지정
-				   + "       SELECT T20.BOARD_SEQ" 
-				   + "			  , T20.TAGS" 
-				   + "			  , T20.CNT" 
-				   + "			  , ROW_NUMBER() OVER(PARTITION BY T20.BOARD_SEQ ORDER BY CNT DESC) AS SEQ"
-				   + "		   FROM (" 				// STEP01 - TAGS 별 건수 조회
-				   + "				 SELECT T30.BOARD_SEQ"
-				   + "					  , T30.TAGS" 
-				   + "					  , COUNT(1) OVER(PARTITION BY T30.TAGS) AS CNT"  // TAG별건수
-				   + "				   FROM BOARD_TAGS T30" 
-				   + "				) T20"
-				   + "					  ) T10"
-				   + "				WHERE T10.SEQ = 1"		// TAG별 건수가 가장 많은 TAG만 뽑기위한 조건(중복제거용)
-				   + "				GROUP BY " 
-				   + "					  T10.TAGS" 
-				   + "					, T10.CNT" 
-				   + "				ORDER BY " 
-				   + "					  2 DESC";
+				+ "     , T10.CNT"  
+				+ "     , LISTAGG(T10.BOARD_SEQ,',') WITHIN GROUP (ORDER BY T10.BOARD_SEQ)" 
+				+ " FROM ("  					// STEP02 : TAGS별 건수가 많은 순으로 임의 번호 지정
+				+ "       SELECT T20.BOARD_SEQ" 
+				+ "			  , T20.TAGS" 
+				+ "			  , T20.CNT" 
+				+ "			  , ROW_NUMBER() OVER(PARTITION BY T20.BOARD_SEQ ORDER BY CNT DESC) AS SEQ"
+				+ "		   FROM (" 				// STEP01 - TAGS 별 건수 조회
+				+ "				 SELECT T30.BOARD_SEQ"
+				+ "					  , T30.TAGS" 
+				+ "					  , COUNT(1) OVER(PARTITION BY T30.TAGS) AS CNT"  // TAG별건수
+				+ "				   FROM BOARD_TAGS T30" 
+				+ "				) T20"
+				+ "					  ) T10"
+				+ "				WHERE T10.SEQ = 1"		// TAG별 건수가 가장 많은 TAG만 뽑기위한 조건(중복제거용)
+				+ "				GROUP BY " 
+				+ "					  T10.TAGS" 
+				+ "					, T10.CNT" 
+				+ "				ORDER BY " 
+				+ "					  2 DESC";
 		return template.query(sql, new RowMapper<String[]>() {
 
 			@Override
@@ -353,12 +376,12 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 				System.out.println(list[2]);
 				return list;
 			}
-			
+
 		});
 	}
-	
+
 	// my_aticle_bookmark
-	@Override
+	@Override 
 	public List<int[]> myBookmark(String id) throws Exception {
 		String sql = "select board_seq from board_bookmark where id=?";
 		return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
@@ -371,21 +394,73 @@ System.out.println(article.getBoard_seq() + " ::::::::::::");
 			}
 		});
 	}
-	
-	// my_aticle_Tag
-	   @Override
-	   public List<int[]> myTag(String id) throws Exception {
-	      String sql = "select board_seq from member_tags where member_tags=?";
-	      return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
 
-	         @Override
-	         public int[] mapRow(ResultSet rs, int arg1) throws SQLException {
-	            int[] listTag = {rs.getInt("board_seq")};
-	            System.out.println(listTag);
-	            return listTag;
-	         }
-	         
-	      });
-	   }
+	// my_aticle_Tag
+	@Override
+	public List<int[]> myTag(String id) throws Exception {
+		String sql = "select board_seq from member_tags where member_tags=?";
+		return template.query(sql, new Object[] {id}, new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int arg1) throws SQLException {
+				int[] listTag = {rs.getInt("board_seq")};
+				System.out.println(listTag);
+				return listTag;
+			}
+
+		});
+	}
+
+	@Override
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception {
+		String innerSql = "";
+		Object[] objs = new Object[picks.length];
+		for(int i = 0; i < picks.length; i++) {
+			innerSql += "?";
+			objs[i] = picks[i];
+			if(i + 1 != picks.length) {
+				innerSql += ", ";
+			} else {
+				break;
+			}
+		}
+		
+		String sql = "select * from board where board_seq in(" + innerSql + ")";
+		return template.query(sql, objs, new RowMapper<BoardDTO>() {
+			
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO dto = new  BoardDTO();
+				dto.setBoard_seq(rs.getInt("board_seq"));
+				dto.setContents(rs.getString("contents"));
+				dto.setId(rs.getString("id"));
+				dto.setWritedate(rs.getString("writedate"));
+				dto.setRead_count(rs.getString("read_count"));
+				dto.setIs_allow_comments(rs.getString("is_allow_comments"));
+				return dto;
+			}
+		});
+	}
+
+	@Override  
+	public List<Object[]> alerting(String id) throws Exception {   
+		// TODO Auto-generated method stub  
+		 id = "zzz1";   
+		String sql = "(select board_seq, id, floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(apply_date,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 회원님의 사진을 좋아합니다.' as alert from board_like where (board_seq in(select board_seq from board where id=?)) and (id != ?)) union (select 0 as board_seq , id ,floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(follow_date,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 회원님을 팔로우하기 시작했습니다.' as alert from member_follow where target_id=?) union (select board_seq , id, floor((TRUNC(SYSDATE, 'MI')-TO_DATE(to_char(writedate,'YYYYMMDD HH24:MI:SS'),'YYYYMMDD HH24:MI:SS')) * 1440) as applydate, id||' 님이 댓글을 남겼습니다 : '||comment_contents as alert from board_comment where (board_seq in(select board_seq from board where id=?)) and (id!=?)) order by applydate";
+		return template.query(sql, new String[] {id,id,id,id,id}, new RowMapper<Object[]>() {
+
+			@Override
+			public Object[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Object[] result = new Object[] {rs.getInt("board_seq"),rs.getString("id"),rs.getInt("applydate"), rs.getString("alert"),""};
+				
+				
+				
+				return result;
+			}
+			
+		});
+		
+	}
 
 }

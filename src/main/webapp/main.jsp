@@ -66,8 +66,8 @@
          
          
          <div class="form-item">
-         <p class="" style="font-weight:bold;"><a href="findPass.jsp" ><small>Forgot Password ?</small></a></p>   
-         <p class="pull-left" style="font-weight:bold;"><a href="join.do"><small>Register</small></a></p>
+         <p class="" style="font-weight:bold;color:#55b1df;"><a href="findPass.jsp" ><small style="color:#55b1df;">Forgot Password ?</small></a></p>   
+         <p class="pull-left" style="font-weight:bold;"><a href="join.do"><small style="color:#55b1df;">Register</small></a></p>
          <input id="submit" type="submit" class="login pull-right" value="Log In" style="font-weight:bold;">
          <div id="preloader">
         <div id="loader"></div>
@@ -77,16 +77,9 @@
          </form>
          </div>
          
-<!--     </div> -->
-
-   
-   
    
  </div>
 
-
-   
-   
 
 </body>
 </html>
