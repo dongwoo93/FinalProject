@@ -608,11 +608,11 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
-		mav.setViewName("search2.jsp");
+		mav.setViewName("NewFile.jsp");
 		return mav;
 	}
 
-	//tour(둘러보기)
+	//tour(둘러보기)  
 	@RequestMapping("/tour.bo")
 	public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -1173,7 +1173,6 @@ public class BoardController {
 		   resp.setCharacterEncoding("UTF-8");
 		   resp.setContentType("application/json");
 		   List<FollowInfo> follow_list = new ArrayList<>();
-		   JsonArray jsonArr = new JsonArray();
 		
 		 try {
 			 follow_list = member_followService.followList(sessionid);
@@ -1192,15 +1191,24 @@ public class BoardController {
 				
 				tmp[1] = profileService.selectOneProfileImage(sessionid);
 				if((int)tmp[0] == 0) {
-					tmp[4] = "0";    
+					tmp[4] = "0";
 				}else {    
 				tmp[4] = boardService.search2( (int)tmp[0] ).get(0).getSystem_file_name();
+				}
+				
+				String name = tmp[3].toString().split(" 님이")[0];
+				for(int i = 0; i < follow_list.size(); i++) {
+					if(name.equals(follow_list.get(i).getTargetId())) {
+						tmp[5] = "y";
+						break;
+					}
 				}
 				System.out.print(tmp[0] + " : ");
 				System.out.print(tmp[1] + " : ");
 				System.out.print(tmp[2] + " :" );
 				System.out.print(tmp[3]+ " : "); 
-				System.out.println(tmp[4]+ " : ");
+				System.out.print(tmp[4]+ " : ");
+				System.out.println(tmp[5]+ " : ");
 			}
 			new Gson().toJson(result,resp.getWriter());
 			
