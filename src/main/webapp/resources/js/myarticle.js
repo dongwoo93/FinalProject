@@ -129,7 +129,9 @@ $(document).ready(function() {
 			data: {seq:seq},
 			success: function(data)
 			{
-				    
+				  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
+            	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
+           	  
 				if(data[1].length == 1) {
 					$("#carousel-prev").hide();
 					$("#carousel-next").hide();
@@ -236,8 +238,10 @@ $(document).ready(function() {
 			data: {seq:seq},
 			success: function(data)
 			{
-				
-		    
+				    
+				  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
+            	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
+           	  
 				if(data[1].length == 1) {
 					$("#carousel-prev").hide();
 					$("#carousel-next").hide();

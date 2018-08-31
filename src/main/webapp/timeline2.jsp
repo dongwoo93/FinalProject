@@ -641,37 +641,7 @@
 							
 						</div>
 						<div class="mt-2" id="boardimg">
-							<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>
-
-
-							<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
-
-							<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
-							<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
-
-							<script>      
-										
-// 										var height= $("#feedimg${status.index}a${status3.index}").height()
-										
-// 										var maxheight = $("#maxheight${status.index}").val();
-										
-										
-// 										if(parseInt(maxheight) < height){
-											
-// 										$("#maxheight${status.index}").val(height);
-  
-// 										var realmax= $("#maxheight${status.index}").val();   
-										 
-										
-// 										}     
-										
-// 										var realmax= $("#maxheight${status.index}").val(); 
-// 										$("#myCarousel${status.index}").attr("style"," height:"+realmax+"px;");  
-										
-										</script>
-							<%-- 									</c:forEach> --%>
-
-
+						
 
 							<div id="myCarousel${status.index}" class="carousel slide"
 								data-ride="carousel" data-interval="false" style="z-index: 5;">
@@ -683,8 +653,9 @@
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-								<div id="carousel-inner" class="carousel-inner">
+								</ul>  
+								<div id="carousel-inner" class="carousel-inner"
+								style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
 									<div id="firstItem" class="carousel-item active">
 										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -734,13 +705,14 @@
 									</div>
 								</div>
 							</div>
-						</c:if>
+						</c:if> 
 
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
-									<a class="navbar-brand"> <c:choose>
+									<a class="navbar-brand"> 
+									<c:choose>    
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
@@ -760,7 +732,8 @@
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
-										</c:choose> <i class="far fa-comment icon"></i>
+										</c:choose>  
+										 <i class="far fa-comment icon"></i>
 									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
 											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
 
