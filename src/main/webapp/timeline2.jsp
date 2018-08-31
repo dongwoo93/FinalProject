@@ -629,7 +629,7 @@
 							<c:choose>
 								<c:when test="${tmp.thisArticleForAd eq 1}">
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
 									</a>
 								</c:when>
 								<c:otherwise>
@@ -1018,7 +1018,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<a href="footinfo.jsp"><p style="color:#dc3545;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<a href="footinfo.jsp"><p style="color:#212529;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
 						
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
@@ -1038,7 +1038,7 @@
 </div>
 <!--  allwrapper-->
 
-
+<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark" data-dismiss="modal">Close</button>
 <div class="modal fade" id="changeBoardModal" tabindex="-1"
 	role="dialog"></div>
 
