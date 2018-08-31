@@ -16,6 +16,22 @@
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script>
+$(document).on('show.bs.modal', '.modal', function () {
+    var zIndex = 1040 + (10 * $('.modal:visible').length);
+    $(this).css('z-index', zIndex);
+    setTimeout(function() {
+        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+    }, 0);
+});
+function showmodimodal(e) {
+	var currentEv = $("#calTitle").text();
+	var start = $("#hiddenStart").text();
+	var end = $("#hiddenEnd").text();
+	$("#modifyEventModal").modal();
+	$("#eventName2").val(currentEv);
+	$("#eventDueDate2").val("");
+}
+
 function myAlertBottom(msg){
 	$("#alertmsg").text(msg);
 	  $(".myAlert-bottom").fadeIn();
@@ -60,6 +76,18 @@ function deleteEvent() {
 
           doSubmit();
         });
+	  
+	  $('#submitButton2').on('click', function(e){
+		  var content = $('#eventName2').val();
+		  if(content == "") {
+			  alert("내용을 입력해주세요");
+			  return;
+		  }
+          // We don't want this to act as a link so cancel the link action
+          e.preventDefault();
+
+          doSubmit2();
+        });
 
     function doSubmit(){
     	var content = $('#eventName').val();
@@ -89,6 +117,53 @@ function deleteEvent() {
             		          true);
             		myAlertBottom("일정이 등록 되었습니다");
             	}
+            },
+            error : function() {
+                console.log("에러 발생!");
+                }
+        });
+      $("#createEventModal").modal('hide');
+      
+     }
+    
+    function doSubmit2(){
+    	var seq = $("#hiddenid").val();
+    	var content = $('#eventName2').val();
+    	var startEnd = $("#eventDueDate2").val();
+    	var startTime = startEnd.split(' - ')[0];
+    	var endTime = startEnd.split(' - ')[1];
+    	var eventData;
+    	$.ajax({
+            url: 'update.cal',
+            type: 'post',
+            data : {
+            	seq : seq,
+            	date_start : startTime,
+            	date_end : endTime,
+            	content : content
+             },
+            success: function (data) {
+            	if(data == 0) {
+            		alert("등록에 실패 하였습니다");
+            	}
+            	eventData = {
+        				id: seq,
+        	            title: event.title,
+        	            start: event.start,
+        	            end: event.end
+        	          };
+            	$('#calendar').fullCalendar('removeEvents', seq);
+            	$("#calendar").fullCalendar('renderEvent',
+      		          {
+      						id: seq,
+      		              title: content,
+      		              start: new Date(startTime),
+      		              end: new Date(endTime)
+      		          },
+      		          true);
+            	$("#modifyEventModal").modal("hide");
+            	$("#calModal").modal('hide');
+              	myAlertBottom("일정이 변경 되었습니다");
             },
             error : function() {
                 console.log("에러 발생!");
@@ -171,6 +246,8 @@ function deleteEvent() {
     	  $("#hiddenid").val(event.id);
     	  $("#calModal").modal("show");
     	  $("#calTitle").text(event.title);
+    	  $("#hiddenStart").text(event.start.format());
+    	  $("#hiddenEnd").text(event.end.format());
     	  $("#timecontent").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
     	    
     	  },
@@ -402,10 +479,47 @@ function deleteEvent() {
 			</div>
 		</div>
 	</div>
+	
+	<!-- Modal -->
+	<div id="modifyEventModal" class="modal fade">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 style="font-weight: bold;">일정 수정</h3>
+				</div>
+
+				<div id="modalBody" class="modal-body">
+					<label for="eventName">일정</label>
+					<div class="form-group">
+						<input class="form-control" type="text" placeholder="내용을 입력하세요"
+							id="eventName2">
+					</div>
+
+					<label for="eventDueDate">날짜</label>
+					<div class="form-group">
+						<div class="input-group date" data-provide="datepicker">
+							<input type="text" id="eventDueDate2" name="datetimes"
+								class="form-control">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+					<button type="submit" class="btn btn-primary" id="submitButton2">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 
 	<!-- The Modal -->
 	<div class="modal" id="calModal">
 		<input id="hiddenid" type="hidden" value="">
+		<input id="hiddenStart" type="hidden" value="">
+		<input id="hiddenEnd" type="hidden" value="">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 
@@ -413,7 +527,7 @@ function deleteEvent() {
 				<div id="calHeader" class="modal-header">
 					<h4 id="calTitle" class="modal-title"></h4>
 					<div>
-					<i class="fas fa-pencil-alt calicon" title="수정"></i>
+					<i onclick="showmodimodal(this)" class="fas fa-pencil-alt calicon" title="수정"></i>
 						<i onclick="deleteEvent()" class="far fa-trash-alt calicon" title="삭제"></i>
 						
 						<button type="button" id="closeCal" class="close"

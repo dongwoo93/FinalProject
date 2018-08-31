@@ -126,4 +126,21 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 			
 		});
 	}
+	
+	// BestLike by Range
+	@Override
+	public List<int[]> bestLike(int start, int end) throws Exception {
+		String sql = "select mid.* from (select inner.*, rownum rn from (SELECT BOARD_SEQ, COUNT(*) "
+				+ "FROM BOARD_LIKE GROUP BY BOARD_SEQ ORDER BY 2 DESC) inner) mid where rn between ? and ?";
+		
+		return template.query(sql, new Object[] {start, end}, new RowMapper<int[]>() {
+
+			@Override
+			public int[] mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int[] list = {rs.getInt(1), rs.getInt(2)};
+				return list;
+			}
+			
+		});
+	}
 }
