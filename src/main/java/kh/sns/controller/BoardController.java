@@ -27,7 +27,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -38,7 +40,6 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
-import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
@@ -607,11 +608,11 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
-		mav.setViewName("search2.jsp");
+		mav.setViewName("NewFile.jsp");
 		return mav;
 	}
 
-	//tour(둘러보기)
+	//tour(둘러보기)  
 	@RequestMapping("/tour.bo")
 	public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -1171,8 +1172,10 @@ public class BoardController {
 		String sessionid = (String) seesion.getAttribute("loginId");
 		   resp.setCharacterEncoding("UTF-8");
 		   resp.setContentType("application/json");
+		   List<FollowInfo> follow_list = new ArrayList<>();
 		
 		 try {
+			 follow_list = member_followService.followList(sessionid);
 			List<Object[]> result = boardService.alerting(sessionid);
 			
 			for(Object[] tmp : result) {
@@ -1188,18 +1191,24 @@ public class BoardController {
 				
 				tmp[1] = profileService.selectOneProfileImage(sessionid);
 				if((int)tmp[0] == 0) {
-					tmp[4] = "0";    
+					tmp[4] = "0";
 				}else {    
 				tmp[4] = boardService.search2( (int)tmp[0] ).get(0).getSystem_file_name();
+				}
+				
+				String name = tmp[3].toString().split(" 님이")[0];
+				for(int i = 0; i < follow_list.size(); i++) {
+					if(name.equals(follow_list.get(i).getTargetId())) {
+						tmp[5] = "y";
+						break;
+					}
 				}
 				System.out.print(tmp[0] + " : ");
 				System.out.print(tmp[1] + " : ");
 				System.out.print(tmp[2] + " :" );
 				System.out.print(tmp[3]+ " : "); 
-				System.out.println(tmp[4]+ " : "); 
-				
-				
-				
+				System.out.print(tmp[4]+ " : ");
+				System.out.println(tmp[5]+ " : ");
 			}
 			new Gson().toJson(result,resp.getWriter());
 			
