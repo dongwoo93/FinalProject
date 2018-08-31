@@ -24,6 +24,7 @@ public class IBoard_LikeService implements Board_LikeService {
 	@Override
 	public int insertLike(Board_LikeDTO dto) throws Exception {
 		// TODO Auto-generated method stub
+
 		return board_likedao.insertLike(dto);
 	}
 
@@ -63,5 +64,10 @@ public class IBoard_LikeService implements Board_LikeService {
 	@Override
 	public List<int[]> bestLike() throws Exception{
 		return board_likedao.bestLike();
+	}
+	
+	@Override
+	public List<int[]> bestLike(int start, int end) throws Exception {
+		return board_likedao.bestLike(start, end);
 	}
 }

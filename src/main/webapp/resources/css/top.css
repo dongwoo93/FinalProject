@@ -1,200 +1,209 @@
 /* @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600); */
 /* @import url(https://use.fontawesome.com/releases/v5.0.8/css/all.css); */
 /* @font-face { font-family: 'billabong'; src: url("../fonts/billabong.ttf") format('truetype'); } */
-
 @CHARSET "UTF-8";
 
-@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
-@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+@font-face {
+	font-family: 'NANUMBARUNPENR';
+	src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype');
+}
 
+@font-face {
+	font-family: 'NANUMPEN';
+	src: url("../fonts/NANUMPEN.TTF") format('truetype');
+}
 
+/* Base Styles */
+:root {
+	/* Base font size */
+	font-size: 12px;
+}
 
-	/* Base Styles */
-	:root {
-		/* Base font size */
-		font-size: 12px;
-		
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+body {
+	/*    		 border : 1px solid black;    */
+	height: auto;
+	font-family: "Open Sans", Arial, sans-serif;
+	min-height: 100vh;
+	padding-bottom: 3rem;
+	background-color: #F5F4F4;
+}
+
+#totalreadcount {
+	background-color: red;
+	width: 20px;
+	position: relative;
+	color: white;
+	padding-top: 4px;
+	font-size: 12px;
+	text-align: center;
+	top: -20px;
+	left: -10px;
+	border-radius: 5px;
+	display: inline-block;
+}
+  
+#totalreadcount2 { 
+   position: absolute;
+   color: white;
+   font-size: 17px;
+   text-align: center;
+   top: 35px;
+   left:7px;
+   display: inline-block;
+}
+
+#allwrapper {
+	height: auto;
+}
+
+#navbar {
+	border-bottom: 1px solid #ccc;
+	position: fixed;
+	z-index: 1;
+	width: 100%;
+	background-color: #35e0db;
+	transition: background-color 200ms linear;
+}
+
+#topwrapper {
+	height: 72px;
+}
+
+#navcontainer {
+	max-width: 1000px;
+}
+
+#searchform {
+	height: 30px;
+	border: 0.6px solid #ccc;
+	width: 300px;
+}
+
+#instagramicon {
+	color: white;
+	border-right: 1px solid white;
+	padding-right: 13px;
+}
+
+.nav-icon {
+	font-size: 25px;
+	color: white;
+}
+
+.nav-item>a {
+	margin-left: 25px;
+}
+
+.navbar-nav {
+	flex-direction: row;
+}
+
+@media ( max-width : 768px) {
+	.nav-icon {
+		font-size: 30px;
 	}
-	
-	*,
-	*::before,
-	*::after {
-		box-sizing: border-box;
-	}
-	
-	body{
-/*    		 border : 1px solid black;    */
-		 height:auto;
-		 font-family: "Open Sans", Arial, sans-serif;
-		 min-height: 100vh;
-		 padding-bottom: 3rem;  
-		background-color:#F5F4F4;
-		
-	 
-	 } 
-	 
-	 #totalreadcount{
-	 	  background-color:red;
-	 	  width:20px;
-	 	  position: relative;
-		  color:white;
-		  padding-top:4px;
-		  font-size: 12px;
-		  text-align:center;
-		  top:-20px;
-		  left:-10px;
-		  border-radius:5px;
-		  display:inline-block;
-	 }
+}
 
-    #allwrapper{
-      height:auto;
-     
-   	}
-    
-    #navbar{
-        border-bottom: 1px solid #ccc;
-        position: fixed;
-        z-index: 1;
-        width: 100%;
-        background-color: #35e0db;
-        transition: background-color 200ms linear;
-    }
-    
-    #topwrapper{
-        height:72px;
-    }
-    
-    #navcontainer{
-        max-width: 1000px;
-    }
-    
-    #searchform{
-        height: 30px;
-        border: 0.6px solid #ccc;
-        width : 300px;
-    }
-    
-    #instagramicon {
-        color: white;
-        border-right: 1px solid white;
-        padding-right: 13px;
-    }
-    
-    .nav-icon{
-        font-size: 25px;    	
-        color: white;
-    }
-    
-    .nav-item> a {
-        margin-left: 25px;
-    }
-    
-    .navbar-nav {
-        flex-direction: row;
-    }
-    
-    @media(max-width: 768px){
-        .nav-icon {
-            font-size: 30px;
-        }
-    }
-    
-    @media(min-width: 430px){
-        .logo {
-                display: flex !important;
-                  flex-basis: auto;
-        }
-    }
-    
-    @media(max-width: 411.33px){
-        .nav-item> a {
-            margin-left: 40px;
-        }
-    }
-    
-    .logo{
-        display: none;
-        flex-grow: 1;
-        /* font-family: billabong !important; */
-    }
-    
-    .text-white {
-    	font-weight: bold;
-    }
-    
-    #navbar.scrolled {
+@media ( min-width : 430px) {
+	.logo {
+		display: flex !important;
+		flex-basis: auto;
+	}
+}
+
+@media ( max-width : 411.33px) {
+	.nav-item>a {
+		margin-left: 40px;
+	}
+}
+
+.logo {
+	display: none;
+	flex-grow: 1;
+	/* font-family: billabong !important; */
+}
+
+.text-white {
+	font-weight: bold;
+}
+
+#navbar.scrolled {
 	background-color: #eef2f5 !important;
 	transition: background-color 200ms linear;
-	}
-
-	#navbar.scrolled .nav-icon {
-		color: black;
-	}
-	
-	#navbar.scrolled #instagramicon {
-		color: #dc3545;
-		border-right: 1px solid black;
-	}
-	#navbar.scrolled .text-white {
-		color: black !important;
-	}
-.ui-autocomplete {
-			z-index:2000;
-            max-height: 500px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            position: relative;
-            background-color: white;
-            width: 200px;
-            border: 0.5px solid #efe4e4;
-            list-style-type: none;
-            margin: 0;
-			padding: 0;
-
-	}
-	
-	#autodiv {
-		font-size: 15px;
-	}
-	
-	#div1{
-		display: flex;
-		margin-top: 5px;
-		margin-bottom: 5px;
-	}
-	
-	#textdiv {
-		margin-left: 10px;
-	}
-	
-	#searchimg {
-		margin-top: 6px;
-		margin-left: 10px;
-		border-radius: 50%;
-		width: 30px;
-        height: 30px;
-	}
-	
-	.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-    background: #ff8a00;
-    border: none;
-    color:#000;
-    border-radius:0;
-    font-weight: normal;
 }
-	
-	.div0 {
-		cursor: pointer;
-		margin-left: 8px;
-		margin-right: 8px;
-		margin-top: 3px;
-		border-bottom: 0.5px solid #efe4e4;
-		
-	}
-	
-	.ui-autocomplete-loading { 
-	background:url('../images/spinner.gif') no-repeat right center;
-	 background-size: 20px 20px;
-	}
-	
+
+#navbar.scrolled .nav-icon {
+	color: black;
+}
+
+#navbar.scrolled #instagramicon {
+	color: #dc3545;
+	border-right: 1px solid black;
+}
+
+#navbar.scrolled .text-white {
+	color: black !important;
+}
+
+.ui-autocomplete {
+	z-index: 2000;
+	max-height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	position: relative;
+	background-color: white;
+	width: 200px;
+	border: 0.5px solid #efe4e4;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#autodiv {
+	font-size: 15px;
+}
+
+#div1 {
+	display: flex;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#textdiv {
+	margin-left: 10px;
+}
+
+#searchimg {
+	margin-top: 6px;
+	margin-left: 10px;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
+	.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
+	{
+	background: #ff8a00;
+	border: none;
+	color: #000;
+	border-radius: 0;
+	font-weight: normal;
+}
+
+.div0 {
+	cursor: pointer;
+	margin-left: 8px;
+	margin-right: 8px;
+	margin-top: 3px;
+	border-bottom: 0.5px solid #efe4e4;
+}
+
+.ui-autocomplete-loading {
+	background: url('../images/spinner.gif') no-repeat right center;
+	background-size: 20px 20px;
+}

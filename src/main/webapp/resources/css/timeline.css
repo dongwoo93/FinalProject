@@ -834,7 +834,7 @@ ul {
 }   
 
 .myslides {display:none;}  
-
+  
 .float {
 	
 background-color: #FAFAFA; 	
@@ -845,7 +845,7 @@ idtxt {
 }
 a:link {
 	text-decoration:none;
-	color:#999999  
+	color:#12bbad;  
 }
     
     #followlink{
@@ -857,10 +857,10 @@ a:link {
   text-transform: uppercase;  
   
     
-    
+        
     }
-/* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
-/*     display: block; */
-/*     display: table-cell; */
-/*     vertical-align: middle; */
-/* }   */
+.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+    display: block;
+    display: table-cell;  
+    vertical-align: middle;
+}  

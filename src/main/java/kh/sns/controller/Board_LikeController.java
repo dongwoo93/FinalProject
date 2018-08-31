@@ -27,15 +27,22 @@ public class Board_LikeController {
 		String id = (String) session.getAttribute("loginId");
 		dto.setId(id);
 		
-		 
+		
 		int result = 0;
 		try {
+			String board_id = board_service.getBoardModal(Integer.toString(dto.getBoard_seq())).getId();
+			 
 			if(dto.getIs_liked().equals("y")) {
 			
 			result = board_likeservice.insertLiko(dto);
 			}else if(dto.getIs_liked().equals("n")) {
 				board_likeservice.deleteLike(dto);
 			}
+			
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().print(board_id);
+			res.getWriter().flush();
+			res.getWriter().close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
