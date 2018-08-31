@@ -120,9 +120,10 @@ function unmarkit(e) {
 
 				<c:forEach var="result" items="${result}" varStatus="status">
 					<div class="card" id="card">
-						<h4 class="card-title" id="searchTop">
-							<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
-								<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
+						 <h4 class="card-title" id="searchTop">
+							<img src="AttachedMedia/<c:out value='${profile_pic[result.id]}'/>"
+								 alt="Card image cap" width="30" height="30" class="rounded-circle">
+									<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
 									<!-- 북마크 -->  
 								<c:choose> 
 										<c:when test="${bookmark.containsKey(result.board_seq)}">
