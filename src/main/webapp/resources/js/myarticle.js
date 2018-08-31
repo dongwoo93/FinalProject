@@ -117,34 +117,36 @@ $(document).ready(function() {
                $("#goPrev").show(); 
                $("#goNext").show();
 
-            }
-            prevSeq = list[i-1];
-            nextSeq = list[i+1];
-            break;
-         }
-      }
-      $.ajax({  
-         type: "POST",
-         url: "boardView.bo",
-         data: {seq:seq},
-         success: function(data)
-         {
-                
-            if(data[1].length == 1) {
-               $("#carousel-prev").hide();
-               $("#carousel-next").hide();
-            }else {
-               $("#carousel-prev").show();
-               $("#carousel-next").show();
-            }
-            $("#modalid").text(data[0].id);                 
-            var txt = data[0].contents;
-               var regex = /(#[^#\s,;]+)/gi  ;  
-               var newtxt = data[0].contents;
-               if(txt != null) {
-                  newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
-               }
-            
+				}
+				prevSeq = list[i-1];
+				nextSeq = list[i+1];
+				break;
+			}
+		}
+		$.ajax({  
+			type: "POST",
+			url: "boardView.bo",
+			data: {seq:seq},
+			success: function(data)
+			{
+				  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
+            	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
+           	  
+				if(data[1].length == 1) {
+					$("#carousel-prev").hide();
+					$("#carousel-next").hide();
+				}else {
+					$("#carousel-prev").show();
+					$("#carousel-next").show();
+				}
+				$("#modalid").text(data[0].id);	        	   
+				var txt = data[0].contents;
+					var regex = /(#[^#\s,;]+)/gi  ;  
+					var newtxt = data[0].contents;
+					if(txt != null) {
+						newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+					}
+	         
                $("#modalcontents").html(newtxt);
             $("#seq").val(data[0].board_seq);
              $("#likeit").val(data[0].board_seq);
@@ -224,35 +226,37 @@ $(document).ready(function() {
                $("#goPrev").show(); 
                $("#goNext").show();
 
-            }
-            prevSeq = list[i-1];
-            nextSeq = list[i+1];
-            break;
-         }
-      }
-      $.ajax({
-         type: "POST",
-         url: "boardView.bo",
-         data: {seq:seq},
-         success: function(data)
-         {
-            
-          
-            if(data[1].length == 1) {
-               $("#carousel-prev").hide();
-               $("#carousel-next").hide();
-            }else {
-               $("#carousel-prev").show();
-               $("#carousel-next").show();
-            }
-            $("#modalid").text(data[0].id);    
-            var txt = data[0].contents;
-            var regex = /(#[^#\s,;]+)/gi;
-            var newtxt = data[0].contents;     
-            if(txt != null) {
-               newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
-            }
-             
+				}
+				prevSeq = list[i-1];
+				nextSeq = list[i+1];
+				break;
+			}
+		}
+		$.ajax({
+			type: "POST",
+			url: "boardView.bo",
+			data: {seq:seq},
+			success: function(data)
+			{
+				    
+				  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
+            	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
+           	  
+				if(data[1].length == 1) {
+					$("#carousel-prev").hide();
+					$("#carousel-next").hide();
+				}else {
+					$("#carousel-prev").show();
+					$("#carousel-next").show();
+				}
+				$("#modalid").text(data[0].id);	 
+				var txt = data[0].contents;
+				var regex = /(#[^#\s,;]+)/gi;
+				var newtxt = data[0].contents;     
+				if(txt != null) {
+					newtxt = txt.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
+				}
+	          
                $("#modalcontents").html(newtxt);   
          
             $("#seq").val(data[0].board_seq);   

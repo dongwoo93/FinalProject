@@ -26,7 +26,6 @@ public class IBoardService implements BoardService {
 	@Autowired	private BoardDAO dao;
 	@Autowired	private BoardBusinessDAO bbdao;
 	@Autowired	private MemberBusinessDAO mbdao;
-	@Autowired	private ProfileDAO proedao;
 	@Autowired  private Board_LocationDAO ldao;
 	@Autowired  private Member_TagsDAO mtdao;	
 	

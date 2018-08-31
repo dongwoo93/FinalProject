@@ -27,7 +27,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -38,7 +40,6 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
-import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
@@ -72,6 +73,7 @@ public class BoardController {
 	@Autowired	private BoardBusinessService bbs;
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
+	static final int TOUR_PER_PAGE = 15;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -126,20 +128,22 @@ public class BoardController {
 			
 			adFeedList = boardService.getFeedForAd(ads);
 			
-			int x = (NAV_COUNT_PER_PAGE / 3) - 1;
+			int x = (NAV_COUNT_PER_PAGE / 3);
+			int p = 1;
 			for(BoardDTO b : adFeedList) {
 				b.setThisArticleForAd(1);
-
+				b.setBoard_seq(-1 * b.getBoard_seq());
 				try {
 					list.add(x, b);
 				} catch(IndexOutOfBoundsException e) {
-					list.add(list.size(), b);
+					list.add(b);
 				}
 
-				x += (x + 1);
+				x += ((NAV_COUNT_PER_PAGE / 3) + p++);
 			}
 								
 			adFeedList.forEach(System.out::println);
+			System.out.println();
 			list.forEach(System.out::println);
 			
 			membersNick = new ArrayList<>();
@@ -151,21 +155,32 @@ public class BoardController {
 			
 			
 			for(int i = 0; i < list.size(); i++) {
-				media.add(boardService.search2(list.get(i).getBoard_seq()));
+				if(list.get(i).getBoard_seq() < 0) {
+					media.add(boardService.search2(-1 * list.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					media.add(boardService.search2(list.get(i).getBoard_seq()));
+				}
+				
 			}
 			
 			
-			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");    
-	 
-  
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia"); 
+
+				}
+				maxImgHeight.add((int)max);   
+				System.out.println("max:" + max);     
+			}
+
 			for(List<Board_MediaDTO> mlist : media) { 
 				double max = 0;
-				for(Board_MediaDTO dto : mlist) { 
+				for(Board_MediaDTO dto : mlist) {
 					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+					System.out.println(realPath+dto.getSystem_file_name());
 					double height = bimg.getHeight();
 					double width = bimg.getWidth();
 					height = 600*height/width;   
-					System.out.println("height : " + height);
+					;
 					if(max<height) { 
 						max = height;
 					}
@@ -178,12 +193,13 @@ public class BoardController {
 
 			list1 = board_commentService.getFeedComment(id);
 			like = board_likeService.searchLike(id);
+			System.out.println("like 사이즈 : " +  like.size());
 			mark = board_bookmarkService.searchMark(id);
 
 			profile_image = profileService.getAllProfileImage();
 
 			Set<Integer> seqlist = new HashSet<>();
-			for(Board_CommentDTO dto : list1) {	
+			for(Board_CommentDTO dto : list1) {					
 				seqlist.add(dto.getBoard_seq());
 				commentlist.put(dto.getBoard_seq(), new ArrayList<>());
 
@@ -203,8 +219,9 @@ public class BoardController {
 
 
 
-			for(int tmp : like) {
+			for(int tmp : like) {  
 				maplike.put(tmp, "y");
+				System.out.println(tmp);
 			}
 
 
@@ -233,7 +250,8 @@ public class BoardController {
 		
 		
 		System.out.println(follow_list.size()/5); 
-
+		System.out.println("맵라이크 : " + maplike.size());
+		System.out.println("like 사이즈 : " +  like.size());
 		mav.addObject("maxImgHeight",maxImgHeight);
 		mav.addObject("trend", trend);
 		mav.setViewName("timeline2.jsp");
@@ -246,7 +264,7 @@ public class BoardController {
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
 		
 		if(start == null) {
-			start = "15";
+			start = String.valueOf(NAV_COUNT_PER_PAGE);
 		} 
 		
 		response.setCharacterEncoding("UTF8");
@@ -446,39 +464,7 @@ public class BoardController {
 
 		List<Board_MediaDTO> result2 =boardService.search2(Integer.parseInt(seq));  
 		
-		
-		////////////////////////////////////////
-//		
-//		String realPath = request.getSession().getServletContext().getRealPath("/AttachedMedia/");
-//
-//		double maxwidth = 0;
-//
-//		
-//		for(Board_MediaDTO dto : result2) {  
-//			BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-//			
-//			double width = bimg.getWidth();  
-//			double height = bimg.getHeight();
-//			
-//			if(width < height) {
-//				width = 600 * width / height;
-//			}
-//		
-//			if(maxwidth<width) { 
-//				maxwidth = width;
-//				
-//			}   
-//	  
-//		}
-//	
-//	
-//		if(maxwidth > 600) {
-//			maxwidth = 600;
-//		}
-//		
-// 
-//		
-		
+
 		
 		List<Board_CommentDTO> commentlist = board_commentService.getCommentList(Integer.parseInt(seq));
 
@@ -518,7 +504,7 @@ public class BoardController {
 				maxwidth = width;
 			}
 			 
-		}
+		} 
 		System.out.println(" : " + maxwidth);  
 		
 
@@ -553,6 +539,7 @@ public class BoardController {
 	//Search(검색)
 	@RequestMapping("/search.bo")
 	public ModelAndView search(HttpSession session, String search) throws Exception{
+		
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 		searchService.insertSearch(search);  
@@ -593,16 +580,72 @@ public class BoardController {
 		}
 
 		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result);		// 검색어
+		mav.addObject("result", result); 		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
+		mav.addObject("search", search); 
 		mav.setViewName("search2.jsp");
-		return mav;
+		return mav;  
+		
 	}
+	
+	
+	@RequestMapping("/search1.bo")
+	public ModelAndView search1(HttpSession session, String search) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		String id = (String)session.getAttribute("loginId");
+		searchService.insertSearch(search);  
+		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer,String> mapmark = new HashMap<>();
+		mark = board_bookmarkService.searchMark(id);
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
+		//////////////////////////////
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
 
-	//tour(둘러보기)
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+		}
+
+		// 누를때
+		for(int tmp : result3) {
+			map.put(tmp, "y");
+		}
+
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
+		for(BoardDTO dto : result) {
+			if(dto.getContents() == null) {
+				dto.setContents(" ");  
+			}
+		}
+
+		System.out.println("사이즈 : " + result.size());
+		mav.addObject("result", result); 		// 검색어
+		mav.addObject("result2", result2);		// 사진
+		mav.addObject("like", map);			// 누를때
+		mav.addObject("result4", countlike);	// 조회
+		mav.addObject("bookmark", mapmark);
+		mav.addObject("search", search); 
+		mav.setViewName("search1.jsp");  
+		return mav;  
+	}
+	
+
+	//tour(둘러보기)  
 	@RequestMapping("/tour.bo")
 	public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -673,6 +716,78 @@ public class BoardController {
 		mav.addObject("result4",countlike);		// 조회
 		mav.setViewName("tour.jsp");
 		return mav;
+	}
+	
+	@RequestMapping("/tourForJson.ajax")
+	public void tourForJson(HttpServletResponse response, HttpServletRequest request, HttpSession session, String start, String cat) throws Exception {
+		if(start == null) {
+			start = String.valueOf(TOUR_PER_PAGE);
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+        
+        String id = (String)session.getAttribute("loginId");
+		String category = null;
+
+		List<BoardDTO> result = new ArrayList<>(); 					// 전체 글
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요 
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
+
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
+
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer, String> mapmark = new HashMap<>();
+		mark = board_bookmarkService.searchMark(id);
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
+
+		// 최신글
+		if(cat.equals("1")) {
+			result = boardService.getAllBoard();
+			category = "최신글";
+		}
+
+		// 좋아요 
+		else if(cat.equals("2")) {
+			category = "좋아요 순";
+			List<int[]> seqArr = board_likeService.bestLike();
+			for(int i = 0; seqArr.size() > i; i++) {
+				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
+			}
+		}
+
+		// 인기 태그
+		else if(cat.equals("3")) {
+			category = "인기 태그 순";
+			List<String[]> tagArr = boardService.selectTagCount();
+			for(int i = 0; i < tagArr.size(); i++) {
+				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
+					System.out.println(tagArr.get(i)[2].split(",")[j]);
+				}
+			}
+		}
+
+		// 사진
+		for(int i = 0;i < result.size(); i++) { 
+			result2.add(boardService.search2(result.get(i).getBoard_seq()));
+		}
+
+		// 누를때
+		for(int tmp : result3) {
+			map.put(tmp, "y");
+		}
+
+		// 조회
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
+		
 	}
 
 	@RequestMapping("/mypage.bo")
@@ -987,8 +1102,11 @@ public class BoardController {
 
 	@RequestMapping("/deletefollow.do")
 	public void deleteFollowInfo(FollowInfo fi, HttpServletResponse response, HttpSession seesion) throws Exception {
+		System.out.println(fi.getId() + " : " + fi.getTargetId());
+		System.out.println("컨트롤러 들어옴");
 		response.setCharacterEncoding("UTF-8");
 		int result = member_followService.deleteFollowInfo(fi);
+		System.out.println("result" + result);
 		if(result == 1) {
 			response.getWriter().print("팔로우 취소 완료");
 		}else {
@@ -1087,8 +1205,11 @@ public class BoardController {
 		String sessionid = (String) seesion.getAttribute("loginId");
 		   resp.setCharacterEncoding("UTF-8");
 		   resp.setContentType("application/json");
+		   List<FollowInfo> follow_list = new ArrayList<>();
+		   JsonArray jsonArr = new JsonArray();
 		
 		 try {
+			 follow_list = member_followService.followList(sessionid);
 			List<Object[]> result = boardService.alerting(sessionid);
 			
 			for(Object[] tmp : result) {
@@ -1112,10 +1233,7 @@ public class BoardController {
 				System.out.print(tmp[1] + " : ");
 				System.out.print(tmp[2] + " :" );
 				System.out.print(tmp[3]+ " : "); 
-				System.out.println(tmp[4]+ " : "); 
-				
-				
-				
+				System.out.println(tmp[4]+ " : ");
 			}
 			new Gson().toJson(result,resp.getWriter());
 			

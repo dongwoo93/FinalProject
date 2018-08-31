@@ -230,7 +230,7 @@ function getCaretPosition(editableDiv) {
 											"</a><span class=fugue>") + "</span>";
 						newtxt += "<kz></kz>";	            	
 	                
-	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}&cat=1'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                   $("#ul"+seq).hide().fadeIn(500);  
 	                   
@@ -375,10 +375,10 @@ function getCaretPosition(editableDiv) {
 								<div class=col-12>
 									<div class="btn btn-secondary btn-lg btn-block">
 										<c:forEach var="ad" items="${ adList }">
-											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
+											<c:if test="${ -1 * (ad.boardSeq) eq tmp.board_seq }">
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
-														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">Instagram Profile 가기</a>
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
 														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
@@ -392,13 +392,14 @@ function getCaretPosition(editableDiv) {
 									</div>
 								</div>
 							</div>
-						</c:if>
+						</c:if> 
 
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
-									<a class="navbar-brand"> <c:choose>
+									<a class="navbar-brand"> 
+									<c:choose>    
 											<c:when test="${like.containsKey(tmp.board_seq)}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
@@ -418,7 +419,8 @@ function getCaretPosition(editableDiv) {
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
-										</c:choose> <i class="far fa-comment icon"></i>
+										</c:choose>  
+										 <i class="far fa-comment icon"></i>
 									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
 											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
 
@@ -475,13 +477,16 @@ function getCaretPosition(editableDiv) {
 		</script>
 								</div>
 								<!-- 글내용자리 -->
-
+							<c:if test="${ tmp.thisArticleForAd ne 1 }">
 								<p class="text-info pointer pt-4 mb-1"
 									id="myComment${tmp.board_seq}" onclick="commentdisplay(this)"></p>
 								<input type=hidden value="${tmp.board_seq}">
+								
+							
 								<div class="comment-contents"
 									id="comment-contents${tmp.board_seq}">
-
+								
+								
 									<!-- 댓글자리 -->
 
 									<c:forEach var="commenttmp" items="${commentresult}">
@@ -545,13 +550,14 @@ function getCaretPosition(editableDiv) {
 								<p class="text-info pointer pt-3 pl-1"
 									id="commenthide${tmp.board_seq}" onclick="commenthide(this)"></p>
 								<input type=hidden value="${tmp.board_seq}">
+							</c:if>
 							</div>
 
 
 
 							<!--               -->
 
-
+						<c:if test="${ tmp.thisArticleForAd ne 1 }">
 							<div class="crecodiv pl-2 py-2 navbar-nav">
 
 
@@ -573,6 +579,7 @@ function getCaretPosition(editableDiv) {
 
 
 							</div>
+						</c:if>
 
 
 
@@ -707,7 +714,12 @@ $('#comment${tmp.board_seq}').keypress(function(event){
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
-					<li class="pt-2"><a id="followlink" style="font-family:NANUMBARUNPENR !important;font-size: 10px;">follow</a></li>           	  
+					<li onclick="follow('${sessionScope.loginId}', '${followtmp.id}', '${status.index}')" id="follow${status.index}" class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5></li>
+					<li onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', '${status.index}')" id="cancelFollow${status.index}" style="display:none " class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로잉</h5></li>        	  
+					
+					
 					</ul>   
 			</div>
 		  
@@ -1328,7 +1340,7 @@ $(window).scroll(function(){
 	            		divStr += "</p>"
 	            		divStr += "<input type=hidden value='" + boardSeq + ">"
 	            		
-	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" + boardSeq  		
+	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
 	            		
 						for(item in r.commentlist){
