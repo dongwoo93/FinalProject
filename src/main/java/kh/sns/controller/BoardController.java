@@ -408,18 +408,21 @@ public class BoardController {
 
 		if(cat.equals("1")) { // 게시물
 			result = boardService.getBoard(id);
+			mav.addObject("category", "myboard");
 		}
 		else if(cat.equals("2")) { // 찜콕
 			List<int[]> seqArr = boardService.myBookmark(id);
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
+			mav.addObject("category", "bookmarkboard");
 		}
 		else if(cat.equals("3")) { // tag
             List<int[]> tagArr = boardService.myTags(id);
             for(int i = 0; tagArr.size() > i; i++) {
                result.add(boardService.oneBoard(Integer.toString(tagArr.get(i)[0])));
             }
+            mav.addObject("category", "tagboard");
          }
 		
 		List<Board_MediaDTO> result2 = new ArrayList<>();
