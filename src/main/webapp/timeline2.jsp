@@ -714,9 +714,9 @@ $('#comment${tmp.board_seq}').keypress(function(event){
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
-					<li onclick="follow('${sessionScope.loginId}', '${followtmp.id}', '${status.index}')" id="follow${status.index}" class="pt-2">
+					<li onclick="follow('${sessionScope.loginId}', '${followtmp.id}', this)" id="follow${status.index}" class="pt-2">
 						<h5 class="text-center mt-1" style="cursor:pointer;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5></li>
-					<li onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', '${status.index}')" id="cancelFollow${status.index}" style="display:none " class="pt-2">
+					<li onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', this)" id="cancelFollow${status.index}" style="display:none " class="pt-2">
 						<h5 class="text-center mt-1" style="cursor:pointer;background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로잉</h5></li>        	  
 					
 					
