@@ -30,7 +30,7 @@ function follow(id1, id2, e) {
 	   var targetId = id2; 
 	   $.ajax({ 
 	      url : "deletefollow.do", 
-	      type : "post", 
+	      type : "post",
 	      data : { 
 	         id : id, 
 	         targetId : targetId, 
@@ -104,8 +104,8 @@ function follow(id1, id2, e) {
 							<c:when test="${isFollow[status.index]}">
 							
 							
-							<h5 class="text-center mt-1" onclick="showModal('${sessionScope.loginId}', '${follow.targetId}', this)" style="background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
-							<h5 class="text-center mt-1" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', this)"
+							<h5 class="text-center mt-1 folbtn" onclick="showModal('${sessionScope.loginId}', '${follow.targetId}', this)" style="background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
+							<h5 class="text-center mt-1 folbtn" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', this)"
 										id="follow${status.index}" style="display:none;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5>
 
 					
@@ -120,8 +120,8 @@ function follow(id1, id2, e) {
 <%-- 							<button class="btn btn-light  text-dark" style="font-weight:bold;margin-right:36px;font-family: NANUMBARUNPENR !important;" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', '${status.index}')" --%>
 <%-- 										id="follow${status.index}">팔로우 <i class="fas fa-plus"></i></button> --%>
 										
-							<h5 class="text-center mt-1" onclick="showModal('${sessionScope.loginId}', '${follow.targetId}', this)" style="display:none; background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
-							<h5 class="text-center mt-1" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', this)"
+							<h5 class="text-center mt-1 folbtn" onclick="showModal('${sessionScope.loginId}', '${follow.targetId}', this)" style="display:none; background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
+							<h5 class="text-center mt-1 folbtn" onclick="follow('${sessionScope.loginId}', '${follow.targetId}', this)"
 										id="follow${status.index}" style="color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5>
 							
 							
@@ -164,8 +164,8 @@ function follow(id1, id2, e) {
 <%-- 									<button class="btn btn-light  text-dark" style="font-weight:bold;margin-right:36px;display:none;font-family: NANUMBARUNPENR !important;" onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')" --%>
 <%-- 										id="follow${status.index}">팔로우 <i class="fas fa-plus"></i></button> --%>
 										
-							<h5 class="text-center mt-1" onclick="showModal('${sessionScope.loginId}', '${follow.id}', this)" style="background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
-							<h5 class="text-center mt-1" onclick="follow('${sessionScope.loginId}', '${follower.id}', this)"
+							<h5 class="text-center mt-1 folbtn" onclick="showModal('${sessionScope.loginId}', '${follower.id}', this)" style="background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
+							<h5 class="text-center mt-1 folbtn" onclick="follow('${sessionScope.loginId}', '${follower.id}', this)"
 										id="follow${status.index}" style="display:none;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5>
 									
 								
@@ -177,8 +177,8 @@ function follow(id1, id2, e) {
 <%-- 									<button class="btn btn-light text-dark" style="font-weight:bold;margin-right:36px;font-family: NANUMBARUNPENR !important;" onclick="follow('${sessionScope.loginId}', '${follower.id}', '${status.index}')" --%>
 <%-- 										id="follow${status.index}">팔로우 <i class="fas fa-plus"></i></button> --%>
 										
-								<h5 class="text-center mt-1" onclick="showModal('${sessionScope.loginId}', '${follow.id}', this)" style="display:none; background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
-								<h5 class="text-center mt-1" onclick="follow('${sessionScope.loginId}', '${follower.id}', this)"
+								<h5 class="text-center mt-1 folbtn" onclick="showModal('${sessionScope.loginId}', '${follower.id}', this)" style="display:none; background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;" id="cancelFollow${status.index}">팔로잉</h5>
+								<h5 class="text-center mt-1 folbtn" onclick="follow('${sessionScope.loginId}', '${follower.id}', this)"
 										id="follow${status.index}" style="color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5>
 										
 								</c:otherwise>
