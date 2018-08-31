@@ -88,6 +88,24 @@ function btnevent(e, id1, id2, isFollow, index) {
 		
 		
 		$.ajax({
+            url: "alertCount.do", // 처리할 페이지(서블릿) 주소
+            type: "get",
+            data: {id:"${sessionScope.loginId}"}, 
+            success: function(response) {
+            	if(response != 0){
+            		$("#totalreadcount2").show();
+            		$("#totalreadcount2").text(response);
+            	}
+            },
+            error: function() {
+                console.log("에러");
+            },
+            complete: function(){
+                console.log("AJAX완료");
+            } 
+        });
+		
+		$.ajax({
             url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",
             data: {id:"${sessionScope.loginId}"}, 
@@ -236,13 +254,22 @@ $(function() {
                             <li class="nav-item dropdown">
                    
                     <a class="nav-link dropdown-toggle" href="#" id="alerticon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-          <i class="far fa-heart nav-icon"></i>    
-        </a>        	            
+          <i class="far fa-heart nav-icon">
+        </i>     
+        <!-- 알림 (하트,댓글) -->
+              <span id="totalreadcount2" class="fa-stack">   
+    <i class="fas fa-comment-alt fa-flip-vertical fa-stack-2x" style="color:red"></i>  
+    <i class="fab fas fa-bell text-white fa-stack-1x fa-inverse mt-1" style="font-size:13px;"><span id="countAlert" class="ml-1">5</span></i>
+    
+  </span>
+        </a>       
+     	             
                     <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:360px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
      
            </div>
                   </li>
           
+                    
                   
                   
        <li class="nav-item dropdown">

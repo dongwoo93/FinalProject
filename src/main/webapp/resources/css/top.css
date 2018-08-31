@@ -45,6 +45,21 @@
 		  left:-10px;
 		  border-radius:5px;
 		  display:inline-block;
+	 } 
+	 
+	 /* 하트  */
+	  #totalreadcount2{
+	 	 
+	 	 
+	 	  position: relative;   
+		  color:white;     
+		 
+		  font-size: 17px;
+		  text-align:center;
+		  top:30px;
+		  left:-30px;
+		     
+		  display:inline-block;
 	 }
 
     #allwrapper{
