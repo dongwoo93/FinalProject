@@ -88,24 +88,6 @@ function btnevent(e, id1, id2, isFollow, index) {
 		
 		
 		$.ajax({
-            url: "alertCount.do", // 처리할 페이지(서블릿) 주소
-            type: "get",
-            data: {id:"${sessionScope.loginId}"}, 
-            success: function(response) {
-            	if(response != 0){
-            		$("#totalreadcount2").show();
-            		$("#totalreadcount2").text(response);
-            	}
-            },
-            error: function() {
-                console.log("에러");
-            },
-            complete: function(){
-                console.log("AJAX완료");
-            } 
-        });
-		
-		$.ajax({
             url: "getTotalMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",
             data: {id:"${sessionScope.loginId}"}, 
@@ -123,7 +105,7 @@ function btnevent(e, id1, id2, isFollow, index) {
             } 
         });
 		
-  
+      
     $.ajax({
       	url : "alerting.top",
       	type : "get",
@@ -186,7 +168,6 @@ $(function() {
                         			  count: item.count,
                         			  category : item.category,
                         			  index: cnt++
-                        			  
                         		  }
             	  })
             	  );
@@ -249,7 +230,7 @@ $(function() {
                   <li class="nav-item">
                     <a class="nav-link" href="write.board" ><i class="fas fa-pencil-alt nav-icon"></i></a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item">  
                     <a class="nav-link" href="tour.bo?cat=1"><i class="far fa-compass nav-icon"></i></a>
                   </li>
                   

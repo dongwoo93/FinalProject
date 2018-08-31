@@ -220,7 +220,8 @@ public class BoardController {
 				System.out.println(tmp);
 			}
 
-
+		
+		      
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
 			}
@@ -538,7 +539,7 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-		searchService.insertSearch(search);  
+		searchService.insertSearch(id,search);  
 		List<BoardDTO> result = boardService.search(search);		// 전체 글
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
@@ -592,7 +593,7 @@ public class BoardController {
 	public ModelAndView search1(HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-		searchService.insertSearch(search);  
+		 
 		List<BoardDTO> result = boardService.search(search);		// 전체 글
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
