@@ -739,15 +739,7 @@ $(document).ready(function(){
                                   }else {
                                 	  $("#mark").attr("style", false);
                                   } 
-                                       
-                                  var width = data[5]+300;  
-                                  var width1 = parseInt(data[5]);
-//                                   alert(width + " : " + width1)
-                                  $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
-                                 $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
                                       
-                                 
-                                 $(".modalslide").attr("style", " height:590px;");               
                                  }    
                             }); 
                            
@@ -1145,7 +1137,7 @@ $(document).ready(function(){
 <div class="modal fade" id="settingModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-sm modal-dialog-centered"
 		role="document">
-		<input type=hidden id=modalseq>
+		<input type=hidden id=modalseq>   
 		<div class="modal-content cons">
 			<div class="modal-body">
 				<a class="dropdown-item mo1" href="profile.member?cat=1">비밀번호 변경</a>

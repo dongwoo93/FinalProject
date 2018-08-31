@@ -14,8 +14,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class LogUtil {
 	
-	
-	public void insertLog(String id, String category) throws Exception {
+
+	public void insertLog(String id, String category, String content) throws Exception {
 		
 		
 		 HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -36,7 +36,7 @@ public class LogUtil {
          } 
         
         System.out.println(realPath); 
-
+        
 		BufferedWriter bw = new BufferedWriter(new FileWriter(realPath,true));
 		
 		Date today = new Date();
@@ -46,6 +46,10 @@ public class LogUtil {
 	    System.out.println(log); 
 
 	    bw.write(log); bw.newLine();
+	    
+	    if(!(content.equals("")) ) {   
+	    	 bw.write(content); bw.newLine();
+	    }
 		bw.close();
 	}
 }

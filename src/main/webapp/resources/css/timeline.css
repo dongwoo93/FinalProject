@@ -834,7 +834,7 @@ ul {
 }   
 
 .myslides {display:none;}  
-
+  
 .float {
 	
 background-color: #FAFAFA; 	
@@ -855,11 +855,12 @@ a:link {
     padding: 0.5em 0.5em;   
     text-decoration: none;
   text-transform: uppercase;  
- }
-/* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
-/*     display: block; */
-/*     display: table-cell; */
-/*     vertical-align: middle; */
-/* }   */
-
-
+  
+    
+        
+    }
+.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+    display: block;
+    display: table-cell;  
+    vertical-align: middle;
+}  
