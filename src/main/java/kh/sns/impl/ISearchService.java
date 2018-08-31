@@ -18,8 +18,8 @@ public class ISearchService implements SearchService {
 	public List<String> trend() throws Exception {
 		return dao.trend();
 	}
-	
-	public int insertSearch(String keyword) throws Exception{
-		return dao.insertSearch(keyword);
+	     
+	public int insertSearch(String id,String keyword) throws Exception{
+		return dao.insertSearch(id,keyword);
 	}
 }

@@ -26,9 +26,11 @@ public class LoginAspect {
 	public void profileMethod() {}
 	
 	@Pointcut("execution(* kh.sns.controller.Member_BlockController.*(..))")
-	public void bloackMethod() {}
+	public void blockMethod() {}
+	
 
-	@Around(value="boardMethod() || profileMethod() || bloackMethod()")
+
+	@Around(value="boardMethod() || profileMethod() || blockMethod()")
 	 public Object trace(ProceedingJoinPoint joinPoint) throws Throwable{
 		 
 		System.out.println("#### LoginAspect 시작 ####");    
