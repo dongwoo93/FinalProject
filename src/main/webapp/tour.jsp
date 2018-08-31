@@ -253,7 +253,7 @@ function unmarkit(e) {
 			$.ajax({
 	            url: "tourForJson.ajax", // 처리할 페이지(서블릿) 주소
 	            type: "get",
-	            data: {start: globalStartNum, category: '${param.cat}'},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+	            data: {start: globalStartNum, cat: '${param.cat}'},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 	            success: function(r) {
 	            
 	        		console.log(r);

@@ -719,24 +719,24 @@ public class BoardController {
 		// 좋아요 
 		else if(cat.equals("2")) {
 			category = "좋아요 순";
-			List<int[]> seqArr = board_likeService.bestLike();
+			List<int[]> seqArr = board_likeService.bestLike(1, TOUR_PER_PAGE);
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
 			
 		}
 
-//		// 인기 태그
-//		else if(cat.equals("3")) {
-//			category = "인기 태그 순";
-//			List<String[]> tagArr = boardService.selectTagCount();
-//			for(int i = 0; i < tagArr.size(); i++) {
-//				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
-//					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
-//					System.out.println(tagArr.get(i)[2].split(",")[j]);
-//				}
-//			}
-//		}
+		// 인기 태그
+		else if(cat.equals("3")) {
+			category = "인기 태그 순";
+			List<String[]> tagArr = boardService.selectTagCount();
+			for(int i = 0; i < tagArr.size(); i++) {
+				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
+					System.out.println(tagArr.get(i)[2].split(",")[j]);
+				}
+			}
+		}
 
 		// 사진
 		for(int i = 0;i < result.size(); i++) { 
