@@ -250,37 +250,36 @@ $(document).ready(function(){
 
 								
 	function articleover(e) {
-	var seq = $(e).attr("value");
-	$("#divinfo"+seq).attr("style",false);
-		}  
-	function articleleave(e) {
+		var seq = $(e).attr("value");
+		$("#divinfo"+seq).attr("style",false);
+			}  
+		function articleleave(e) {
 		var seq = $(e).attr("value"); 
 		$("#divinfo"+seq).attr("style","display:none;");
 		
-																$("#modifysubmitbtn").click(function(){
-																	var board_seq = $("#seq").val();
-																	var contents = $("#modalcontents").html();
-																	var contentsToText = $("#modalcontents").text()
+		$("#modifysubmitbtn").click(function(){
+		var board_seq = $("#seq").val();
+		var contents = $("#modalcontents").html();
+		var contentsToText = $("#modalcontents").text()
 														
-																	$.ajax({
-																		type:"POST",
-																		url:"boardModify.bo",
-																		data: {board_seq:board_seq, contents:contentsToText},
-																		success: function(data)
-																		{
-																			if(data == 1){
-																				$("#modalcontents").html(contents);
-																				$("#modalcontents").attr("contentEditable","false");
+		$.ajax({
+		type:"POST",
+		url:"boardModify.bo",
+		data: {board_seq:board_seq, contents:contentsToText},
+		success: function(data)
+		{
+		if(data == 1){
+			$("#modalcontents").html(contents);
+			$("#modalcontents").attr("contentEditable","false");
 														
-																			}else {
-																				alert("다시 시도해주세요");
-																			}
-														
-																		}
-																	});
-																})
-															}
-								</script>
+	}else {
+		alert("다시 시도해주세요");
+					}
+				}
+			});
+		})
+	}
+	</script>
 
 
 
@@ -315,6 +314,7 @@ $(document).ready(function(){
          </script>
 	</c:forEach>
 </c:if>
+
 
 
 
@@ -376,7 +376,8 @@ $(document).ready(function(){
 					<div class="profile-user-settings">
 						<h2 class="profile-user-name">${pageid}</h2>
 						<div class="profile-edit-btn" id="toMy">프로필 편집</div>
-						<div class="profile-edit-btn" id="myRoom"><a href="myroom.jsp"style="color: #151515;">나의게시판</a></div>
+						<div class="profile-edit-btn" id="myRoom" style="color: #151515;" data-toggle="modal"
+							data-target="#mymodal">나의게시판</div>
 						<i class="fas fa-user-cog" data-toggle="modal"
 							data-target="#settingModal"
 							style="font-size: 20px; margin-left: 15px; cursor: pointer;"></i>
@@ -538,7 +539,7 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center"  style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
 
 										</tr>
 									</thead>
@@ -555,7 +556,10 @@ $(document).ready(function(){
 		<c:if test="${result.size() != 0}">
 
 			<c:forEach var="tmp" items="${result}" varStatus="status">
-
+				
+<%-- 				<input type="hidden" id="hiddenwriter${status.index}" value="${tmp.id}"> --%>
+				
+				
 				<div class="col-md-4 divitem pt-4" id="${tmp.board_seq}"
 					value="${tmp.board_seq}" onmouseover="articleover(this)"
 					onmouseleave="articleleave(this)">
@@ -579,8 +583,8 @@ $(document).ready(function(){
        
                        $("#${tmp.board_seq}").click(function() { 
                     	    
-                    	   var objDiv = document.getElementById("articlecomment");
-                           objDiv.scrollTop = 0;            
+                    	  var objDiv = document.getElementById("articlecomment");
+                          objDiv.scrollTop = 0;            
                           var seq = "${tmp.board_seq}";
                           if(${status.count != 1}) {
                           $("#prev").val(${result[status.index-1].board_seq});  }
@@ -615,20 +619,18 @@ $(document).ready(function(){
                               data: {seq:seq},
                               success: function(data)         
                               {      
-									alert(data[5]);  
+									(data[5]);  
                             	  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
                             	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
                            	   if(data[1].length == 1) {
-                                 $("#carousel-prev").hide();
+                              $("#carousel-prev").hide();
                               $("#carousel-next").hide();  
                                  }else {
                                     $("#carousel-prev").show();
                                     $("#carousel-next").show();
                                  }
                                  $("#modalid1").text(data.id);   
-                                 
-                                 
-//                                   $("#modalcontents").text(data.contents);  
+//                               $("#modalcontents").text(data.contents);  
 								var txt = data[0].contents;
   								var regex = /(#[^#\s,;<>. ]+)/gi;
   								var dataContent0 = data[0].contents; 
@@ -638,16 +640,18 @@ $(document).ready(function(){
   											 + "$1" + "</a><span class=fugue>") + "</span>";
   									 newtxt += "<kz></kz>"
   								}        
-					          
+   							
                                   $("#modalcontents").html(newtxt);
-                             //  $("#modalcontents").html(data[0].contents);
+                             //   $("#modalcontents").html(data[0].contents);
                                   $("#seq").val(data[0].board_seq);
-                                  $("#modalid2").text(data[0].id);
-       
+                                  $("#modalid2").text(data[0].id);                            
+                                 
+                                	  
 	             				  $("#modalid2").click(function() {  
 	                					$(location).attr("href", "board.bo?id="+data[0].id+"&cat=1");
 	             				  });
              					
+// 	             				  $("#hiddenwriter${status.index}").text(date[0].id);
                                   $("#likeit").val(data[0].board_seq);
                                   $("#likecancel").val(data[0].board_seq); 
                                   $("#mark").val(data[0].board_seq);
@@ -813,7 +817,7 @@ $(document).ready(function(){
 
 
 
-			<div class="modal-content view modalmedia" >
+			<div class="modal-content view modalmedia" style="background-color: black;">
 
 				<div id="demo" class="carousel slide" data-ride="carousel"
 					data-interval="false">
@@ -836,7 +840,7 @@ $(document).ready(function(){
 			</div>
 
 
-			<div class="modal-content view" style="width: 300px; height: auto;">
+			<div class="modal-content view" style="width: 400px; height: auto;">
 
 
 				<div class="hidden" id="hidden"></div>
@@ -1003,17 +1007,18 @@ $(document).ready(function(){
           
 
                 </script>
-
+               
 					<c:choose>
+					 <c:when test="${category == 'myboard'}">
+						<c:choose>
 						<c:when test="${pageid == sessionScope.loginId}">
 							<br>
 							<br>
-							<div class="btn-group bg-white">
+							<div class="btn-group bg-white" >
+							
 								<button class="btn dropdown-toggle bg-white"
-									data-toggle="dropdown"></button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">보관</a>
-									<div class="dropdown-divider" id="modifydiv"></div>
+									data-toggle="dropdown" id="etc"></button>
+								<div class="dropdown-menu">		
 									<a class="dropdown-item" id="modify" href="#">수정</a>
 									<div class="dropdown-divider"></div>
 									<a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
@@ -1024,9 +1029,7 @@ $(document).ready(function(){
 								</div>
 							</div>
 
-							<script>
-            
-         </script>
+						
 
 						</c:when>
 						<c:otherwise>
@@ -1034,18 +1037,31 @@ $(document).ready(function(){
 							<br>
 							<div class="btn-group bg-white">
 								<button class="btn dropdown-toggle bg-white"
-									data-toggle="dropdown"></button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">보관</a>
-									<div class="dropdown-divider"></div>
+									data-toggle="dropdown" id="etc"></button>
+								<div class="dropdown-menu">								
 									<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
 								</div>
 							</div>
 
-
-
+								</c:otherwise>
+							</c:choose>
+						</c:when>		
+						<c:otherwise>
+								<br>
+							<br>
+							<div class="btn-group bg-white">
+								<button class="btn dropdown-toggle bg-white"
+									data-toggle="dropdown" id="etc"></button>
+								<div class="dropdown-menu">								
+									<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+								</div>
+							</div>
+											
 						</c:otherwise>
 					</c:choose>
+				
+						
+					
 
 				</div>
 			</div>
@@ -1147,8 +1163,82 @@ $(document).ready(function(){
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-info footertbtn"
+				<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
 					data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+
+<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" style="margin-right:500px;">
+	<div class="modal-dialog modal-sm modal-dialog-centered"
+		role="document" >
+		<input type=hidden id=modalseq>
+		<div class="modal-content cons" style="height:500px;width:800px;border:5px solid #ccc;font-family: NANUMBARUNPENR !important;">
+			<div class="modal-body" style="border:1px solid #ccc;font-family: NANUMBARUNPENR !important;">
+				
+			
+			      <div class="row">
+			        <div class="py-5 col-md-6">
+			          <div class="row" style="margin-top:20px;margin-left:10px;">
+			            <div class="text-center col-4"><a href="mymap.jsp">
+			              <i class="fas fa-map-marked-alt fa-5x"></i></a>
+			            </div>
+			            <div class="col-8">
+			              <h1 class="mt-3"><a href="mymap.jsp"><b>나의 지도</b></a></h1>
+			            </div>
+			          </div>
+			        </div>
+			        <div class="py-5 col-md-6">
+			          <div class="row" style="margin-top:20px;margin-left:10px;">
+			            <div class="text-center col-4"><a href="calendar2.jsp">
+			              <i class="far fa-calendar-alt fa-5x"></i></a>
+			            </div>
+			            <div class="col-8">
+			               <h1 class="mt-3"><a href="calendar2.jsp"><b>나의 일정</b></a></h1>
+			              </h5>
+			              <p class="my-1"></p>
+			            </div>
+			          </div>
+			        </div>
+			      </div>
+			      
+			      <div class="row">
+			        <div class="py-5 col-md-6">
+			          <div class="row" style="margin-top:30px;margin-left:10px;">
+			            <div class="text-center col-4"><a href="mymap.jsp">
+			              <i class="fas fa-sticky-note fa-5x"></i></a>
+			            </div>
+			            <div class="col-8">
+			              <h1 class="mt-3"><a href="mymap.jsp"><b>나의 메모</b></a></h1>
+			            </div>
+			          </div>
+			        </div>
+			        <div class="py-5 col-md-6">
+			          <div class="row" style="margin-top:30px;margin-left:10px;">
+			            <div class="text-center col-4"><a href="calendar2.jsp">
+			              <i class="fas fa-book fa-5x"></i></a>
+			            </div>
+			            <div class="col-8">
+			               <h1 class="mt-3"><a href="calendar2.jsp"><b>활동 기록</b></a></h1>
+			              </h5>
+			              <p class="my-1"></p>
+			            </div>
+			          </div>
+			        </div>
+			      </div>
+			
+			  
+
+			</div>
+			<div class="modal-footer" style="height:100px;width:790px;">
+				<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
+					data-dismiss="modal" style="width:100px;">Close</button>
 
 			</div>
 		</div>
