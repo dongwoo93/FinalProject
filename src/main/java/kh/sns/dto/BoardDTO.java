@@ -9,6 +9,9 @@ public class BoardDTO {
 	private String read_count;
 	private String is_allow_comments;
 	
+	// 특수 목적
+	private int thisArticleForAd;
+	
 	public BoardDTO() {
 	
 	}
@@ -72,15 +75,20 @@ public class BoardDTO {
 		this.is_allow_comments = is_allow_comments;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+	public int getThisArticleForAd() {
+		return thisArticleForAd;
+	}
+
+	public void setThisArticleForAd(int thisArticleForAd) {
+		this.thisArticleForAd = thisArticleForAd;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardDTO [board_seq=" + board_seq + ", contents=" + contents + ", id=" + id + ", writedate=" + writedate
-				+ ", read_count=" + read_count + ", is_allow_comments=" + is_allow_comments + "]";
+				+ ", read_count=" + read_count + ", is_allow_comments=" + is_allow_comments + ", ThisArticleForAd="
+				+ thisArticleForAd + "]";
 	}
-	
 	
 
 }
