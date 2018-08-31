@@ -613,7 +613,7 @@ public class BoardController {
 	}
 
 	//tour(둘러보기)  
-	@RequestMapping("/tour.bo")
+	@RequestMapping("/old_tour.bo")
 	public ModelAndView goTour(HttpSession session, String cat) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
@@ -685,7 +685,8 @@ public class BoardController {
 		return mav;
 	}
 	
-	@RequestMapping("/copyOfTour.bo")
+	// 무한스크롤 적용
+	@RequestMapping("/tour.bo")
 	public ModelAndView copyOfGoTour(HttpSession session, String cat, String c) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
@@ -730,11 +731,17 @@ public class BoardController {
 		else if(cat.equals("3")) {
 			category = "인기 태그 순";
 			List<String[]> tagArr = boardService.selectTagCount();
-			for(int i = 0; i < tagArr.size(); i++) {
+			List<String> picks = new ArrayList<>();
+ 			for(int i = 0; i < tagArr.size(); i++) {
+				// 2: tagpicks
 				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
-					result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));
-					System.out.println(tagArr.get(i)[2].split(",")[j]);
-				}
+					/*result.add(boardService.oneBoard(tagArr.get(i)[2].split(",")[j]));*/
+					picks.add(tagArr.get(i)[2].split(",")[j]);
+					System.out.print(tagArr.get(i)[2].split(",")[j] + " ");
+				}				
+			}
+ 			for(int i = 0; i < TOUR_PER_PAGE; i++) {
+ 				result.add(boardService.oneBoard(picks.get(i)));
 			}
 		}
 
@@ -801,14 +808,10 @@ public class BoardController {
 
 		// 최신글
 		if(cat.equals("1")) {
-			result = boardService.getBoardByRange(startInt, startInt + TOUR_PER_PAGE - 1);
-			if(result.size() == 0) {
-				isAvailableMoreData = false;
-			}
-			category = "최신글";		
-		}		
+			result = boardService.getBoardByRange(startInt, startInt + TOUR_PER_PAGE - 1);			
+			category = "최신글";	
 
-
+		}
 		// 좋아요 
 		else if(cat.equals("2")) {
 			category = "좋아요 순";
@@ -816,14 +819,9 @@ public class BoardController {
 			for(int i = 0; seqArr.size() > i; i++) {
 				result.add(boardService.oneBoard(Integer.toString(seqArr.get(i)[0])));
 			}
-
-			if(result.size() == 0) {
-				isAvailableMoreData = false;
-			}
 		}
-
-//		// 인기 태그
-//		else if(cat.equals("3")) {
+		// 인기 태그
+		else if(cat.equals("3")) {
 //			category = "인기 태그 순";
 //			List<String[]> tagArr = boardService.selectTagCount();
 //			for(int i = 0; i < tagArr.size(); i++) {
@@ -832,7 +830,33 @@ public class BoardController {
 //					System.out.println(tagArr.get(i)[2].split(",")[j]);
 //				}
 //			}
-//		}
+			
+			category = "인기 태그 순";
+			List<String[]> tagArr = boardService.selectTagCount();
+			List<String> picks = new ArrayList<>();
+ 			for(int i = 0; i < tagArr.size(); i++) {
+				// 2: tagpicks
+				for( int j = 0; j < tagArr.get(i)[2].split(",").length; j++) {
+					picks.add(tagArr.get(i)[2].split(",")[j]);
+					System.out.print(tagArr.get(i)[2].split(",")[j] + " ");
+				}				
+			}
+ 			for(int i = startInt - 1; i < startInt + TOUR_PER_PAGE - 1; i++) {
+ 				try{
+ 					result.add(boardService.oneBoard(picks.get(i)));
+ 				} catch (IndexOutOfBoundsException e) {
+ 					System.err.println("CATCHED EXCEPTION: " + e);
+ 					break;
+ 				} 				
+			}
+			if(result.size() == 0) {
+				isAvailableMoreData = false;
+			}
+		}
+		
+		if(result.size() == 0) {
+			isAvailableMoreData = false;
+		}
 
 		// 사진
 		for(int i = 0;i < result.size(); i++) { 
