@@ -597,7 +597,9 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
-		mav.setViewName("NewFile.jsp");
+		mav.addObject("SEARCH_PER_PAGE", SEARCH_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
+		mav.setViewName("tour.jsp");
 		return mav;
 	}
 
