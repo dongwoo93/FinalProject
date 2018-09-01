@@ -252,7 +252,7 @@ function markit(e) {
                    type: "POST",    
                    url: "commentmod.co",    
                    data: {board_seq : board_seq, comment_seq:comment_seq, comment_contents:txt},   
-                   success : function() {
+                   success : function() {	
                  	$("#commenttxt"+comment_seq).attr("contentEditable",false);
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");

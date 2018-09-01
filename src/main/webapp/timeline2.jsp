@@ -131,6 +131,19 @@ function getCaretPosition(editableDiv) {
 	        textRange.select();
 	    }
 	}
+	
+	
+	   
+	function hide(e){ 
+		var seq = $(e).attr("value");
+		     
+		$("#contdiv"+seq).attr("style","word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;"); 
+		$("#contplus"+seq).attr("style","color:gray;");        
+		$(e).remove();   
+		     	    
+		
+	}
+	
 
     $(document).ready(function(){
     	
@@ -317,8 +330,20 @@ function getCaretPosition(editableDiv) {
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
 						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+						  
+						<c:choose>
+						<c:when test="${profile_pic.containsKey(tmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/standard.jpg">
+                  </c:otherwise>
+					</c:choose>
 							
 							<br> 
 							<c:choose>
@@ -468,25 +493,44 @@ function getCaretPosition(editableDiv) {
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
 										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;color: #4f70ce;">${tmp.id}</a>
-
-									<div class='pl-3' id="contdiv${tmp.board_seq}"
-										style="word-wrap: break-word; word-break: break-all"></div>
-									<script>
-							           
-							  var txt = "${tmp.contents}"; 
+    
+									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
+										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
+										  </div>     
+									<a id="contplus${tmp.board_seq}" class='pointer' style="color:gray; display:none;">더보기</a>   
+									
+									<script> 
+							 
+							  var txt = "${tmp.contents}";  
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");        
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-							$("#contdiv${tmp.board_seq}").html(newtxt);    
-							  
+							$("#contdiv${tmp.board_seq}").html(newtxt);   
+							      
+						
 							function tag(e) {
 								var search = $(e).html().split("#")[1]; 
 								$(location).attr("href","search.bo?search="+search); 
 					
 							}
-
-		</script>
-								</div>
+							
+							<!-- 더보기-->
+							
+							if(txt.length > 23) {
+								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
+							 }
+							$("#contplus${tmp.board_seq}").click(function() {     
+								$("#contdiv${tmp.board_seq}").attr("style","word-wrap: break-word; word-break: break-all;"); 
+								$("#contplus${tmp.board_seq}").attr("style","color:gray; display:none;");     
+								       
+								$("#contdiv${tmp.board_seq}").append("<a id='conthide${tmp.board_seq}' value = '${tmp.board_seq}' onclick='hide(this)' class='pointer pl-2' style='color:gray;'>접기</a>");     	    
+								
+							})
+						
+  
+		</script>   
+								</div>   
+								 
 								<!-- 글내용자리 -->
 
 								<p class="text-info pointer pt-4 mb-1"
@@ -623,8 +667,11 @@ function getCaretPosition(editableDiv) {
 		
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
+					
+			
 					<li>	<img class="mr-3 pic"   
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;"> </li>
+						
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
