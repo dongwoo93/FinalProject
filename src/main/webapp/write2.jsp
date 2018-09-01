@@ -779,7 +779,7 @@
       
       function initAutocomplete() {
           map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.8688, lng: 151.2195},
+          center: {lat: 36.082402, lng: 128.088226},
           zoom: 13,
           mapTypeControl: false,
           streetViewControl: false,
