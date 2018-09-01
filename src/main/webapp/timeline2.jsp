@@ -237,6 +237,10 @@ function getCaretPosition(editableDiv) {
 	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                   $("#ul"+seq).hide().fadeIn(500);  
+	                   //&nbsp&nbsp모두 commenttmp.value.size()개의 댓글보기
+	                   /* var commentText = $("#myComment" + seq).text();
+	                   alert(commentText)
+	    */                $("#myComment" + seq).text();
 	                   
 	                   $("#commenttxt" + seq).keyup(function(e){
 	                	   // =================== 복붙 =================== 
