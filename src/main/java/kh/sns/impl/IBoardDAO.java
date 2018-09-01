@@ -317,8 +317,8 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception {
 		
-		String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
-
+		//String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
+		String sql = "select bx.* from (select ast.*, rownum rn from ((select board.* from board order by board_seq desc) ast)) bx where rn between ? and ?";
 			return template.query(sql, new Object[] {start, end} , new RowMapper<BoardDTO>() {
 
 				@Override

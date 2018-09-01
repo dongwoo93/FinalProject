@@ -260,6 +260,9 @@ function unmarkit(e) {
 	var globalAjaxUrl = "";
 	var globalStartNum = 16;
 	var globalCat = "";
+	var globalSearch = "";
+	console.log("${pageName}")
+	console.log("${pageName}" == "/search.bo")
 	if("${pageName}" == "/tour.bo"){
 		globalAjaxUrl = "tourForJson.ajax"
 		globalStartNum = ${TOUR_PER_PAGE + 1}
@@ -274,6 +277,7 @@ function unmarkit(e) {
 	} else if("${pageName}" == "/search.bo") {
 		globalAjaxUrl = "searchForJson.ajax"
 		globalStartNum = ${SEARCH_PER_PAGE + 1};
+		globalSearch = "${param.search}"
 	}
 	
 	$(window).scroll(function(){
@@ -282,11 +286,12 @@ function unmarkit(e) {
 			$.ajax({
 	            url: globalAjaxUrl, // 처리할 페이지(서블릿) 주소
 	            type: "get",
-	            data: {start: globalStartNum, cat: globalCat},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+	            data: {start: globalStartNum, cat: globalCat, search: globalSearch},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 	            success: function(r) {
 	            
 	        		console.log(r);
 	        		console.log("cat: ${param.cat}")
+	        		console.log("search: ${param.search}")
 	           		if(r.isAvailableMoreData){	// 가져올 게시글이 더 있나요?           		
 	            		var c = "";
 	           			// c += "<div class='card-columns'>"
@@ -393,6 +398,9 @@ function unmarkit(e) {
 	        });
 			
 	    
+		}
+		else{
+			console.log("짧음")
 		}
 	}); // window scroll 끝
 
