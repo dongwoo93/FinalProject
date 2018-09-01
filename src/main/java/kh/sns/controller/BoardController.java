@@ -553,6 +553,19 @@ public class BoardController {
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		profile_image = profileService.getAllProfileImage();
+
+
+
+		for(Profile_ImageDTO dto : profile_image) {
+						getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+					};
+
+		
+		
 		for(int tmp : mark) {
 			mapmark.put(tmp, "y");
 		}
@@ -600,6 +613,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("SEARCH_PER_PAGE", SEARCH_PER_PAGE);
 		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
@@ -789,6 +803,18 @@ public class BoardController {
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
+		
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		profile_image = profileService.getAllProfileImage();
+
+
+
+		for(Profile_ImageDTO dto : profile_image) {
+						getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+					};
+		
 		for(int tmp : mark) {
 			mapmark.put(tmp, "y");
 		}
@@ -852,6 +878,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
 		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
 		return mav;
