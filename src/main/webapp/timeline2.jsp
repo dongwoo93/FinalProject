@@ -565,7 +565,7 @@ function getCaretPosition(editableDiv) {
 							<!--               -->
 
 
-							<div class="crecodiv pl-2 py-2 navbar-nav">
+							<div class="crecodiv pl-2 py-2 navbar-nav"> 
 
 
 
@@ -574,8 +574,8 @@ function getCaretPosition(editableDiv) {
 									id="comment${tmp.board_seq}"> --%>
 
 								<div contenteditable=true class="creco ml-2 insertfield"
-									id="comment${ tmp.board_seq }">
-									<span class=text-muted>댓글 달기...</span>
+									id="comment${ tmp.board_seq }">       
+									<span class='text-muted ml-1'>댓글 달기...</span>
 								</div>
 
 								<div class="btn-group bg-white">
