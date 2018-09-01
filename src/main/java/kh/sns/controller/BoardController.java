@@ -74,7 +74,7 @@ public class BoardController {
 	
 	static final int NAV_COUNT_PER_PAGE = 15; 
 	static final int TOUR_PER_PAGE = 15;
-	static final int SEARCH_PER_PAGE = 15;
+	static final int SEARCH_PER_PAGE = 12;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
@@ -602,20 +602,54 @@ public class BoardController {
 		mav.setViewName("tour.jsp");
 		return mav;
 	}
+	
+	@RequestMapping("/searchForJson.ajax")
+	public void searchForJsonAjax(HttpServletResponse response, HttpServletRequest request, HttpSession session, String start, String search) throws Exception {
+		System.out.println("searchForAjax");
+		String id = (String)session.getAttribute("loginId");
+		if(start == null) {
+			start = String.valueOf(SEARCH_PER_PAGE);
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+        
+		int startInt = Integer.parseInt(start);
+		
+		boolean isAvailableMoreData = true;
+		int nextStartNum = startInt + SEARCH_PER_PAGE;
+		// insertsearch는 중복하여 넣을 팔요가 없음
+		List<BoardDTO> result = boardService.search(search, startInt, startInt + SEARCH_PER_PAGE - 1);
+		System.out.println("@@start: " + start);
+		result.forEach(System.out::println);
+		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
+		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<Integer> mark = new ArrayList<>();
+		Map<Integer,String> mapmark = new HashMap<>();
+		mark = board_bookmarkService.searchMark(id);
+		for(int tmp : mark) {
+			mapmark.put(tmp, "y");
+		}
+		
+		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
 
-		/*Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
 		// 사진
 		for(int i = 0;i < result.size(); i++) { 
 			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
-
+		
 		// 누를때
 		for(int tmp : result3) {
 			map.put(tmp, "y");
 		}
-
+		
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
 		// 조회
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
@@ -626,17 +660,39 @@ public class BoardController {
 				dto.setContents(" ");  
 			}
 		}
+		
+		if(result.size() == 0) {
+			isAvailableMoreData = false;
+		}
+		
+		/*
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("category", category);
+		outputJson.put("result", result);
+		outputJson.put("media", result2);
+		outputJson.put("map", map);
+		outputJson.put("countlike", countlike);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
+		outputJson.put("nextStartNum", nextStartNum);
+		 */
+		
+		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("result", result);
+		outputJson.put("media", result2);
+		outputJson.put("map", map);
+		outputJson.put("countlike", countlike);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
+		outputJson.put("nextStartNum", nextStartNum);
+		
+		try {
+			new Gson().toJson(outputJson, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result); 		// 검색어
-		mav.addObject("result2", result2);		// 사진
-		mav.addObject("like", map);			// 누를때
-		mav.addObject("result4", countlike);	// 조회
-		mav.addObject("bookmark", mapmark);
-		mav.addObject("search", search); 
-		mav.setViewName("search1.jsp");  
-		return mav;  
-	}*/
+		
 	
 
 	//tour(둘러보기)  
@@ -877,9 +933,6 @@ public class BoardController {
  					break;
  				} 				
 			}
-			if(result.size() == 0) {
-				isAvailableMoreData = false;
-			}
 		}
 		
 		if(result.size() == 0) {
@@ -918,7 +971,6 @@ public class BoardController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
-		
 		
 		
 	}
