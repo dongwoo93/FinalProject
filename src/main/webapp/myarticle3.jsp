@@ -354,12 +354,12 @@ $(document).ready(function(){
 							<c:when test="${sessionScope.loginId == pageid}">
 								<a data-target="#profileimage" data-toggle="modal"
 									style="cursor: pointer;"> <img
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									src="resources/images/standard.jpg"
 									width="152px" height="152px" style="object-fit: cover;"></a>
 							</c:when>
 							<c:otherwise>
 								<img
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									src="resources/images/standard.jpg"
 									width="152px" height="152px" style="object-fit: cover;">
 							</c:otherwise>
 						</c:choose>

@@ -526,7 +526,10 @@ $("#sign").click(function(){
 			}else if(inputed!=reinputed){
 				pwCheck=0;
 				console.log(pwCheck);
-				return false;
+				alert("비밀번호를 다시 입력하세요");
+				$("#pwCheck").val("");
+				$("#pwCheck").focus();
+								return false;
 			}
 			if(inputed=="" && reinputed=="" ){
 				pwCheck=0;
@@ -751,7 +754,7 @@ $(location).attr("href", "main.jsp");
 </script>
 		</c:when>
 		<c:otherwise>
-			<div class="container">
+			<div class="container" style="opacity: 0.8">
 				<div class="row">
 					<form class="col s12" id="reg-form" action="sign.do" method="post">
 						<div class="row">
@@ -783,7 +786,7 @@ $(location).attr("href", "main.jsp");
 									for="pw">PassWord 6자리 이상</label>
 							</div>
 							<div class="input-field col s6 pw2">
-								<input id="pwCheck" oninput="checkPwd()" type="password"
+								<input id="pwCheck"  onblur="checkPwd()" type="password"
 									class="validate" minlength="6" required> <label
 									for="pwCheck">Password Check</label>
 

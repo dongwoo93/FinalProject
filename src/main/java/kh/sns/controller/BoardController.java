@@ -232,6 +232,9 @@ public class BoardController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
+		for(int i = 0; i < follow_list.size(); i++) {
+			System.out.println("아이디 : " + follow_list.get(i).getId());
+		}
 		mav.addObject("result", list);
 		mav.addObject("result2", media);
 		mav.addObject("like", maplike);

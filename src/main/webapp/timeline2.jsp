@@ -609,12 +609,25 @@ function getCaretPosition(editableDiv) {
 				<hr class="_5mToa">
 				<c:if test="${result3.size() > 0}">  
 				<div style="overflow-y:auto; height:230px; font-family:NANUMBARUNPENR !important;font-size: 14px;"">    		
-		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
-		
+		<c:forEach var="followtmp" items="${result3}" varStatus="status">
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
-					<li>	<img class="mr-3 pic"   
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					
+					<li>	
+					<c:choose>
+					<c:when test="${profile_pic.containsKey(followtmp.id)}">
+                  
+                  <img class="mr-3 pic"   
+								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"
+                        src="resources/images/standard.jpg">
+                  </c:otherwise>
+					</c:choose>
+					
+				  </li>
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
