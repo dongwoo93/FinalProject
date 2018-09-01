@@ -8,6 +8,49 @@
 <script src="resources/js/timeline.js"></script>
 <script>
 
+function follow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "follow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	         $(e).next().show(); 
+	         
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	} 
+	 
+function unfollow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "deletefollow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	    	  $(e).prev().show(); 
+	        
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	}
 
 function likeit(e) {   
 	 var board_seq = $(e).attr("value");
@@ -656,8 +699,7 @@ function getCaretPosition(editableDiv) {
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
-<br>
-				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -667,10 +709,10 @@ function getCaretPosition(editableDiv) {
 		
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
-					<li>
-					
-						<c:choose>
-						<c:when test="${profile_pic.containsKey(followtmp.id)}">
+					   <li>
+                 
+                  <c:choose>
+                  <c:when test="${profile_pic.containsKey(followtmp.id)}">
                   
                   
                      <img class="ml-3 mr-2 pic"
@@ -681,9 +723,9 @@ function getCaretPosition(editableDiv) {
                      <img class="ml-3 mr-2 pic"  
                         src="AttachedMedia/standard.jpg" style="width:40px; height:40px;">
                   </c:otherwise>
-					</c:choose></li> 
-							
-					  
+               </c:choose></li> 
+					
+					
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
@@ -700,7 +742,7 @@ function getCaretPosition(editableDiv) {
 			   	</div>
 				</c:if><hr class="_5mToa">
 			</div>
-			
+			 
 			
 			  
 			<div class="container float" id=""    
@@ -1494,7 +1536,7 @@ $(window).scroll(function(){
 		               
 		               $("#commenttxt" + seq).keypress(function(e){
 							if(e.keyCode === 13) {
-								e.preventDefault();  
+								e.preventDefault();      
 							modComment(this);
 						 }
 						});
