@@ -200,7 +200,7 @@ function deleteEvent() {
       selectable: true,
       selectHelper: true,
       select: function(start, end) {
-        var title = prompt('Event Title:');
+        var title = prompt('일정을 입력하세요:');
         var eventData;
         if (title) {
         $.ajax({
@@ -237,18 +237,26 @@ function deleteEvent() {
       editable: true,
       eventLimit: true, // allow "more" link when too many events
       eventClick: function(event) {
-    	  if($(this).css("background-color")== "rgb(255, 0, 0)") {
-    		  $("#calHeader").css("background-color", "red");
-    	  }else {
-    		  $("#calHeader").css("background-color", "#3a87ad");
-    	  }
     	  $(".fc-event").removeAttr("href");
-    	  $("#hiddenid").val(event.id);
-    	  $("#calModal").modal("show");
-    	  $("#calTitle").text(event.title);
-    	  $("#hiddenStart").text(event.start.format());
-    	  $("#hiddenEnd").text(event.end.format());
-    	  $("#timecontent").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
+    	  if($(this).css("background-color")== "rgb(255, 0, 0)") {
+    		  $("#calHeader2").css("background-color", "red");
+        	  $("#calTitle2").text(event.title);
+        	  $("#hiddenStart2").text(event.start.format());
+        	  $("#hiddenEnd2").text(event.end.format());
+        	  $("#timecontent2").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
+        	  $("#calModal2").modal("show");
+        	  
+    	  }else {
+    		  //$("#calHeader").css("background-color", "#3a87ad");
+    		  $("#hiddenid").val(event.id);
+        	  $("#calTitle").text(event.title);
+        	  $("#hiddenStart").text(event.start.format());
+        	  $("#hiddenEnd").text(event.end.format());
+        	  $("#timecontent").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
+        	  $("#calModal").modal("show");
+    	  }
+    	  
+    	  
     	    
     	  },
       eventDrop: function(event, delta, revertFunc) {
@@ -366,19 +374,19 @@ function deleteEvent() {
 	text-decoration: none;
 }
 
-#calBody {
+#calBody, #calBody2 {
 	font-size: 1.2rem;
 }
 
-#timediv {
+#timediv, #timediv2 {
 	display: flex;
 }
 
-#timecontent {
+#timecontent, #timecontent2 {
 	padding-left: 20px;
 }
 
-#calTitle {
+#calTitle, #calTitle2 {
 	padding-top: 50px;
 	padding-left: 50px;
 	padding-bottom: 10px;
@@ -542,6 +550,38 @@ function deleteEvent() {
 							<i class="far fa-clock"></i>
 						</div>
 						<div id="timecontent"></div>
+					</div>
+					<div></div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<!-- The Modal -->
+	<div class="modal" id="calModal2">
+		<input id="hiddenid2" type="hidden" value="">
+		<input id="hiddenStart2" type="hidden" value="">
+		<input id="hiddenEnd2" type="hidden" value="">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div id="calHeader2" class="modal-header">
+					<h4 id="calTitle2" class="modal-title"></h4>
+					<div>
+						<button type="button" id="closeCal2" class="close"
+							data-dismiss="modal">&times;</button>
+					</div>
+				</div>
+
+				<!-- Modal body -->
+				<div id="calBody2" class="modal-body">
+					<div id="timediv2">
+						<div id="clockdiv2">
+							<i class="far fa-clock"></i>
+						</div>
+						<div id="timecontent2"></div>
 					</div>
 					<div></div>
 				</div>
