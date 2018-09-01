@@ -542,7 +542,7 @@ public class BoardController {
 	public ModelAndView search(HttpServletRequest request, HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-		searchService.insertSearch(search);  
+		searchService.insertSearch(id, search);  
 		/*List<BoardDTO> result = boardService.search(search);*/		// 전체 글
 		List<BoardDTO> result = boardService.search(search, 1, SEARCH_PER_PAGE);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
@@ -601,7 +601,7 @@ public class BoardController {
 		return mav;
 	}
 
-		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
+		/*Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
 		// 사진
@@ -634,7 +634,7 @@ public class BoardController {
 		mav.addObject("search", search); 
 		mav.setViewName("search1.jsp");  
 		return mav;  
-	}
+	}*/
 	
 
 	//tour(둘러보기)  
