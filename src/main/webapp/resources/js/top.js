@@ -196,6 +196,7 @@ function markit(e) {
  
 
  function delComment(e) {
+ 
 			var board_seq = $(e).attr("value").split(":")[0]; 
 			var comment_seq = $(e).attr("value").split(":")[1];
 			alert(board_seq + " :"  + comment_seq);  
