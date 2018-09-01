@@ -227,7 +227,7 @@ function getCaretPosition(editableDiv) {
 	                	 
 	                	  $(obj).html("");
 	                  /*  $("#comment${tmp.board_seq}").val("");   */  
-	                  var regex = /(#[^#\s,;<>.]+)/gi;            
+	                  var regex = /(#[^#\s,;<>.]+)/gi;               
 	               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
 	                var newtxt = "<span class=fugue>" + text.replace(
 	  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
@@ -1401,7 +1401,7 @@ $(window).scroll(function(){
 		                           return;
 		                       }
 
-		                       var regex = /(#[^#\s,;<>. ]+)/gi;
+		                       var regex = /(#[^#\s,;<>.]+)/gi;
 		                       if (regex) {
 		                           var newtxt = "<span class=fugue>" + $(this).text()
 		                               .replace(regex, "</span><span class=text-danger>" + "$1" +
