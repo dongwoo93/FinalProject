@@ -8,10 +8,10 @@
 <script src="resources/js/timeline.js"></script>
 <script>
 
-	$(function () {
 
 function likeit(e) {   
 	 var board_seq = $(e).attr("value");
+
 	    
    $.ajax({  
       url : "like.bo",
@@ -54,6 +54,7 @@ function unlikeit(e) {
 }
 
 /////////// like & unlike + real time alert
+
 
 function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
@@ -200,16 +201,18 @@ function getCaretPosition(editableDiv) {
     	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
     
     	$("div[id*='commenttxt']").keypress(function(e){
-			if(e.keyCode === 13) {
+			if(e.keyCode === 13) { 
+				 e.preventDefault();
 			modComment(this);
-		 }
+		 } 
 		})
 		
 		$("div[id*='comment'].insertfield").keypress(function(event){
 		    var keycode = (event.keyCode ? event.keyCode : event.which);
 		    var obj = this
 		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
-		    if(keycode == '13'){
+		    if(keycode == '13'){ 
+		    	
 		       var text = $(this).text();
 		       if(text == ""){
 		          alert("댓글을 입력해주세요");
@@ -278,6 +281,7 @@ function getCaretPosition(editableDiv) {
 	                   
 	                   $("#commenttxt" + seq).keypress(function(e){
 							if(e.keyCode === 13) {
+								 e.preventDefault();
 							modComment(this);
 						 }
 						});
@@ -376,7 +380,9 @@ function getCaretPosition(editableDiv) {
 								<div class=col-12>
 									<div class="btn btn-secondary btn-lg btn-block">
 										<c:forEach var="ad" items="${ adList }">
-											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
+										  
+											<c:if test="${ Math.abs(ad.boardSeq) eq Math.abs(tmp.board_seq) }">
+											
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
 														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
@@ -400,8 +406,8 @@ function getCaretPosition(editableDiv) {
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
 									<a class="navbar-brand"> 
-									<c:choose>    
-											<c:when test="${like.containsKey(tmp.board_seq)}">
+									<c:choose>     
+											<c:when test="${like.containsKey( Math.abs(tmp.board_seq) )}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
 													onclick="likeit(this)"></i>  
@@ -422,8 +428,8 @@ function getCaretPosition(editableDiv) {
 											</c:otherwise>
 										</c:choose>  
 										 <i class="far fa-comment icon"></i>
-									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
-											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
+									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>  
+											<c:when test="${bookmark.containsKey( Math.abs(tmp.board_seq))}">
 
 												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" style="display: none;"
@@ -502,7 +508,7 @@ function getCaretPosition(editableDiv) {
 
 													<ul id="ul${comment.comment_seq}" style="display: none"
 														value="${comment.comment_seq}"  
-														onmouseover="commentover(this,'${comment.id}')"  
+														onmouseover="commentover(this)"   
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a
@@ -699,7 +705,7 @@ function getCaretPosition(editableDiv) {
 </div>
 <!--  allwrapper-->
 
-<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark" data-dismiss="modal">Close</button>
+
 <div class="modal fade" id="changeBoardModal" tabindex="-1"
 	role="dialog"></div>
 
@@ -1425,6 +1431,7 @@ $(window).scroll(function(){
 		               
 		               $("#commenttxt" + seq).keypress(function(e){
 							if(e.keyCode === 13) {
+								e.preventDefault();  
 							modComment(this);
 						 }
 						});

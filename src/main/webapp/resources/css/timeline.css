@@ -860,7 +860,7 @@ a:link {
         
     }
 .carousel-item.active, .carousel-item-next, .carousel-item-prev {
-    display: block;
+    display: block;  
     display: table-cell;  
     vertical-align: middle;
 }  

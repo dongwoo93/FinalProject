@@ -165,16 +165,16 @@ public class BoardController {
 				
 			}
 			
-			
-			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia"); 
-
-
-			for(List<Board_MediaDTO> mlist : media) { 
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");       
+ 
+  
+			for(List<Board_MediaDTO> mlist : media) {  
 				double max = 0;
 				for(Board_MediaDTO dto : mlist) {
+					System.out.println("요기는나와야" +realPath+dto.getSystem_file_name());  
 					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-					System.out.println(realPath+dto.getSystem_file_name());
-					double height = bimg.getHeight();
+					
+					double height = bimg.getHeight(); 
 					double width = bimg.getWidth();
 					height = 600*height/width;   
 					;
@@ -182,7 +182,7 @@ public class BoardController {
 						max = height;
 					}
 
-				}
+				} 
 				maxImgHeight.add((int)max);   
 				System.out.println("max:" + max);     
 			}
@@ -225,6 +225,7 @@ public class BoardController {
 		      
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
+				System.out.println("고뤠? " + tmp);  
 			}
 			
 			trend = searchService.trend();
@@ -243,6 +244,7 @@ public class BoardController {
 		mav.addObject("NAV_COUNT_PER_PAGE", NAV_COUNT_PER_PAGE);
 		
 		// 광고 관련 
+    
 		mav.addObject("adList", adList);
 		mav.addObject("membersNick", membersNick);
 		

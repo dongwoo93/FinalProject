@@ -161,8 +161,11 @@ function markit(e) {
  function commentover(e,id) {    
  	
 	var comment_seq = $(e).attr("value"); 
-	var sessionid = currentId; 
-	var commentid = id;
+	var sessionid = currentId;
+	
+	var commentid = $(e).children().first().children().first().html();  
+	console.log(commentid);    
+	
 	var modstate = $("#modstate"+comment_seq).val();    
 	 
 		$("#ul"+comment_seq).attr("style","background-color:#E1F5FE");
