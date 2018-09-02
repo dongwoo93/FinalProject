@@ -1193,7 +1193,7 @@ $(document).ready(function(){
 			              <i class="far fa-calendar-alt fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			               <h1 class="mt-3"><a href="calendar2.jsp"><b style=color:#6c757d;>나의 일정</b></a></h1>
+			               <h1 class="mt-3"><a href="calendar.bo"><b>나의 일정</b></a></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>
@@ -1208,7 +1208,7 @@ $(document).ready(function(){
 			              <i class="fas fa-sticky-note fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 메모</b></a></h1>
+			              <h1 class="mt-3"><a href="goNote.memo"><b>나의 메모</b></a></h1>
 			            </div>
 			          </div>
 			        </div>
