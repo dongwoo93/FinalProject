@@ -522,11 +522,11 @@ $(document).ready(function(){
 									<thead>
 										<tr>
 											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="board.bo?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
+												href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">게시물</a></th>
 											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="board.bo?id=${pageid}&cat=2" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">찜콕됨</a></th>
+												href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">찜콕됨</a></th>
 											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
-												href="board.bo?id=${pageid}&cat=3" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">태그됨</a></th>
+												href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">태그됨</a></th>
 										</tr>
 									</thead>
 								</table>
@@ -852,7 +852,7 @@ $(document).ready(function(){
 					<div class="profile-image">
 						<img class="ml-3 mr-2"
 							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-						<div class="pointer" id="modalid2" style="font-size: 16px;"></div>
+						<div class="pointer" id="modalid2" style="font-size: 17px;color:#12bbad;font-wight:bold;"></div>
 					</div>
 
 
@@ -1426,11 +1426,11 @@ $(document).ready(function(){
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown" id="etc"></button>
 								<div class="dropdown-menu">		
-									<a class="dropdown-item" id="modify" href="#">수정</a>
+									<a class="dropdown-item" id="modify" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="fas fa-wrench mr-1 pr-1 fa-1x"></i>수정</a>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
+									<a class="dropdown-item" id="modifysubmitbtn" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="fas fa-check-square mr-1 pr-1 fa-1x"></i>수정완료</a>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" name=delete id="delete" href="#">삭제</a>
+									<a class="dropdown-item" name=delete id="delete" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="fas fa-trash-alt mr-1 pr-1 fa-1x"></i>삭제</a>
 								</div>
 							</div>
 						
@@ -1442,25 +1442,27 @@ $(document).ready(function(){
 							<div class="btn-group bg-white">
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown" id="etc"></button>
-								<div id="drop" class="dropdown-menu">								
-									<!-- <a class="dropdown-item" href="#" onclick="modal2(this)">부적절한콘텐츠신고</a> -->
+								<div class="dropdown-menu">							
+									<a class="dropdown-item" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
 								</div>
 							</div>
 
 								</c:otherwise>
 							</c:choose>
 						</c:when>		
+						
+						
+						
+						
 						<c:otherwise>
-								<br>
+						
+							<br>
 							<br>
 							<div class="btn-group bg-white">
-								<button class="btn dropdown-toggle bg-white"
-									data-toggle="dropdown" id="etc"></button>
-								<div id="drop" class="dropdown-menu">								
-									<!-- <a class="dropdown-item" href="#" onclick="modal2(this)">부적절한콘텐츠신고</a> -->
-								</div>
+								
 							</div>
-											
+							
+							
 						</c:otherwise>
 					</c:choose>
 				
@@ -1552,18 +1554,18 @@ $(document).ready(function(){
 		<input type=hidden id=modalseq>   
 		<div class="modal-content cons">
 			<div class="modal-body">
-				<a class="dropdown-item mo1" href="profile.member?cat=1">비밀번호 변경</a>
+				<a class="dropdown-item mo1" href="profile.member?cat=1" style="font-family: NANUMBARUNPENR !important;font-size: 14px;font-weight:bold;">비밀번호 변경</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item mo1" href="profile.member?cat=2">이메일 및
+				<a class="dropdown-item mo1" href="profile.member?cat=2" style="font-family: NANUMBARUNPENR !important;font-size: 14px;font-weight:bold;">이메일 및
 					SMS</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item mo1" href="profile.member?cat=3">공개 범위 및
+				<a class="dropdown-item mo1" href="profile.member?cat=3" style="font-family: NANUMBARUNPENR !important;font-size: 14px;font-weight:bold;">공개 범위 및
 					보안</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item mo1" href="profile.member?cat=4">비즈니스
+				<a class="dropdown-item mo1" href="profile.member?cat=4" style="font-family: NANUMBARUNPENR !important;font-size: 14px;font-weight:bold;">비즈니스
 					프로필</a>
 				<div class="dropdown-divider"></div>
-				<a class="dropdown-item mo1" href="logout.do">로그아웃</a>
+				<a class="dropdown-item mo1" href="logout.do" style="font-family: NANUMBARUNPENR !important;font-size: 14px;font-weight:bold;">로그아웃</a>
 
 			</div>
 			<div class="modal-footer">
@@ -1591,10 +1593,10 @@ $(document).ready(function(){
 			        <div class="py-5 col-md-6">
 			          <div class="row" style="margin-top:20px;margin-left:10px;">
 			            <div class="text-center col-4"><a href="mymap.jsp">
-			              <i class="fas fa-map-marked-alt fa-5x"></i></a>
+			              <i class="fas fa-map-marked-alt fa-5x" ></i></a>
 			            </div>
 			            <div class="col-8">
-			              <h1 class="mt-3"><a href="mymap.jsp"><b>나의 지도</b></a></h1>
+			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 지도</b></a></h1>
 			            </div>
 			          </div>
 			        </div>
@@ -1604,7 +1606,7 @@ $(document).ready(function(){
 			              <i class="far fa-calendar-alt fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			               <h1 class="mt-3"><a href="calendar2.jsp"><b>나의 일정</b></a></h1>
+			               <h1 class="mt-3"><a href="calendar2.jsp"><b style=color:#6c757d;>나의 일정</b></a></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>
@@ -1619,7 +1621,7 @@ $(document).ready(function(){
 			              <i class="fas fa-sticky-note fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			              <h1 class="mt-3"><a href="mymap.jsp"><b>나의 메모</b></a></h1>
+			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 메모</b></a></h1>
 			            </div>
 			          </div>
 			        </div>
@@ -1629,7 +1631,7 @@ $(document).ready(function(){
 			              <i class="fas fa-book fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			               <h1 class="mt-3"><a href="calendar2.jsp"><b>활동 기록</b></a></h1>
+			               <h1 class="mt-3"><a href="calendar2.jsp"><b style=color:#6c757d;>활동 기록</b></a></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>
