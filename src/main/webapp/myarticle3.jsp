@@ -1001,7 +1001,7 @@ $(document).ready(function(){
                     })
                        }
                     }
-                    
+                     
                 });
 				  
             	function reportToAdmin(seq, code) {
