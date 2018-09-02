@@ -81,6 +81,10 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		String id = (String) seesion.getAttribute("loginId");
 
+		List<BoardDTO> listAll =new ArrayList<BoardDTO>();
+		List<List<Board_MediaDTO>> mediaAll = new ArrayList<>();
+		Map<Integer,Integer> maxMap = new HashMap<>();
+		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		List<Board_CommentDTO> list1 = new ArrayList<>();
 		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
@@ -93,6 +97,7 @@ public class BoardController {
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
 		List<Integer> maxImgHeight = new ArrayList<>();
+		
 		List<String> trend = new ArrayList<>();
 		
 		List<BoardBusinessDTO> adList = new ArrayList<>();
@@ -108,6 +113,7 @@ public class BoardController {
 
 		try {
 			/*list = boardService.getFeed(id);*/
+			listAll = boardService.getFeed(id);
 			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
 			int pickAdsCount = NAV_COUNT_PER_PAGE / 5;
 			if(list.size() < 5) {
@@ -165,6 +171,17 @@ public class BoardController {
 				
 			}
 			
+			
+			for(int i = 0; i < listAll.size(); i++) {
+				if(listAll.get(i).getBoard_seq() < 0) {
+					mediaAll.add(boardService.search2(-1 * listAll.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					mediaAll.add(boardService.search2(listAll.get(i).getBoard_seq()));
+				}
+				
+			}
+			
 			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");       
  
   
@@ -177,14 +194,38 @@ public class BoardController {
 					double height = bimg.getHeight(); 
 					double width = bimg.getWidth();
 					height = 600*height/width;   
-					;
+					
 					if(max<height) { 
 						max = height;
 					}
-
+					
 				} 
 				maxImgHeight.add((int)max);   
 				System.out.println("max:" + max);     
+			}
+			
+			
+			
+			
+			for(List<Board_MediaDTO> mlistall : mediaAll) {    
+				double max = 0;
+				for(Board_MediaDTO dto1 : mlistall) {
+					System.out.println("요기는나와야" +realPath+dto1.getSystem_file_name());  
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto1.getSystem_file_name()));
+					
+					double height = bimg.getHeight(); 
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+				
+					if(max<height) { 
+						max = height;
+					}
+					maxMap.put(dto1.getBoard_seq(), (int)max);
+					for(int board_seq : maxMap.keySet()) {
+						System.out.println(board_seq + " ::::: " + maxMap.get(board_seq));     
+					}
+				} 
+			
 			}
 
 
@@ -233,6 +274,9 @@ public class BoardController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
+		
+		
+		mav.addObject("maxmap", maxMap);
 		mav.addObject("result", list);
 		mav.addObject("result2", media);
 		mav.addObject("like", maplike);
@@ -262,7 +306,7 @@ public class BoardController {
 	
 	@RequestMapping("/feedForJson.ajax")
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
-		
+
 		if(start == null) {
 			start = String.valueOf(NAV_COUNT_PER_PAGE);
 		} 
@@ -283,8 +327,15 @@ public class BoardController {
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-
+		
 		List<Integer> maxImgHeight = new ArrayList<>();
+		
+		
+		List<BoardDTO> listAll =new ArrayList<BoardDTO>();
+		List<List<Board_MediaDTO>> mediaAll = new ArrayList<>();
+		Map<Integer,Integer> maxMap = new HashMap<>();
+		
+		
 		
 		int startInt = Integer.parseInt(start);
 		
@@ -292,6 +343,45 @@ public class BoardController {
 		int nextStartNum = startInt + NAV_COUNT_PER_PAGE;
 
 		try {
+			listAll = boardService.getFeed(id);
+			for(int i = 0; i < listAll.size(); i++) {
+				if(listAll.get(i).getBoard_seq() < 0) {
+					mediaAll.add(boardService.search2(-1 * listAll.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					mediaAll.add(boardService.search2(listAll.get(i).getBoard_seq()));
+				}
+				
+			}
+			
+			
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");      
+			for(List<Board_MediaDTO> mlistall : mediaAll) {    
+				double max = 0;
+				for(Board_MediaDTO dto1 : mlistall) {
+					System.out.println("요기는나와야" +realPath+dto1.getSystem_file_name());  
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto1.getSystem_file_name()));
+					
+					double height = bimg.getHeight(); 
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+				
+					if(max<height) {      
+						max = height;
+					}
+					maxMap.put(dto1.getBoard_seq(), (int)max);
+					for(int board_seq : maxMap.keySet()) {
+						System.out.println(board_seq + " ::::: " + maxMap.get(board_seq));     
+					}
+				} 
+			
+			}
+
+			
+			
+			
+			
+			
 			follow_list = member_followService.toFeed(id);	// 팔로우 리스트
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -356,6 +446,7 @@ public class BoardController {
 		
 		Map<String, Object> outputJson = new HashMap<>();
 		outputJson.put("list", list);	
+		outputJson.put("maxmap", maxMap);  
 		outputJson.put("media", media);	
 		outputJson.put("maplike", maplike);
 		outputJson.put("mapmark", mapmark);

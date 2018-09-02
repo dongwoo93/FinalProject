@@ -767,7 +767,7 @@ $(document).ready(function(){
 
 		<div class="modal-content view"
 			style="flex-direction: row; width: 60px; height: auto; opacity: 0.5;">
-			<div class="" style="width: 30px;; height: auto;">
+			<div class="" style="width: 30px; height: auto;">
 				<i class="fas fa-angle-double-left " id="goPrev"
 					style="font-size: 25px;"></i>
 			</div>
