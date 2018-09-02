@@ -27,9 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -44,6 +42,7 @@ import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardBusinessService;
+import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -72,6 +71,7 @@ public class BoardController {
 	@Autowired	private Member_CalendarService calService;
 	@Autowired	private BoardBusinessService bbs;
 	
+	@Autowired	private BoardDAO boarddao;
 	static final int NAV_COUNT_PER_PAGE = 15; 
 	static final int TOUR_PER_PAGE = 15;
 	static final int SEARCH_PER_PAGE = 12;
@@ -295,7 +295,7 @@ public class BoardController {
 			follow_list = member_followService.toFeed(id);	// 팔로우 리스트
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}  
 
 		try {
 			list = boardService.getFeed(id, startInt, startInt + NAV_COUNT_PER_PAGE - 1);	// 게시글 리스트
@@ -514,10 +514,8 @@ public class BoardController {
 		result3.add(maxwidth);
 
 		new Gson().toJson(result3,response.getWriter());
-
 	}   
-
-
+	
 
 	@RequestMapping("/boardDelete.bo")
 	public ModelAndView deleteBoard(HttpSession session, HttpServletResponse response, int seq) throws Exception {
@@ -528,10 +526,11 @@ public class BoardController {
 		return mav;	
 	}
 
-
 	@RequestMapping("/boardModify.bo")
 	public void modifyBoard(HttpSession seesion, HttpServletResponse response, BoardDTO dto) throws Exception {
 		int result = boardService.modifyBoard(dto);
+		int tagdelrs = boardService.deleteBoardTags(dto.getBoard_seq());
+		int[] hashTagResult = boarddao.insertHashTags(dto,0);
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(result);
 		response.getWriter().flush();
