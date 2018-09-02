@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_LocationDTO;
+import kh.sns.dto.MyMapDTO;
 import kh.sns.interfaces.Board_LocationDAO;
 
 @Repository
@@ -54,4 +55,36 @@ public class IBoard_LocationDAO implements Board_LocationDAO{
 		
 		});
 	}
+	
+	@Override
+	public int setMyMap(String id,String cluster,String pin) throws Exception {
+		String sql = "update mymap set pinimg = ? , clusterimg = ? where id=?";
+		return template.update(sql,pin,cluster,id);
+	}
+	
+	@Override
+	public int insertMyMap(String id) throws Exception {
+		String sql = "insert into mymap values(?,default,default)";
+		return template.update(sql,id);
+	}
+	
+	@Override
+	public MyMapDTO selectMyMap(String id) throws Exception {
+		
+		String sql = "select * from mymap where id = ?";
+		List<MyMapDTO> result =  template.query(sql, new String[] {id}, new RowMapper<MyMapDTO>() {
+
+			@Override   
+			public MyMapDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				MyMapDTO mymap = new MyMapDTO();
+				mymap.setId(rs.getString(1));
+				mymap.setPinimg(rs.getString(2));
+				mymap.setClusterimg(rs.getString(3));
+				return mymap;
+			}
+		});
+		
+		return result.get(0);
+		}
 }

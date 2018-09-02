@@ -1176,7 +1176,7 @@
   <div class="chatbox group-chat">
     <div class="chatbox-top">
       <div class="chatbox-avatar">
-        <a target="_blank" href=""><img src="루이.jpg" /></a>
+        <a href=""><img src="" /></a>
       </div>
       
       <div class="chat-group-name" id="dmnickname">
