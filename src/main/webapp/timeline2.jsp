@@ -848,7 +848,7 @@ function getCaretPosition(editableDiv) {
 					실시간 #트랜드     
 				</p>
 				<hr class="_5mToa">
-				<c:if test="${trend.size() > 0}">  
+				<c:if test="${trend.size() > 0}">       
 		  
 		  	<div style="overflow-y:auto; height:230px;">    		
 		<c:forEach var="trend" items="${trend}" varStatus="status" >
@@ -872,7 +872,7 @@ function getCaretPosition(editableDiv) {
 
 							</c:forEach>
 						</div>
-
+</c:if><hr class="_5mToa"> 
 
 <!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
 			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
