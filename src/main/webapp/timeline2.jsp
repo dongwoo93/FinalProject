@@ -1469,8 +1469,8 @@ $(window).scroll(function(){
 
 	                    }
 	            		
-	            		divStr += "</div>"	// navbar-nav div의 끝
-	            		divStr += "<p class='text-info pointer pt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
+	            		divStr += "</div>"	// navbar-nav div의 끝       
+	            		divStr += "<p class='text-info pointer mt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
 	            		   
 	            		if(r.commentcnt[boardSeq] > 2){      
 	            		divStr += "모두 " + r.commentcnt[boardSeq]  + " 개의 댓글보기"
