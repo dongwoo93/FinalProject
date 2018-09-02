@@ -1,7 +1,12 @@
+
+
+
+
 @CHARSET "UTF-8";
 
 @font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
 @font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
 
 
 	img {
@@ -378,6 +383,7 @@ padding-left:3%;
 	width: 330px;
 	height: 280px;
 /* 	object-fit: cover;	 */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
 }   
 
 .colume {   

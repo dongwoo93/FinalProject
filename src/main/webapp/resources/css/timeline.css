@@ -193,14 +193,15 @@ padding-right:3%;
 }  
   
 .creco {   
-	border:none;   
-	width:83%;    
+	border:none;     
+	width:88%;    
 	  
 }
  
 #feed {    
 	  border:0.5px solid #efe4e4;  
 	  background-color: #FFFFFF;
+	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	}
 	
 	#float{
@@ -833,7 +834,7 @@ ul {
 }   
 
 .myslides {display:none;}  
-
+  
 .float {
 	
 background-color: #FAFAFA; 	
@@ -844,7 +845,7 @@ idtxt {
 }
 a:link {
 	text-decoration:none;
-	color:#999999  
+	color:#12bbad;  
 }
     
     #followlink{
@@ -856,10 +857,11 @@ a:link {
   text-transform: uppercase;  
   
     
-    
+        
     }
-/* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
-/*     display: block; */
-/*     display: table-cell; */
-/*     vertical-align: middle; */
-/* }   */
+.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+    display: block;  
+    display: table-cell;  
+    vertical-align: middle;
+}  
+    

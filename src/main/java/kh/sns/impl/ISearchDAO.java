@@ -29,9 +29,9 @@ public class ISearchDAO implements SearchDAO {
 			}
 			
 		});
-	}
+	} 
 	
-	public int insertSearch(String keyword) throws Exception {
+	public int insertSearch(String id,String keyword) throws Exception {
 		String sql = "insert into search values(?,default)";
 		return template.update(sql, keyword);
 	}

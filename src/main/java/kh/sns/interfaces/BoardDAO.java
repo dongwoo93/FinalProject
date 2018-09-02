@@ -2,6 +2,7 @@ package kh.sns.interfaces;
 
 import java.util.List;
 
+import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_MediaDTO;
 
@@ -11,7 +12,9 @@ import kh.sns.dto.Profile_ImageDTO;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
-	public List<BoardDTO> getFeed(String id, int start, int end);	// 범위로 읽어들이기
+	public List<BoardDTO> getFeed(String id, int start, int end) throws Exception;	// 범위로 읽어들이기
+	
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception;
 	
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
@@ -19,6 +22,7 @@ public interface BoardDAO {
 	public int modifyBoard(BoardDTO dto) throws Exception;
 	/* 태그 넣는 기능 */
 	public int[] insertHashTags(BoardDTO article) throws Exception;
+	public int[] insertHashTags(BoardDTO article,int comment_seq) throws Exception;
 
 	public int insertNewBoardContent(BoardDTO article) throws Exception;	
 	public int insertNewMedia(Board_MediaDTO media) throws Exception;	
@@ -47,5 +51,12 @@ public interface BoardDAO {
 	
 	
 	public List<Object[]> alerting(String id) throws Exception;
+	
+	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception;
+	public List<int[]> getLikeSortByRange(int start, int end) throws Exception;
+	public List<String[]> getTagSortByRange(int start, int end) throws Exception;
+	
+	public List<BoardDTO> search(String keyword, int start, int end);
+	public int deleteTags(int comment_seq) throws Exception ;
 	
 }

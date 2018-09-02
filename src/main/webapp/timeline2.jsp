@@ -9,21 +9,99 @@
 <script>
 
 
-	
-	
-	
-	
-	$(document).ready(function(){
-		$('.chatbox').hide();
-		
-		$("#allwrapper").click(function(){
-			closeDm();
-		});
-	});
-  
-    AOS.init();
-    
-	function getCaretPosition(editableDiv) {
+
+function follow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "follow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	         $(e).next().show(); 
+	         
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	} 
+	 
+function unfollow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "deletefollow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	    	  $(e).prev().show(); 
+	        
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	}
+
+function likeit(e) {   
+	 var board_seq = $(e).attr("value");
+
+	    
+   $.ajax({  
+      url : "like.bo",
+      type : "get",
+      data : {
+         board_seq : board_seq,
+         id : currentId,
+         is_liked : "y"
+      },
+      success : function(resp) {  
+    	  ws.send("like:"+resp); 
+         $(e).next().show();
+         $(e).hide();
+      },
+      error : function() {
+         console.log("에러 발생!");
+         }
+      })
+}   
+
+function unlikeit(e) {    
+   var board_seq = $(e).attr("value");
+   $.ajax({
+      url : "like.bo",
+      type : "get",
+      data : {
+         board_seq : board_seq,
+         id : currentId,
+         is_liked : "n"
+      },
+      success : function(resp) {
+         $(e).prev().show();
+         $(e).hide();
+         
+      },
+      error : function() {
+         console.log("에러 발생!");
+         }
+      })
+}
+
+/////////// like & unlike + real time alert
+
+
+function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
 	        sel, range;
 	    if (window.getSelection) {
@@ -98,219 +176,20 @@
 	        textRange.select();
 	    }
 	}
-    
-    
-    function likeit(e,id) {
-       var board_seq = $(e).attr("value");
-     	var aid = id;        
-       $.ajax({  
-          url : "like.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_liked : "y"
-          },
-          success : function(resp) { 
-        	  ws.send("l:"+aid);
-             $(e).next().show();
-             $(e).hide();
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-
-    function unlikeit(e) {
-       var board_seq = $(e).attr("value");
-       $.ajax({
-          url : "like.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_liked : "n"
-          },
-          success : function(resp) {
-             $(e).prev().show();
-             $(e).hide();
-             
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-    function markit(e) {
-       var board_seq = $(e).attr("value");
-       $.ajax({
-          url : "bookmark.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_marked : "y"
-          },
-          success : function(resp) {
-        	  
-             $(e).next().show();
-             $(e).hide();
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-
-    function unmarkit(e) {
-       var board_seq = $(e).attr("value");
-       $.ajax({
-          url : "bookmark.bo",
-          type : "get",
-          data : {
-             board_seq : board_seq,
-             id : "${sessionScope.loginId}",
-             is_marked : "n"
-          },
-          success : function(resp) {
-             $(e).prev().show();
-             $(e).hide();
-             
-             
-             
-             
-          },
-          error : function() {
-             console.log("에러 발생!");
-             }
-          })
-    }
-    
-    function commentover(e) { 
-    	
-	var seq = $(e).attr("value"); 
-    var sessionid = $("#sessionid").val();
-	var boardid = $("#boardid").val(); 
-	var modstate = $("#modstate"+seq).val();    
 	
-		$("#ul"+seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
-		
-		if(sessionid == boardid) {       
-		$("#commentdel"+seq).html("삭제"); 
-		
-		if(modstate == "1") {
-			$("#commentmod"+seq).html("수정");
-		} 
-		else if(modstate =="2") {  
-			$("#commentmod"+seq).html("완료");
-		}
-		
-		}  
 	
-    }
-    
-    function commentleave(e) {
-    	var seq = $(e).attr("value"); 
-		 
-		$("#ul"+seq).attr("style",false);            
-		$("#commenttxt"+seq).attr("style","word-wrap: break-word; word-break:break-all"); 
-		$("#commentdel"+seq).html("");   
-		$("#commentmod"+seq).html("");
-  
-    }
-    
-    function delComment(e) {
-			var board_seq = $(e).attr("value").split(":")[0]; 
-			var comment_seq = $(e).attr("value").split(":")[1];
-        	$.ajax({
-                  type: "POST",  
-                  url: "commentdel.co",      
-                  data: {board_seq:board_seq,comment_seq:comment_seq},
-                  success : function(cnt) {
-                	console.log(cnt);    
-                   $("#ul"+comment_seq).fadeOut(400,function() { $(this).remove(); });   
-                   if(cnt>2){ 
-                       $("#myComment"+board_seq).html("&nbsp&nbsp모두 "+cnt+"개의 댓글보기")}
-                       else {
-                    	   $("#myComment"+board_seq).html("");  
-                       }
-                  }
-                    
-             }) //ajax 
-    }
-
-    function modComment(e) { 
-      	 var comment_seq;
-      	 if($(e).attr("value") != null){
-      		comment_seq = $(e).attr("value"); 
-      	 } else {
-      		 comment_seq = $(e).attr("id").replace("commenttxt", "");
-      	 }
-      	 
-      	 var modstate = $("#modstate"+comment_seq).val();   
+	   
+	function hide(e){ 
+		var seq = $(e).attr("value");
+		     
+		$("#contdiv"+seq).attr("style","word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;"); 
+		$("#contplus"+seq).attr("style","color:gray;");        
+		$(e).remove();   
+		     	    
 		
-		
-		if(modstate == "1") {	// 수정중
-			$("#commentmod"+comment_seq).html("완료");
-			 $("#commenttxt"+comment_seq).attr("contentEditable",true);	
-			 
-          	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
-          	 $("#commenttxt"+comment_seq).focus();  
-          	 
-          	 placeCaretAtEnd( document.getElementById("commenttxt"+comment_seq) );
-			 
-          	
-          	 $("#modstate"+comment_seq).val("2");    
+	}
+	
 
-		}
-		else if(modstate=="2") {	// 수정 완료하고 싶을 때
-			$("#commentmod"+comment_seq).html("수정");   
-			 var txt = $("#commenttxt"+comment_seq).text();
-  			 if(txt == ""){
-                 alert("댓글을 입력해주세요");
-              }
-              else {  
-            	$.ajax({    
-                      type: "POST",    
-                      url: "commentmod.co",    
-                      data: {board_seq : board_seq, comment_seq:comment_seq, comment_contents:txt},   
-                      success : function() {
-                    	$("#commenttxt"+comment_seq).attr("contentEditable",false);
-		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
-		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
-		                   $("#modstate"+comment_seq).val("1");   
-		                   $("#ul"+comment_seq).hide().fadeIn(500);  
-		                   
-                      }  
-                 }); //ajax 
-                 }
-			
-		}
-      
-    }
-    
-    
-    function goBoard(){
-    	var board_seq = $("#modalseq").val();
-    	
-    	$(location).attr('href','oneBoard.do?board_seq='+board_seq);
-    }
-    	
-    function commentdisplay(e) {   
-    	var board_seq = $(e).next().val(); 
-    	$(".co"+board_seq).attr("style",false);      
-    	$("#commenthide"+board_seq).html("접기");    
-     
-    }
-    
-    function commenthide(e) {  
-    	var board_seq = $(e).next().val(); 
-    	$(".co"+board_seq).attr("style","display:none;");    
-    	$("#commenthide"+board_seq).html("");
-    }
-    
     $(document).ready(function(){
     	
     	var globalThisCommentIsFocusedOnFirst = true;
@@ -380,10 +259,103 @@
     	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
     
     	$("div[id*='commenttxt']").keypress(function(e){
-			if(e.keyCode === 13) {
+			if(e.keyCode === 13) { 
+				 e.preventDefault();
 			modComment(this);
-		 }
+		 } 
 		})
+		
+		$("div[id*='comment'].insertfield").keypress(function(event){
+		    var keycode = (event.keyCode ? event.keyCode : event.which);
+		    var obj = this
+		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
+		    if(keycode == '13'){ 
+		    	
+		       var text = $(this).text();
+		       if(text == ""){
+		          alert("댓글을 입력해주세요");
+		       }
+	       		else { 
+	    	   
+	           $.ajax({ 
+	                  type: "POST",  
+	                  url: "comment.co",    
+	                  data: {board_seq : toBoardSeq, comment_contents : text},
+	                  success : function(seq) {
+	                	 
+	                	  $(obj).html("");
+	                  /*  $("#comment${tmp.board_seq}").val("");   */  
+	                  var regex = /(#[^#\s,;<>.]+)/gi;               
+	               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+	                var newtxt = "<span class=fugue>" + text.replace(
+	  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+											"</a><span class=fugue>") + "</span>";
+						newtxt += "<kz></kz>";	            	
+	                  
+	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+	                   $("#ul"+seq).hide().fadeIn(500);  
+	                   //&nbsp&nbsp모두 commenttmp.value.size()개의 댓글보기
+	                   /* var commentText = $("#myComment" + seq).text();
+	                   alert(commentText)
+	    */                $("#myComment" + seq).text();
+	                   
+	                   $("#commenttxt" + seq).keyup(function(e){
+	                	   // =================== 복붙 =================== 
+	                	   if(e.keyCode === 32){
+	                		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+	                           } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+	                           } else {
+	                               return;
+	                           }
+
+	                           var regex = /(#[^#\s,;<>. ]+)/gi;
+	                           if (regex) {
+	                               var newtxt = "<span class=fugue>" + $(this).text()
+	                                   .replace(regex, "</span><span class=text-danger>" + "$1" +
+	                                       "</span><span class=fugue>") + "</span>"
+
+	                               // console.log($('#editorDiv').text().length);   
+	                               // console.log(newtxt)   
+	                               newtxt += "<kz></kz>"
+	                               $(this).html(newtxt)
+	                               var el = this;
+	                               console.log("childNodes: " + el.childNodes.length);
+	                               var range = document.createRange();
+	                               var sel = window.getSelection();
+	                               range.setStart(el.lastChild, 0);
+	                               range.collapse(false);
+	                               sel.removeAllRanges();
+	                               sel.addRange(range);
+
+	                               $(this).focusout();
+	                               $(this).focus();
+	                               if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+	                               }
+
+	                           }
+	                	   } 
+	                	   
+	                	   
+	                	// =================== 복붙 =================== 
+	                   });
+	                   
+	                   $("#commenttxt" + seq).keypress(function(e){
+							if(e.keyCode === 13) {
+								 e.preventDefault();
+							modComment(this);
+						 }
+						});
+	                    
+					  },
+	                  error: function(){
+	                      console.log("에러 발생");
+	                  }
+	             }); //ajax 
+	           }    
+	        }  
+	    });
     	
     });
 </script>
@@ -403,50 +375,43 @@
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
 						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
-							<%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
-							<br> <a class="mt-1 idtxt" id="id"
-								href="board.bo?id=${tmp.id}&cat=1">${tmp.id}<br>Dangsan.South
-								Korea
-							</a>
+						  
+						<c:choose>
+						<c:when test="${profile_pic.containsKey(tmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/standard.jpg">
+                  </c:otherwise>
+					</c:choose>
+							
+							<br> 
+							<c:choose>
+								<c:when test="${tmp.thisArticleForAd eq 1}">
+									<a class="mt-1 idtxt" id="id"
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;font-weight:bold;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
+									</a>
+								</c:when>
+								<c:otherwise>
+									<a class="mt-1 idtxt" id="id"
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>Dangsan.South Korea
+									</a>
+								</c:otherwise>
+							</c:choose>
+							
 						</div>
 						<div class="mt-2" id="boardimg">
-							<%-- 						  	<input type=hidden id="maxheight${status.index}" value="0"> --%>
-
-
-							<%-- 						<c:forEach var="media" items="${result2[status.index]}" varStatus="status3"> --%>
-
-							<%-- 											<img class='boardimg' id="feedimg${status.index}a${status3.index}" width='100%' style="display:none;" --%>
-							<%-- 												src="AttachedMedia/${media.system_file_name}" alt=""> --%>
-
-							<script>      
-										
-// 										var height= $("#feedimg${status.index}a${status3.index}").height()
-										
-// 										var maxheight = $("#maxheight${status.index}").val();
-										
-										
-// 										if(parseInt(maxheight) < height){
-											
-// 										$("#maxheight${status.index}").val(height);
-  
-// 										var realmax= $("#maxheight${status.index}").val();   
-										 
-										
-// 										}     
-										
-// 										var realmax= $("#maxheight${status.index}").val(); 
-// 										$("#myCarousel${status.index}").attr("style"," height:"+realmax+"px;");  
-										
-										</script>
-							<%-- 									</c:forEach> --%>
-
+							
 
 
 							<div id="myCarousel${status.index}" class="carousel slide"
-								data-ride="carousel" data-interval="false">
-								<ul id="carousel-indicators" class="carousel-indicators">
+								data-ride="carousel" data-interval="false" style="z-index: 5;">
+								<ul id="carousel-indicators" class="carousel-indicators" >
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
 									<c:forEach begin="1" var="media"
@@ -454,8 +419,9 @@
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-								<div id="carousel-inner" class="carousel-inner">
+								</ul>  
+								<div id="carousel-inner" class="carousel-inner" 
+								style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
 									<div id="firstItem" class="carousel-item active">
 										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -481,18 +447,45 @@
 								</a>
 							</div>
 
-						</div>
+						</div>						
+
+						<c:if test="${ tmp.thisArticleForAd eq 1 }">
+							<div class=row style="z-index: 199; position: relative;">
+								<div class=col-12>
+									<div class="btn btn-secondary btn-lg btn-block">
+										<c:forEach var="ad" items="${ adList }">
+										  
+											<c:if test="${ Math.abs(ad.boardSeq) eq Math.abs(tmp.board_seq) }">
+											
+												<c:choose>
+													<c:when test="${ ad.moreInfoWebsite eq null }">
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
+													</c:when>
+													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
+														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
+													</c:when>
+													<c:otherwise>
+														<a href="${ ad.moreInfoWebsite }" class="text-light">더 알아보기</a>
+													</c:otherwise>
+												</c:choose>
+											</c:if> 
+										</c:forEach>
+									</div>
+								</div>
+							</div>
+						</c:if> 
 
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
-									<a class="navbar-brand"> <c:choose>
-											<c:when test="${like.containsKey(tmp.board_seq)}">
+									<a class="navbar-brand"> 
+									<c:choose>     
+											<c:when test="${like.containsKey( Math.abs(tmp.board_seq) )}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this, '${tmp.id}')"></i>  
-												<i value="${tmp.board_seq}"
+													onclick="likeit(this)"></i>  
+												<i value="${tmp.board_seq}"  
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
@@ -507,9 +500,10 @@
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
-										</c:choose> <i class="far fa-comment icon"></i>
-									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
-											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
+										</c:choose>  
+										 <i class="far fa-comment icon"></i>
+									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>  
+											<c:when test="${bookmark.containsKey( Math.abs(tmp.board_seq))}">
 
 												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" style="display: none;"
@@ -539,32 +533,49 @@
 								</div>
 							</nav>
 
-
-
 							<div id="contcenter" class="mt-2 mx-3 pb-2">
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;">${tmp.id}</a>
-
-									<div class='pl-3' id="contdiv${tmp.board_seq}"
-										style="word-wrap: break-word; word-break: break-all"></div>
-									<script>
-							           
-							  var txt = "${tmp.contents}"; 
+										href="board.bo?id=${tmp.id}&cat=1" style="font-weight:bold;font-size: 14px;color: #12bbad;">${tmp.id}</a>
+    
+									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
+										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
+										  </div>     
+									<a id="contplus${tmp.board_seq}" class='pointer' style="color:gray; display:none;">더보기</a>   
+									
+									<script> 
+							 
+							  var txt = "${tmp.contents}";  
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");        
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-							$("#contdiv${tmp.board_seq}").html(newtxt);    
-							  
+							$("#contdiv${tmp.board_seq}").html(newtxt);   
+							      
+						
 							function tag(e) {
 								var search = $(e).html().split("#")[1]; 
 								$(location).attr("href","search.bo?search="+search); 
 					
 							}
-
-		</script>
-								</div>
+							
+							<!-- 더보기-->   
+							  console.log(txt.length);     
+							if(txt.length > 48) {  
+								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
+							 }
+							$("#contplus${tmp.board_seq}").click(function() {     
+								$("#contdiv${tmp.board_seq}").attr("style","word-wrap: break-word; word-break: break-all;"); 
+								$("#contplus${tmp.board_seq}").attr("style","color:gray; display:none;");     
+								       
+								$("#contdiv${tmp.board_seq}").append("<a id='conthide${tmp.board_seq}' value = '${tmp.board_seq}' onclick='hide(this)' class='pointer pl-2' style='color:gray;'>접기</a>");     	    
+								
+							})
+						
+  
+		</script>   
+								</div>   
+								 
 								<!-- 글내용자리 -->
 
 								<p class="text-info pointer pt-4 mb-1"
@@ -584,13 +595,13 @@
                      $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
                      var num = 0;
                      </script>
-												</c:if>
+								 				</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
 
 													<ul id="ul${comment.comment_seq}" style="display: none"
-														value="${comment.comment_seq}"
-														onmouseover="commentover(this)"
+														value="${comment.comment_seq}"  
+														onmouseover="commentover(this)"   
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a
@@ -602,7 +613,7 @@
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
-															onclick="delComment(this)" class="pointer"></a></li>
+								 							onclick="delComment(this)" class="pointer"></a></li>
 														<li id='li4'><a id='commentmod${comment.comment_seq}'
 															value="${comment.comment_seq}" onclick="modComment(this)"
 															class="pointer"></a></li>
@@ -643,7 +654,7 @@
 							<!--               -->
 
 
-							<div class="crecodiv pl-2 py-2 navbar-nav">
+							<div class="crecodiv pl-2 py-2 navbar-nav"> 
 
 
 
@@ -652,8 +663,8 @@
 									id="comment${tmp.board_seq}"> --%>
 
 								<div contenteditable=true class="creco ml-2 insertfield"
-									id="comment${ tmp.board_seq }">
-									<span class=text-muted>댓글 달기...</span>
+									id="comment${ tmp.board_seq }">       
+									<span class='text-muted ml-1'>댓글 달기...</span>
 								</div>
 
 								<div class="btn-group bg-white">
@@ -665,88 +676,7 @@
 
 							</div>
 
-							<script>
-						
-					
-								$('#comment${tmp.board_seq}').keypress(function(event){
-	                                var keycode = (event.keyCode ? event.keyCode : event.which);
-	                                if(keycode == '13'){
-	                                   var text = $("#comment${tmp.board_seq}").text();
-	                                   if(text == ""){
-	                                      alert("댓글을 입력해주세요");
-	                                   }
-	                                   else {  
-	                                       $.ajax({ 
-	                                              type: "POST",  
-	                                              url: "comment.co",    
-	                                              data: {board_seq:${tmp.board_seq}, comment_contents : text},
-	                                              success : function(seq) {  
-	                                            	  
-	                                            	  $('#comment${tmp.board_seq}').html("");
-	                                              /*  $("#comment${tmp.board_seq}").val("");   */  
-	                                              var regex = /(#[^#\s,;<>.]+)/gi;            
-                                               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
-                                                var newtxt = "<span class=fugue>" + text.replace(
-	                              			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                       												"</a><span class=fugue>") + "</span>";
-                         						newtxt += "<kz></kz>";
-                                            	
-                                                
-	                                                $("#comment-contents${tmp.board_seq}").prepend("<ul class='navbar-nav commentline co${tmp.board_seq}' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
-	                                            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
-	                                               $("#ul"+seq).hide().fadeIn(500);  
-	                                            
-	                                                 ws.send("c:${tmp.id}");  
-	                                               $("#commenttxt" + seq).keyup(function(e){
-	                                            	   // =================== 복붙 =================== 
-	                                            	   if(e.keyCode === 32){
-	                                            		   if (parseInt($('#caretposition').val()) == 0) {                     	 
-	                                                       } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
-	                                                       } else {
-	                                                           return;
-	                                                       }
-
-	                                                       var regex = /(#[^#\s,;<>. ]+)/gi;
-	                                                       if (regex) {
-	                                                           var newtxt = "<span class=fugue>" + $(this).text()
-	                                                               .replace(regex, "</span><span class=text-danger>" + "$1" +
-	                                                                   "</span><span class=fugue>") + "</span>"
-
-	                                                           // console.log($('#editorDiv').text().length);   
-	                                                           // console.log(newtxt)   
-	                                                           newtxt += "<kz></kz>"
-	                                                           $(this).html(newtxt)
-	                                                           var el = this;
-	                                                           console.log("childNodes: " + el.childNodes.length);
-	                                                           var range = document.createRange();
-	                                                           var sel = window.getSelection();
-	                                                           range.setStart(el.lastChild, 0);
-	                                                           range.collapse(false);
-	                                                           sel.removeAllRanges();
-	                                                           sel.addRange(range);
-
-	                                                           $(this).focusout();
-	                                                           $(this).focus();
-	                                                           if (parseInt($('#caretposition').val()) == $(this).text().length) {
-			
-	                                                           }
-
-	                                                       }
-	                                            	   } 
-	                                            	   
-	                                            	   
-	                                            	// =================== 복붙 =================== 
-	                                               });
-	                                               
-	                                          
-	                            				  }
-		                                     }); //ajax 
-		                                   }    
-		                                }  
-		                            }); 
-							 
-
-						 		</script>
+<!-- 여기다 그 스크립트 -->
 						</div>
 						<!--cont  -->
 					</div>
@@ -770,8 +700,8 @@
 						style="width: 300px; margin-top: 55px; margin-left: 30px;">
 					  
 						
-			<hr class="_5mToa">
-				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+<!-- 			<hr class="_5mToa"> -->
+<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -781,12 +711,32 @@
 		
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
-					<li>	<img class="mr-3 pic"   
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					   <li>
+                 
+                  <c:choose>
+                  <c:when test="${profile_pic.containsKey(followtmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/> style="width:50px; height:50px;"">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"  
+                        src="AttachedMedia/standard.jpg" style="width:40px; height:40px;">
+                  </c:otherwise>
+               </c:choose></li> 
+					
+					
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
-					<li class="pt-2"><a id="followlink" style="font-family:NANUMBARUNPENR !important;font-size: 10px;">follow</a></li>           	  
+					<li onclick="follow('${sessionScope.loginId}', '${followtmp.id}', this)" id="follow${status.index}" class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5></li>
+					<li onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', this)" id="cancelFollow${status.index}" style="display:none " class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로잉</h5></li>        	  
+					
+					
 					</ul>   
 			</div>
 		  
@@ -794,13 +744,14 @@
 			   	</div>
 				</c:if><hr class="_5mToa">
 			</div>
-			
+			 
 			
 			  
 			<div class="container float" id=""    
 						style="width: 300px; margin-top: 20px; margin-left: 30px;">
 					
-			<hr class="_5mToa">
+<!-- 			<hr class="_5mToa"> -->
+<br>
 				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					실시간 #트랜드     
 				</p>
@@ -813,10 +764,10 @@
 					<div class="container" >     
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
-					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
+					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
 								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="">${status.count}</a></li>  
-					<li class="pt-2"><a id="keywordlink" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
 			</div>
 			<script>
@@ -841,7 +792,8 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<a href="footinfo.jsp"><p><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<a href="footinfo.jsp"><p style="color:#212529;font-weight:bold;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+						
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
@@ -1067,11 +1019,7 @@
 					}
 					
 
-					function closeDm() {
-					    document.getElementById("dm").style.width = "0";
-					    document.getElementById("allwrapper").style.marginLeft= "0";
-					    document.getElementById("footer").style.marginLeft = "0";
-					}
+				
 					
 					function openmessage(e){
 						var nickname = $(e).find("#usernickname").val();
@@ -1173,7 +1121,7 @@
 <!--          DM메세지창 -->
                  <div class="chatbox-holder">
   
-  <div class="chatbox group-chat">
+  <div class="chatbox group-chat" style="display:none;">
     <div class="chatbox-top">
       <div class="chatbox-avatar">
         <a href=""><img src="" /></a>
@@ -1260,14 +1208,16 @@ $(function(){
 	  });   
 });
 
-var globalStartNum = 16;
+var globalStartNum = ${NAV_COUNT_PER_PAGE + 1};
+
+
 
 $(window).scroll(function(){
 	// 486 ~ 851
 	if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
 		// 내용
 		/* http://wjheo.tistory.com/entry/Spring-%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%AC%B4%ED%95%9C%EC%8A%A4%ED%81%AC%EB%A1%A4 */
-		console.log('xxxxxx');
+		console.log('1111111');
 		$.ajax({
             url: "feedForJson.ajax", // 처리할 페이지(서블릿) 주소
             type: "get",
@@ -1407,7 +1357,7 @@ $(window).scroll(function(){
 	            		divStr += "</p>"
 	            		divStr += "<input type=hidden value='" + boardSeq + ">"
 	            		
-	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>"  		
+	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
 	            		
 						for(item in r.commentlist){
@@ -1440,7 +1390,7 @@ $(window).scroll(function(){
 									newComment += '<kz></kz>';
 									divStr += "<div id='commenttxt" + commentSeq + "' class='commenttxt txt" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + newComment + "</div>"
 									divStr += "</li>"
-									divStr += "<li id='li3'><a id='commentdel" + commentSeq + "' value='" + boardSeq + ":" + commentSeq + "' onclick='delComment(this)' class='pointer'></a></li>"
+									divStr += "<li id='li3'><a id='commentdel" + commentSeq + "' value='" + boardSeq + ":" + commentSeq + "' onclick='	(this)' class='pointer'></a></li>"
 									divStr += "<li id='li4'><a id='commentmod" + commentSeq + "' value='" + commentSeq + "' onclick='modComment(this)' class='pointer'></a></li>"
                                     
 									divStr += "</ul>"
@@ -1462,7 +1412,7 @@ $(window).scroll(function(){
 	            		divStr += "</div>"	// div contcenter의 끝
 	            		
 	            		divStr += "<div class='crecodiv pl-2 py-2 navbar-nav'>"
-		            		divStr += "<div contenteditable=true class='creco ml-2 insertfield' id='comment" + boardSeq + "'>"
+		            		divStr += "<div contenteditable=false class='creco ml-2 insertSpecialField' id='comment" + boardSeq + "'>"
 		            		divStr += "<span class=text-muted>댓글 달기...</span>"
 		            		divStr += "</div>"
 		            		
@@ -1471,9 +1421,6 @@ $(window).scroll(function(){
 		            		divStr += "</div>"
 		            	divStr += "</div>"	// crecodiv pl-2 py-2 navbar-nav div의 끝
 		            	
-		            	
-	            		
-
 	            		
 	            		divStr += "</div>" // div cont의 끝
 	            		divStr += "</div>"	// feed의 끝 (전체 끝)
@@ -1482,7 +1429,7 @@ $(window).scroll(function(){
 	            		copyStartOfNum++;
 	            		kn++;
 	            		$('#board').append(divStr);
-            		}          		
+            		}  
             		
             		globalStartNum = parseInt(r.nextStartNum);
             		return true;
@@ -1498,10 +1445,116 @@ $(window).scroll(function(){
             complete: function(){
             }
         });
-
 		
+    	var globalThisCommentIsFocusedOnFirstSpecial = true;
+    	
+        $("div[id*=comment].insertSpecialField").focus(function() {
+        	if(globalThisCommentIsFocusedOnFirstSpecial){
+        		$(this).html("");
+            	globalThisCommentIsFocusedOnFirstSpecial = false;
+        	}
+        	
+        });
+        
+        $("div[id*=comment].insertSpecialField").focusout(function() {
+        	if($(this).text() == ""){
+        		$(this).html("<span class=text-muted>댓글 달기...</span>");
+        		globalThisCommentIsFocusedOnFirstSpecial = true;
+        	}
+        })
+        
+
+
+		$("div[id*='comment'].insertSpecialField").keydown(function(event){
+		    var keycode = (event.keyCode ? event.keyCode : event.which);
+		    var obj = this
+		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
+		    if(keycode == '13'){
+		       var text = $(this).text();
+		       if(text == ""){
+		          alert("댓글을 입력해주세요");
+		       }
+		   		else { 
+			   
+		       $.ajax({ 
+		              type: "POST",  
+		              url: "comment.co",    
+		              data: {board_seq : toBoardSeq, comment_contents : text},
+		              success : function(seq) {       
+		            	  $(obj).html("");
+		              /*  $("#comment${tmp.board_seq}").val("");   */  
+		              var regex = /(#[^#\s,;<>.]+)/gi;            
+		           // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+		            var newtxt = "<span class=fugue>" + text.replace(
+					                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+											"</a><span class=fugue>") + "</span>";
+						newtxt += "<kz></kz>";	            	
+		            
+						console.log($("#comment-contents" + toBoardSeq))  
+		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+		            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+		               $("#ul"+seq).hide().fadeIn(500);  
+		               
+		               $("#commenttxt" + seq).keyup(function(e){
+		            	   // =================== 복붙 =================== 
+		            	   if(e.keyCode === 32){
+		            		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+		                       } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+		                       } else {
+		                           return;
+		                       }
+
+		                       var regex = /(#[^#\s,;<>.]+)/gi;
+		                       if (regex) {
+		                           var newtxt = "<span class=fugue>" + $(this).text()
+		                               .replace(regex, "</span><span class=text-danger>" + "$1" +
+		                                   "</span><span class=fugue>") + "</span>"
+
+		                           // console.log($('#editorDiv').text().length);   
+		                           // console.log(newtxt)   
+		                           newtxt += "<kz></kz>"
+		                           $(this).html(newtxt)
+		                           var el = this;
+		                           console.log("childNodes: " + el.childNodes.length);
+		                           var range = document.createRange();
+		                           var sel = window.getSelection();
+		                           range.setStart(el.lastChild, 0);
+		                           range.collapse(false);
+		                           sel.removeAllRanges();
+		                           sel.addRange(range);
+
+		                           $(this).focusout();
+		                           $(this).focus();
+		                           if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+		                           }
+
+		                       }
+		            	   } 
+		            	   
+		            	   
+		            	// =================== 복붙 =================== 
+		               });
+		               
+		               $("#commenttxt" + seq).keypress(function(e){
+							if(e.keyCode === 13) {
+								e.preventDefault();      
+							modComment(this);
+						 }
+						});
+		                return;
+					  },
+		              error: function(){
+		                  console.log("에러 발생");
+		              }
+		         }); //ajax 
+		       }    
+		    }  
+		});
+        $("div[id*='comment'].insertSpecialField").on("mousedown mouseup keydown keyup", update);
 	}
 });
+
 </script>
                       
                         

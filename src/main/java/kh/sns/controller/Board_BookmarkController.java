@@ -19,7 +19,9 @@ public class Board_BookmarkController {
 
 	@RequestMapping("/bookmark.bo")
 	public void doLike(HttpServletResponse response,HttpSession session, Board_BookmarkDTO dto) throws Exception{
-		response.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8"); 
+		
+		dto.setBoard_seq(Math.abs(dto.getBoard_seq())); 
 		
 		String id = (String) session.getAttribute("loginId");
 		if(id != null) {

@@ -2,10 +2,6 @@
 body{
   background: url(https://source.unsplash.com/a8YV2C3yBMk) no-repeat center center fixed; 
 
-
-
-
-
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -41,7 +37,7 @@ body{
 /*   object-fit : cover; */
 /* } */
 
-a{color:#58bff6;text-decoration: none;}
+a{color:#12bbad;text-decoration: none;}
 a:hover{color:#aaa; }
 .pull-right{float: right;}
 .pull-left{float: left;}
@@ -72,7 +68,7 @@ div#form{
    top:50%;
    margin-left:-200px;
    margin-top:-300px;
-   opacity : 0.9;
+/*    opacity : 0.9; */
 }
 div.form-item{position: relative; display: block; margin-bottom: 40px;}
  input{transition: all .2s ease;}

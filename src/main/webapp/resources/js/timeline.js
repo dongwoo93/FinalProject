@@ -1,44 +1,47 @@
-	function follow(id1, id2) {
-		var id = id1;
-		var targetId = id2;
-		$.ajax({
-    		url : "follow.do",
-    		type : "post",
-    		data : {
-    			id : id,
-    			targetId : targetId,
-    		},
-    		success : function(resp) {
-    			alert(resp);
-    			$(location).attr("href","feed.bo");
-    			
-    		},
-    		error : function() {
-    			console.log("에러 발생!");
-    			}
-    		})
-	}
-	
-	function unFollow(id1, id2) {
-		var id = id1;
-		var targetId = id2;
-		$.ajax({
-    		url : "deletefollow.do",
-    		type : "post",
-    		data : {
-    			id : id,
-    			targetId : targetId,
-    		},
-    		success : function(resp) {
-    			alert(resp);
-    			$(location).attr("href","feed.bo");
-    			
-    		},
-    		error : function() {
-    			console.log("에러 발생!");
-    			}
-    		})
-	}
+function follow(id1, id2, e) { 
+		   var id = id1;  
+		   var targetId = id2;  
+		   $.ajax({  
+		      url : "follow.do",  
+		      type : "post",  
+		      data : {  
+		         id : id,  
+		         targetId : targetId,  
+		      },  
+		      success : function(resp) { 
+		    	  $(e).hide();  
+		         $(e).next().show();  
+		          
+		           
+		      },  
+		      error : function() {  
+		         console.log("에러 발생!");  
+		         }  
+		      })  
+		}  
+		  
+	function unfollow(id1, id2, e) { 
+		   var id = id1;  
+		   var targetId = id2;  
+		   $.ajax({  
+		      url : "deletefollow.do",  
+		      type : "post",  
+		      data : {  
+		         id : id,  
+		         targetId : targetId,  
+		      },  
+		      success : function(resp) { 
+		    	  $(e).hide();  
+		    	  $(e).prev().show();  
+		         
+		           
+		      },  
+		      error : function() {  
+			         console.log("에러 발생!");  
+			         }  
+			      })  
+			}  
+
 	
 	function copyToClipboard(value) {
 		$("#changeBoardModal").modal('hide');

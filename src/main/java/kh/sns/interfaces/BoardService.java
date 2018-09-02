@@ -16,7 +16,9 @@ import kh.sns.dto.Member_TagsDTO;
 public interface BoardService {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception;
-	public List<BoardDTO> getFeed(String id, int start, int end);
+	public List<BoardDTO> getFeed(String id, int start, int end) throws Exception;
+	
+	public List<BoardDTO> getFeedForAd(int... picks) throws Exception;
 	
 	public List<BoardDTO> getBoard(String id) throws Exception;
 	public String boardCount(String id) throws Exception;
@@ -50,4 +52,13 @@ public interface BoardService {
 	
 	//alert
 	public List<Object[]> alerting(String id) throws Exception;
+	
+	// tourForJSON
+	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception;
+	public List<int[]> getLikeSortByRange(int start, int end) throws Exception;
+	public List<String[]> getTagSortByRange(int start, int end) throws Exception;
+	public List<BoardDTO> search(String keyword, int start, int end) throws Exception;
+	
+	public int deleteTags(int comment_seq) throws Exception ;
+
 }

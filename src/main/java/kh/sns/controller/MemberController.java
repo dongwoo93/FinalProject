@@ -80,7 +80,7 @@ public class MemberController {
 		WebSocket.onlineUser.remove(id);
 		session.invalidate(); 
 		LogUtil log = new LogUtil(); 
-		log.insertLog(id,"logout");   
+		log.insertLog(id,"logout","");   
 		mav.setViewName("redirect:main.jsp");
 		return mav;
 	}
@@ -133,7 +133,7 @@ public class MemberController {
 	public void isEmailExist(String email, HttpServletResponse response) throws Exception{
 
 		int result =this.memberService.isEmailExist(email);
-
+		System.out.println(result);
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();
