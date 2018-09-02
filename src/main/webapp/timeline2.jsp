@@ -1472,8 +1472,8 @@ $(window).scroll(function(){
 	            		divStr += "</div>"	// navbar-nav div의 끝
 	            		divStr += "<p class='text-info pointer pt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
 	            		
-	            		divStr += "</p>"
-	            		divStr += "<input type=hidden value='" + boardSeq + ">"
+	            		divStr += "</p>"  
+	            		divStr += "<input type=hidden value='" + boardSeq + "'>"
 	            		
 	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
