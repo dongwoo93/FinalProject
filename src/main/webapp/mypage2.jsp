@@ -739,9 +739,9 @@
 													      </div>
 													      <div class="modal-footer">
 													      	<form action='changeBizAccount.profile' method=post>
-													        	<button type="submit" class="btn btn-primary">계정을 잠시 비활성화</button>
+													        	<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정을 잠시 비활성화</button>
 													        </form>
-													        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+													        <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" data-dismiss="modal">Close</button>
 													      </div>
 													    </div>
 													  </div>

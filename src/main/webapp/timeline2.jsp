@@ -8,6 +8,8 @@
 <script src="resources/js/timeline.js"></script>
 <script>
 
+
+
 function follow(id1, id2, e) {
 	   var id = id1; 
 	   var targetId = id2; 
