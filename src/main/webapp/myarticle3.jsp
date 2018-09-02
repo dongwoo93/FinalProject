@@ -910,19 +910,20 @@ $(document).ready(function(){
 				
 				  /* ========================= 댓글달기 ========================= */
 				
-                $('#comment').keypress(function(event){
+                $('#comment').keypress(function(event){    
                    var seq = $("#seq").val();
                    /* var comment_contents = $("#comment").val(); */
                    var comment_contents = $("#comment").text();
                      
                     var keycode = (event.keyCode ? event.keyCode : event.which);
-                    if(keycode == '13'){ 
-                       
+                    if(keycode == '13'){  
+                    	event.preventDefault();        
                        /* var text = $("#comment${tmp.board_seq}").val(); */
                        if(comment_contents == ""){
                           alert("댓글을 입력해주세요");
                        }  
-                       else {     
+                       else {
+                    	   
                           $.ajax({
                                type: "POST",  
                                url: "comment.co",    
