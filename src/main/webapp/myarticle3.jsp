@@ -1001,7 +1001,7 @@ $(document).ready(function(){
                     })
                        }
                     }
-                     
+                    
                 });
 				  
             	function reportToAdmin(seq, code) {
@@ -1058,7 +1058,6 @@ $(document).ready(function(){
                 	'               <input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	
                 	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
@@ -1092,14 +1091,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div>'+
@@ -1128,14 +1127,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div style="text-align: left;">'+
@@ -1166,14 +1165,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div style="text-align: left;">'+
@@ -1205,14 +1204,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalseq>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody"> '+
                 	'                  <a class="dropdown-item mo" onclick="modal7(this)">폭력 또는 폭력 위협</a>'+
@@ -1241,14 +1240,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div style="text-align: left;">'+
@@ -1279,14 +1278,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header mbody">'+
-                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body">'+
                 	'                <div style="text-align: left;">'+
@@ -1316,14 +1315,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div style="text-align: left;">'+
@@ -1354,14 +1353,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div style="text-align: left;">'+
@@ -1385,14 +1384,14 @@ $(document).ready(function(){
                 	'  			<input type=hidden id=modalid>'+
                 	'  			    <div class="modal-content cons">'+
                 	'  			    <div class="modal-header">'+
-                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
-                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	
                 	'				<div id="closebtn">'+
                 	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
                 	'					 <span aria-hidden="true">&times;</span>'+
                 	'				</button>'+
                 	'				</div>'+
-                	
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
                 	'        		</div>'+
                 	'               <div class="modal-body mbody">'+
                 	'                <div style="text-align: left;">'+
