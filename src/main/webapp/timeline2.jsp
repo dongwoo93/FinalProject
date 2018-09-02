@@ -1503,8 +1503,15 @@ $(window).scroll(function(){
 									var commentId = r.commentlist[item][elem].id;
 									var commentContent = r.commentlist[item][elem].comment_contents;
 									console.log("comc: " + commentContent)
-																		// display: none
-									divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									      
+									
+									if(elem < 2) {   
+										divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									}else{
+										// display: none
+										divStr += "<ul id='ul" + commentSeq + "' style='display: none;' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									}
+									
 									divStr += "<li id='li1'><a href='board.bo?id=" + commentId + "&cat=1'>" + commentId + "</a></li>"
 									divStr += "<li id='li2'>"
 									var newComment = '<span class=fugue>' 
