@@ -915,12 +915,15 @@ function getCaretPosition(editableDiv) {
 			                	for(var i=0;i<2;i++){
 			                		if(i==0){
 			                			for(var k=0;k<response[0].length;k++){
+				                			console.log(response[2][k]);
 			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[2][k]+"' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
 			                			}
 			       
 			                		}
 			                		else{
 			                			for(var k=0;k<response[1].length;k++){
+				                			console.log(response[3][k]);
+				                			
 			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[3][k]+"' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
 			                			}
 			                			
