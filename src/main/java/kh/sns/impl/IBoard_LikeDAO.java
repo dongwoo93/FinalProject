@@ -35,7 +35,7 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 	
 	@Override
 	public int insertLike(Board_LikeDTO dto) throws Exception {
-		String sql = "insert into board_like values(?,?,?,default)";
+		String sql = "insert into board_like values(?,?,?,default)";  
 		return template.update(sql,dto.getBoard_seq(), dto.getId(),dto.getIs_liked());
 	}
 

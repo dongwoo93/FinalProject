@@ -8,10 +8,53 @@
 <script src="resources/js/timeline.js"></script>
 <script>
 
-	$(function () {
+function follow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "follow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	         $(e).next().show(); 
+	         
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	} 
+	 
+function unfollow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "deletefollow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	    	  $(e).prev().show(); 
+	        
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	}
 
 function likeit(e) {   
 	 var board_seq = $(e).attr("value");
+
 	    
    $.ajax({  
       url : "like.bo",
@@ -54,6 +97,7 @@ function unlikeit(e) {
 }
 
 /////////// like & unlike + real time alert
+
 
 function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
@@ -130,6 +174,19 @@ function getCaretPosition(editableDiv) {
 	        textRange.select();
 	    }
 	}
+	
+	
+	   
+	function hide(e){ 
+		var seq = $(e).attr("value");
+		     
+		$("#contdiv"+seq).attr("style","word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;"); 
+		$("#contplus"+seq).attr("style","color:gray;");        
+		$(e).remove();   
+		     	    
+		
+	}
+	
 
     $(document).ready(function(){
     	
@@ -200,16 +257,18 @@ function getCaretPosition(editableDiv) {
     	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
     
     	$("div[id*='commenttxt']").keypress(function(e){
-			if(e.keyCode === 13) {
+			if(e.keyCode === 13) { 
+				 e.preventDefault();
 			modComment(this);
-		 }
+		 } 
 		})
 		
 		$("div[id*='comment'].insertfield").keypress(function(event){
 		    var keycode = (event.keyCode ? event.keyCode : event.which);
 		    var obj = this
 		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
-		    if(keycode == '13'){
+		    if(keycode == '13'){ 
+		    	
 		       var text = $(this).text();
 		       if(text == ""){
 		          alert("댓글을 입력해주세요");
@@ -224,16 +283,20 @@ function getCaretPosition(editableDiv) {
 	                	 
 	                	  $(obj).html("");
 	                  /*  $("#comment${tmp.board_seq}").val("");   */  
-	                  var regex = /(#[^#\s,;<>.]+)/gi;            
+	                  var regex = /(#[^#\s,;<>.]+)/gi;               
 	               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
 	                var newtxt = "<span class=fugue>" + text.replace(
 	  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
 											"</a><span class=fugue>") + "</span>";
 						newtxt += "<kz></kz>";	            	
-	                
-	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+	                  
+	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 	                   $("#ul"+seq).hide().fadeIn(500);  
+	                   //&nbsp&nbsp모두 commenttmp.value.size()개의 댓글보기
+	                   /* var commentText = $("#myComment" + seq).text();
+	                   alert(commentText)
+	    */                $("#myComment" + seq).text();
 	                   
 	                   $("#commenttxt" + seq).keyup(function(e){
 	                	   // =================== 복붙 =================== 
@@ -278,6 +341,7 @@ function getCaretPosition(editableDiv) {
 	                   
 	                   $("#commenttxt" + seq).keypress(function(e){
 							if(e.keyCode === 13) {
+								 e.preventDefault();
 							modComment(this);
 						 }
 						});
@@ -309,8 +373,20 @@ function getCaretPosition(editableDiv) {
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
 						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+						  
+						<c:choose>
+						<c:when test="${profile_pic.containsKey(tmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/standard.jpg">
+                  </c:otherwise>
+					</c:choose>
 							
 							<br> 
 							<c:choose>
@@ -376,7 +452,9 @@ function getCaretPosition(editableDiv) {
 								<div class=col-12>
 									<div class="btn btn-secondary btn-lg btn-block">
 										<c:forEach var="ad" items="${ adList }">
-											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
+										  
+											<c:if test="${ Math.abs(ad.boardSeq) eq Math.abs(tmp.board_seq) }">
+											
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
 														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
@@ -400,8 +478,8 @@ function getCaretPosition(editableDiv) {
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
 									<a class="navbar-brand"> 
-									<c:choose>    
-											<c:when test="${like.containsKey(tmp.board_seq)}">
+									<c:choose>     
+											<c:when test="${like.containsKey( Math.abs(tmp.board_seq) )}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
 													onclick="likeit(this)"></i>  
@@ -422,8 +500,8 @@ function getCaretPosition(editableDiv) {
 											</c:otherwise>
 										</c:choose>  
 										 <i class="far fa-comment icon"></i>
-									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
-											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
+									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>  
+											<c:when test="${bookmark.containsKey( Math.abs(tmp.board_seq))}">
 
 												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" style="display: none;"
@@ -458,25 +536,44 @@ function getCaretPosition(editableDiv) {
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
 										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;color: #4f70ce;">${tmp.id}</a>
-
-									<div class='pl-3' id="contdiv${tmp.board_seq}"
-										style="word-wrap: break-word; word-break: break-all"></div>
-									<script>
-							           
-							  var txt = "${tmp.contents}"; 
+    
+									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
+										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
+										  </div>     
+									<a id="contplus${tmp.board_seq}" class='pointer' style="color:gray; display:none;">더보기</a>   
+									
+									<script> 
+							 
+							  var txt = "${tmp.contents}";  
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");        
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-							$("#contdiv${tmp.board_seq}").html(newtxt);    
-							  
+							$("#contdiv${tmp.board_seq}").html(newtxt);   
+							      
+						
 							function tag(e) {
 								var search = $(e).html().split("#")[1]; 
 								$(location).attr("href","search.bo?search="+search); 
 					
 							}
-
-		</script>
-								</div>
+							
+							<!-- 더보기-->   
+							  console.log(txt.length);     
+							if(txt.length > 48) {  
+								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
+							 }
+							$("#contplus${tmp.board_seq}").click(function() {     
+								$("#contdiv${tmp.board_seq}").attr("style","word-wrap: break-word; word-break: break-all;"); 
+								$("#contplus${tmp.board_seq}").attr("style","color:gray; display:none;");     
+								       
+								$("#contdiv${tmp.board_seq}").append("<a id='conthide${tmp.board_seq}' value = '${tmp.board_seq}' onclick='hide(this)' class='pointer pl-2' style='color:gray;'>접기</a>");     	    
+								
+							})
+						
+  
+		</script>   
+								</div>   
+								 
 								<!-- 글내용자리 -->
 
 								<p class="text-info pointer pt-4 mb-1"
@@ -502,7 +599,7 @@ function getCaretPosition(editableDiv) {
 
 													<ul id="ul${comment.comment_seq}" style="display: none"
 														value="${comment.comment_seq}"  
-														onmouseover="commentover(this,'${comment.id}')"  
+														onmouseover="commentover(this)"   
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a
@@ -555,7 +652,7 @@ function getCaretPosition(editableDiv) {
 							<!--               -->
 
 
-							<div class="crecodiv pl-2 py-2 navbar-nav">
+							<div class="crecodiv pl-2 py-2 navbar-nav"> 
 
 
 
@@ -564,8 +661,8 @@ function getCaretPosition(editableDiv) {
 									id="comment${tmp.board_seq}"> --%>
 
 								<div contenteditable=true class="creco ml-2 insertfield"
-									id="comment${ tmp.board_seq }">
-									<span class=text-muted>댓글 달기...</span>
+									id="comment${ tmp.board_seq }">       
+									<span class='text-muted ml-1'>댓글 달기...</span>
 								</div>
 
 								<div class="btn-group bg-white">
@@ -602,8 +699,7 @@ function getCaretPosition(editableDiv) {
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
-<br>
-				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -613,8 +709,23 @@ function getCaretPosition(editableDiv) {
 		
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
-					<li>	<img class="mr-3 pic"   
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					   <li>
+                 
+                  <c:choose>
+                  <c:when test="${profile_pic.containsKey(followtmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/> style="width:50px; height:50px;"">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"  
+                        src="AttachedMedia/standard.jpg" style="width:40px; height:40px;">
+                  </c:otherwise>
+               </c:choose></li> 
+					
+					
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
@@ -631,7 +742,7 @@ function getCaretPosition(editableDiv) {
 			   	</div>
 				</c:if><hr class="_5mToa">
 			</div>
-			
+			 
 			
 			  
 			<div class="container float" id=""    
@@ -699,7 +810,7 @@ function getCaretPosition(editableDiv) {
 </div>
 <!--  allwrapper-->
 
-<button type="button" style="font-family: NANUMBARUNPENR !important;font-size: 14px;width:80px;" class="btn btn-light text-dark" data-dismiss="modal">Close</button>
+
 <div class="modal fade" id="changeBoardModal" tabindex="-1"
 	role="dialog"></div>
 
@@ -1277,7 +1388,7 @@ $(window).scroll(function(){
 									newComment += '<kz></kz>';
 									divStr += "<div id='commenttxt" + commentSeq + "' class='commenttxt txt" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + newComment + "</div>"
 									divStr += "</li>"
-									divStr += "<li id='li3'><a id='commentdel" + commentSeq + "' value='" + boardSeq + ":" + commentSeq + "' onclick='delComment(this)' class='pointer'></a></li>"
+									divStr += "<li id='li3'><a id='commentdel" + commentSeq + "' value='" + boardSeq + ":" + commentSeq + "' onclick='	(this)' class='pointer'></a></li>"
 									divStr += "<li id='li4'><a id='commentmod" + commentSeq + "' value='" + commentSeq + "' onclick='modComment(this)' class='pointer'></a></li>"
                                     
 									divStr += "</ul>"
@@ -1377,8 +1488,8 @@ $(window).scroll(function(){
 											"</a><span class=fugue>") + "</span>";
 						newtxt += "<kz></kz>";	            	
 		            
-						console.log($("#comment-contents" + toBoardSeq))
-		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+						console.log($("#comment-contents" + toBoardSeq))  
+		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 		            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 		               $("#ul"+seq).hide().fadeIn(500);  
 		               
@@ -1391,7 +1502,7 @@ $(window).scroll(function(){
 		                           return;
 		                       }
 
-		                       var regex = /(#[^#\s,;<>. ]+)/gi;
+		                       var regex = /(#[^#\s,;<>.]+)/gi;
 		                       if (regex) {
 		                           var newtxt = "<span class=fugue>" + $(this).text()
 		                               .replace(regex, "</span><span class=text-danger>" + "$1" +
@@ -1425,6 +1536,7 @@ $(window).scroll(function(){
 		               
 		               $("#commenttxt" + seq).keypress(function(e){
 							if(e.keyCode === 13) {
+								e.preventDefault();      
 							modComment(this);
 						 }
 						});

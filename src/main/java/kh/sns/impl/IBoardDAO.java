@@ -193,10 +193,8 @@ public class IBoardDAO implements BoardDAO  {
 	}
 
 	@Override
-	public List<BoardDTO> getFeed(String id, int start, int end) {
-		String sql = "select * from (select board.*, rownum rn from board "
-				+ "where (id in ((select target_id from member_follow where id=?)) or (id=?)) order by board_seq desc) "
-				+ "where (rn between ? and ?)";
+	public List<BoardDTO> getFeed(String id, int start, int end) { 
+		String sql = "select * from (select board.*, row_number() over(order by board_seq desc) as rn  from board where (id in ((select target_id from member_follow where id=?)) or (id=?))) where (rn between ? and ?)";    
 
 		return template.query(sql, new Object[] {id, id, start, end}, (rs, rowNum) -> {
 			BoardDTO dto = new  BoardDTO();
@@ -250,7 +248,7 @@ public class IBoardDAO implements BoardDAO  {
 		System.out.println(article.getBoard_seq() + " ::::::::::::");  
 		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
 
-		String sql = "insert into board_tags values(?, ?)";
+		String sql = "insert into board_tags values(?, ?,default)";
 		return template.batchUpdate(sql, new BatchPreparedStatementSetter() {			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -267,6 +265,43 @@ public class IBoardDAO implements BoardDAO  {
 
 		});
 	}
+	
+	
+	
+	@Override
+	public int deleteTags(int comment_seq) throws Exception {   
+		String sql = "delete from board_tags where comment_seq=?";
+		return template.update(sql,comment_seq);
+				
+		
+	}
+	
+
+	@Override
+	public int[] insertHashTags(BoardDTO article,int comment_seq) throws Exception {
+		System.out.println(article.getBoard_seq() + " ::::::::::::");  
+		List<String> hashTagList = new HashTagUtil().extractHashTag(article.getContents());
+
+		String sql = "insert into board_tags values(?, ?,?)";
+		return template.batchUpdate(sql, new BatchPreparedStatementSetter() {			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+
+				ps.setInt(1, article.getBoard_seq());
+				ps.setString(2, hashTagList.get(i));
+				ps.setInt(3, comment_seq); 
+
+			}
+
+			@Override
+			public int getBatchSize() {
+				return hashTagList.size();
+			}
+
+		});
+	}
+
+
 
 
 	@Override
@@ -318,8 +353,8 @@ public class IBoardDAO implements BoardDAO  {
 	@Override
 	public List<BoardDTO> getBoardByRange(int start, int end) throws Exception {
 		
-		String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
-
+		//String sql = "select * from (select board.*, rownum rn from board order by board_seq desc) where (rn between ? and ?)";
+		String sql = "select bx.* from (select ast.*, rownum rn from ((select board.* from board order by board_seq desc) ast)) bx where rn between ? and ?";
 			return template.query(sql, new Object[] {start, end} , new RowMapper<BoardDTO>() {
 
 				@Override
