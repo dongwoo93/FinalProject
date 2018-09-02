@@ -1027,10 +1027,10 @@ $(document).ready(function(){
 							<br>
 							<br>
 							<div class="btn-group bg-white">
-								<button class="btn dropdown-toggle bg-white"
+								<button class="btn dropdown-toggle bg-white" 
 									data-toggle="dropdown" id="etc"></button>
 								<div class="dropdown-menu">							
-									<a class="dropdown-item" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
+									<a class="dropdown-item" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i onclick="modal2(this)" class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
 								</div>
 							</div>
 

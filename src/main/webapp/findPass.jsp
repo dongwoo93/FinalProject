@@ -62,6 +62,7 @@ $("#id").focus();
 
 <c:when test="${result=='1'}">
 <script>
+
 alert("임시 비밀번호 전송 완료");
 
 $(location).attr('href',"main.do");
