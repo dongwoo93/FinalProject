@@ -212,5 +212,12 @@ public class IBoardService implements BoardService {
 	public List<BoardDTO> search(String keyword, int start, int end) throws Exception {
 		return dao.search(keyword, start, end);
 	}
+	
+	
+	
+	@Override
+	public int deleteTags(int comment_seq) throws Exception {
+		return dao.deleteTags(comment_seq);
+	}
 
 }
