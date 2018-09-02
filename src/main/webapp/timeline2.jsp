@@ -557,9 +557,9 @@ function getCaretPosition(editableDiv) {
 					
 							}
 							
-							<!-- 더보기-->
-							
-							if(txt.length > 23) {
+							<!-- 더보기-->   
+							  console.log(txt.length);     
+							if(txt.length > 48) {  
 								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
 							 }
 							$("#contplus${tmp.board_seq}").click(function() {     
