@@ -491,9 +491,10 @@ function deleteEvent() {
 					</div>
 				</div>
 				<div class="modal-footer">
-				<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
-					data-dismiss="modal">Cancel</button>
+				
 					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton">Save</button>
+					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
+					data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -526,9 +527,10 @@ function deleteEvent() {
 					</div>
 				</div>
 				<div class="modal-footer">
+					
+					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton">Save</button>
 					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
 					data-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton">Save</button>
 				</div>
 			</div>
 		</div>
