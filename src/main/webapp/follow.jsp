@@ -77,9 +77,9 @@ function follow(id1, id2, e) {
 									<thead>
 										<tr>
 											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="followerlist.do?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">팔로워</a></th>
+												href="followerlist.do?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#12bbad;font-wight:bold;font-size:14px;">팔로워</a></th>
 											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="followlist.do?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">팔로우</a></th>
+												href="followlist.do?id=${pageid}&cat=1" style="font-family: NANUMBARUNPENR !important;color:#12bbad;font-wight:bold;font-size:14px;">팔로우</a></th>
 										</tr>
 									</thead>
 								</table>

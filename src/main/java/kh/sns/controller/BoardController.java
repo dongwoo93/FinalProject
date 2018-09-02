@@ -27,9 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -167,7 +165,7 @@ public class BoardController {
 			
 			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");       
  
-  
+				
 			for(List<Board_MediaDTO> mlist : media) {  
 				double max = 0;
 				for(Board_MediaDTO dto : mlist) {
