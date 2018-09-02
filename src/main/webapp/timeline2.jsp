@@ -392,12 +392,12 @@ function getCaretPosition(editableDiv) {
 							<c:choose>
 								<c:when test="${tmp.thisArticleForAd eq 1}">
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;font-weight:bold;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
 									</a>
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>Dangsan.South Korea
 									</a>
 								</c:otherwise>
 							</c:choose>
@@ -535,7 +535,7 @@ function getCaretPosition(editableDiv) {
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;color: #4f70ce;">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-weight:bold;font-size: 14px;color: #12bbad;">${tmp.id}</a>
     
 									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
 										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
@@ -763,9 +763,9 @@ function getCaretPosition(editableDiv) {
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
 					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="">${status.count}</a></li>  
-					<li class="pt-2"><a id="keywordlink" style="color:#4f70ce;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
 			</div>
 			<script>
@@ -790,7 +790,7 @@ function getCaretPosition(editableDiv) {
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<a href="footinfo.jsp"><p style="color:#212529;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<a href="footinfo.jsp"><p style="color:#212529;font-weight:bold;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
 						
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
