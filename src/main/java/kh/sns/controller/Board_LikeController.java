@@ -25,6 +25,7 @@ public class Board_LikeController {
 	public void boardLike(Board_LikeDTO dto, HttpServletResponse res,  HttpSession session) {
 		System.out.println(dto.getBoard_seq() + dto.getIs_liked());   
 		String id = (String) session.getAttribute("loginId");
+		dto.setBoard_seq(Math.abs(dto.getBoard_seq()));  
 		dto.setId(id);
 		
 		

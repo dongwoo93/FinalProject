@@ -22,6 +22,7 @@ public interface BoardDAO {
 	public int modifyBoard(BoardDTO dto) throws Exception;
 	/* 태그 넣는 기능 */
 	public int[] insertHashTags(BoardDTO article) throws Exception;
+	public int[] insertHashTags(BoardDTO article,int comment_seq) throws Exception;
 
 	public int insertNewBoardContent(BoardDTO article) throws Exception;	
 	public int insertNewMedia(Board_MediaDTO media) throws Exception;	
@@ -56,6 +57,6 @@ public interface BoardDAO {
 	public List<String[]> getTagSortByRange(int start, int end) throws Exception;
 	
 	public List<BoardDTO> search(String keyword, int start, int end);
-	
+	public int deleteTags(int comment_seq) throws Exception ;
 	
 }
