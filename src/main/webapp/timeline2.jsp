@@ -8,6 +8,8 @@
 <script src="resources/js/timeline.js"></script>
 <script>
 
+
+
 function follow(id1, id2, e) {
 	   var id = id1; 
 	   var targetId = id2; 
@@ -486,14 +488,12 @@ function getCaretPosition(editableDiv) {
 							<c:choose>
 								<c:when test="${tmp.thisArticleForAd eq 1}">
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color: #4f70ce;">${ membersNick[status.index] }<br>
-									<span class="text-warning">Sponsored</span>
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;font-weight:bold;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
 									</a>
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color: #4f70ce;">${tmp.id}<br>Dangsan.South
-										Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>Dangsan.South Korea
 									</a>
 								</c:otherwise>
 							</c:choose>
@@ -634,9 +634,8 @@ function getCaretPosition(editableDiv) {
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}&cat=1"
-										style="font-size: 14px; color: #4f70ce;">${tmp.id}</a>
-
+										href="board.bo?id=${tmp.id}&cat=1" style="font-weight:bold;font-size: 14px;color: #12bbad;">${tmp.id}</a>
+    
 									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
 										style="word-wrap: break-word; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 350px; height: 20px;">
 									</div>
@@ -787,105 +786,83 @@ function getCaretPosition(editableDiv) {
 			</div>
 			<!-- board -->
 
-			<div style="position: fixed; border-radius: 1px;">
-
-				<div class="container float" id=""
-					style="width: 300px; margin-top: 55px; margin-left: 30px;">
-
-
-					<!-- 			<hr class="_5mToa"> -->
-					<br>
-					<p class=""
-						style="font-weight: bold; font-family: NANUMBARUNPENR !important; font-size: 15px;">
-						추천 Follow를 추가하세요</p>
-					<hr class="_5mToa">
-					<c:if test="${result3.size() > 0}">
-						<div
-							style="overflow-y: auto; height: 230px; font-family: NANUMBARUNPENR !important; font-size: 14px;"">
-							<c:forEach var="followtmp" items="${result3}" varStatus="status">
-
-								<div class="container py-1">
-									<ul class="navbar-nav"
-										style="font-family: NANUMBARUNPENR !important; font-size: 14px;">
-										<li><c:choose>
-												<c:when test="${profile_pic.containsKey(followtmp.id)}">
-
-
-													<img class="ml-3 mr-2 pic"
-														src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/> style="width:50px; height:50px;"">
-
-												</c:when>
-												<c:otherwise>
-													<img class="ml-3 mr-2 pic" src="AttachedMedia/standard.jpg"
-														style="width: 40px; height: 40px;">
-												</c:otherwise>
-											</c:choose></li>
-
-
-										<li class="pt-2"
-											style="width: 45%; font-family: NANUMBARUNPENR !important; font-size: 14px;">
-											<a class="idtxt"
-											style="font-size: 14px; font-family: NANUMBARUNPENR !important; font-size: 14px;"
-											href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a>
-										</li>
-										<li
-											onclick="follow('${sessionScope.loginId}', '${followtmp.id}', this)"
-											id="follow${status.index}" class="pt-2">
-											<h5 class="text-center mt-1"
-												style="cursor: pointer; color: #4f70ce; font-weight: bold; font-family: NANUMBARUNPENR !important;">
-												팔로우 <i class="fas fa-plus"></i>
-											</h5>
-										</li>
-										<li
-											onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', this)"
-											id="cancelFollow${status.index}" style="display: none"
-											class="pt-2">
-											<h5 class="text-center mt-1"
-												style="cursor: pointer; background-color: rgba(255, 255, 255, 0.15); color: #4f70ce; font-weight: bold; font-family: NANUMBARUNPENR !important;">팔로잉</h5>
-										</li>
-
-
-									</ul>
-								</div>
-
-							</c:forEach>
-						</div>
-					</c:if>
-					<hr class="_5mToa">
-				</div>
-
-
-
-				<div class="container float" id=""
-					style="width: 300px; margin-top: 20px; margin-left: 30px;">
-
-					<!-- 			<hr class="_5mToa"> -->
-					<br>
-					<p class=""
-						style="font-weight: bold; font-family: NANUMBARUNPENR !important; font-size: 15px;">
-						실시간 #트랜드</p>
-					<hr class="_5mToa">
-					<c:if test="${trend.size() > 0}">
-
-						<div style="overflow-y: auto; height: 230px;">
-							<c:forEach var="trend" items="${trend}" varStatus="status">
-
-								<div class="container">
-									<ul class="navbar-nav pointer text-left" value="${trend}"
-										onclick="trendsearch(this)"
-										style="font-family: NANUMBARUNPENR !important; font-size: 14px;">
-
-										<li class="pt-2"
-											style="width: 40%; font-family: NANUMBARUNPENR !important; font-size: 14px;">
-											<a class="trendrank"
-											style="font-size: 14px; font-family: NANUMBARUNPENR !important; font-size: 14px; color: #212529;"
-											href="">${status.count}</a>
-										</li>
-										<li class="pt-2"><a id="keywordlink"
-											style="color: #4f70ce; font-family: NANUMBARUNPENR !important; font-size: 14px;">#${trend}</a></li>
-									</ul>
-								</div>
-								<script>
+			<div style="position: fixed; border-radius: 1px;">  
+			 
+					<div class="container float" id=""
+						style="width: 300px; margin-top: 55px; margin-left: 30px;">
+					  
+						
+<!-- 			<hr class="_5mToa"> -->
+<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+					추천 Follow를 추가하세요
+				</p>
+				<hr class="_5mToa">
+				<c:if test="${result3.size() > 0}">  
+				<div style="overflow-y:auto; height:230px; font-family:NANUMBARUNPENR !important;font-size: 14px;"">    		
+		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
+		
+					<div class="container py-1">  
+					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
+					   <li>
+                 
+                  <c:choose>
+                  <c:when test="${profile_pic.containsKey(followtmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/> style="width:50px; height:50px;"">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"  
+                        src="AttachedMedia/standard.jpg" style="width:40px; height:40px;">
+                  </c:otherwise>
+               </c:choose></li> 
+					
+					
+					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
+								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
+					<li onclick="follow('${sessionScope.loginId}', '${followtmp.id}', this)" id="follow${status.index}" class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로우 <i class="fas fa-plus"></i></h5></li>
+					<li onclick="unfollow('${sessionScope.loginId}', '${followtmp.id}', this)" id="cancelFollow${status.index}" style="display:none " class="pt-2">
+						<h5 class="text-center mt-1" style="cursor:pointer;background-color: rgba(255, 255, 255, 0.15);color:#4f70ce;font-weight:bold;font-family: NANUMBARUNPENR !important;">팔로잉</h5></li>        	  
+					
+					
+					</ul>   
+			</div>
+		  
+				</c:forEach>
+			   	</div>
+				</c:if><hr class="_5mToa">
+			</div>
+			 
+			
+			  
+			<div class="container float" id=""    
+						style="width: 300px; margin-top: 20px; margin-left: 30px;">
+					
+<!-- 			<hr class="_5mToa"> -->
+<br>
+				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+					실시간 #트랜드     
+				</p>
+				<hr class="_5mToa">
+				<c:if test="${trend.size() > 0}">  
+		  
+		  	<div style="overflow-y:auto; height:230px;">    		
+		<c:forEach var="trend" items="${trend}" varStatus="status" >
+		
+					<div class="container" >     
+					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
+					
+					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								href="">${status.count}</a></li>  
+					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					</ul>   
+			</div>
+			<script>
 			function trendsearch(e){   
 				var keyword = $(e).attr("value");  
 				$(location).attr("href","search.bo?search="+keyword);   
@@ -897,26 +874,14 @@ function getCaretPosition(editableDiv) {
 						</div>
 
 
-					</c:if>
-					<hr class="_5mToa">
-				</div>
-
-
-
-				<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
-				<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-10">
-								<a href="footinfo.jsp"><p style="color: #212529;">
-										<i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침
-										.약관.플랫폼
-									</p></a>
-
-								<p>
-									<i class="far fa-copyright"></i>2018SocialWired
-								</p>
-							</div>
+<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
+			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
+				<div class="container">
+					<div class="row">
+						<div class="col-md-10">
+							<a href="footinfo.jsp"><p style="color:#212529;font-weight:bold;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+						
+							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
 				</div>

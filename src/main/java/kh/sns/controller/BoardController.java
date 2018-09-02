@@ -184,7 +184,7 @@ public class BoardController {
 			
 			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");       
  
-  
+				
 			for(List<Board_MediaDTO> mlist : media) {  
 				double max = 0;
 				for(Board_MediaDTO dto : mlist) {
