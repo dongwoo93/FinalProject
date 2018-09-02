@@ -77,7 +77,7 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		
 		return list.get(0);
 	}
-
+	
 	@Override
 	public List<int[]> selectCommentCount() throws Exception {
 			String sql = "select board_seq, count(*) from board_comment GROUP by board_seq";
@@ -142,5 +142,8 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		
 		}).get(0);
 		}  
+	
+	
+	
 }  
 

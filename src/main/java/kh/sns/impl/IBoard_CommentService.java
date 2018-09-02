@@ -60,4 +60,5 @@ public class IBoard_CommentService implements Board_CommentService {
 	public int getBoard_seq(int comment_seq) throws Exception {
 		return board_commentdao.getBoard_seq(comment_seq);
 	}
+	
 }

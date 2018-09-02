@@ -1471,9 +1471,13 @@ $(window).scroll(function(){
 	            		
 	            		divStr += "</div>"	// navbar-nav div의 끝
 	            		divStr += "<p class='text-info pointer pt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
+	            		   
+	            		if(r.commentcnt[boardSeq] > 2){      
+	            		divStr += "모두 " + r.commentcnt[boardSeq]  + " 개의 댓글보기"
+	            		}
 	            		
-	            		divStr += "</p>"  
-	            		divStr += "<input type=hidden value='" + boardSeq + "'>"
+	            		divStr += "</p>"   
+	            		divStr += "<input type=hidden value='" + boardSeq + "'>"   
 	            		
 	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
@@ -1481,17 +1485,17 @@ $(window).scroll(function(){
 						for(item in r.commentlist){
 							if(item == boardSeq) {	
 								
-								//  보완 test='${commenttmp.value.size() > 2 }'
-								if(r.commentlist[item].length > 2){
-									// pure script
-									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
-										var num = 0;
-									/* $(document).ready(function(){
-										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
-										var num = 0;
-									}) */
+// 								//  보완 test='${commenttmp.value.size() > 2 }'
+// 								if(r.commentlist[item].length > 2){
+// 									// pure script
+// 									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+// 										var num = 0;
+// 									/* $(document).ready(function(){
+// 										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+// 										var num = 0;
+// 									}) */
 									
-								}
+// 								}
 								
 								for(elem in r.commentlist[item]){
 									console.log(r.commentlist[item][elem])
@@ -1665,7 +1669,7 @@ $(window).scroll(function(){
 		              error: function(){
 		                  console.log("에러 발생");
 		              }
-		         }); //ajax 
+		         }); //ajax   
 		       }    
 		    }  
 		});

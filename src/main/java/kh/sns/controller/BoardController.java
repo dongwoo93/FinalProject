@@ -341,8 +341,16 @@ public class BoardController {
 		
 		boolean isAvailableMoreData = true;
 		int nextStartNum = startInt + NAV_COUNT_PER_PAGE;
-
+		
+		
+		List<int[]> cnt = new ArrayList<>();
+		Map<Integer,Integer> commentcnt = new HashMap<>();
 		try {
+			cnt = board_commentService.selectCommentCount();
+			for(int[] tmp : cnt) {
+				commentcnt.put(tmp[0],tmp[1]);
+			}
+
 			listAll = boardService.getFeed(id);
 			for(int i = 0; i < listAll.size(); i++) {
 				if(listAll.get(i).getBoard_seq() < 0) {
@@ -445,6 +453,7 @@ public class BoardController {
 		 */
 		
 		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("commentcnt", commentcnt);	
 		outputJson.put("list", list);	
 		outputJson.put("maxmap", maxMap);  
 		outputJson.put("media", media);	
@@ -463,9 +472,8 @@ public class BoardController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
-		
+		     
 	}
-	
 	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
