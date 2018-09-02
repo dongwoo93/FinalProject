@@ -12,6 +12,12 @@ public class Board_MediaDTO {
 	private String filterName;
 	private String soundOriginalFileName, soundSystemFileName;
 	
+	
+	public String toString() { 
+		return media_seq + " : " + board_seq + " :"  + media_type + " :"   +original_file_name + " : "  + system_file_name;
+	}
+	
+	
 	public Board_MediaDTO() {
 		
 		
