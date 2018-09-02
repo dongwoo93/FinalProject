@@ -30,9 +30,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="resources/css/instagram.css">
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
+<script>var currentId = "${sessionScope.loginId}";</script>
 <script src="resources/js/top.js"></script>
 <script>
-
 function myarticle(e) {
 	var id = $(e).attr("value");
 	$(location).attr("href", "board.bo?id="+id+"&cat=1");

@@ -448,9 +448,9 @@ function deleteEvent() {
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
 												href="mymap.jsp" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">지도</a></th>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="calendar2.jsp" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">일정</a></th>
+												href="calendar.bo" style="font-family: NANUMBARUNPENR !important;font-size:14px;">일정</a></th>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a 
-												href="" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">메모</a></th>
+												href="goNote.memo" style="font-family: NANUMBARUNPENR !important;font-size:14px;">메모</a></th>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a 
 												href="" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">기록</a></th>	
 										</tr>

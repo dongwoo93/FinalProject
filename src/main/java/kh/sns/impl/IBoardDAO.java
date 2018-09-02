@@ -276,6 +276,15 @@ public class IBoardDAO implements BoardDAO  {
 		
 	}
 	
+	@Override
+	public int deleteBoardTags(int board_seq) throws Exception {   
+		String sql = "delete from board_tags where board_seq=? and comment_seq=0";
+		return template.update(sql,board_seq);
+				
+		
+	}
+	
+	
 
 	@Override
 	public int[] insertHashTags(BoardDTO article,int comment_seq) throws Exception {
