@@ -49,6 +49,7 @@ $(document).ready(function() {
 
    $('#boardmodal').on('hidden.bs.modal', function () {
       $(".first").remove();
+      $("#reporta").remove();
       $("#firstli").attr('class', 'active');
       $("#firstItem").attr('class', 'carousel-item active');
       if($("#carousel-indicators li:nth-child(2)").length) {

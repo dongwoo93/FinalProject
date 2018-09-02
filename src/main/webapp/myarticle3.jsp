@@ -3,6 +3,10 @@
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/myarticle.css">
+<script> var currentId = "${sessionScope.loginId}";
+var moid = null;
+
+</script>
 <style>
 .editableDivCommentSection {
 	margin-left: 10px;
@@ -537,7 +541,7 @@ $(document).ready(function(){
 						<div class="row">
 							<div class="col-md-12">
 								<table class="table">
-									<thead>
+									<thead>    
 										<tr>
 											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
 
@@ -579,13 +583,13 @@ $(document).ready(function(){
 
 
 					<script>
-               
-       
+					
                        $("#${tmp.board_seq}").click(function() { 
                     	    
                     	  var objDiv = document.getElementById("articlecomment");
                           objDiv.scrollTop = 0;            
                           var seq = "${tmp.board_seq}";
+
                           if(${status.count != 1}) {
                           $("#prev").val(${result[status.index-1].board_seq});  }
                           if(${status.count != result.size()}) {
@@ -618,7 +622,7 @@ $(document).ready(function(){
                               url: "boardView.bo",
                               data: {seq:seq},
                               success: function(data)         
-                              {      
+                              {moid = data[0].id;      
 									(data[5]);  
                             	  $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
                             	  $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
@@ -644,7 +648,8 @@ $(document).ready(function(){
                                   $("#modalcontents").html(newtxt);
                              //   $("#modalcontents").html(data[0].contents);
                                   $("#seq").val(data[0].board_seq);
-                                  $("#modalid2").text(data[0].id);                            
+                                  $("#modalid2").text(data[0].id);
+                                  
                                  
                                 	  
 	             				  $("#modalid2").click(function() {  
@@ -740,10 +745,12 @@ $(document).ready(function(){
                                 	  $("#mark").attr("style", false);
                                   } 
                                       
-                                 }    
+                                  var myvar = '<a id="reporta" value="'+seq+':'+moid+'" class="dropdown-item" href="#" onclick="modal2(this)">부적절한컨텐츠신고</a>';
+                                  $("#drop").append(myvar);
+                                     $("#boardmodal").modal();
+                              }    
                             }); 
-                           
-                             $("#boardmodal").modal();                      
+                                                
                        });
 
                      
@@ -996,8 +1003,415 @@ $(document).ready(function(){
                     }
                     
                 });
+				  
+            	function reportToAdmin(seq, code) {
+            		var b_seq = seq;
+            		var report_code = code;
+            		var comment = $("#reportcomment").val();
+            	    	$.ajax({
+            	    		url : "send.admin",
+            	    		type : "post",
+            	    		data : {
+            	    			boardSeq : b_seq,
+            	    			reportCode : report_code,
+            	    			reportersComment : comment
+            	    		},
+            	    		success : function(resp) {
+            	    			alert(resp);
+            	    			$("#changeBoardModal").modal("hide");
+            	    		},
+            	    		error : function() {
+            	    			console.log("에러 발생!");
+            	    			}
+            	    		})
+            	}
+            	
+            	function blockMember(id1, id2) {
+            		var id = id1;
+            		var targetId = id2;
+            		$.ajax({
+                		url : "block.mem",
+                		type : "post",
+                		data : {
+                			id : id,
+                			target_id : targetId
+                		},
+                		success : function(resp) {
+                			alert(resp);
+                			$("#changeBoardModal").modal("hide");
+                			
+                		},
+                		error : function() {
+                			console.log("에러 발생!");
+                		}
+            		})
+                			
+            	}
+
+            	var board_seq2;
+                var board_id2;
                 
-          
+                function modal2(e) {
+                	board_seq2 = $(e).attr("value").split(":")[0];
+            		board_id2 = $(e).attr("value").split(":")[1];
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'               <input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div><h6 id="report-head" style="color: #999;">이 게시물을 신고하는 이유를 선택하세요. 신고자 정보는 <span style="color: #000; font-weight: 600;">'+board_id2+'</span>님에게 공개되지 않습니다.</h6></div>'+
+                	'                  <a class="dropdown-item mo item" onclick="modal3(this)">그냥 마음에 들지 않습니다</a>'+
+                	'                  <a class="dropdown-item mo item"  onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;1&#34;)">스팸입니다</a>'+
+                	'                  <a class="dropdown-item mo item" onclick="modal4(this)">신체 노출, 나체 게시물 및 음란물</a>'+
+                	'                  <a class="dropdown-item mo item" onclick="modal5(this)">편파적 발언 및 상징</a>'+
+                	'                  <a class="dropdown-item mo item" onclick="modal6(this)">기타</a>'+
+                	'                  '+
+                	'               </div>'+
+                	'               <div class="modal-footer">'+
+                	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
+                	'                     data-dismiss="modal">Close</button>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'        </div>';
+                	$("#changeBoardModal").html(myvar);
+                	$("#changeBoardModal").modal();
+                		
+
+                }
+                function modal3(e) {
+
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div>'+
+                	'                <p style="font-weight: bold;">이 프로필이 마음에 들지 않으시나요?</p>'+
+                	'                <p class="p_text"><span style="color: #000; font-weight: 600;">'+board_id2+'</span>님의 팔로우를 취소하면 상대방의 사진, 동영상 또는 스토리가 회원님의 피드에 더 이상 표시되지 않습니다.</p>'+
+                	'                </div>'+
+                	'                <button onclick="unFollow(&#34;'+currentId+'&#34;,&#34;'+board_id2+'&#34;)" type="button" class="btn btn-primary" style="width: 100%">팔로우 취소</button>'+
+                	'                <br>'+
+                	'                <br>'+
+                	'               <div class="dropdown-divider" ></div>   '+
+                	'                  <p class="p_text"><span style="color: #000; font-weight: 600;">'+board_id2+'</span>님이 회원님의 사진, 동영상 또는 스토리를 볼 수 없게 하거나 Instagram에서 회원님을 검색할 수 없도록 하려면 차단하세요.</p>'+
+                	'                  <button type="button" class="btn btn-primary" style="width: 100%" onclick="blockMember(&#34;'+currentId+'&#34;,&#34;'+board_id2+'&#34;)">차단</button>'+
+                	'                  '+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal4(e) {
+
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">나체 이미지 또는 음란물로 신고할까요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">삭제 대상:</p>'+
+                	'                <ul class="p_text" style="list-style-type: disc; margin: 0 0 8px -5px;">'+
+                	'                <li style="margin-bottom: 8px;">성관계가 포함된 사진 또는 동영상</li>'+
+                	'                <li style="margin-bottom: 8px;">성관계, 성기 또는 완전히 노출된 둔부의 확대 게시물</li>'+
+                	'                <li style="margin-bottom: 8px;">아동의 나체 또는 부분 나체가 포함된 게시물</li>'+
+                	'                </ul>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;2&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal5(e) {
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">편파적 발언 또는 상징으로 신고할까요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">삭제 대상:</p>'+
+                	'                <ul class="p_text" style="list-style-type: disc; margin: 0 0 8px -5px;">'+
+                	'                <li style="margin-bottom: 8px;">나치 상징(하켄크로이츠)이나 백인 우월주의를 나타내는 손 모양 등 편파적 발언 또는 상징에 관한 사진</li>'+
+                	'                <li style="margin-bottom: 8px;">폭력을 조장하거나 사람의 정체성을 바탕으로 공격하는 내용의 게시물</li>'+
+                	'                <li style="margin-bottom: 8px;">신체적 상해, 절도 또는 기물 파손에 대한 협박</li>'+
+                	'                </ul>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;3&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal6(e) {
+
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalseq>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal2(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody"> '+
+                	'                  <a class="dropdown-item mo" onclick="modal7(this)">폭력 또는 폭력 위협</a>'+
+                	'                  <div class="dropdown-divider" ></div>'+
+                	'                  <a class="dropdown-item mo" onclick="modal8(this)">마약 판매 및 홍보</a>'+
+                	'                  <div class="dropdown-divider" ></div>'+
+                	'                  <a class="dropdown-item mo" onclick="modal9(this)">괴롭힘 및 따돌림</a>'+
+                	'                  <div class="dropdown-divider" ></div> '+
+                	'                  <a class="dropdown-item mo" onclick="modal10(this)">지적 재산권 침해</a>'+
+                	'                  <div class="dropdown-divider" ></div> '+
+                	'                  <a class="dropdown-item mo" onclick="modal11(this)">스스로 신체적 상해를 입히는 행위</a> '+
+                	'                  '+
+                	'               </div>'+
+                	'               <div class="modal-footer">'+
+                	'                  <button type="button" class="btn btn-outline-primary footertbtn"'+
+                	'                     data-dismiss="modal">Close</button>'+
+                	'               </div>'+
+                	'            </div> '+
+                	'   </div>';
+                	
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal7(e) {
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">폭력 또는 폭력 위협으로 신고하시겠어요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">삭제 대상:</p>'+
+                	'                <ul class="p_text" style="list-style-type: disc; margin: 0 0 8px -5px;">'+
+                	'                <li style="margin-bottom: 8px;">극단적이고 사실적인 폭력 장면의 사진 또는 동영상</li>'+
+                	'                <li style="margin-bottom: 8px;">폭력을 조장하거나 종교, 인종/문화적 또는 성적 배경을 바탕으로 상대방을 공격하는 게시물</li>'+
+                	'                <li style="margin-bottom: 8px;">신체적 상해, 절도, 기물 파손 또는 금전적 피해에 대한 협박</li>'+
+                	'                </ul>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;4&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal8(e) {
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header mbody">'+
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">마약 판매 또는 홍보로 신고할까요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">삭제 대상:</p>'+
+                	'                <ul class="p_text" style="list-style-type: disc; margin: 0 0 8px -5px;">'+
+                	'                <li style="margin-bottom: 8px;">중독성이 강한 약물 또는 마약 남용을 조장하는 게시물</li>'+
+                	'                <li style="margin-bottom: 8px;">마약을 판매하거나 배포하려는 게시물</li>'+
+                	'                </ul>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;5&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal9(e) {
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">괴롭힘 또는 따돌림으로 신고하시겠어요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">삭제 대상:</p>'+
+                	'                <ul class="p_text" style="list-style-type: disc; margin: 0 0 8px -5px;">'+
+                	'                <li style="margin-bottom: 8px;">폭력 행사 위협이 담긴 게시물</li>'+
+                	'                <li style="margin-bottom: 8px;">타인을 모욕하거나 수치스럽게 할 의도가 담긴 콘텐츠</li>'+
+                	'                <li style="margin-bottom: 8px;">협박 또는 괴롭힘을 목적으로 개인 정보 공유</li>'+
+                	'                </ul>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;6&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal10(e) {
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">지적 재산권 침해로 신고할까요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">저작권 및 상표권을 침해하는 게시물은 삭제됩니다. 만약 누군가 자신의 허가 없이 사진을 도용하거나 사칭하는 경우에도 해당 콘텐츠는 삭제되며, 도용 및 사칭한 계정은 비활성화될 수 있습니다. 지적 재산권 침해 신고에 대한 자세한 정보는 고객 센터를 방문하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;7&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
+                
+                function modal11(e) {
+                	var myvar = '<div class="modal-dialog modal-dialog-centered" role="document">'+
+                	'  			<input type=hidden id=modalid>'+
+                	'  			    <div class="modal-content cons">'+
+                	'  			    <div class="modal-header">'+
+                	'  			    <button onclick="modal6(this)" type="button" class="btn btn-outline-primary headbtn">&#60;</button>'+
+                	'          			<h5 class="modal-title titletext">신고</h4>'+
+                	'				<div id="closebtn">'+
+                	'				<button type="button" class="close" aria-label="Close" data-dismiss="modal">'+
+                	'					 <span aria-hidden="true">&times;</span>'+
+                	'				</button>'+
+                	'				</div>'+
+                	
+                	'        		</div>'+
+                	'               <div class="modal-body mbody">'+
+                	'                <div style="text-align: left;">'+
+                	'                <p style="color: #262626; font-weight: 600; margin-bottom: 8px;">스스로 신체적 상해를 입히는 행위로 신고하시겠어요?</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">자살, 자해, 섭식 장애를 포함하여 스스로 신체적 상해를 입히는 행위를 유도하거나 조장하는 게시물은 삭제됩니다. 또한 스스로 신체적 상해를 입히는 당사자의 신분을 노출하여 공격하거나 조롱하는 게시물도 삭제될 수 있습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">다른 사람의 게시물을 신고해도 신고자에 대한 정보는 공개되지 않습니다.</p>'+
+                	'                <p class="p_text" style="margin-bottom: 8px;">누군가 위급한 위험 상황에 처해 있다면 신속하게 현지 응급 서비스 기관에 연락하세요.</p>'+
+                	'                <textarea id="reportcomment" class="form-control" aria-label="With textarea"></textarea>'+
+                	'                <br>'+
+                	'                <button type="button" class="btn btn-primary" style="width: 100%" onclick="reportToAdmin(&#34;'+board_seq2+'&#34;,&#34;8&#34;)">제출</button>'+
+                	'                </div>'+
+                	'               </div>'+
+                	'            </div>'+
+                	'         '+
+                	'   </div>';
+                		
+
+                	$("#changeBoardModal").html(myvar);
+                }
 
                 </script>
                
@@ -1017,11 +1431,8 @@ $(document).ready(function(){
 									<a class="dropdown-item" id="modifysubmitbtn" href="#">수정완료</a>
 									<div class="dropdown-divider"></div>
 									<a class="dropdown-item" name=delete id="delete" href="#">삭제</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
 								</div>
 							</div>
-
 						
 
 						</c:when>
@@ -1031,8 +1442,8 @@ $(document).ready(function(){
 							<div class="btn-group bg-white">
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown" id="etc"></button>
-								<div class="dropdown-menu">								
-									<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+								<div id="drop" class="dropdown-menu">								
+									<!-- <a class="dropdown-item" href="#" onclick="modal2(this)">부적절한콘텐츠신고</a> -->
 								</div>
 							</div>
 
@@ -1045,8 +1456,8 @@ $(document).ready(function(){
 							<div class="btn-group bg-white">
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown" id="etc"></button>
-								<div class="dropdown-menu">								
-									<a class="dropdown-item" href="#">부적절한콘텐츠신고</a>
+								<div id="drop" class="dropdown-menu">								
+									<!-- <a class="dropdown-item" href="#" onclick="modal2(this)">부적절한콘텐츠신고</a> -->
 								</div>
 							</div>
 											
@@ -1238,7 +1649,8 @@ $(document).ready(function(){
 
 	</div>
 </div>
-
+<div class="modal fade" id="changeBoardModal" tabindex="-1"
+	role="dialog"></div>
 
 
 <%@ include file="include/bottom.jsp"%>
