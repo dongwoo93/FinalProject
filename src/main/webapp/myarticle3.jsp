@@ -564,7 +564,7 @@ $(document).ready(function(){
 					value="${tmp.board_seq}" onmouseover="articleover(this)"
 					onmouseleave="articleleave(this)">
 					<img src="AttachedMedia/${result2[status.index].system_file_name}"
-						class="divimg pointer">
+						class="divimg pointer ${result2[status.index].filterName}">
 
 					<div class="divinfo divimg" id="divinfo${tmp.board_seq}"
 						style="display: none;">
@@ -658,10 +658,10 @@ $(document).ready(function(){
                                   $("#markcancel").val(data[0].board_seq);
                           
                                 
-                                  $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                                  $("#firstItem").append("<img class='first "+data[1][0].filterName+"' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
                                   for(var i = 1; i < data[1].length; i++) {
                                      $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
-                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
+                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element "+data[1][i].filterName+"' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
                                        
                                   }
                                       
