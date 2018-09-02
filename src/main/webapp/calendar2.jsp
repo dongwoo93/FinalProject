@@ -361,6 +361,13 @@ function deleteEvent() {
 
 </script>
 <style>
+@CHARSET "UTF-8";
+
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
+
+
 #calendar {
 	max-width: 900px;
 	margin: 0 auto;
@@ -422,6 +429,9 @@ function deleteEvent() {
     right: 25%;
     left: 50%;
     margin-left: -150px;
+    
+    
+    
 }
 
 </style>
@@ -436,13 +446,13 @@ function deleteEvent() {
 									<thead>
 										<tr>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="mymap.jsp" style="font-family: NANUMBARUNPENR !important;font-size:14px;">지도</a></th>
+												href="mymap.jsp" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">지도</a></th>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="calendar2.jsp" style="font-family: NANUMBARUNPENR !important;font-size:14px;">일정</a></th>
+												href="calendar.bo" style="font-family: NANUMBARUNPENR !important;font-size:14px;">일정</a></th>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a 
-												href="" style="font-family: NANUMBARUNPENR !important;font-size:14px;">메모</a></th>
+												href="goNote.memo" style="font-family: NANUMBARUNPENR !important;font-size:14px;">메모</a></th>
 											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a 
-												href="" style="font-family: NANUMBARUNPENR !important;font-size:14px;">기록</a></th>	
+												href="" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">기록</a></th>	
 										</tr>
 									</thead>
 								</table>
@@ -481,8 +491,10 @@ function deleteEvent() {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-					<button type="submit" class="btn btn-primary" id="submitButton">Save</button>
+				
+					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton">Save</button>
+					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
+					data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -493,17 +505,17 @@ function deleteEvent() {
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h3 style="font-weight: bold;">일정 수정</h3>
+					<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">일정 수정</h3>
 				</div>
 
 				<div id="modalBody" class="modal-body">
-					<label for="eventName">일정</label>
+					<label for="eventName" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">일정</label>
 					<div class="form-group">
 						<input class="form-control" type="text" placeholder="내용을 입력하세요"
 							id="eventName2">
 					</div>
 
-					<label for="eventDueDate">날짜</label>
+					<label for="eventDueDate" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">날짜</label>
 					<div class="form-group">
 						<div class="input-group date" data-provide="datepicker">
 							<input type="text" id="eventDueDate2" name="datetimes"
@@ -515,8 +527,10 @@ function deleteEvent() {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-					<button type="submit" class="btn btn-primary" id="submitButton2">Save</button>
+					
+					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton">Save</button>
+					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
+					data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -538,7 +552,7 @@ function deleteEvent() {
 					<i onclick="showmodimodal(this)" class="fas fa-pencil-alt calicon" title="수정"></i>
 						<i onclick="deleteEvent()" class="far fa-trash-alt calicon" title="삭제"></i>
 						
-						<button type="button" id="closeCal" class="close"
+						<button type="button" id="closeCal" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
 							data-dismiss="modal">&times;</button>
 					</div>
 				</div>
@@ -570,7 +584,7 @@ function deleteEvent() {
 				<div id="calHeader2" class="modal-header">
 					<h4 id="calTitle2" class="modal-title"></h4>
 					<div>
-						<button type="button" id="closeCal2" class="close"
+						<button type="button" id="closeCal2" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
 							data-dismiss="modal">&times;</button>
 					</div>
 				</div>

@@ -29,14 +29,14 @@ public class Board_CommentController {
       
       int commentseq = 0;
       
-      try { 
+      try {    
          commentseq = this.boardcommentservice.getCommentSeq();
         // count = this.boardcommentservice.commentCount(dto.getBoard_seq());
          dto.setComment_seq(commentseq);
          int result =this.boardcommentservice.insertComment(dto);
          
          BoardDTO board_dto = new BoardDTO(dto.getBoard_seq(),dto.getComment_contents(),"","","","");
-         int[] hashTagResult = boarddao.insertHashTags(board_dto);   
+         int[] hashTagResult = boarddao.insertHashTags(board_dto,commentseq);   
          ////////요기서 태그인설트들어가용
          
          
@@ -65,9 +65,13 @@ public class Board_CommentController {
       System.out.println(comment_seq);  
       int result = 0; 
       int count = 0;
+      int delrs = 0;
       try {
          result = this.boardcommentservice.delComment(comment_seq);
-         count = this.boardcommentservice.commentCount(board_seq);  
+         count = this.boardcommentservice.commentCount(board_seq); 
+         delrs = this.boarddao.deleteTags(comment_seq);     
+         
+         
          System.out.println(result);   
          if(result > 0 ) {
             System.out.println("del success");   
@@ -91,12 +95,16 @@ public class Board_CommentController {
    public void modComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response)  {
       System.out.println(dto.getComment_seq() + " : " + dto.getComment_contents());  
       int result = 0; 
+      int delrs=0;
       try { 
+    	  
+    	
+    	 delrs = this.boarddao.deleteTags(dto.getComment_seq()); 
          result = this.boardcommentservice.modComment(dto);
          
          int board_seq =boardcommentservice.getBoard_seq(dto.getComment_seq());
          BoardDTO board_dto = new BoardDTO(board_seq,dto.getComment_contents(),"","","","");
-         int[] hashTagResult = boarddao.insertHashTags(board_dto);      
+         int[] hashTagResult = boarddao.insertHashTags(board_dto,dto.getComment_seq());        
          ////////요기서 태그인설트들어가용  
          System.out.println(result);   
          if(result > 0 ) {
