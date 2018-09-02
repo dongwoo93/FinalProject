@@ -657,7 +657,7 @@ function getCaretPosition(editableDiv) {
 					
 							}
 							
-							<!-- 더보기-->   
+							 
 							  console.log(txt.length);     
 							if(txt.length > 48) {  
 								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
