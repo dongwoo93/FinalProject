@@ -172,7 +172,7 @@ public class BoardController {
 				double max = 0;
 				for(Board_MediaDTO dto : mlist) {
 					System.out.println("요기는나와야" +realPath+dto.getSystem_file_name());  
-					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
+ 
 					
 					double height = bimg.getHeight(); 
 					double width = bimg.getWidth();
