@@ -59,4 +59,6 @@ public interface BoardDAO {
 	public List<BoardDTO> search(String keyword, int start, int end);
 	public int deleteTags(int comment_seq) throws Exception ;
 	
+	public int deleteBoardTags(int board_seq) throws Exception;
+	
 }

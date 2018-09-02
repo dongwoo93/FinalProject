@@ -219,5 +219,9 @@ public class IBoardService implements BoardService {
 	public int deleteTags(int comment_seq) throws Exception {
 		return dao.deleteTags(comment_seq);
 	}
+	
+	public int deleteBoardTags(int board_seq) throws Exception {
+		return dao.deleteBoardTags(board_seq);
+	}
 
 }
