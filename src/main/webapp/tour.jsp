@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/tour.css">
+<script src="resources/js/top.js"></script>
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 	
@@ -245,7 +246,7 @@ function unmarkit(e) {
 			<!-- 이미지 -->
 			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 				<a href="oneBoard.do?board_seq=${result.board_seq}" > <!--src='AttachedMedia/${media.system_file_name}'-->
-					<img class="card-img-top" 
+					<img class="card-img-top ${media.filterName}" 
 						id="card" src='AttachedMedia/${media.system_file_name}'
 						alt="해당 게시글로 바로가기">
 				</a>

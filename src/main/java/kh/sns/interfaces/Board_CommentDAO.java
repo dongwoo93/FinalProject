@@ -20,4 +20,5 @@ public interface Board_CommentDAO {
 	
 	public int getBoard_seq(int comment_seq) throws Exception;
 	
+
 }

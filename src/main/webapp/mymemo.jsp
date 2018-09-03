@@ -1,10 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<script src="resources/js/top.js"></script>
 <link
 	href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"
 	rel="stylesheet" type="text/css">
 <style>
+@CHARSET "UTF-8";
+
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
+
+
+
 * {
 	margin: 0;
 	padding: 0;
@@ -34,6 +43,8 @@
 
 .memoul, .memoli {
 	list-style: none;
+	font-weight:bold;
+	font-family: NANUMBARUNPENR !important;
 }
 
 .memoul {
@@ -68,8 +79,8 @@
 	padding-bottom: 10px;
 }
 
-.memoul li p {
-	font-size: 20px;
+.memoul li div {
+	font-size: 14px;
 }
 
 }
@@ -131,37 +142,85 @@ color: white;
 /* #memotable {
     background-color: #0000006b;
 } */
+
+
+
 </style>
 <script>
 $(document).ready(function() {
 
 })
-	function check(e, evt) {
+
+/**
+ * 바이트수 반환  
+ * 
+ * @param el : tag jquery object
+ * @returns {Number}
+ */
+ var finalLength = 0;
+	function check(e, evt, cat) {
+		console.log("최종 :" + finalLength);
+	 var height = $(e).height();
+	 var charLength = 0;
+	 var str = $(e).text();
+	 var ch1 = "";
+	 
+	 for(var i = 0; i < str.length; i++) {
+			ch1 = str.charAt(i);
+			if(escape(ch1).length > 4) {		
+				charLength += 2;
+			} else {
+				charLength += 1;
+			}
+		}
+	 console.log("길이 :" + charLength);
 	evt = evt || window.event;
     var code = evt.keyCode;
     evt.stopPropagation();
 	if (evt.keyCode === 13) {
 		// insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
-	      document.execCommand('formatBlock', false, 'p');
+	      document.execCommand('formatBlock', false, 'div');
 	      // prevent the default behaviour of return key pressed
 	      return false;
-
 	    }
-		var height = $(e).height();
-		var curlength = $(e).text().length;
-		console.log(curlength);
-		if (height > 195) {
-			var result = $(e).text().substr(0, curlength - 10);
-			alert("글자수를 초과하였습니다");
-			$(e).text("");
-		}
-	}
+			var codeByte = 0;
+		    for (var idx = 0; idx < $(e).text().length; idx++) {
+		        var oneChar = escape($(e).text().charAt(idx));
+		        if ( oneChar.length == 1 ) {
+		            codeByte ++;
+		        } else if (oneChar.indexOf("%u") != -1) {
+		            codeByte += 2;
+		        } else if (oneChar.indexOf("%") != -1) {
+		            codeByte ++;
+		        }
+		    }
+		    console.log("바이트 :" + codeByte);
+		    if(cat == "title") {
+		    	if (height > 20) {
+			    	 var cut = str.substr(0,finalLength-1);
+					    $(e).text(cut);
+				}else {
+					finalLength = charLength;
+				}
+		    }else {
+		    	 if (height > 195) {
+			    	 var cut = str.substr(0,finalLength-1);
+					    $(e).text(cut);
+				}else {
+					finalLength = charLength;
+				}
+		    }
+		   
+ }
+			
+		
 
 	function submit(e) {
-		var titleElement = $(e).next();
-		var contentElement = $(e).next().next();
+		var titleElement = $(e).next().next();
+		var contentElement = $(e).next().next().next();
 		var title = titleElement.text();
 		var content = contentElement.html();
+
 		if(title == "" || content == "") {
 			alert("내용을 입력해주세요");
 			return;
@@ -205,7 +264,7 @@ $(document).ready(function() {
 				},
 				success : function(data) {
 					if(data > 0) {
-						$(e).parent().parent().parent().remove();
+						$(e).parent().parent().parent().fadeOut(400, function(){ $(this).remove();});;
 					}else {
 						alert("삭제 실패");
 					}
@@ -219,16 +278,28 @@ $(document).ready(function() {
 		
 	}
 	
+function cancelNote(e) {
+		
+		if(confirm("작성을 취소하시겠습니까?")) {
+			$(e).parent().parent().fadeOut(400, function(){ $(this).remove();});
+		}
+		
+		
+	}
+	
 	function updateNote(e,seq) {
 		var boardSeq = seq;
 		var titleElement = $(e).next();
 		var contentElement = $(e).next().next();
 		var title = titleElement.text();
 		var content = contentElement.html();
-		if(title == "" || content == "") {
-			alert("내용을 입력해주세요");
-			return;
-		}
+
+			if(title == "" || content == "") {
+				alert("내용을 입력해주세요");
+				return;
+			}
+		
+		
 		$.ajax({
 			type : "POST",
 			url : "updateNote.memo",
@@ -240,7 +311,7 @@ $(document).ready(function() {
 			success : function(data) {
 				if(data > 0) {
 					var myvar = '<i class="fas fa-trash" onclick="deleteNote(this,&#34;'+boardSeq+'&#34;)" style="float: right;"></i>'+
-					'<i class="fas fa-pencil-alt" onclick="updateNote(this,&#34;'+boardSeq+'&#34;)" style="float: right; margin-right: 15px;"></i>';
+					'<i class="fas fa-pencil-alt" onclick="modifyNote(this,&#34;'+boardSeq+'&#34;)" style="float: right; margin-right: 15px;"></i>';
 					
 					titleElement.attr('contenteditable', 'false');
 					contentElement.attr('contenteditable', 'false');
@@ -271,17 +342,21 @@ $(document).ready(function() {
 		var myvar = '<li class="memoli">'
 				+ '      <a>'
 				+ '        <i onclick="submit(this)" class="fas fa-check" style="float: right;font-size: 20px;color: darkgreen;cursor: pointer;"></i>'
-				+ '        <h2 class="memotitle">제목'
+				+ '        <i onclick="cancelNote(this)" class="fas fa-times" style="float: right;font-size: 20px;color: red;cursor: pointer;margin-right: 15px;"></i>'
+				+ '        <h2 onkeyup="check(this, event, &#34;title&#34;)"; class="memotitle">제목'
 				+ '        </h2>'
-				+ '        <p class="memocontent" onkeydown="check(this, event);">내용</p>'
+				+ '        <div class="memocontent" onkeyup="check(this, event, &#34;content&#34;);">내용</div>'
 				+
 
 				'      </a>' + '    </li>';
 
 		$(".memoul").prepend(myvar);
-		$('.memotitle').first().attr('contenteditable', 'true');
-		$('.memocontent').first().attr('contenteditable', 'true');
-		$('.memotitle').first().focus();
+		$(".memoli").first().hide().slideDown(200, function() {
+			$('.memotitle').first().attr('contenteditable', 'true');
+			$('.memocontent').first().attr('contenteditable', 'true');
+			$('.memotitle').first().focus();
+		});
+		
 		$('#ul-wrapper').animate({
 			scrollTop : $('#ul-wrapper').prop("scrollHeight")
 		}, 500);
@@ -299,7 +374,7 @@ $(document).ready(function() {
 							<tr>
 								<th class="text-center"
 									style="width: 180px; font-family: NANUMBARUNPENR !important; box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
-									class="topA" href="mymap.jsp"
+									class="topA" href="mymap.bo"
 									style="font-family: NANUMBARUNPENR !important; font-size: 14px;">지도</a></th>
 								<th class="text-center"
 									style="width: 180px; font-family: NANUMBARUNPENR !important; box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
@@ -323,19 +398,21 @@ $(document).ready(function() {
 	<div id="ul-wrapper">
 		4
 		<div style="text-align: center;">
-			<button type="button" class="btn btn-success" onclick="addNote()">메모
+			<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" onclick="addNote()">메모
 				추가</button>
+				
+				
 		</div>
 		<ul class="memoul">
 			<c:choose>
 				<c:when test="${result.size() > 0}">
 					<c:forEach var="memo" items="${result}" varStatus="status">
 						<li class="memoli"><a>
-								<h2 id="title1" class="memotitle">${memo.title}
-									<i class="fas fa-trash" onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
-									<i class="fas fa-pencil-alt" onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
+								<h2 onkeyup="check(this, event);" id="title1" class="memotitle">${memo.title}
+									<i class="fas fa-trash"  onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
+									<i class="fas fa-pencil-alt"  onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
 								</h2>
-								<p class="memocontent" onkeydown="check(this, event);">${memo.content}</p>
+								<div class="memocontent" onkeyup="check(this, event);">${memo.content}</div>
 						</a></li>
 					</c:forEach>
 				</c:when>

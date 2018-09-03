@@ -1,5 +1,9 @@
 package kh.sns.dto;
 
+/**
+ * @author user1
+ *
+ */
 public class MemberDTO {
 	
 	private String id;
@@ -9,6 +13,12 @@ public class MemberDTO {
 	private String phone;
 	private String gender;
 	private String name;
+	
+	/*
+	 * 2018-9-3 추가
+	 */
+	private String isDisabledAccount, isBlockedAccount, lastDisabledDate;
+	private int disabledReason;
 	
 	
 	
@@ -81,18 +91,47 @@ public class MemberDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}	
+
+	public String getIsDisabledAccount() {
+		return isDisabledAccount;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+	public void setIsDisabledAccount(String isDisabledAccount) {
+		this.isDisabledAccount = isDisabledAccount;
+	}
+
+	public String getIsBlockedAccount() {
+		return isBlockedAccount;
+	}
+
+	public void setIsBlockedAccount(String isBlockedAccount) {
+		this.isBlockedAccount = isBlockedAccount;
+	}
+
+	public String getLastDisabledDate() {
+		return lastDisabledDate;
+	}
+
+	public void setLastDisabledDate(String lastDisabledDate) {
+		this.lastDisabledDate = lastDisabledDate;
+	}
+
+	public int getDisabledReason() {
+		return disabledReason;
+	}
+
+	public void setDisabledReason(int disabledReason) {
+		this.disabledReason = disabledReason;
+	}
+
 	@Override
 	public String toString() {
 		return "MemberDTO [id=" + id + ", pw=" + pw + ", nickname=" + nickname + ", email=" + email + ", phone=" + phone
-				+ ", gender=" + gender + ", name=" + name + "]";
+				+ ", gender=" + gender + ", name=" + name + ", isDisabledAccount=" + isDisabledAccount
+				+ ", isBlockedAccount=" + isBlockedAccount + ", lastDisabledDate=" + lastDisabledDate
+				+ ", disabledReason=" + disabledReason + "]";
 	}
-	
-	
 
-	
+
 }

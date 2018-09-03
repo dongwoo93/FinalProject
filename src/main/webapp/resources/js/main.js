@@ -38,7 +38,11 @@ $(document).ready(function(){
 	           {
 	               if(data == 1) {
 	            	   $(location).attr("href", "feed.bo");
-	               }else {
+	               } 
+	               else if(data == -97){
+	            	   $(location).attr("href", "alert.member?category=toggleDis");
+	               }               
+	               else {
 	            	   $("#result").html("<div style='color: red;' data-aos='zoom-in'>아이디와 비밀번호를 다시 확인해주세요</div>")
 	            	   $("#preloader").hide();
 	               }

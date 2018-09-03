@@ -355,8 +355,16 @@ public class BoardController {
 		
 		boolean isAvailableMoreData = true;
 		int nextStartNum = startInt + NAV_COUNT_PER_PAGE;
-
+		
+		
+		List<int[]> cnt = new ArrayList<>();
+		Map<Integer,Integer> commentcnt = new HashMap<>();
 		try {
+			cnt = board_commentService.selectCommentCount();
+			for(int[] tmp : cnt) {
+				commentcnt.put(tmp[0],tmp[1]);
+			}
+
 			listAll = boardService.getFeed(id);
 			for(int i = 0; i < listAll.size(); i++) {
 				if(listAll.get(i).getBoard_seq() < 0) {
@@ -459,6 +467,7 @@ public class BoardController {
 		 */
 		
 		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("commentcnt", commentcnt);	
 		outputJson.put("list", list);	
 		outputJson.put("maxmap", maxMap);  
 		outputJson.put("media", media);	
@@ -477,9 +486,8 @@ public class BoardController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
-		
+		     
 	}
-	
 	
 	@RequestMapping("/board.bo")
 	public ModelAndView getBoard(HttpSession session, HttpServletResponse response, String id, String cat) throws Exception{
@@ -562,7 +570,8 @@ public class BoardController {
 		mav.setViewName("myarticle3.jsp");    
 		mav.addObject("profileImg", profileImg);
 		mav.addObject("memNick", memNick);   // 닉네임
-		mav.addObject("memIntro", memIntro); // 소개
+		mav.addObject("memIntro", memIntro); // 소개  
+		mav.addObject("cat",cat);
 
 		//		String id = (String) session.getAttribute("loginId");
 
@@ -1470,6 +1479,7 @@ public class BoardController {
 		mav.addObject("result1", follow_list);
 		mav.setViewName("follow.jsp");
 		mav.addObject("pageid", id);
+		mav.addObject("category","1");
 
 		return mav;	
 	}
@@ -1508,7 +1518,7 @@ public class BoardController {
 		mav.addObject("result", follow_list);
 		mav.addObject("pageid", id);
 		mav.setViewName("follow.jsp");
-
+		mav.addObject("category", "2");
 
 		return mav;	
 	}

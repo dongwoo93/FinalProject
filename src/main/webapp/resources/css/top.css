@@ -189,6 +189,12 @@ body {
 	height: 30px;
 }
 
+#alertcont{
+	width:500px; 
+	height:250px; 
+	overflow-y:auto;
+}
+
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover,
 	.ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
 	{
