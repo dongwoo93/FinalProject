@@ -749,6 +749,7 @@ function getCaretPosition(editableDiv) {
 
 
 
+
 							<!--               -->
 
 
@@ -793,7 +794,8 @@ function getCaretPosition(editableDiv) {
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
-<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+			<br>	
+			<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -834,7 +836,9 @@ function getCaretPosition(editableDiv) {
 		  
 				</c:forEach>
 			   	</div>
-				</c:if><hr class="_5mToa">
+				</c:if>
+				<hr class="_5mToa">
+				<br>
 			</div>
 			 
 			
@@ -843,7 +847,7 @@ function getCaretPosition(editableDiv) {
 						style="width: 300px; margin-top: 20px; margin-left: 30px;">
 					
 <!-- 			<hr class="_5mToa"> -->
-<br>
+				<br>
 				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					실시간 #트랜드     
 				</p>
@@ -851,13 +855,13 @@ function getCaretPosition(editableDiv) {
 				<c:if test="${trend.size() > 0}">       
 		  
 		  	<div style="overflow-y:auto; height:230px;">    		
-		<c:forEach var="trend" items="${trend}" varStatus="status" >
+			<c:forEach var="trend" items="${trend}" varStatus="status" >
 		
 					<div class="container" >     
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
 					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
 								href="">${status.count}</a></li>  
 					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
@@ -870,11 +874,14 @@ function getCaretPosition(editableDiv) {
 			
 			</script>
 
-							</c:forEach>
-						</div>
-</c:if><hr class="_5mToa"> 
-
-<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
+			</c:forEach>
+			</div>
+		</c:if>
+		<hr class="_5mToa"> 
+		<br>
+		</div>
+		
+		<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
 			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
 				<div class="container">
 					<div class="row">
@@ -885,12 +892,9 @@ function getCaretPosition(editableDiv) {
 						</div>
 					</div>
 				</div>
-				<!-- 			</div> -->
+		<!-- 			</div> -->
 
 			</div>
-
-
-		</div>
 		<!-- container -->
 
 	</div>
@@ -1658,6 +1662,6 @@ $(window).scroll(function(){
 </script>
 
 
-<%@ include file="include/bottom.jsp"%>
+<%@ include file="include/bottom2.jsp"%>
 
 
