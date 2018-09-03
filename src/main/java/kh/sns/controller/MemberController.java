@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -37,7 +38,6 @@ public class MemberController {
 
 	@Autowired	private MemberService memberService;
 	@Autowired	private ProfileService profileService;
-	@Autowired	private MemberBusinessService mBizService;
 	@Autowired	private BoardService boardService;
 	@Autowired	private Board_LocationService board_locationService;
 
@@ -64,10 +64,20 @@ public class MemberController {
 		if(result == 1) {
 			String sessionId = dto.getId();
 			session.setAttribute("loginId",sessionId);
+			
+			// 20180903 추가
+			MemberDTO member = memberService.getOneMember(sessionId);
+			String checkDisabledAccount = member.getIsDisabledAccount();
+			if(checkDisabledAccount.equalsIgnoreCase("y")) {
+				result = -97;
+			}
 
 		}else {
 
 		}
+		
+		
+		
 		response.getWriter().print(result);
 		response.getWriter().flush();
 		response.getWriter().close();	
@@ -371,5 +381,69 @@ public class MemberController {
 		
 		
 		new Gson().toJson(list, response.getWriter());
+	}
+	
+	@RequestMapping("/updateDisabledInfo.member")
+	public ModelAndView updateDisabledInfo(String checkToggle, MemberDTO member, HttpSession session) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		System.out.println("@@checkToggle: " + checkToggle);	
+		
+		if(checkToggle == null) {
+			checkToggle = "n";
+		}
+		
+		String id = session.getAttribute("loginId").toString();
+		System.out.println("@@loginId: " + id);
+		
+		if(checkToggle.equalsIgnoreCase("true")) {
+			member = memberService.getOneMember(id);
+			System.out.println(member);
+			memberService.updateDisabledInfo(member, true);			
+			mav.setViewName("redirect:feed.bo");
+		} else {
+			member.setPw(EncryptUtils.getSha256(member.getPw()));
+			int result = memberService.updateDisabledInfo(member, false);
+			System.out.println(result);
+			if(result >= 1) {
+				session.invalidate();
+			}
+			mav.addObject("updateDisabledInfoResult", result);
+			mav.setViewName("alertpage.jsp");
+		}	
+	
+		return mav;		
+		
+	}
+	
+	@RequestMapping("/alert.member")
+	public ModelAndView memberAlertManager(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception{
+		String parameter = request.getParameter("category");
+		ModelAndView mav = new ModelAndView();
+		if(parameter.equalsIgnoreCase("toggleDis")) {
+			mav.addObject("toggleDis", memberService.getOneMember(session.getAttribute("loginId").toString()));
+			mav.setViewName("alertpage.jsp");
+		}
+		return mav;
+		
+	}
+	
+	@RequestMapping("/pwdCheck.ajax")
+	public void pwdCheckAjax(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		response.setCharacterEncoding("UTF8");
+        try {
+			PrintWriter xout = response.getWriter();
+			String pwd = request.getParameter("pwd");
+			String hashedPwd = EncryptUtils.getSha256(pwd);
+			String currentLoginId = session.getAttribute("loginId").toString();
+			MemberDTO member = memberService.getOneMember(currentLoginId);
+			if(member.getPw().equals(hashedPwd)) {
+				xout.print("true");
+			} else {
+				xout.print("false");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}    
 	}
 }

@@ -184,7 +184,40 @@
     		 
     	})
     	
+    	$('#updateDisBtn').click(function(){
+    		$('#shifted_id').val("${sessionScope.loginId}");
+    		$('#shifted_inputPwdForDis').val($('#inputPwdForDis').val());
+    		$('#shifted_selectDisableReason').val($('#selectDisableReason option:selected').val());
+    		$('#frmDis').submit();
+    	})
+    	
+    	$('#inputPwdForDis').keyup(function(){
+    		var pwd = $('#inputPwdForDis').val()
+    		$.ajax({
+                url: "pwdCheck.ajax", // 처리할 페이지(서블릿) 주소
+                type: "post",
+                data: {pwd: pwd},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+                success: function(response) {
+                    console.log("AJAX Request 성공: " + response);
+                    if(response == "true"){
+                    	$('#ajaxCheckPwd').html('<span class="badge badge-pill badge-primary">✔</span> 비밀번호가 맞습니다.')
+                    } else {
+                    	$('#ajaxCheckPwd').html('<span class="badge badge-pill badge-danger">✘</span> 비밀번호가 틀립니다.')
+                    }               
+                },
+                error: function() {
+                    console.log("에러 발생");
+                },
+                complete: function(){
+                    // console.log("AJAX 종료");
+                }
+            });
+
+    	});
+    	
     })
+    
+    
     
     </script>
     
@@ -702,28 +735,31 @@
 													        </button>
 													      </div>
 													      <div class="modal-body">
+													     
 													      	<table style="padding: 4px" >                           
 													      		<tr style="border-bottom:1px solid lightgray; " >     
-													      		<td style="width: 80%;" ><p>hyong__star님, 안녕하세요! <br><br>계정을 삭제하지 않고 비활성화할 수 있습니다.비활성화하면 다시 로그인하여 재활성화할 때까지 계정이 숨겨집니다. <br><br>계정은 일주일에 한 번만 비활성화할 수 있습니다.</p></td>
+													      		<td style="width: 80%;" ><p>${ sessionScope.loginId }님, 안녕하세요! 
+													      		<br><br>계정을 삭제하지 않고 비활성화할 수 있습니다. 비활성화하면 다시 로그인하여 재활성화할 때까지 계정이 숨겨집니다. 
+													      		<br><!-- <br>계정은 일주일에 한 번만 비활성화할 수 있습니다. --></p></td>
 													      		</tr>
 													    	   
 													      		<tr style="border-bottom:1px solid lightgray; ">           
 													      		 
 													      		<td><br><p>계정을 비활성화하시는 이유가 무엇인가요?
 													      		<br>              
-													      		<select style="width:100%; margin-top:10px; padding-bottom:5px;">   
+													      		<select style="width:100%; margin-top:10px; padding-bottom:5px;" id=selectDisableReason>   
 													      		<option disabled selected value>선택</option>    
-													      		<option value="volvo">새로운 계정을 만들었습니다</option>
-													      		<option value="volvo">개인 정보 보호 문제</option>   
-  																<option value="volvo">인스타그램이 유용하지 않습니다</option>
-  																<option value="volvo">광고가 너무 많음</option>
-  																<option value="volvo">기타</option>
-  																
+													      		<option value="1">새로운 계정을 만들었습니다</option>
+													      		<option value="2">개인 정보 보호 문제</option>   
+  																<option value="3">인스타그램이 유용하지 않습니다</option>
+  																<option value="4">광고가 너무 많음</option>
+  																<option value="5">기타</option>							
  														
 																</select> 
 																<br><br>
 																계속하려면 비밀번호를 다시 입력하세요  &nbsp;&nbsp;&nbsp;&nbsp;              
-																<input type=text placeholder="password" style="width:50%;">   
+																<input type=password id=inputPwdForDis placeholder="password" style="width:50%;">  
+																<div><p><small id=ajaxCheckPwd></small></div> 
 													      		<br><a href="#">비밀번호를 잊으셨나요?</a>          
 																 </p>      
 																
@@ -738,8 +774,11 @@
 													           
 													      </div>
 													      <div class="modal-footer">
-													      	<form action='changeBizAccount.profile' method=post>
-													        	<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정을 잠시 비활성화</button>
+													      	<form id=frmDis action='updateDisabledInfo.member' method=post>
+													      		<input type=hidden id=shifted_id name=id value="">
+													      		<input type=hidden id=shifted_selectDisableReason name=disabledReason value="">		
+													      		<input type=hidden id=shifted_inputPwdForDis name=pw value="">												      		
+													        	<button type="button" id=updateDisBtn class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정을 잠시 비활성화</button>
 													        </form>
 													        <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" data-dismiss="modal">Close</button>
 													      </div>

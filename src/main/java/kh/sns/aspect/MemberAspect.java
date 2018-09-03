@@ -29,10 +29,10 @@ public class MemberAspect {
    public void newPwEncrypt() {}
    // 비밀번호찾기
    
-   
-   @Pointcut("execution(* kh.sns.impl.*Service.updateOneMemberPassword(..))")  
+   @Pointcut("execution(* kh.sns.impl.*Service.updateOneMemberPassword(..))")     
    public void updatePwEncrypt() {}
    //마이페이지에서 비밀번호 변경
+  
 
    @Around("insertEncrypt()")
    public int insertEncrypt(ProceedingJoinPoint pjp) {
@@ -86,5 +86,4 @@ public class MemberAspect {
       dto.setPw(pw);
    } 
    
-
 }

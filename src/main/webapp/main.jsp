@@ -20,6 +20,8 @@
       $(location).attr("href", "feed.bo");
    }
 </script>
+
+  
 </head>
 <body>
  
@@ -53,7 +55,7 @@
       <form id="loginform" method="post"> 
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">ID</p>
-            <input type="id" name="id" i]d="id" class="form-style" autocomplete="off"/>
+            <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
          </div>
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">Password</p>

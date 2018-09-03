@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<script src="resources/js/top.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/myarticle.css">
+
+
 
 <style>
 .editableDivCommentSection {
@@ -17,7 +20,6 @@
 
 
 <script>
-
 	function tag(e) {
 		var search = $(e).html().split("#")[1]; 
 		$(location).attr("href","search.bo?search="+search); 
@@ -326,9 +328,10 @@ $(document).ready(function(){
 <div id="allwrapper">
 
 
+	
 	<div class="container my">
-		<div class="profile">
-			<div class="profile-image">
+	 <div class="profile">
+	 <div class="profile-image">
 
 
 				<c:choose>
@@ -399,7 +402,7 @@ $(document).ready(function(){
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
 							id="follow" style="background-color: #f3f3f3; display: none;">팔로우&nbsp;<i class="fas fa-plus"></i></div>
 						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
+							<i class="fas fa-user-slash" onclick="myFunction1()"></i>
 						</div>
 
 					</div>
@@ -417,7 +420,7 @@ $(document).ready(function(){
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
 							id="follow" style="background-color: #f3f3f3;">팔로우&nbsp;<i class="fas fa-plus"></i></div>
 						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
+							<i class="fas fa-user-slash" onclick="myFunction1()"></i>
 						</div>
 
 					</div>
@@ -425,9 +428,11 @@ $(document).ready(function(){
 				</c:otherwise>
 			</c:choose>
 
-
-
-
+			<script>
+			function myFunction1() {	
+				alert("사용자 신고가 완료 되었습니다.");	    
+			}
+			</script>
 
 			<!-- Modal -->
 			<div class="modal fade" id="exampleModalCenter" tabindex="-1"
@@ -565,7 +570,7 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">게시물</a></th>
 
 										</tr>
 									</thead>
@@ -858,7 +863,7 @@ $(document).ready(function(){
 			</div>
 
 
-			<div class="modal-content view" style="width: 400px; height: auto;">
+			<div class="modal-content view" style="width: 350px; height: auto;">
 
 
 				<div class="hidden" id="hidden"></div>
@@ -1056,7 +1061,7 @@ $(document).ready(function(){
 								<button class="btn dropdown-toggle bg-white"
 									data-toggle="dropdown" id="etc"></button>
 								<div class="dropdown-menu">							
-									<a class="dropdown-item" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
+									<a class="dropdown-item" onclick="myFunction()" id="singo" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
 								</div>
 							</div>
 
@@ -1089,6 +1094,13 @@ $(document).ready(function(){
 
 	</div>
 </div>
+
+<script>
+function myFunction() {	
+	alert("신고완료");	    
+}
+
+</script>
 
 
 <form id="fileForm">
@@ -1219,7 +1231,7 @@ $(document).ready(function(){
 			              <i class="far fa-calendar-alt fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			               <h1 class="mt-3"><a href="calendar.bo"><b>나의 일정</b></a></h1>
+			               <h1 class="mt-3"><a href="calendar.bo"><b style=color:#6c757d;>나의 일정</b></a></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>
@@ -1234,7 +1246,7 @@ $(document).ready(function(){
 			              <i class="fas fa-sticky-note fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			              <h1 class="mt-3"><a href="goNote.memo"><b>나의 메모</b></a></h1>
+			              <h1 class="mt-3"><a href="goNote.memo"><b style=color:#6c757d;>나의 메모</b></a></h1>
 			            </div>
 			          </div>
 			        </div>
@@ -1266,5 +1278,4 @@ $(document).ready(function(){
 </div>
 
 
-
-<%@ include file="include/bottom.jsp"%>
+<%@ include file="include/bottom3.jsp"%>

@@ -3,12 +3,58 @@
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
 <script> var currentId = "${sessionScope.loginId}";
+var globalThisCommentIsFocusedOnFirst = true;
 </script>
 <script src="resources/js/top.js"></script>
 <script src="resources/js/timeline.js"></script>
 <script>
 
 
+ 
+
+
+
+function makeupHashtag (e) {     
+
+    if ((e.keyCode === 32)) {
+
+        if (parseInt($('#caretposition').val()) == 0) {
+            // alert('뭐?')                        	 
+        } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+            // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
+        } else {
+            // alert('임마?')
+            return;
+        }
+
+        var regex = /(#[^#\s,;<>. ]+)/gi;
+        if (regex) {
+            var newtxt = "<span class=fugue>" + $(this).text()
+                .replace(regex, "</span><span class=text-danger>" + "$1" +
+                    "</span><span class=fugue>") + "</span>"
+
+            // console.log($('#editorDiv').text().length);   
+            // console.log(newtxt)   
+            newtxt += "<kz></kz>"
+            $(this).html(newtxt)
+            var el = this;
+            console.log("childNodes: " + el.childNodes.length);
+            var range = document.createRange();
+            var sel = window.getSelection();
+            range.setStart(el.lastChild, 0);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            $(this).focusout();
+            $(this).focus();
+            if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+            }
+
+        }
+    }
+}
 
 function follow(id1, id2, e) {
 	   var id = id1; 
@@ -189,6 +235,44 @@ function getCaretPosition(editableDiv) {
 		
 	}
 	
+	
+	
+	$(document).on('mousedown mouseup keydown keyup',"div[id*='comment'].insertfield",update);
+	$(document).on('mousedown mouseup keydown keyup',"div[id*='commenttxt']",update);
+	
+	
+
+	$(document).on('keyup',"div[id*='comment'].insertfield",makeupHashtag);
+	$(document).on('keyup',"div[id*='commenttxt']",makeupHashtag);
+	
+	$(document).on('keypress',"div[id*='commenttxt']",function(e){   
+		if(e.keyCode === 13) { 
+			 e.preventDefault();
+		modComment(this);
+	 } 
+	});   
+	
+
+	$(document).on('focus',"div[id*=comment].insertfield",function(){   
+		if(globalThisCommentIsFocusedOnFirst){             
+			$(this).html("");
+	    	globalThisCommentIsFocusedOnFirst = false;
+		}   
+	});   
+	
+	$(document).on('focusout',"div[id*=comment].insertfield",function(){   
+		if($(this).text() == ""){
+			$(this).html("<span class=text-muted>댓글 달기...</span>");
+			globalThisCommentIsFocusedOnFirst = true; 
+		}
+	});   
+	
+	
+	
+	
+
+
+	
 
 $(document).on('keypress',"div[id*='comment'].insertfield",function(event){   
 	    
@@ -283,27 +367,27 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
         }  
     });
 	
-	
+	  
 	
  	
-	$(document).on("focus","div[id*=comment].insertfield", function() {  
+// 	$(document).on("focus","div[id*=comment].insertfield", function() {  
     	
-    		$(this).html("");
+//     		$(this).html("");
     	
-    });
+//     });
           
-    $(document).on("focusout","div[id*=comment].insertfield", function() { 
-    	if($(this).text() == ""){
-    		$(this).html("<span class=text-muted>댓글 달기...</span>");
+//     $(document).on("focusout","div[id*=comment].insertfield", function() { 
+//     	if($(this).text() == ""){
+//     		$(this).html("<span class=text-muted>댓글 달기...</span>");
     		     
-    	}
-    });         
+//     	}
+//     });         
 	
 	
 	
     $(document).ready(function(){
-    	
-//     	var globalThisCommentIsFocusedOnFirst = true;
+    	    
+    //  	var globalThisCommentIsFocusedOnFirst = true;
     	
 //         $("div[id*=comment].insertfield").focus(function() {
 //         	if(globalThisCommentIsFocusedOnFirst){
@@ -311,7 +395,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 //             	globalThisCommentIsFocusedOnFirst = false;
 //         	}
         	
-//         });
+//         });   
         
 //         $("div[id*=comment].insertfield").focusout(function() {
 //         	if($(this).text() == ""){
@@ -321,60 +405,19 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 //         })
     	
 
-    	function makeupHashtag (e) {
-
-            if ((e.keyCode === 32)) {
-
-                if (parseInt($('#caretposition').val()) == 0) {
-                    // alert('뭐?')                        	 
-                } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
-                    // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
-                } else {
-                    // alert('임마?')
-                    return;
-                }
-
-                var regex = /(#[^#\s,;<>. ]+)/gi;
-                if (regex) {
-                    var newtxt = "<span class=fugue>" + $(this).text()
-                        .replace(regex, "</span><span class=text-danger>" + "$1" +
-                            "</span><span class=fugue>") + "</span>"
-
-                    // console.log($('#editorDiv').text().length);   
-                    // console.log(newtxt)   
-                    newtxt += "<kz></kz>"
-                    $(this).html(newtxt)
-                    var el = this;
-                    console.log("childNodes: " + el.childNodes.length);
-                    var range = document.createRange();
-                    var sel = window.getSelection();
-                    range.setStart(el.lastChild, 0);
-                    range.collapse(false);
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-
-                    $(this).focusout();
-                    $(this).focus();
-                    if (parseInt($('#caretposition').val()) == $(this).text().length) {
-
-                    }
-
-                }
-            }
-        }
+    	////////////////////////////////////////////////
+//     	$("div[id*='comment'].insertfield").on("mousedown mouseup keydown keyup", update);
+//     	$("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
     	
-    	$("div[id*='comment'].insertfield").on("mousedown mouseup keydown keyup", update);
-    	$("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
-    	
-    	$("div[id*='comment'].insertfield").keyup(makeupHashtag)
-    	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
+//     	$("div[id*='comment'].insertfield").keyup(makeupHashtag)
+//     	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
     
-    	$("div[id*='commenttxt']").keypress(function(e){
-			if(e.keyCode === 13) { 
-				 e.preventDefault();
-			modComment(this);
-		 } 
-		})
+//     	$("div[id*='commenttxt']").keypress(function(e){
+// 			if(e.keyCode === 13) { 
+// 				 e.preventDefault();
+// 			modComment(this);
+// 		 } 
+// 		})
 		
 // 		$("div[id*='comment'].insertfield").keypress(function(event){
 // 		    var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -510,7 +553,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>${map[status.index].location_name}
 									</a>
 								</c:otherwise>
 							</c:choose>
@@ -762,6 +805,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 
 
 
+
 							<!--               -->
 
 
@@ -812,7 +856,8 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
-<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+			<br>	
+			<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -853,7 +898,9 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 		  
 				</c:forEach>
 			   	</div>
-				</c:if><hr class="_5mToa">
+				</c:if>
+				<hr class="_5mToa">
+				<br>
 			</div>
 			 
 			
@@ -862,7 +909,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 						style="width: 300px; margin-top: 20px; margin-left: 30px;">
 					
 <!-- 			<hr class="_5mToa"> -->
-<br>
+				<br>
 				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					실시간 #트랜드     
 				</p>
@@ -870,13 +917,13 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 				<c:if test="${trend.size() > 0}">  
 		  
 		  	<div style="overflow-y:auto; height:230px;">    		
-		<c:forEach var="trend" items="${trend}" varStatus="status" >
+			<c:forEach var="trend" items="${trend}" varStatus="status" >
 		
 					<div class="container" >     
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
 					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
 								href="">${status.count}</a></li>  
 					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
@@ -909,11 +956,9 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 						</div>
 					</div>
 				</div>
-			</div>	
-<!-- 			</div> -->
+		<!-- 			</div> -->
 
-		</div>
-  
+		<!-- container -->
 
 	</div>
 	<!-- container -->
@@ -1471,9 +1516,13 @@ $(window).scroll(function(){
 	            		
 	            		divStr += "</div>"	// navbar-nav div의 끝
 	            		divStr += "<p class='text-info pointer pt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
+	            		   
+	            		if(r.commentcnt[boardSeq] > 2){      
+	            		divStr += "모두 " + r.commentcnt[boardSeq]  + " 개의 댓글보기"
+	            		}
 	            		
-	            		divStr += "</p>"
-	            		divStr += "<input type=hidden value='" + boardSeq + ">"
+	            		divStr += "</p>"   
+	            		divStr += "<input type=hidden value='" + boardSeq + "'>"   
 	            		
 	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
@@ -1481,17 +1530,17 @@ $(window).scroll(function(){
 						for(item in r.commentlist){
 							if(item == boardSeq) {	
 								
-								//  보완 test='${commenttmp.value.size() > 2 }'
-								if(r.commentlist[item].length > 2){
-									// pure script
-									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
-										var num = 0;
-									/* $(document).ready(function(){
-										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
-										var num = 0;
-									}) */
+// 								//  보완 test='${commenttmp.value.size() > 2 }'
+// 								if(r.commentlist[item].length > 2){
+// 									// pure script
+// 									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+// 										var num = 0;
+// 									/* $(document).ready(function(){
+// 										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+// 										var num = 0;
+// 									}) */
 									
-								}
+// 								}
 								
 								for(elem in r.commentlist[item]){
 									console.log(r.commentlist[item][elem])
@@ -1499,8 +1548,15 @@ $(window).scroll(function(){
 									var commentId = r.commentlist[item][elem].id;
 									var commentContent = r.commentlist[item][elem].comment_contents;
 									console.log("comc: " + commentContent)
-																		// display: none
-									divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									      
+									
+									if(elem < 2) {   
+										divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									}else{
+										// display: none
+										divStr += "<ul id='ul" + commentSeq + "' style='display: none;' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									}
+									
 									divStr += "<li id='li1'><a href='board.bo?id=" + commentId + "&cat=1'>" + commentId + "</a></li>"
 									divStr += "<li id='li2'>"
 									var newComment = '<span class=fugue>' 
@@ -1665,7 +1721,7 @@ $(window).scroll(function(){
 		              error: function(){
 		                  console.log("에러 발생");
 		              }
-		         }); //ajax 
+		         }); //ajax   
 		       }    
 		    }  
 		});
@@ -1674,9 +1730,8 @@ $(window).scroll(function(){
 });
 
 </script>
-                      
-                        
-      <%@ include file="include/bottom.jsp"%>
-      
-      
-  
+
+
+<%@ include file="include/bottom2.jsp"%>
+
+

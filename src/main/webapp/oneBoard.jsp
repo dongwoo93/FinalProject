@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
-
+<script src="resources/js/top.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/oneboard.css">
 <script>
 
@@ -494,7 +494,7 @@ $("#comment").keypress(function(event){
 
 
 <div id="allwrapper">
-	<input type="text" id=caretposition>
+	
 	<div class="" id="centerwrapper">
 		<div class="container" id="contents">
 		
@@ -503,9 +503,9 @@ $("#comment").keypress(function(event){
                   <div class="profile-image">
                      <img class="ml-3 mr-2"
                         src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-                     <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
+                  
                      <br> 
-                     <a class="mt-1 idtxt" id="id" href="#">
+                     <a class="mt-1 idtxt" id="id" href="board.bo?id=${b.id}&cat=1" style="color:#12bbad;font-weight:bold;font-size:16px;">
                     
 						${b.id}
 						
@@ -580,7 +580,7 @@ $("#comment").keypress(function(event){
                            <c:choose>
                              <c:when test="${not empty bookmark}">
                            <a class="btn navbar-btn ml-2 text-white ">                                                    
-                                    <i  id="mark"
+                                    &nbsp;<i  id="mark"
                                        class="far fa-bookmark icon"
                                        style="cursor: pointer; display: none;"
                                        onclick="markit(this)"></i>
@@ -611,7 +611,7 @@ $("#comment").keypress(function(event){
 		
 		<div class="navbar-nav">
                            <a class="ml-1 idtxt" id="con"
-                              href="">${b.id}</a>
+                              href="board.bo?id=${b.id}&cat=1" style="color:#12bbad;font-weight:bold;">${b.id}</a>
 
                            <div class='pl-3' id="contdiv">
                            <%-- ${b.contents} --%>
@@ -655,7 +655,7 @@ $("#comment").keypress(function(event){
                         <c:forEach var="item" items="${result}">
                           
                         <ul class="commentline navbar-nav"  onmouseover="commentover(this)" value="${item.comment_seq}" onmouseleave="commentleave(this)">
-                        <li id="li1"><a href="#" id="writerId${item.comment_seq}">${item.id}</a></li>
+                        <li id="li1"><a href="board.bo?id=${item.id}&cat=1" id="writerId${item.comment_seq}">${item.id}</a></li>
                         <li id="li2">
                         	<%-- <input type=text id="commentSection${item.comment_seq}" value="${item.comment_contents}" readonly="readonly" class='commenttxt'> --%>
 

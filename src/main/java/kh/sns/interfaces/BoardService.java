@@ -61,5 +61,8 @@ public interface BoardService {
 	
 	public int deleteTags(int comment_seq) throws Exception ;
 	public int deleteBoardTags(int board_seq) throws Exception;
+	
+	//지도
+	public Board_LocationDTO location(int seq)throws Exception;
 
 }

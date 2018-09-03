@@ -32,4 +32,7 @@ public interface MemberService {
 	// My_aticle
 	public List<MemberDTO> myNick_Id(String id) throws Exception;
 	
+	// update disabled information(20180903)
+	public int updateDisabledInfo(MemberDTO member, boolean isToggleToNo) throws Exception; 
+	
 }
