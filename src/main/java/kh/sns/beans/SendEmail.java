@@ -1,9 +1,13 @@
 package kh.sns.beans;
 
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -12,8 +16,6 @@ import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import kh.sns.impl.IMemberDAO;
 
 public class SendEmail {
 	private int num;
@@ -71,12 +73,22 @@ public class SendEmail {
 	            msg.setRecipient(Message.RecipientType.TO, to);
 	             
 	            // 이메일 제목
-	            msg.setSubject("찾으시는 비밀~", "UTF-8");
+	            msg.setSubject("Social Wired에서 알려드립니다 ", "UTF-8");
 	             
-	            // 이메일 내용 1은 비번 2는 아이디
+	            
 	            if(num==1) {
 	            	msg.setText("아이디: " + id , "UTF-8");
-	            }else {
+	            }else if(num==3){
+	            
+	            	msg.setText( id + " 님 저희 Social Wired와 함께 해주셔서 감사합니다.<br>"
+	            			+"더욱 발전하는 서비스가 되도록 노력하겠습니다. 늘 새로운 상생을 꿈꾸는 SocialWired <br>"
+	            			+"사용자 여러분들의 소중한 의견도 기다립니다.여러분들의 목소리를 경청하여 지금까지 그래왔던 것처럼  <br>"
+	            			+"여러분들과 함께 성장하겠습니다.변화하는 SocialWired 모습을 함께 지켜 봐주시기 바랍니다.감사합니다. <br>"
+	            			+"SocialWired 드림 본 메일은 발신전용입니다. 궁금한 사항을 문의하시려면 SocialWired 서비스 문의를 이용해 주세요. Copyright © SocialWired Corp."
+	            			, "UTF-8");
+	            }  
+	         
+	            else {
 	            	msg.setText("임시 비밀번호 : " + certification , "UTF-8");
 	            }
 	            // 이메일 헤더
