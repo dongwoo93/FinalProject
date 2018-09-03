@@ -15,7 +15,7 @@
 		overflow: hidden;    
    	 	text-overflow: ellipsis;
    		white-space: nowrap;
-   		width:70%; 
+   		width:20%; 
 	}
 	
 	.clusterimg{
@@ -144,9 +144,9 @@
 					                type: "get",
 					                data: {id:"${sessionScope.loginId}",lat:pin[i][1],lng:pin[i][2]},    
 					                success: function(response) {
-					                	var content = "<ul class='list-group' style='width:250px;'><li class='list-group-item' style='background-color:#ccc;'>"+pin[i][0]+"</li>";
+					                	var content = "<ul class='list-group' style='width:350px; font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;'><li class='list-group-item' style='background-color:#f3f3f3; '>"+pin[i][0]+"</li>";
 					                	for(var k = 0 ; k<response[0].length;k++){
-					                		content  = content + "<a href='oneBoard.do?"+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:50px; height:50px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
+					                		content  = content + "<a href='oneBoard.do?"+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list' class='mb-0'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:50px; height:50px; margin-left:100px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
 					                	}
 					                	content = content + "</ul>";
 					                	infowindow.setContent(content);
