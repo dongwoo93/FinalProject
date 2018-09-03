@@ -1032,6 +1032,8 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 
 	</div>
 </div>
+</div>
+</div>
 												
 					<!--                                  DM -->
 					<script>
