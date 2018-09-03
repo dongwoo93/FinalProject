@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
-<script src="resources/js/top.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/myarticle.css">
 
 
@@ -645,7 +644,7 @@ $(document).ready(function(){
 				<div class="col-md-4 divitem pt-4" id="${tmp.board_seq}"
 					value="${tmp.board_seq}" onmouseover="articleover(this)"
 					onmouseleave="articleleave(this)">
-					<img src="AttachedMedia/${result2[status.index].system_file_name}"
+					<img style="display: block;" src="AttachedMedia/${result2[status.index].system_file_name}"
 						class="divimg pointer ${result2[status.index].filterName}">
 
 					<div class="divinfo divimg" id="divinfo${tmp.board_seq}"
@@ -995,7 +994,7 @@ $(document).ready(function(){
 						class="creco insertfield" id="comment" >
 						<span class=text-muted>댓글 달기...</span>
 					</div>
-					<input type=text id="caretposition" value="0">
+					<input type="hidden" id="caretposition" value="0">
 
 
 					<script>
@@ -1345,5 +1344,5 @@ function myFunction() {
 	</div>
 </div>
 
-
+<%@ include file="include/directMessage.jsp" %>
 <%@ include file="include/bottom3.jsp"%>

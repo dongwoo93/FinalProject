@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ include file="include/top.jsp"%>
-    <script src="resources/js/top.js"></script>
+   <%@ include file="include/directMessage.jsp" %>
+    
     <link rel="stylesheet" type="text/css" href="resources/css/write.css">
 <script>
         // var filesArr = Array.prototype.slice.call(files);
@@ -516,8 +517,8 @@
 													<input type=hidden id=shifted_exposureCount value="" name="remainedPublicExposureCount">
 													<input type=hidden id=shifted_costPerClick value="" name="costPerClick">
 				</form>
-			</div>
 				
+			</div>
 
 	<!-- form 끝 -->
 
@@ -871,4 +872,5 @@
       
 
     </script>
+    
     <%@ include file="include/bottom.jsp"%>

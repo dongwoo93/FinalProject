@@ -198,6 +198,10 @@ $(function() {
         	$("#autodiv"+ui.item.index).css("background-color", "lightgrey");
         	console.log(ui.item.index);
         	return false;
+        },
+        messages: {
+            noResults: '',
+            results: function() {}
         }
 
     })
