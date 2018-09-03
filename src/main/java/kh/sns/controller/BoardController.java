@@ -508,6 +508,10 @@ public class BoardController {
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
 		Map<Integer, Integer> commentcount = new HashMap<>();
 		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
+		
+		
+		String myprofile = profileService.selectOneProfileImage(id);
+		
 
 		// NickName
 		String memNick = memService.myNick_Id(id).get(0).getNickname();
@@ -545,7 +549,8 @@ public class BoardController {
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 		}
-
+		
+		mav.addObject("myprofile", myprofile);
 		mav.addObject("result", result);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
