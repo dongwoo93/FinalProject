@@ -13,7 +13,6 @@
 
 
 <script>
-
 	function tag(e) {
 		var search = $(e).html().split("#")[1]; 
 		$(location).attr("href","search.bo?search="+search); 
