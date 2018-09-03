@@ -540,7 +540,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
                   </c:when>
                   <c:otherwise>
                      <img class="ml-3 mr-2 pic"
-                        src="AttachedMedia/standard.jpg">
+                        src="resources/images/DefaultProfile.jpg">
                   </c:otherwise>
 					</c:choose>
 							
@@ -879,7 +879,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
                   </c:when>
                   <c:otherwise>
                      <img class="ml-3 mr-2 pic"  
-                        src="AttachedMedia/standard.jpg" style="width:40px; height:40px;">
+                        src="resources/images/DefaultProfile.jpg" style="width:40px; height:40px;">
                   </c:otherwise>
                </c:choose></li> 
 					
