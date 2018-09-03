@@ -58,8 +58,14 @@ public class MessengerController {
 			
 			for(MemberDTO tmp : list) {
 				String image = profileService.selectOneProfileImage(tmp.getId());
+				String allowstatus = profileService.getOneProfile(tmp.getId()).getIs_allow_status();
 				if(WebSocket.onlineUser.containsKey(tmp.getId())) {
-					onlinefriendlist.add(tmp);
+					if(allowstatus.equals("n")) {
+						offlinefriendlist.add(tmp);
+					}
+					else {
+						onlinefriendlist.add(tmp);
+					}
 					if(image == ""){
 						onlinefriendimg.add("standard.jpg");
 					}
