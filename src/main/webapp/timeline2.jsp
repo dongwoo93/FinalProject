@@ -49,7 +49,7 @@ function makeupHashtag (e) {
             $(this).focusout();
             $(this).focus();
             if (parseInt($('#caretposition').val()) == $(this).text().length) {
-
+				
             }
 
         }
