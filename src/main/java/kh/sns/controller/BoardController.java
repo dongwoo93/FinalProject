@@ -40,7 +40,9 @@ import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
+import kh.sns.dto.Member_NoteDTO;
 import kh.sns.dto.Member_TagsDTO;
+import kh.sns.dto.MyMapDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardBusinessService;
@@ -49,11 +51,13 @@ import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
 import kh.sns.interfaces.Board_LikeService;
+import kh.sns.interfaces.Board_LocationService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.Member_BlockService;
 import kh.sns.interfaces.Member_CalendarService;
 import kh.sns.interfaces.Member_FollowService;
+import kh.sns.interfaces.Member_NoteService;
 import kh.sns.interfaces.ProfileService;
 import kh.sns.interfaces.SearchService;
 
@@ -72,6 +76,8 @@ public class BoardController {
 	@Autowired	private SearchService searchService;
 	@Autowired	private Member_CalendarService calService;
 	@Autowired	private BoardBusinessService bbs;
+	@Autowired  private Board_LocationService board_locationservice;
+	@Autowired  private Member_NoteService service;
 	
 	@Autowired	private BoardDAO boarddao;
 	static final int NAV_COUNT_PER_PAGE = 15; 
@@ -105,7 +111,7 @@ public class BoardController {
 		List<BoardBusinessDTO> adList = new ArrayList<>();
 		List<BoardDTO> adFeedList = new ArrayList<>();
 		List<String> membersNick = new ArrayList<>();
-
+		
 		try {
 			follow_list = member_followService.toFeed(id);
 		} catch (Exception e1) {
@@ -290,6 +296,41 @@ public class BoardController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+//		나의지도
+		try {
+		List<Board_LocationDTO> pin = new ArrayList<>();
+		 MyMapDTO mymap = new MyMapDTO();
+        pin = board_locationservice.selectLocation(id);
+        mymap = board_locationservice.selectMyMap(id);
+        mav.addObject("pin",pin);
+		mav.addObject("mymap",mymap);
+		}catch(Exception e) {
+			
+		}
+		
+//		나의지도 끝
+		
+//		나의메모
+		
+		try {
+			List<Member_NoteDTO> memo= service.selectNote(id);
+			mav.addObject("memo", memo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+//		나의메모 끝
+		
+//		나의달력
+		List<Member_CalendarDTO> calendar = new ArrayList<>();
+		try {
+			calendar = calService.selectCalendar(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		mav.addObject("calendar", calendar);
+//      나의달력 끝	
 		
 		mav.addObject("map", mapArr);
 		mav.addObject("maxmap", maxMap);

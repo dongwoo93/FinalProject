@@ -106,6 +106,7 @@ public class IBoardDAO implements BoardDAO  {
 			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				BoardDTO tmp = new BoardDTO();
 				tmp.setBoard_seq(rs.getInt(1));
+				
 				tmp.setContents(rs.getString(2));
 				tmp.setId(rs.getString(3));
 				tmp.setWritedate(rs.getString(4));
