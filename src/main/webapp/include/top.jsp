@@ -214,7 +214,8 @@ $(function() {
       <div id="topwrapper">
           <nav class="navbar navbar-expand-md navbar-light" id="navbar">
             <div class="container" id="navcontainer">
-              <i class="fab fa-instagram fa-2x" id="instagramicon"></i>
+<!--               <i class="fab fa-instagram fa-2x" id="instagramicon"></i> -->
+             <a href="feed.bo"> <i class="fas fa-camera-retro fa-2x" id="instagramicon"></i></a>
               <div class="logo"><a class="navbar-brand ml-2 text-white" href="feed.bo">SocialWired</a></div>
               <div class="collapse navbar-collapse">
                   <form id="go" action="search.bo" class="form-inline m-0" onsubmit="return false;">
