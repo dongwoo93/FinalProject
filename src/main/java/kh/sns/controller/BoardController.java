@@ -689,8 +689,7 @@ public class BoardController {
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
-		Map<String, String> getAllProfilePic = new HashMap<>();
-		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+ 
 		profile_image = profileService.getAllProfileImage();
 
 
@@ -962,9 +961,8 @@ public class BoardController {
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
-		
-		Map<String, String> getAllProfilePic = new HashMap<>();
-		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		 
+	
 		profile_image = profileService.getAllProfileImage();
 
 
