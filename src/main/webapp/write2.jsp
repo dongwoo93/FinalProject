@@ -24,7 +24,8 @@
         //   }
         
         document.addEventListener('keydown', function(event) {
-        	    if (event.keyCode === 13) {
+        	console.log($( document.activeElement )[0].tagName);
+        	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName != "DIV") {
         	        event.preventDefault();
         	    }
         	}, true);
@@ -53,7 +54,7 @@
         	
         	
         	
-        	console.log('1xxxxssf31');
+        	console.log('Vulkan');
         	var globalBizFormEnabled = false;
         	        	  	  
               function getCaretPosition(editableDiv) {   
@@ -119,12 +120,12 @@
               var map = {16: false, 32: false}; 
               $("#editorDiv").keyup(function(e){   
             	   
-                  if ( (e.keyCode === 32 ) || (e.keyCode === 13 ) ) {   
+                  if ( (e.keyCode === 32 )  ) {   
                          map[e.keyCode] = true;     
                          
                          if(parseInt($('#caretposition').val()) == 0){
                         	 // alert('뭐?')                        	 
-                         } else if (parseInt($('#caretposition').val()) == $('#editorDiv').text().length){
+                         } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 고친 부분 1
                         	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
                          } else {
                         	 // alert('임마?')
@@ -132,9 +133,9 @@
                          }
                          
                          
-                         var regex = /(#[^#\s,;<>. ]+)/gi;  
-                             if(regex){      
-                            	 var newtxt = "<span class=fugue>" + $('#editorDiv').text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
+                         var regex = /(#[^#\s,;<>.]+)/gi;  
+                             if(regex){      // 고친 부분 2 text() -> innerText
+                            	 var newtxt = "<span class=fugue>" + this.innerText.replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
                             	 									  
        							 // console.log($('#editorDiv').text().length);   
                              	// console.log(newtxt)   
@@ -476,7 +477,7 @@
 							
 							<!-- 글쓰기 칸 -->
 							<span style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">Contents</span>
-								<div class="card-body" contenteditable="true" id="editorDiv" style="overflow:auto;"></div>
+								<div class="card-body" contenteditable="true" id="editorDiv" style="overflow:auto; white-space: pre-line;" ></div>
 								<input type=hidden id="caretposition" value="0">
 								<input type=hidden name=contents id=contentsHidden> 
 								<input type=hidden name=filters id=filtersHidden>

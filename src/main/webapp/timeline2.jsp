@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script> var currentId = "${sessionScope.loginId}";
 var globalThisCommentIsFocusedOnFirst = true;
 </script>
@@ -49,7 +51,7 @@ function makeupHashtag (e) {
             $(this).focusout();
             $(this).focus();
             if (parseInt($('#caretposition').val()) == $(this).text().length) {
-
+				
             }
 
         }
@@ -386,8 +388,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 	
 	
     $(document).ready(function(){
-    	    
-    //  	var globalThisCommentIsFocusedOnFirst = true;
+    	AOS.init();
     	
 //         $("div[id*=comment].insertfield").focus(function() {
 //         	if(globalThisCommentIsFocusedOnFirst){

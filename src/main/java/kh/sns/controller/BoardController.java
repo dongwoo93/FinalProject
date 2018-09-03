@@ -509,6 +509,15 @@ public class BoardController {
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
 		Map<Integer, Integer> commentcount = new HashMap<>();
 		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		profile_image = profileService.getAllProfileImage();
+		
+		for(Profile_ImageDTO dto : profile_image) {
+			getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+		};
 
 		// NickName
 		String memNick = memService.myNick_Id(id).get(0).getNickname();
@@ -557,7 +566,8 @@ public class BoardController {
 		mav.addObject("isBlock", isBlock);   
 		mav.addObject("isFollow", isFollow);
 		mav.addObject("isNotPublic", isNotPublic);  
-		mav.addObject("profileImg", profileImg);  
+		mav.addObject("profileImg", profileImg);
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.setViewName("myarticle3.jsp");    
 		mav.addObject("profileImg", profileImg);
 		mav.addObject("memNick", memNick);   // 닉네임
@@ -1343,11 +1353,17 @@ public class BoardController {
 			BoardDTO a = null;
 			List<Board_CommentDTO> result = null;
 			List<List<Board_MediaDTO>> media = new ArrayList<>();
-
+			List<Profile_ImageDTO> profile_image = new ArrayList<>();
+			Map<String, String> getAllProfilePic = new HashMap<>();
 			Board_LikeDTO like = null;
 			Board_BookmarkDTO bookmark = null;
 
-
+			try {
+				profile_image = profileService.getAllProfileImage();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
 
 			try {
 				System.out.println(board_seq);
@@ -1366,6 +1382,11 @@ public class BoardController {
 				System.out.println("oneboard.do");
 				e.printStackTrace();
 			}
+			
+			for(Profile_ImageDTO dto : profile_image) {
+				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+			};
 
 			mav.setViewName("oneBoard.jsp");
 			mav.addObject("b", a);
@@ -1373,6 +1394,7 @@ public class BoardController {
 			mav.addObject("result2", media);
 			mav.addObject("like", like);
 			mav.addObject("bookmark", bookmark);
+			mav.addObject("profile_pic",getAllProfilePic);
 		}else {
 			mav.setViewName("redirect:main.jsp");
 		}
