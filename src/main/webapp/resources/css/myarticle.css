@@ -290,11 +290,14 @@
 	}
 
 
- 	.bo{  
-  		margin-top : 150px; 	
-  		margin-left: 1px; 
-  		padding-left : 450px;
-  	}  
+ 	.bo {
+    /* margin-top: 150px; */
+    /* margin-left: 1px; */
+    /* padding-left: 450px; */
+    display: table;
+    margin-top: 200px;
+	}
+	
  	.view{ 
  		width:100%; 
  		height:100%;
