@@ -617,10 +617,10 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
-														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
+														<a href="redirectAdUrl?r=${ ad.moreInfoWebsite }&bizseq=${ad.boardBizSeq}" class="text-light">구매하러 가기</a>
 													</c:when>
 													<c:otherwise>
-														<a href="${ ad.moreInfoWebsite }" class="text-light">더 알아보기</a>
+														<a href="redirectAdUrl?r=${ ad.moreInfoWebsite }&bizseq=${ad.boardBizSeq}" class="text-light">더 알아보기</a>
 													</c:otherwise>
 												</c:choose>
 											</c:if> 

@@ -36,9 +36,24 @@ public class IBoardBusinessDAO implements BoardBusinessDAO {
 	}
 
 	@Override
-	public int selectAnBoardBiz(int boardBizSeq) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public BoardBusinessDTO selectAnBoardBiz(int boardBizSeq) throws Exception {
+		String sql = "select * from board_business where board_biz_seq = ?";
+		return t.query(sql, new Object[] {boardBizSeq}, (rs, rowNum) -> {
+			BoardBusinessDTO bbiz = new BoardBusinessDTO();
+			bbiz.setBoardBizSeq(rs.getInt("board_biz_seq"));
+			bbiz.setBoardSeq(rs.getInt("board_seq"));
+			bbiz.setClickCount(rs.getInt("click_count"));
+			bbiz.setCostPerClick(rs.getInt("cost_per_click"));
+			bbiz.setCostPerMille(rs.getInt("cost_per_mille"));
+			bbiz.setIsWebsitePurposeOfPurchase(rs.getString("is_website_purpose_of_purchase"));
+			bbiz.setMoreInfoWebsite(rs.getString("more_info_website"));
+			bbiz.setRemainedPublicExposureCount(rs.getInt("remained_public_exposure_count"));
+			bbiz.setIsAllowed(rs.getString("is_allowed"));
+			bbiz.setRejectedMessage(rs.getString("rejected_message"));
+			bbiz.setRequestDate(rs.getString("requestdate"));	// 변수명 실수
+			bbiz.setDisposedDate(rs.getString("disposeddate"));	// 변수명 실수
+			return bbiz;
+		}).get(0);
 	}
 
 	@Override
@@ -97,6 +112,12 @@ public class IBoardBusinessDAO implements BoardBusinessDAO {
 			bbiz.setDisposedDate(rs.getString("disposeddate"));	// 변수명 실수
 			return bbiz;
 		});
+	}
+	
+	@Override
+	public int updateClickCount(BoardBusinessDTO bbiz) throws Exception{
+		String sql = "update board_business set click_count = ? where board_biz_seq = ?";
+		return t.update(sql, bbiz.getClickCount(), bbiz.getBoardBizSeq());
 	}
 	
 }
