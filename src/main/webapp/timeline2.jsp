@@ -553,7 +553,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>${map[status.index].location_name}
 									</a>
 								</c:otherwise>
 							</c:choose>

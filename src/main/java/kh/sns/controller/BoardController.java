@@ -97,7 +97,7 @@ public class BoardController {
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
 		List<Integer> maxImgHeight = new ArrayList<>();
-		
+		List<Board_LocationDTO> mapArr = new ArrayList<>(); // 지도
 		List<String> trend = new ArrayList<>();
 		
 		List<BoardBusinessDTO> adList = new ArrayList<>();
@@ -275,7 +275,21 @@ public class BoardController {
 			e.printStackTrace();
 		}	  
 		
+		//지도
+		try {
+			for(int i = 0; i < list.size(); i++) {
+				System.out.println("for문 들어옴");
+				mapArr.add(boardService.location(list.get(i).getBoard_seq()));	
+			}
+			for(int i = 0; i < mapArr.size(); i++) {
+				System.out.println(mapArr.get(i).getLocation_name());
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		mav.addObject("map", mapArr);
 		mav.addObject("maxmap", maxMap);
 		mav.addObject("result", list);
 		mav.addObject("result2", media);
