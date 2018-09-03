@@ -27,9 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
@@ -44,6 +42,7 @@ import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardBusinessService;
+import kh.sns.interfaces.BoardDAO;
 import kh.sns.interfaces.BoardService;
 import kh.sns.interfaces.Board_BookmarkService;
 import kh.sns.interfaces.Board_CommentService;
@@ -72,14 +71,20 @@ public class BoardController {
 	@Autowired	private Member_CalendarService calService;
 	@Autowired	private BoardBusinessService bbs;
 	
+	@Autowired	private BoardDAO boarddao;
 	static final int NAV_COUNT_PER_PAGE = 15; 
-	static final int TOUR_PER_PAGE = 30;
+	static final int TOUR_PER_PAGE = 15;
+	static final int SEARCH_PER_PAGE = 12;
 
 	@RequestMapping("/feed.bo")
 	public ModelAndView toFeed(HttpServletResponse response, HttpServletRequest request, HttpSession seesion) {
 		ModelAndView mav = new ModelAndView();
 		String id = (String) seesion.getAttribute("loginId");
 
+		List<BoardDTO> listAll =new ArrayList<BoardDTO>();
+		List<List<Board_MediaDTO>> mediaAll = new ArrayList<>();
+		Map<Integer,Integer> maxMap = new HashMap<>();
+		
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		List<Board_CommentDTO> list1 = new ArrayList<>();
 		Map<Integer,List<Board_CommentDTO>> commentlist = new HashMap<>();
@@ -92,6 +97,7 @@ public class BoardController {
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
 		List<Integer> maxImgHeight = new ArrayList<>();
+		
 		List<String> trend = new ArrayList<>();
 		
 		List<BoardBusinessDTO> adList = new ArrayList<>();
@@ -107,6 +113,7 @@ public class BoardController {
 
 		try {
 			/*list = boardService.getFeed(id);*/
+			listAll = boardService.getFeed(id);
 			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
 			int pickAdsCount = NAV_COUNT_PER_PAGE / 5;
 			if(list.size() < 5) {
@@ -165,25 +172,60 @@ public class BoardController {
 			}
 			
 			
-			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia"); 
-
-
-			for(List<Board_MediaDTO> mlist : media) { 
+			for(int i = 0; i < listAll.size(); i++) {
+				if(listAll.get(i).getBoard_seq() < 0) {
+					mediaAll.add(boardService.search2(-1 * listAll.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					mediaAll.add(boardService.search2(listAll.get(i).getBoard_seq()));
+				}
+				
+			}
+			
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");       
+ 
+				
+			for(List<Board_MediaDTO> mlist : media) {  
 				double max = 0;
 				for(Board_MediaDTO dto : mlist) {
+					System.out.println("요기는나와야" +realPath+dto.getSystem_file_name());  
 					BufferedImage bimg = ImageIO.read(new File(realPath+dto.getSystem_file_name()));
-					System.out.println(realPath+dto.getSystem_file_name());
-					double height = bimg.getHeight();
+					
+					double height = bimg.getHeight(); 
 					double width = bimg.getWidth();
 					height = 600*height/width;   
-					;
+					
 					if(max<height) { 
 						max = height;
 					}
-
-				}
+					
+				} 
 				maxImgHeight.add((int)max);   
 				System.out.println("max:" + max);     
+			}
+			
+			
+			
+			
+			for(List<Board_MediaDTO> mlistall : mediaAll) {    
+				double max = 0;
+				for(Board_MediaDTO dto1 : mlistall) {
+					System.out.println("요기는나와야" +realPath+dto1.getSystem_file_name());  
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto1.getSystem_file_name()));
+					
+					double height = bimg.getHeight(); 
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+				
+					if(max<height) { 
+						max = height;
+					}
+					maxMap.put(dto1.getBoard_seq(), (int)max);
+					for(int board_seq : maxMap.keySet()) {
+						System.out.println(board_seq + " ::::: " + maxMap.get(board_seq));     
+					}
+				} 
+			
 			}
 
 
@@ -224,6 +266,7 @@ public class BoardController {
 		      
 			for(int tmp : mark) {
 				mapmark.put(tmp, "y");
+				System.out.println("고뤠? " + tmp);  
 			}
 			
 			trend = searchService.trend();
@@ -231,6 +274,9 @@ public class BoardController {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
+		
+		
+		mav.addObject("maxmap", maxMap);
 		mav.addObject("result", list);
 		mav.addObject("result2", media);
 		mav.addObject("like", maplike);
@@ -242,6 +288,7 @@ public class BoardController {
 		mav.addObject("NAV_COUNT_PER_PAGE", NAV_COUNT_PER_PAGE);
 		
 		// 광고 관련 
+    
 		mav.addObject("adList", adList);
 		mav.addObject("membersNick", membersNick);
 		
@@ -259,7 +306,7 @@ public class BoardController {
 	
 	@RequestMapping("/feedForJson.ajax")
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
-		
+
 		if(start == null) {
 			start = String.valueOf(NAV_COUNT_PER_PAGE);
 		} 
@@ -280,8 +327,15 @@ public class BoardController {
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		List<FollowInfo> follow_list = new ArrayList<>();
-
+		
 		List<Integer> maxImgHeight = new ArrayList<>();
+		
+		
+		List<BoardDTO> listAll =new ArrayList<BoardDTO>();
+		List<List<Board_MediaDTO>> mediaAll = new ArrayList<>();
+		Map<Integer,Integer> maxMap = new HashMap<>();
+		
+		
 		
 		int startInt = Integer.parseInt(start);
 		
@@ -289,10 +343,49 @@ public class BoardController {
 		int nextStartNum = startInt + NAV_COUNT_PER_PAGE;
 
 		try {
+			listAll = boardService.getFeed(id);
+			for(int i = 0; i < listAll.size(); i++) {
+				if(listAll.get(i).getBoard_seq() < 0) {
+					mediaAll.add(boardService.search2(-1 * listAll.get(i).getBoard_seq()));
+					// 음수인 경우 양수로 변환
+				} else {
+					mediaAll.add(boardService.search2(listAll.get(i).getBoard_seq()));
+				}
+				
+			}
+			
+			
+			String realPath = request.getSession().getServletContext().getRealPath("AttachedMedia/");      
+			for(List<Board_MediaDTO> mlistall : mediaAll) {    
+				double max = 0;
+				for(Board_MediaDTO dto1 : mlistall) {
+					System.out.println("요기는나와야" +realPath+dto1.getSystem_file_name());  
+					BufferedImage bimg = ImageIO.read(new File(realPath+dto1.getSystem_file_name()));
+					
+					double height = bimg.getHeight(); 
+					double width = bimg.getWidth();
+					height = 600*height/width;   
+				
+					if(max<height) {      
+						max = height;
+					}
+					maxMap.put(dto1.getBoard_seq(), (int)max);
+					for(int board_seq : maxMap.keySet()) {
+						System.out.println(board_seq + " ::::: " + maxMap.get(board_seq));     
+					}
+				} 
+			
+			}
+
+			
+			
+			
+			
+			
 			follow_list = member_followService.toFeed(id);	// 팔로우 리스트
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}  
 
 		try {
 			list = boardService.getFeed(id, startInt, startInt + NAV_COUNT_PER_PAGE - 1);	// 게시글 리스트
@@ -353,6 +446,7 @@ public class BoardController {
 		
 		Map<String, Object> outputJson = new HashMap<>();
 		outputJson.put("list", list);	
+		outputJson.put("maxmap", maxMap);  
 		outputJson.put("media", media);	
 		outputJson.put("maplike", maplike);
 		outputJson.put("mapmark", mapmark);
@@ -511,10 +605,8 @@ public class BoardController {
 		result3.add(maxwidth);
 
 		new Gson().toJson(result3,response.getWriter());
-
 	}   
-
-
+	
 
 	@RequestMapping("/boardDelete.bo")
 	public ModelAndView deleteBoard(HttpSession session, HttpServletResponse response, int seq) throws Exception {
@@ -525,10 +617,11 @@ public class BoardController {
 		return mav;	
 	}
 
-
 	@RequestMapping("/boardModify.bo")
 	public void modifyBoard(HttpSession seesion, HttpServletResponse response, BoardDTO dto) throws Exception {
 		int result = boardService.modifyBoard(dto);
+		int tagdelrs = boardService.deleteBoardTags(dto.getBoard_seq());
+		int[] hashTagResult = boarddao.insertHashTags(dto,0);
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().print(result);
 		response.getWriter().flush();
@@ -538,12 +631,12 @@ public class BoardController {
 
 	//Search(검색)
 	@RequestMapping("/search.bo")
-	public ModelAndView search(HttpSession session, String search) throws Exception{
-		
+	public ModelAndView search(HttpServletRequest request, HttpSession session, String search) throws Exception{
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
-		searchService.insertSearch(id,search);  
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		searchService.insertSearch(id, search);  
+		/*List<BoardDTO> result = boardService.search(search);*/		// 전체 글
+		List<BoardDTO> result = boardService.search(search, 1, SEARCH_PER_PAGE);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
 		List<Integer> mark = new ArrayList<>();
@@ -578,6 +671,17 @@ public class BoardController {
 				dto.setContents(" ");  
 			}
 		}
+		
+		/* tour.bo의 오브젝트
+		mav.addObject("bookmark", mapmark);
+		mav.addObject("category", category);	// 카테고리
+		mav.addObject("result", result);		// 전체 
+		mav.addObject("result2", result2);		// 사진 
+		mav.addObject("result3", map);			// 누를때
+		mav.addObject("result4",countlike);		// 조회
+		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
+		 */
 
 		System.out.println("사이즈 : " + result.size());
 		mav.addObject("result", result); 		// 검색어
@@ -585,19 +689,31 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
-		mav.addObject("search", search); 
-		mav.setViewName("NewFile.jsp");   
-		return mav;  
-		
+		mav.addObject("SEARCH_PER_PAGE", SEARCH_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
+		mav.setViewName("tour.jsp");
+		return mav;
 	}
 	
-	
-	@RequestMapping("/search1.bo")
-	public ModelAndView search1(HttpSession session, String search) throws Exception{
-		ModelAndView mav = new ModelAndView();
+	@RequestMapping("/searchForJson.ajax")
+	public void searchForJsonAjax(HttpServletResponse response, HttpServletRequest request, HttpSession session, String start, String search) throws Exception {
+		System.out.println("searchForAjax");
 		String id = (String)session.getAttribute("loginId");
-		 
-		List<BoardDTO> result = boardService.search(search);		// 전체 글
+		if(start == null) {
+			start = String.valueOf(SEARCH_PER_PAGE);
+		} 
+		
+		response.setCharacterEncoding("UTF8");
+        response.setContentType("application/json");
+        
+		int startInt = Integer.parseInt(start);
+		
+		boolean isAvailableMoreData = true;
+		int nextStartNum = startInt + SEARCH_PER_PAGE;
+		// insertsearch는 중복하여 넣을 팔요가 없음
+		List<BoardDTO> result = boardService.search(search, startInt, startInt + SEARCH_PER_PAGE - 1);
+		System.out.println("@@start: " + start);
+		result.forEach(System.out::println);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
 		List<Integer> mark = new ArrayList<>();
@@ -606,7 +722,7 @@ public class BoardController {
 		for(int tmp : mark) {
 			mapmark.put(tmp, "y");
 		}
-		//////////////////////////////
+		
 		List<int[]> result4 = board_likeService.selectLikeCount();	// 조회
 
 		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
@@ -616,12 +732,16 @@ public class BoardController {
 		for(int i = 0;i < result.size(); i++) { 
 			result2.add(boardService.search2(result.get(i).getBoard_seq()));
 		}
-
+		
 		// 누를때
 		for(int tmp : result3) {
 			map.put(tmp, "y");
 		}
-
+		
+		for(int[] list : result4) {
+			countlike.put(list[0], list[1]);
+		}
+		
 		// 조회
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
@@ -632,17 +752,39 @@ public class BoardController {
 				dto.setContents(" ");  
 			}
 		}
-
-		System.out.println("사이즈 : " + result.size());
-		mav.addObject("result", result); 		// 검색어
-		mav.addObject("result2", result2);		// 사진
-		mav.addObject("like", map);			// 누를때
-		mav.addObject("result4", countlike);	// 조회
-		mav.addObject("bookmark", mapmark);
-		mav.addObject("search", search); 
-		mav.setViewName("search1.jsp");  
-		return mav;  
+		
+		if(result.size() == 0) {
+			isAvailableMoreData = false;
+		}
+		
+		/*
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("category", category);
+		outputJson.put("result", result);
+		outputJson.put("media", result2);
+		outputJson.put("map", map);
+		outputJson.put("countlike", countlike);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
+		outputJson.put("nextStartNum", nextStartNum);
+		 */
+		
+		Map<String, Object> outputJson = new HashMap<>();
+		outputJson.put("mapmark", mapmark);
+		outputJson.put("result", result);
+		outputJson.put("media", result2);
+		outputJson.put("map", map);
+		outputJson.put("countlike", countlike);
+		outputJson.put("isAvailableMoreData", isAvailableMoreData);
+		outputJson.put("nextStartNum", nextStartNum);
+		
+		try {
+			new Gson().toJson(outputJson, response.getWriter());
+		} catch (JsonIOException | IOException e) {
+			e.printStackTrace();
+		}
 	}
+
+		
 	
 
 	//tour(둘러보기)  
@@ -720,7 +862,7 @@ public class BoardController {
 	
 	// 무한스크롤 적용
 	@RequestMapping("/tour.bo")
-	public ModelAndView copyOfGoTour(HttpSession session, String cat, String c) throws Exception {
+	public ModelAndView copyOfGoTour(HttpServletRequest request, HttpSession session, String cat, String c) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		String id = (String)session.getAttribute("loginId");
 		String category = null;
@@ -799,6 +941,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
 		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
 		return mav;
 	}
@@ -882,9 +1025,6 @@ public class BoardController {
  					break;
  				} 				
 			}
-			if(result.size() == 0) {
-				isAvailableMoreData = false;
-			}
 		}
 		
 		if(result.size() == 0) {
@@ -923,7 +1063,6 @@ public class BoardController {
 		} catch (JsonIOException | IOException e) {
 			e.printStackTrace();
 		}
-		
 		
 		
 	}

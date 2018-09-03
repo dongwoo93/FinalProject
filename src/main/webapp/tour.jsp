@@ -107,7 +107,20 @@ function unmarkit(e) {
 
 <div class="dropdown">
 	<div class="dropdown-divider" id="tagmenu"></div>
-		<label class="top" style="font-size: 12px;font-family: NANUMBARUNPENR !important;">둘러보기</label>
+		<label class="top" style="font-size: 12px;font-family: NANUMBARUNPENR !important;">
+			<c:choose>
+				<c:when test="${pageName eq '/tour.bo'}">
+					둘러보기
+				</c:when>
+				<c:when test="${pageName eq '/search.bo'}">
+					검색 결과: #${ param.search }
+				</c:when>
+				<c:otherwise>
+					글쎄요.. 뭘까요?
+				</c:otherwise>
+			</c:choose>
+		</label>
+		<c:if test="${pageName eq '/tour.bo'}">
 			<button class="btn btn-light text-dark dropdown-toggle down" type="button" id="dropdownMenuButton" 
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${category}</button>
 			<div class="dropdown-divider" id="tagmenu"></div>
@@ -118,6 +131,7 @@ function unmarkit(e) {
 				<div class="dropdown-divider"></div>
 				<a href="tour.bo?cat=3" class="dropdown-item" style="cursor: pointer;font-family: NANUMBARUNPENR !important;font-size: 14px;"><i class="fas fa-tags mr-1 pr-1 fa-1x"></i>인기 태그 순</a>
 				</div>
+		</c:if>
 		
 </div>
 
@@ -243,21 +257,41 @@ function unmarkit(e) {
 
 <!-- 무한스크롤 -->
 <script>
-
-	
-	var globalStartNum = ${TOUR_PER_PAGE + 1}
+	var globalAjaxUrl = "";
+	var globalStartNum = 16;
+	var globalCat = "";
+	var globalSearch = "";
+	console.log("${pageName}")
+	console.log("${pageName}" == "/search.bo")
+	if("${pageName}" == "/tour.bo"){
+		globalAjaxUrl = "tourForJson.ajax"
+		globalStartNum = ${TOUR_PER_PAGE + 1}
+		
+		if("${param.cat}" == ""){
+			console.log("param cat 값 없음")
+			globalCat = "1"
+		} else {
+			globalCat = "${param.cat}"
+		}
+		
+	} else if("${pageName}" == "/search.bo") {
+		globalAjaxUrl = "searchForJson.ajax"
+		globalStartNum = ${SEARCH_PER_PAGE + 1};
+		globalSearch = "${param.search}"
+	}
 	
 	$(window).scroll(function(){
 		if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
 			console.log('xcccccx');
 			$.ajax({
-	            url: "tourForJson.ajax", // 처리할 페이지(서블릿) 주소
+	            url: globalAjaxUrl, // 처리할 페이지(서블릿) 주소
 	            type: "get",
-	            data: {start: globalStartNum, cat: '${param.cat}'},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+	            data: {start: globalStartNum, cat: globalCat, search: globalSearch},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
 	            success: function(r) {
 	            
 	        		console.log(r);
 	        		console.log("cat: ${param.cat}")
+	        		console.log("search: ${param.search}")
 	           		if(r.isAvailableMoreData){	// 가져올 게시글이 더 있나요?           		
 	            		var c = "";
 	           			// c += "<div class='card-columns'>"
@@ -364,6 +398,9 @@ function unmarkit(e) {
 	        });
 			
 	    
+		}
+		else{
+			console.log("짧음")
 		}
 	}); // window scroll 끝
 

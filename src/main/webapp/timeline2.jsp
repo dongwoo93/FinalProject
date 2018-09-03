@@ -8,10 +8,55 @@
 <script src="resources/js/timeline.js"></script>
 <script>
 
-	$(function () {
+
+
+function follow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "follow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	         $(e).next().show(); 
+	         
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	} 
+	 
+function unfollow(id1, id2, e) {
+	   var id = id1; 
+	   var targetId = id2; 
+	   $.ajax({ 
+	      url : "deletefollow.do", 
+	      type : "post", 
+	      data : { 
+	         id : id, 
+	         targetId : targetId, 
+	      }, 
+	      success : function(resp) {
+	    	  $(e).hide(); 
+	    	  $(e).prev().show(); 
+	        
+	          
+	      }, 
+	      error : function() { 
+	         console.log("에러 발생!"); 
+	         } 
+	      }) 
+	}
 
 function likeit(e) {   
 	 var board_seq = $(e).attr("value");
+
 	    
    $.ajax({  
       url : "like.bo",
@@ -54,6 +99,7 @@ function unlikeit(e) {
 }
 
 /////////// like & unlike + real time alert
+
 
 function getCaretPosition(editableDiv) {
 	    var caretPos = 0,
@@ -130,27 +176,134 @@ function getCaretPosition(editableDiv) {
 	        textRange.select();
 	    }
 	}
+	
+	
+	   
+	function hide(e){ 
+		var seq = $(e).attr("value");
+		     
+		$("#contdiv"+seq).attr("style","word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;"); 
+		$("#contplus"+seq).attr("style","color:gray;");        
+		$(e).remove();   
+		     	    
+		
+	}
+	
 
+
+	$(document).on('keypress',"div[id*='comment'].insertfield",function(event){   
+	    
+	    var keycode = (event.keyCode ? event.keyCode : event.which);  
+	    var obj = this
+	    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
+	    if(keycode == '13'){ 
+	    	
+	       var text = $(this).text();
+	       if(text == ""){
+	          alert("댓글을 입력해주세요");
+	       }
+       		else { 
+       			event.preventDefault();     
+           $.ajax({ 
+                  type: "POST",  
+                  url: "comment.co",    
+                  data: {board_seq : toBoardSeq, comment_contents : text},
+                  success : function(seq) {
+                	 
+                	  $(obj).html("");
+                  /*  $("#comment${tmp.board_seq}").val("");   */  
+                  var regex = /(#[^#\s,;<>.]+)/gi;               
+               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+                var newtxt = "<span class=fugue>" + text.replace(
+  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+										"</a><span class=fugue>") + "</span>";
+					newtxt += "<kz></kz>";	            	
+                  
+                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+                   $("#ul"+seq).hide().fadeIn(500);  
+                   //&nbsp&nbsp모두 commenttmp.value.size()개의 댓글보기
+                   /* var commentText = $("#myComment" + seq).text();
+                   alert(commentText)
+    */                $("#myComment" + seq).text();
+                   
+                   $("#commenttxt" + seq).keyup(function(e){
+                	   // =================== 복붙 =================== 
+                	   if(e.keyCode === 32){
+                		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+                           } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+                           } else {
+                               return;
+                           }
+
+                           var regex = /(#[^#\s,;<>. ]+)/gi;
+                           if (regex) {
+                               var newtxt = "<span class=fugue>" + $(this).text()
+                                   .replace(regex, "</span><span class=text-danger>" + "$1" +
+                                       "</span><span class=fugue>") + "</span>"
+
+                               // console.log($('#editorDiv').text().length);   
+                               // console.log(newtxt)   
+                               newtxt += "<kz></kz>"
+                               $(this).html(newtxt)
+                               var el = this;
+                               console.log("childNodes: " + el.childNodes.length);
+                               var range = document.createRange();
+                               var sel = window.getSelection();
+                               range.setStart(el.lastChild, 0);
+                               range.collapse(false);
+                               sel.removeAllRanges();
+                               sel.addRange(range);
+
+                               $(this).focusout();
+                               $(this).focus();
+                               if (parseInt($('#caretposition').val()) == $(this).text().length) {
+
+                               }
+
+                           }
+                	   } 
+                	   
+                	   
+                	// =================== 복붙 =================== 
+                   });
+                   
+                   $("#commenttxt" + seq).keypress(function(e){
+						if(e.keyCode === 13) {
+							 e.preventDefault();
+						modComment(this);
+					 }
+					});
+                    
+				  },
+                  error: function(){
+                      console.log("에러 발생");
+                  }
+             }); //ajax 
+           }    
+        }  
+    });
+	
+	
+	
+ 	
+	$(document).on("focus","div[id*=comment].insertfield", function() {  
+    	
+    		$(this).html("");
+    	
+    });
+          
+    $(document).on("focusout","div[id*=comment].insertfield", function() { 
+    	if($(this).text() == ""){
+    		$(this).html("<span class=text-muted>댓글 달기...</span>");
+    		     
+    	}
+    });         
+  
     $(document).ready(function(){
+    	  
     	
-    	var globalThisCommentIsFocusedOnFirst = true;
-    	
-        $("div[id*=comment].insertfield").focus(function() {
-        	if(globalThisCommentIsFocusedOnFirst){
-        		$(this).html("");
-            	globalThisCommentIsFocusedOnFirst = false;
-        	}
-        	
-        });
-        
-        $("div[id*=comment].insertfield").focusout(function() {
-        	if($(this).text() == ""){
-        		$(this).html("<span class=text-muted>댓글 달기...</span>");
-        		globalThisCommentIsFocusedOnFirst = true;
-        	}
-        })
-    	
-
+    
     	function makeupHashtag (e) {
 
             if ((e.keyCode === 32)) {
@@ -200,96 +353,104 @@ function getCaretPosition(editableDiv) {
     	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
     
     	$("div[id*='commenttxt']").keypress(function(e){
-			if(e.keyCode === 13) {
+			if(e.keyCode === 13) { 
+				 e.preventDefault();
 			modComment(this);
-		 }
-		})
+		 } 
+		})     
 		
-		$("div[id*='comment'].insertfield").keypress(function(event){
-		    var keycode = (event.keyCode ? event.keyCode : event.which);
-		    var obj = this
-		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
-		    if(keycode == '13'){
-		       var text = $(this).text();
-		       if(text == ""){
-		          alert("댓글을 입력해주세요");
-		       }
-	       		else { 
-	    	   
-	           $.ajax({ 
-	                  type: "POST",  
-	                  url: "comment.co",    
-	                  data: {board_seq : toBoardSeq, comment_contents : text},
-	                  success : function(seq) {
+// 		$("div[id*='comment'].insertfield").keypress(function(event){
+      
+// 		    var keycode = (event.keyCode ? event.keyCode : event.which);  
+// 		    var obj = this
+// 		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
+// 		    if(keycode == '13'){ 
+		    	
+// 		       var text = $(this).text();
+// 		       if(text == ""){
+// 		          alert("댓글을 입력해주세요");
+// 		       }
+// 	       		else { 
+// 	       			event.preventDefault();     
+// 	           $.ajax({ 
+// 	                  type: "POST",  
+// 	                  url: "comment.co",    
+// 	                  data: {board_seq : toBoardSeq, comment_contents : text},
+// 	                  success : function(seq) {
 	                	 
-	                	  $(obj).html("");
-	                  /*  $("#comment${tmp.board_seq}").val("");   */  
-	                  var regex = /(#[^#\s,;<>.]+)/gi;            
-	               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
-	                var newtxt = "<span class=fugue>" + text.replace(
-	  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-											"</a><span class=fugue>") + "</span>";
-						newtxt += "<kz></kz>";	            	
-	                
-	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
-	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
-	                   $("#ul"+seq).hide().fadeIn(500);  
+// 	                	  $(obj).html("");
+// 	                  /*  $("#comment${tmp.board_seq}").val("");   */  
+// 	                  var regex = /(#[^#\s,;<>.]+)/gi;               
+// 	               // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
+// 	                var newtxt = "<span class=fugue>" + text.replace(
+// 	  			                    		regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+// 											"</a><span class=fugue>") + "</span>";
+// 						newtxt += "<kz></kz>";	            	
+	                  
+// 	                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+// 	                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
+// 	                   $("#ul"+seq).hide().fadeIn(500);  
+// 	                   //&nbsp&nbsp모두 commenttmp.value.size()개의 댓글보기
+// 	                   /* var commentText = $("#myComment" + seq).text();
+// 	                   alert(commentText)
+// 	    */                $("#myComment" + seq).text();
 	                   
-	                   $("#commenttxt" + seq).keyup(function(e){
-	                	   // =================== 복붙 =================== 
-	                	   if(e.keyCode === 32){
-	                		   if (parseInt($('#caretposition').val()) == 0) {                     	 
-	                           } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
-	                           } else {
-	                               return;
-	                           }
+// 	                   $("#commenttxt" + seq).keyup(function(e){
+// 	                	   // =================== 복붙 =================== 
+// 	                	   if(e.keyCode === 32){
+// 	                		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+// 	                           } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+// 	                           } else {
+// 	                               return;
+// 	                           }
 
-	                           var regex = /(#[^#\s,;<>. ]+)/gi;
-	                           if (regex) {
-	                               var newtxt = "<span class=fugue>" + $(this).text()
-	                                   .replace(regex, "</span><span class=text-danger>" + "$1" +
-	                                       "</span><span class=fugue>") + "</span>"
+// 	                           var regex = /(#[^#\s,;<>. ]+)/gi;
+// 	                           if (regex) {
+// 	                               var newtxt = "<span class=fugue>" + $(this).text()
+// 	                                   .replace(regex, "</span><span class=text-danger>" + "$1" +
+// 	                                       "</span><span class=fugue>") + "</span>"
 
-	                               // console.log($('#editorDiv').text().length);   
-	                               // console.log(newtxt)   
-	                               newtxt += "<kz></kz>"
-	                               $(this).html(newtxt)
-	                               var el = this;
-	                               console.log("childNodes: " + el.childNodes.length);
-	                               var range = document.createRange();
-	                               var sel = window.getSelection();
-	                               range.setStart(el.lastChild, 0);
-	                               range.collapse(false);
-	                               sel.removeAllRanges();
-	                               sel.addRange(range);
+// 	                               // console.log($('#editorDiv').text().length);   
+// 	                               // console.log(newtxt)   
+// 	                               newtxt += "<kz></kz>"
+// 	                               $(this).html(newtxt)
+// 	                               var el = this;
+// 	                               console.log("childNodes: " + el.childNodes.length);
+// 	                               var range = document.createRange();
+// 	                               var sel = window.getSelection();
+// 	                               range.setStart(el.lastChild, 0);
+// 	                               range.collapse(false);
+// 	                               sel.removeAllRanges();
+// 	                               sel.addRange(range);
 
-	                               $(this).focusout();
-	                               $(this).focus();
-	                               if (parseInt($('#caretposition').val()) == $(this).text().length) {
+// 	                               $(this).focusout();
+// 	                               $(this).focus();
+// 	                               if (parseInt($('#caretposition').val()) == $(this).text().length) {
 
-	                               }
+// 	                               }
 
-	                           }
-	                	   } 
+// 	                           }
+// 	                	   } 
 	                	   
 	                	   
-	                	// =================== 복붙 =================== 
-	                   });
+// 	                	// =================== 복붙 =================== 
+// 	                   });
 	                   
-	                   $("#commenttxt" + seq).keypress(function(e){
-							if(e.keyCode === 13) {
-							modComment(this);
-						 }
-						});
+// 	                   $("#commenttxt" + seq).keypress(function(e){
+// 							if(e.keyCode === 13) {
+// 								 e.preventDefault();
+// 							modComment(this);
+// 						 }
+// 						});
 	                    
-					  },
-	                  error: function(){
-	                      console.log("에러 발생");
-	                  }
-	             }); //ajax 
-	           }    
-	        }  
-	    });
+// 					  },
+// 	                  error: function(){
+// 	                      console.log("에러 발생");
+// 	                  }
+// 	             }); //ajax 
+// 	           }    
+// 	        }  
+// 	    });
     	
     });
 </script>
@@ -309,31 +470,42 @@ function getCaretPosition(editableDiv) {
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
 						<div class="profile-image">
-							<img class="ml-3 mr-2 pic"
-								src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
-							
-							<br> 
+
+							<c:choose>
+								<c:when test="${profile_pic.containsKey(tmp.id)}">
+
+
+									<img class="ml-3 mr-2 pic"
+										src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+
+								</c:when>
+								<c:otherwise>
+									<img class="ml-3 mr-2 pic" src="AttachedMedia/standard.jpg">
+								</c:otherwise>
+							</c:choose>
+
+							<br>
 							<c:choose>
 								<c:when test="${tmp.thisArticleForAd eq 1}">
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;font-weight:bold;">${ membersNick[status.index] }<br><span class="text-warning">Sponsored</span>
 									</a>
 								</c:when>
 								<c:otherwise>
 									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#4f70ce;">${tmp.id}<br>Dangsan.South Korea
+										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>Dangsan.South Korea
 									</a>
 								</c:otherwise>
 							</c:choose>
-							
+
 						</div>
 						<div class="mt-2" id="boardimg">
-							
+
 
 
 							<div id="myCarousel${status.index}" class="carousel slide"
 								data-ride="carousel" data-interval="false" style="z-index: 5;">
-								<ul id="carousel-indicators" class="carousel-indicators" >
+								<ul id="carousel-indicators" class="carousel-indicators">
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
 									<c:forEach begin="1" var="media"
@@ -341,9 +513,9 @@ function getCaretPosition(editableDiv) {
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>  
-								<div id="carousel-inner" class="carousel-inner" 
-								style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
+								</ul>
+								<div id="carousel-inner" class="carousel-inner"
+									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
 									<div id="firstItem" class="carousel-item active">
 										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -369,43 +541,48 @@ function getCaretPosition(editableDiv) {
 								</a>
 							</div>
 
-						</div>						
+						</div>
 
 						<c:if test="${ tmp.thisArticleForAd eq 1 }">
 							<div class=row style="z-index: 199; position: relative;">
 								<div class=col-12>
 									<div class="btn btn-secondary btn-lg btn-block">
 										<c:forEach var="ad" items="${ adList }">
-											<c:if test="${ ad.boardSeq eq tmp.board_seq }">
+
+											<c:if
+												test="${ Math.abs(ad.boardSeq) eq Math.abs(tmp.board_seq) }">
+
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
-														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired
+															Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
-														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
+														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러
+															가기</a>
 													</c:when>
 													<c:otherwise>
-														<a href="${ ad.moreInfoWebsite }" class="text-light">더 알아보기</a>
+														<a href="${ ad.moreInfoWebsite }" class="text-light">더
+															알아보기</a>
 													</c:otherwise>
 												</c:choose>
-											</c:if> 
+											</c:if>
 										</c:forEach>
 									</div>
 								</div>
 							</div>
-						</c:if> 
+						</c:if>
 
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
-									<a class="navbar-brand"> 
-									<c:choose>    
-											<c:when test="${like.containsKey(tmp.board_seq)}">
+									<a class="navbar-brand"> <c:choose>
+											<c:when test="${like.containsKey( Math.abs(tmp.board_seq) )}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this)"></i>  
-												<i value="${tmp.board_seq}"  
+													onclick="likeit(this)"></i>
+												<i value="${tmp.board_seq}"
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
@@ -420,10 +597,10 @@ function getCaretPosition(editableDiv) {
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
-										</c:choose>  
-										 <i class="far fa-comment icon"></i>
+										</c:choose> <i class="far fa-comment icon"></i>
 									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
-											<c:when test="${bookmark.containsKey(tmp.board_seq)}">
+											<c:when
+												test="${bookmark.containsKey( Math.abs(tmp.board_seq))}">
 
 												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" style="display: none;"
@@ -457,26 +634,46 @@ function getCaretPosition(editableDiv) {
 								<!-- 글내용자리 -->
 								<div class="navbar-nav">
 									<a class="ml-1 idtxt" id="con${tmp.board_seq}"
-										href="board.bo?id=${tmp.id}&cat=1" style="font-size: 14px;color: #4f70ce;">${tmp.id}</a>
+										href="board.bo?id=${tmp.id}&cat=1" style="font-weight:bold;font-size: 14px;color: #12bbad;">${tmp.id}</a>
+    
+									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
+										style="word-wrap: break-word; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 350px; height: 20px;">
+									</div>
+									<a id="contplus${tmp.board_seq}" class='pointer'
+										style="color: gray; display: none;">더보기</a>
 
-									<div class='pl-3' id="contdiv${tmp.board_seq}"
-										style="word-wrap: break-word; word-break: break-all"></div>
-									<script>
-							           
-							  var txt = "${tmp.contents}"; 
+									<script> 
+							 
+							  var txt = "${tmp.contents}";  
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");        
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
-							$("#contdiv${tmp.board_seq}").html(newtxt);    
-							  
+							$("#contdiv${tmp.board_seq}").html(newtxt);   
+							      
+						
 							function tag(e) {
 								var search = $(e).html().split("#")[1]; 
 								$(location).attr("href","search.bo?search="+search); 
 					
 							}
-
+							
+							 
+							  console.log(txt.length);     
+							if(txt.length > 48) {  
+								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
+							 }
+							$("#contplus${tmp.board_seq}").click(function() {     
+								$("#contdiv${tmp.board_seq}").attr("style","word-wrap: break-word; word-break: break-all;"); 
+								$("#contplus${tmp.board_seq}").attr("style","color:gray; display:none;");     
+								       
+								$("#contdiv${tmp.board_seq}").append("<a id='conthide${tmp.board_seq}' value = '${tmp.board_seq}' onclick='hide(this)' class='pointer pl-2' style='color:gray;'>접기</a>");     	    
+								
+							})
+						
+  
 		</script>
 								</div>
+
 								<!-- 글내용자리 -->
 
 								<p class="text-info pointer pt-4 mb-1"
@@ -496,13 +693,13 @@ function getCaretPosition(editableDiv) {
                      $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
                      var num = 0;
                      </script>
-								 				</c:if>
+												</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
 
 													<ul id="ul${comment.comment_seq}" style="display: none"
-														value="${comment.comment_seq}"  
-														onmouseover="commentover(this,'${comment.id}')"  
+														value="${comment.comment_seq}"
+														onmouseover="commentover(this)"
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a
@@ -514,7 +711,7 @@ function getCaretPosition(editableDiv) {
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
-								 							onclick="delComment(this)" class="pointer"></a></li>
+															onclick="delComment(this)" class="pointer"></a></li>
 														<li id='li4'><a id='commentmod${comment.comment_seq}'
 															value="${comment.comment_seq}" onclick="modComment(this)"
 															class="pointer"></a></li>
@@ -556,16 +753,10 @@ function getCaretPosition(editableDiv) {
 
 
 							<div class="crecodiv pl-2 py-2 navbar-nav">
-
-
-
-								<%-- 								<input type="text" placeholder="댓글 달기..."
-									name="comment_contents${tmp.board_seq}" class="creco ml-2 "
-									id="comment${tmp.board_seq}"> --%>
-
+ 
 								<div contenteditable=true class="creco ml-2 insertfield"
 									id="comment${ tmp.board_seq }">
-									<span class=text-muted>댓글 달기...</span>
+									<span class='text-muted ml-1'>댓글 달기...</span>
 								</div>
 
 								<div class="btn-group bg-white">
@@ -577,7 +768,7 @@ function getCaretPosition(editableDiv) {
 
 							</div>
 
-<!-- 여기다 그 스크립트 -->
+							<!-- 여기다 그 스크립트 -->
 						</div>
 						<!--cont  -->
 					</div>
@@ -602,8 +793,7 @@ function getCaretPosition(editableDiv) {
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
-<br>
-				<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -613,8 +803,23 @@ function getCaretPosition(editableDiv) {
 		
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
-					<li>	<img class="mr-3 pic"   
-								src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">       </li>
+					   <li>
+                 
+                  <c:choose>
+                  <c:when test="${profile_pic.containsKey(followtmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/> style="width:50px; height:50px;"">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"  
+                        src="AttachedMedia/standard.jpg" style="width:40px; height:40px;">
+                  </c:otherwise>
+               </c:choose></li> 
+					
+					
 					<li class="pt-2" style="width:45%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="idtxt"            
 								style="font-size: 14px; font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="board.bo?id=${followtmp.id}&cat=1">${followtmp.id}</a></li>
@@ -631,7 +836,7 @@ function getCaretPosition(editableDiv) {
 			   	</div>
 				</c:if><hr class="_5mToa">
 			</div>
-			
+			 
 			
 			  
 			<div class="container float" id=""    
@@ -643,7 +848,7 @@ function getCaretPosition(editableDiv) {
 					실시간 #트랜드     
 				</p>
 				<hr class="_5mToa">
-				<c:if test="${trend.size() > 0}">  
+				<c:if test="${trend.size() > 0}">       
 		  
 		  	<div style="overflow-y:auto; height:230px;">    		
 		<c:forEach var="trend" items="${trend}" varStatus="status" >
@@ -652,9 +857,9 @@ function getCaretPosition(editableDiv) {
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
 					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
 								href="">${status.count}</a></li>  
-					<li class="pt-2"><a id="keywordlink" style="color:#4f70ce;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
+					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
 			</div>
 			<script>
@@ -664,40 +869,35 @@ function getCaretPosition(editableDiv) {
 			}
 			
 			</script>
-		  
-				</c:forEach>
-			   	</div>
-		  
-		  
-				</c:if><hr class="_5mToa">
-			</div>
 
-
+							</c:forEach>
+						</div>
+</c:if><hr class="_5mToa"> 
 
 <!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
 			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
 				<div class="container">
 					<div class="row">
 						<div class="col-md-10">
-							<a href="footinfo.jsp"><p style="color:#212529;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
+							<a href="footinfo.jsp"><p style="color:#212529;font-weight:bold;"><i class="far fa-copyright"></i>SocialWired about정보.채용<br>개인정보처리방침 .약관.플랫폼</p></a>
 						
 							<p><i class="far fa-copyright"></i>2018SocialWired</p>
 						</div>
 					</div>
 				</div>
-			</div>	
-<!-- 			</div> -->
+				<!-- 			</div> -->
+
+			</div>
+
 
 		</div>
-  
+		<!-- container -->
 
 	</div>
-	<!-- container -->
-
-</div>
-<!-- centerwrapper -->
+	<!-- centerwrapper -->
 </div>
 <!--  allwrapper-->
+
 
 <div class="modal fade" id="changeBoardModal" tabindex="-1"
 	role="dialog"></div>
@@ -726,7 +926,7 @@ function getCaretPosition(editableDiv) {
 			</div>
 		</div>
 	</div>
-</div>  
+</div>
 
 <div class="modal" id="reportModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -761,9 +961,9 @@ function getCaretPosition(editableDiv) {
 
 	</div>
 </div>
-												
-					<!--                                  DM -->
-					<script>
+
+<!--                                  DM -->
+<script>
 					function openDm() {
 						reloadFriendlist("");
 						reloadMessengerlist();
@@ -966,122 +1166,128 @@ function getCaretPosition(editableDiv) {
 					
 					
 					</script>
-                     <div class="nav-side-menu" id="dm">
-					     <!-- Brand -->
-				            <div class="brand"><i class="fab fa-facebook-messenger mr-1"></i>Messenger</div>
-
-				            <!-- Search body -->
-				            <div>
-				                <input type="text" id="dmSearch" class="form-control" placeholder="Search" >
-				            </div>
-					  
-					        <div class="menu-list">
-					  
-					            <ul id="menu-content" class="menu-content collapse out">
-					         
-					                <li data-toggle="collapse" data-target="#currentmessenger" class="collapsed">
-					                  <a><i class="fab fa-fort-awesome-alt fa-lg"></i>최근 목록</a>
-					                </li>  
-					                <ul class="sub-menu collapse" id="currentmessenger">
-
-					                </ul>
-					                
-					            </ul>
-					            <li>
-					                  <a><i class="fas fa-circle onlineicon"></i>온라인 친구<span class="ml-2" id="onlinecount"></span></a>
-					                </li>
-					                <ul id="onlinefriendlist">
-
-					                </ul> 
-					                <li>
-					                  <a><i class="fas fa-circle"></i>오프라인 친구<span class="ml-2" id="offlinecount"></span></a>
-					                </li>
-					                <ul id="offlinefriendlist">
-					    	 			 
-					    		    </ul>
-					    	 </div>
-					    	 
-					</div>
-					
-					
-<!--          DM메세지창 -->
-                 <div class="chatbox-holder">
-  
-  <div class="chatbox group-chat" style="display:none;">
-    <div class="chatbox-top">
-      <div class="chatbox-avatar">
-        <a target="_blank" href=""><img src="루이.jpg" /></a>
-      </div>
-      
-      <div class="chat-group-name" id="dmnickname">
-        
-      </div>
-      <input type="hidden" id="userId">
-      <div class="chatbox-icons">
-        <label for="chkSettings"><i class="fa fa-gear"></i></label><input type="checkbox" id="chkSettings" />
-        <div class="settings-popup">
-          <ul>
-            <li><a href="#">Group members</a></li>
-            <li><a href="#">Add members</a></li>
-            <li><a href="#">Delete members</a></li>
-            <li><a href="#">Leave group</a></li>
-          </ul>
-        </div>
-        <a href="javascript:void(0);"><i class="fa fa-minus"></i></a>
-        <a href="javascript:void(0);"><i class="fa fa-close"></i></a>       
-      </div>      
-    </div>
-    
-    <div class="chat-messages" id="messagebox">
-
-            
-    </div>
-    
-    <div class="chat-input-holder">
-      <input type="text" class="chat-input" id="sendDm">
-    </div>
-    
-    <div class="attachment-panel" style='overflow-x:scroll; white-space:nowrap'>
-    	<img src="resources/images/imoticon/1.png" class="imoticon">
-    	<img src="resources/images/imoticon/2.png" class="imoticon">
-    	<img src="resources/images/imoticon/3.png" class="imoticon">
-    	<img src="resources/images/imoticon/4.png" class="imoticon">
-    	<img src="resources/images/imoticon/5.png" class="imoticon">
-    	<img src="resources/images/imoticon/6.png" class="imoticon">
-    	<img src="resources/images/imoticon/7.png" class="imoticon">
-    	<img src="resources/images/imoticon/8.png" class="imoticon">
-    	<img src="resources/images/imoticon/9.png" class="imoticon">
-    	<img src="resources/images/imoticon/10.png" class="imoticon">
-    	<img src="resources/images/imoticon/11.png" class="imoticon">
-    	<img src="resources/images/imoticon/12.png" class="imoticon">
-    	<img src="resources/images/imoticon/13.png" class="imoticon">
-    	<img src="resources/images/imoticon/14.png" class="imoticon">
-    	<img src="resources/images/imoticon/15.png" class="imoticon">
-    	<img src="resources/images/imoticon/16.png" class="imoticon">
-    	<img src="resources/images/imoticon/17.png" class="imoticon">
-    	<img src="resources/images/imoticon/18.png" class="imoticon">
-    	<img src="resources/images/imoticon/19.png" class="imoticon">
-    	<img src="resources/images/imoticon/20.png" class="imoticon">
-    	<img src="resources/images/imoticon/21.png" class="imoticon">
-    	<img src="resources/images/imoticon/22.png" class="imoticon">
-    	<img src="resources/images/imoticon/23.png" class="imoticon">
-    	<img src="resources/images/imoticon/24.png" class="imoticon">
-    	<img src="resources/images/imoticon/25.png" class="imoticon">
-    	<img src="resources/images/imoticon/26.png" class="imoticon">
-    	<img src="resources/images/imoticon/27.png" class="imoticon">
-    </div>
-  </div>  
-</div>
-
-	<div class="chatbox-holder row" style='display:none;' id='alertmessenger'>
-		<div class="alert alert-secondary alert-dismissible" role="alert">
-		  <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);" class="close" data-dismiss="alert"><span aria-hidden="true" class='mr-2'>×</span><span class="sr-only">Close</span></button>
-		  <i class="far fa-envelope mr-2"></i><strong id="alertsender"></strong> 
-		  <marquee><p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt" id='alertmsg'></p></marquee>
-		</div>
+<div class="nav-side-menu" id="dm">
+	<!-- Brand -->
+	<div class="brand">
+		<i class="fab fa-facebook-messenger mr-1"></i>Messenger
 	</div>
 
- 
+	<!-- Search body -->
+	<div>
+		<input type="text" id="dmSearch" class="form-control"
+			placeholder="Search">
+	</div>
+
+	<div class="menu-list">
+
+		<ul id="menu-content" class="menu-content collapse out">
+
+			<li data-toggle="collapse" data-target="#currentmessenger"
+				class="collapsed"><a><i
+					class="fab fa-fort-awesome-alt fa-lg"></i>최근 목록</a></li>
+			<ul class="sub-menu collapse" id="currentmessenger">
+
+			</ul>
+
+		</ul>
+		<li><a><i class="fas fa-circle onlineicon"></i>온라인 친구<span
+				class="ml-2" id="onlinecount"></span></a></li>
+		<ul id="onlinefriendlist">
+
+		</ul>
+		<li><a><i class="fas fa-circle"></i>오프라인 친구<span class="ml-2"
+				id="offlinecount"></span></a></li>
+		<ul id="offlinefriendlist">
+
+		</ul>
+	</div>
+
+</div>
+
+
+<!--          DM메세지창 -->
+<div class="chatbox-holder">
+
+	<div class="chatbox group-chat" style="display: none;">
+		<div class="chatbox-top">
+			<div class="chatbox-avatar">
+				<a target="_blank" href=""><img src="루이.jpg" /></a>
+			</div>
+
+			<div class="chat-group-name" id="dmnickname"></div>
+			<input type="hidden" id="userId">
+			<div class="chatbox-icons">
+				<label for="chkSettings"><i class="fa fa-gear"></i></label><input
+					type="checkbox" id="chkSettings" />
+				<div class="settings-popup">
+					<ul>
+						<li><a href="#">Group members</a></li>
+						<li><a href="#">Add members</a></li>
+						<li><a href="#">Delete members</a></li>
+						<li><a href="#">Leave group</a></li>
+					</ul>
+				</div>
+				<a href="javascript:void(0);"><i class="fa fa-minus"></i></a> <a
+					href="javascript:void(0);"><i class="fa fa-close"></i></a>
+			</div>
+		</div>
+
+		<div class="chat-messages" id="messagebox"></div>
+
+		<div class="chat-input-holder">
+			<input type="text" class="chat-input" id="sendDm">
+		</div>
+
+		<div class="attachment-panel"
+			style='overflow-x: scroll; white-space: nowrap'>
+			<img src="resources/images/imoticon/1.png" class="imoticon"> <img
+				src="resources/images/imoticon/2.png" class="imoticon"> <img
+				src="resources/images/imoticon/3.png" class="imoticon"> <img
+				src="resources/images/imoticon/4.png" class="imoticon"> <img
+				src="resources/images/imoticon/5.png" class="imoticon"> <img
+				src="resources/images/imoticon/6.png" class="imoticon"> <img
+				src="resources/images/imoticon/7.png" class="imoticon"> <img
+				src="resources/images/imoticon/8.png" class="imoticon"> <img
+				src="resources/images/imoticon/9.png" class="imoticon"> <img
+				src="resources/images/imoticon/10.png" class="imoticon"> <img
+				src="resources/images/imoticon/11.png" class="imoticon"> <img
+				src="resources/images/imoticon/12.png" class="imoticon"> <img
+				src="resources/images/imoticon/13.png" class="imoticon"> <img
+				src="resources/images/imoticon/14.png" class="imoticon"> <img
+				src="resources/images/imoticon/15.png" class="imoticon"> <img
+				src="resources/images/imoticon/16.png" class="imoticon"> <img
+				src="resources/images/imoticon/17.png" class="imoticon"> <img
+				src="resources/images/imoticon/18.png" class="imoticon"> <img
+				src="resources/images/imoticon/19.png" class="imoticon"> <img
+				src="resources/images/imoticon/20.png" class="imoticon"> <img
+				src="resources/images/imoticon/21.png" class="imoticon"> <img
+				src="resources/images/imoticon/22.png" class="imoticon"> <img
+				src="resources/images/imoticon/23.png" class="imoticon"> <img
+				src="resources/images/imoticon/24.png" class="imoticon"> <img 
+				src="resources/images/imoticon/25.png" class="imoticon"> <img
+				src="resources/images/imoticon/26.png" class="imoticon"> <img
+				src="resources/images/imoticon/27.png" class="imoticon">
+		</div>
+	</div>
+</div>
+
+<div class="chatbox-holder row" style='display: none;'
+	id='alertmessenger'>
+	<div class="alert alert-secondary alert-dismissible" role="alert">
+		<button type="button"
+			onclick="this.parentNode.parentNode.removeChild(this.parentNode);"
+			class="close" data-dismiss="alert">
+			<span aria-hidden="true" class='mr-2'>×</span><span class="sr-only">Close</span>
+		</button>
+		<i class="far fa-envelope mr-2"></i><strong id="alertsender"></strong>
+		<marquee>
+			<p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt"
+				id='alertmsg'></p>
+		</marquee>
+	</div>
+</div>
+
+
 <script>
 $(function(){
 	  $('.fa-minus').click(function(){    
@@ -1134,7 +1340,7 @@ $(window).scroll(function(){
             						
             				}
             			}
-            			$('#board').append("<br>");
+            			$('#board').append("<br>");      
             			$('#board').append("<hr>");
             		}  */
             		
@@ -1143,7 +1349,8 @@ $(window).scroll(function(){
             		for(i in r.list){
             			var id = r.list[i].id
             			var boardSeq = r.list[i].board_seq;
-            			console.log(id)            			
+            			console.log(id)     
+            			console.log(boardSeq + " :::::::" + r.maxmap[boardSeq]);  
             			
 	            		var divStr = "<div class='py-2 my-5' data-aos='fade-up' data-aos-once='true' id='feed'>" 
 	            		+ "<div class='profile-image'>"
@@ -1158,11 +1365,11 @@ $(window).scroll(function(){
 	            		
 	            		for(ix = 1; ix < r.media[kn].length; ix++){
 	            			divStr += "<li data-target='#myCarousel" + copyStartOfNum + "' data-slide-to='" + ix + "'></li>"
-	            		}
-	            		divStr += "</ul>"
-	            			            		
-	            		
-	            		divStr += "<div id='carousel-inner' class='carousel-inner'>"
+	            		}  
+	            		divStr += "</ul>"        
+	            			            		//// ///////////////////////////////////////////////////여기에 숫자    
+	            		        
+	            		divStr += "<div id='carousel-inner' class='carousel-inner' style='height:"+r.maxmap[boardSeq]+"px; max-height:700px; min-height:200px; display:table;'>"
 					            		+ "<div id='firstItem' class='carousel-item active'>"
 					            				+ "<img class='boardimg' width='100%' src='AttachedMedia/" + r.media[kn][0].system_file_name + "' alt=''>"
 			            				+ "</div>"	// firstItem의 끝
@@ -1213,21 +1420,27 @@ $(window).scroll(function(){
 	            		}
 	            		
 	            		divStr += "</a>"
-	            		
+	            
 	            		divStr += "</div>"	// container div의 끝
 	            		+ "</nav>"
 	            		
 	            		divStr += "<div id='contcenter' class='mt-2 mx-3 pb-2'>"
-	            		+ "<div class='navbar-nav'>"
-	            		+ "<a class='ml-1 idtxt' id='con${tmp.board_seq}' href='board.bo?id=${tmp.id}&cat=1' style='font-size: 14px;'>" + id + "</a>"
+	            		+ "<div class='navbar-nav'>"////////////////////////////
+	            		+ "<a class='ml-1 idtxt' id='con" + boardSeq +"' href='board.bo?id="+id+"&cat=1' style='font-size: 14px;'>" + id + "</a>"
 	            		
+	            		///////////////////////용까지////////////////
+	            	
 	            		var regex = /(#[^#\s,;<>.]+)/gi;
 	            		var txt = r.list[i].contents
-	            		if(txt != null){
+	            		if(txt != null){    
 	            			var newContent = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + '$1' + '</a>');
-	            			divStr += "<div class='pl-3' id='" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + newContent + "</div>"
+	            			divStr += "<div class='pl-3 contdiv pr-2' id='contdiv" + boardSeq + "' style='word-wrap: break-word; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 350px; height: 20px;'>" + newContent + "</div>"
+	            			divStr += "<a id='contplus"+boardSeq+"' class='pointer' style='color: gray; display: none'>더보기</a>"
+	            		
 	            		} else {
-	            			divStr += "<div class='pl-3' id='" + boardSeq + "' style='word-wrap: break-word; word-break: break-all'>" + "null" + "</div>"
+	            			divStr += "<div class='pl-3 contdiv pr-2' id='contdiv" + boardSeq + "' style='word-wrap: break-word; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 350px; height: 20px;'></div>"
+	            			
+	            		
 	            		}
 	            		
 	            		
@@ -1279,8 +1492,7 @@ $(window).scroll(function(){
 									divStr += "<li id='li3'><a id='commentdel" + commentSeq + "' value='" + boardSeq + ":" + commentSeq + "' onclick='delComment(this)' class='pointer'></a></li>"
 									divStr += "<li id='li4'><a id='commentmod" + commentSeq + "' value='" + commentSeq + "' onclick='modComment(this)' class='pointer'></a></li>"
                                     
-									divStr += "</ul>"
-									+ "<input type=hidden id='modstate${comment.comment_seq}' value='1'>"
+									divStr += "</ul><input type=hidden id='modstate"+commentSeq+"' value='1'>"
 									
 									// pure script
 									/* $('#ul' + r.commentlist[item][0].comment_seq).attr('style', false);
@@ -1288,23 +1500,24 @@ $(window).scroll(function(){
                                     
                                     
 								}
-									
-							}
-						}
+									    
+							}  
+						}      
+	            		 divStr += "<p class='text-info pointer pt-3 pl-1' id='commenthide" + boardSeq + "' onclick='commenthide(this)'></p>"
+	                      divStr  += "<input type=hidden value='" + boardSeq + "'>"   
 	            		divStr += "</div>"	// comment-content div의 끝
-	                        + "<p class='text-info pointer pt-3 pl-1' id='commenthide" + boardSeq + "' onclick='commenthide(this)'></p>"
-	                        + "<input type=hidden value='" + boardSeq + "'>"
+	                       
 	                        
 	            		divStr += "</div>"	// div contcenter의 끝
 	            		
 	            		divStr += "<div class='crecodiv pl-2 py-2 navbar-nav'>"
-		            		divStr += "<div contenteditable=false class='creco ml-2 insertSpecialField' id='comment" + boardSeq + "'>"
-		            		divStr += "<span class=text-muted>댓글 달기...</span>"
+		            		divStr += "<div contenteditable=true class='creco ml-2 insertfield'  id='comment" + boardSeq + "'>"
+		            		divStr += "<span class='text-muted ml-1'>댓글 달기...</span>"
 		            		divStr += "</div>"
 		            		
 		            		divStr += "<div class='btn-group bg-white'>"
 		            		divStr += "<i id='modalBoardBtn" + boardSeq + "' value='" + boardSeq + ":" + id + "' onclick='modal(this)' class='fas fa-ellipsis-h btn mr-1' data-toggle='modal'> </i>"
-		            		divStr += "</div>"
+		            		divStr += "</div>"   
 		            	divStr += "</div>"	// crecodiv pl-2 py-2 navbar-nav div의 끝
 		            	
 	            		
@@ -1332,36 +1545,37 @@ $(window).scroll(function(){
             }
         });
 		
-    	var globalThisCommentIsFocusedOnFirstSpecial = true;
+//     	var globalThisCommentIsFocusedOnFirstSpecial = true;
     	
-        $("div[id*=comment].insertSpecialField").focus(function() {
-        	if(globalThisCommentIsFocusedOnFirstSpecial){
-        		$(this).html("");
-            	globalThisCommentIsFocusedOnFirstSpecial = false;
-        	}
+//         $("div[id*=comment].insertSpecialField").focus(function() {
+//         	if(globalThisCommentIsFocusedOnFirstSpecial){
+//         		$(this).html("");
+//             	globalThisCommentIsFocusedOnFirstSpecial = false;
+//         	}
         	
-        });
+//         });
         
-        $("div[id*=comment].insertSpecialField").focusout(function() {
-        	if($(this).text() == ""){
-        		$(this).html("<span class=text-muted>댓글 달기...</span>");
-        		globalThisCommentIsFocusedOnFirstSpecial = true;
-        	}
-        })
+//         $("div[id*=comment].insertSpecialField").focusout(function() {
+//         	if($(this).text() == ""){
+//         		$(this).html("<span class=text-muted>댓글 달기...</span>");
+//         		globalThisCommentIsFocusedOnFirstSpecial = true;
+//         	}
+//         })
         
 
 
 		$("div[id*='comment'].insertSpecialField").keydown(function(event){
 		    var keycode = (event.keyCode ? event.keyCode : event.which);
 		    var obj = this
-		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
+		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))  
 		    if(keycode == '13'){
+		    	   
 		       var text = $(this).text();
 		       if(text == ""){
 		          alert("댓글을 입력해주세요");
 		       }
 		   		else { 
-			   
+		   			event.preventDefault();    
 		       $.ajax({ 
 		              type: "POST",  
 		              url: "comment.co",    
@@ -1376,8 +1590,8 @@ $(window).scroll(function(){
 											"</a><span class=fugue>") + "</span>";
 						newtxt += "<kz></kz>";	            	
 		            
-						console.log($("#comment-contents" + toBoardSeq))
-		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='${tmp.board_seq}:"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+						console.log($("#comment-contents" + toBoardSeq))  
+		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
 		            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
 		               $("#ul"+seq).hide().fadeIn(500);  
 		               
@@ -1390,7 +1604,7 @@ $(window).scroll(function(){
 		                           return;
 		                       }
 
-		                       var regex = /(#[^#\s,;<>. ]+)/gi;
+		                       var regex = /(#[^#\s,;<>.]+)/gi;
 		                       if (regex) {
 		                           var newtxt = "<span class=fugue>" + $(this).text()
 		                               .replace(regex, "</span><span class=text-danger>" + "$1" +
@@ -1424,6 +1638,7 @@ $(window).scroll(function(){
 		               
 		               $("#commenttxt" + seq).keypress(function(e){
 							if(e.keyCode === 13) {
+								e.preventDefault();      
 							modComment(this);
 						 }
 						});
@@ -1441,9 +1656,8 @@ $(window).scroll(function(){
 });
 
 </script>
-                      
-                        
-      <%@ include file="include/bottom.jsp"%>
-      
-      
-  
+
+
+<%@ include file="include/bottom.jsp"%>
+
+

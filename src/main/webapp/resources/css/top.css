@@ -65,8 +65,8 @@ body {
 	position: fixed;
 	z-index: 1;
 	width: 100%;
-	background-color: #35e0db;
-	transition: background-color 200ms linear;
+	background-color: #eef2f5 !important;
+    transition: background-color 200ms linear;
 }
 
 #topwrapper {
@@ -85,13 +85,15 @@ body {
 
 #instagramicon {
 	color: white;
-	border-right: 1px solid white;
+/* 	border-right: 1px solid white; */
 	padding-right: 13px;
+	color: #dc3545; 
+ 	border-right: 1px solid black; 
 }
 
 .nav-icon {
 	font-size: 25px;
-	color: white;
+	color: black;
 }
 
 .nav-item>a {
@@ -129,11 +131,13 @@ body {
 
 .text-white {
 	font-weight: bold;
+	color: black !important;
 }
 
 #navbar.scrolled {
 	background-color: #eef2f5 !important;
 	transition: background-color 200ms linear;
+	height: 43px;
 }
 
 #navbar.scrolled .nav-icon {

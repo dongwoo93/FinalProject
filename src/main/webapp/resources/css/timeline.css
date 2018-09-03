@@ -193,8 +193,8 @@ padding-right:3%;
 }  
   
 .creco {   
-	border:none;   
-	width:83%;    
+	border:none;     
+	width:88%;    
 	  
 }
  
@@ -859,8 +859,9 @@ a:link {
     
         
     }
-/* .carousel-item.active, .carousel-item-next, .carousel-item-prev { */
-/*     display: block; */
-/*     display: table-cell;   */
-/*     vertical-align: middle; */
-/* }   */
+.carousel-item.active, .carousel-item-next, .carousel-item-prev {
+    display: block;  
+    display: table-cell;  
+    vertical-align: middle;
+}  
+    

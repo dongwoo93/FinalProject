@@ -29,9 +29,9 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/top.css">
+<script>var currentId = "${sessionScope.loginId}";</script>
 <script src="resources/js/top.js"></script>
 <script>
-
 function myarticle(e) {
 	var id = $(e).attr("value");
 	$(location).attr("href", "board.bo?id="+id+"&cat=1");
@@ -117,16 +117,16 @@ function btnevent(e, id1, id2, isFollow, index) {
       			var cont = "님이"+resp[i][3].split("님이")[1];          
       		      if(resp[i][0] == '0') {
       		    	   if(resp[i][5] == 'y') {
-      		    		 $("#alertcont:last-child").append("<ul onclick='myarticle(this)' value='"+name+"' class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><button id='cancelFollow"+cnt+"' class='btn btn-primary' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;y&#39;, &#39;"+cnt+"&#39;)'>팔로잉</button><button style='display: none;' id='follow"+cnt+"' class='btn btn-info' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;n&#39;, &#39;"+cnt+"&#39;)'>팔로우</button></li></ul><div class='dropdown-divider'></div>");
+      		    		 $("#alertcont:last-child").append("<span onclick='myarticle(this)' value='"+name+"' class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><span style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></span><span style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></span><span style='width:10%'>"+resp[i][2]+"</span><span style='width:10%; text-align:center; '><button id='cancelFollow"+cnt+"' class='btn btn-primary' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;y&#39;, &#39;"+cnt+"&#39;)'>팔로잉</button><button style='display: none;' id='follow"+cnt+"' class='btn btn-info' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;n&#39;, &#39;"+cnt+"&#39;)'>팔로우</button></span></span><div class='dropdown-divider'></div>");
       		    		 cnt++;
-      		    	   }else {
-      		    		 $("#alertcont:last-child").append("<ul onclick='myarticle(this)' value='"+name+"' class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><button id='follow"+cnt+"' class='btn btn-info' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;n&#39;, &#39;"+cnt+"&#39;)'>팔로우</button><button style='display: none;' id='cancelFollow"+cnt+"' class='btn btn-primary' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;y&#39;, &#39;"+cnt+"&#39;)'>팔로잉</button></li></ul><div class='dropdown-divider'></div>");
+      		    	   }else{
+      		    		 $("#alertcont:last-child").append("<sapn onclick='myarticle(this)' value='"+name+"' class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><span style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></span><span style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></span><span style='width:10%'>"+resp[i][2]+"</span><span style='width:10%; text-align:center; '><button id='follow"+cnt+"' class='btn btn-info' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;n&#39;, &#39;"+cnt+"&#39;)'>팔로우</button><button style='display: none;' id='cancelFollow"+cnt+"' class='btn btn-primary' onclick='btnevent(this,&#39;${sessionScope.loginId}&#39;,&#39;"+name+"&#39;, &#39;y&#39;, &#39;"+cnt+"&#39;)'>팔로잉</button></span></span><div class='dropdown-divider'></div>");
       		    		 cnt++;
       		    	   }
       		    	
       	      		
       		      }else{  
-      			$("#alertcont:last-child").append("<ul class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><li style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></li><li style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></li><li style='width:10%'>"+resp[i][2]+"</li><li style='width:10%; text-align:center; '><img style='width:30px; height:30px;' src='AttachedMedia/"+resp[i][4]+"'></li></ul><div class='dropdown-divider'></div>");
+      			$("#alertcont:last-child").append("<span class='dropdown-item navbar' style='font-family: NANUMBARUNPENR !important;font-size: 14px;'><span style='width:15%'><img style='width:30px; height:30px; border-radius: 50%;' src='AttachedMedia/"+resp[i][1]+"'></span><span style='width:64%; '><a style='font-weight:900; font-size:17px; padding-right:5px;'>"+name+"</a><a>"+cont+"</a></span><span style='width:10%'>"+resp[i][2]+"</span><span style='width:10%; text-align:center; '><img style='width:30px; height:30px;' src='AttachedMedia/"+resp[i][4]+"'></span></span><div class='dropdown-divider'></div>");
       		
       		      }	}	  
       	 },  
@@ -245,7 +245,7 @@ $(function() {
   </span>
         </a>            
      	             
-                    <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:360px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
+                    <div class="dropdown-menu dropdown-menu-right px-3" style="width:500px; height:250px; overflow-y:auto;" aria-labelledby="navbarDropdown" id="alertcont">  
      
            </div>
                   </li>

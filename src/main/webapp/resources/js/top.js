@@ -160,23 +160,26 @@ function markit(e) {
 
  function commentover(e,id) {    
  	
-	var comment_seq = $(e).attr("value"); 
-	var sessionid = currentId; 
-	var commentid = id;
-	var modstate = $("#modstate"+comment_seq).val();    
-	 
-		$("#ul"+comment_seq).attr("style","background-color:#E1F5FE");
-		$("#commenttxt"+comment_seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
+		var comment_seq = $(e).attr("value"); 
+		var sessionid = currentId;
 		
-		if(sessionid == commentid) {          
-		$("#commentdel"+comment_seq).html("삭제"); 
+		var commentid = $(e).children().first().children().first().html();  
+		console.log(commentid);    
 		
-		if(modstate == "1") {
-			$("#commentmod"+comment_seq).html("수정");
-		} 
-		else if(modstate =="2") {  
-			$("#commentmod"+comment_seq).html("완료");}
-		}  
+		var modstate = $("#modstate"+comment_seq).val();    
+		 
+			$("#ul"+comment_seq).attr("style","background-color:#E1F5FE");
+			$("#commenttxt"+comment_seq).attr("style","word-wrap: break-word; word-break:break-all; background-color:#E1F5FE"); 
+			
+			if(sessionid == commentid) {          
+			$("#commentdel"+comment_seq).html("삭제"); 
+			
+			if(modstate == "1") {
+				$("#commentmod"+comment_seq).html("수정");
+			} 
+			else if(modstate =="2") {  
+				$("#commentmod"+comment_seq).html("완료");}
+			}  
 	}
  
  function commentleave(e) {  
@@ -193,6 +196,7 @@ function markit(e) {
  
 
  function delComment(e) {
+ 
 			var board_seq = $(e).attr("value").split(":")[0]; 
 			var comment_seq = $(e).attr("value").split(":")[1];
 			alert(board_seq + " :"  + comment_seq);  
@@ -248,7 +252,7 @@ function markit(e) {
                    type: "POST",    
                    url: "commentmod.co",    
                    data: {board_seq : board_seq, comment_seq:comment_seq, comment_contents:txt},   
-                   success : function() {
+                   success : function() {	
                  	$("#commenttxt"+comment_seq).attr("contentEditable",false);
 		                    $("#commenttxt"+comment_seq).attr("style","border:none"); 
 		                   $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
