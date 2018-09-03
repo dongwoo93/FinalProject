@@ -148,6 +148,14 @@ color: white;
 $(document).ready(function() {
 
 })
+
+/**
+ * 바이트수 반환  
+ * 
+ * @param el : tag jquery object
+ * @returns {Number}
+ */
+
 	function check(e, evt) {
 	evt = evt || window.event;
     var code = evt.keyCode;
@@ -159,15 +167,27 @@ $(document).ready(function() {
 	      return false;
 
 	    }
-		var height = $(e).height();
+		/* var height = $(e).height();
 		var curlength = $(e).text().length;
 		console.log(curlength);
 		if (height > 195) {
 			var result = $(e).text().substr(0, curlength - 10);
 			alert("글자수를 초과하였습니다");
-			$(e).text("");
+			$(e).text(""); */
+			var codeByte = 0;
+		    for (var idx = 0; idx < $(e).html().length; idx++) {
+		        var oneChar = escape($(e).html().charAt(idx));
+		        if ( oneChar.length == 1 ) {
+		            codeByte ++;
+		        } else if (oneChar.indexOf("%u") != -1) {
+		            codeByte += 2;
+		        } else if (oneChar.indexOf("%") != -1) {
+		            codeByte ++;
+		        }
+		    }
+		    console.log(codeByte);
+			
 		}
-	}
 
 	function submit(e) {
 		var titleElement = $(e).next();
@@ -291,9 +311,12 @@ $(document).ready(function() {
 				'      </a>' + '    </li>';
 
 		$(".memoul").prepend(myvar);
-		$('.memotitle').first().attr('contenteditable', 'true');
-		$('.memocontent').first().attr('contenteditable', 'true');
-		$('.memotitle').first().focus();
+		$(".memoli").first().hide().slideDown(200, function() {
+			$('.memotitle').first().attr('contenteditable', 'true');
+			$('.memocontent').first().attr('contenteditable', 'true');
+			$('.memotitle').first().focus();
+		});
+		
 		$('#ul-wrapper').animate({
 			scrollTop : $('#ul-wrapper').prop("scrollHeight")
 		}, 500);
