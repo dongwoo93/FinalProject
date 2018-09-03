@@ -1221,7 +1221,7 @@ function myFunction() {
 			              <i class="fas fa-map-marked-alt fa-5x" ></i></a>
 			            </div>
 			            <div class="col-8">  
-			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 지도</b></a></h1>
+			              <h1 class="mt-3"><a href="mymap.bo"><b style=color:#6c757d;>나의 지도</b></a></h1>
 			            </div>
 			          </div>
 			        </div>

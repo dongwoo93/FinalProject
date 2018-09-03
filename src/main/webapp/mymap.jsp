@@ -40,13 +40,43 @@
 </style>
 <script type="text/javascript" src="/resources/js/html2canvas.js"></script>
 
+
+
+
+
 <div id="allwrapper" style="margin-top: 50px;">
+
+
+<div class="container">
+			<br>
+				<div class="tagmenu">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="mymap.bo" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">지도</a></th>
+											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
+												href="calendar.bo" style="font-family: NANUMBARUNPENR !important;font-size:14px;">일정</a></th>
+											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+												href="goNote.memo" style="font-family: NANUMBARUNPENR !important;font-size:14px;">메모</a></th>
+											<th class="text-center" style="width:180px;font-family: NANUMBARUNPENR !important;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+												href="" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;">기록</a></th>	
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 	<div id="centerwrapper">
 		<div id="contents" class="container">
-			<div style="float:left;"><h2><b>나의 지도</b></h2></div>
-			<div class="mb-2" style="float:right;"><i class="fas fa-share-square fa-3x" style="cursor:pointer;" id="sharebt"></i><i class="fas fa-cog fa-3x ml-2" style="cursor:pointer;" id="setup"></i></div>
-			<div id="map"></div>
-			<script>
+			<div class="mb-2" style="float:right;"><i class="fas fa-share-square fa-2x" style="cursor:pointer; color:#6c757d;" id="sharebt"></i><i class="fas fa-cog fa-2x ml-2" style="cursor:pointer; color:#6c757d;" id="setup"></i></div>
+			<div id="map"></div>  
+			<script>    
 				var pin = [];
 				var mypin = "${mymap.pinimg}";
 				var mycluster = "${mymap.clusterimg}";
@@ -207,10 +237,10 @@
 			
 <!-- 			공유하기 modal -->
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog modal-dialog-centered" role="document">
+			  <div class="modal-dialog modal-dialog-centered" role="document">  
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">지도 공유하기</h5>
+			        <h5 class="modal-title" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" id="exampleModalLabel"><i class="fas fa-share-square mr-2"></i>지도 공유하기</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
@@ -219,12 +249,12 @@
 			        <img id="mapimg" src="" style="width:480px; height:500px;">
 			      </div>
 			      <div class="modal-footer">
-			      	 <button type="button" class="btn btn-primary" id="shareokbt">공유하기</button>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+			      	 <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" id="shareokbt">공유하기</button>
+			        <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" data-dismiss="modal">취소</button>
 			      </div>
-			    </div>
+			    </div>  
 			  </div>
-			</div>
+			</div>  
 			
 <!-- 			설정모달 -->
 			
@@ -232,13 +262,13 @@
 			  <div class="modal-dialog modal-dialog-centered" role="document">
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="setupModalLabel"><i class="fas fa-cog mr-2"></i>지도 설정</h5>
+			        <h5 class="modal-title" id="setupModalLabel" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;"><i class="fas fa-cog mr-2"></i>지도 설정</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			      </div>
 			      <div class="modal-body" id="modalbody2">
-			      	<div class="card">
+			      	<div class="card mb-3">
 					  <div class="card-header">
 					    Cluster 설정
 					  </div>
@@ -308,8 +338,8 @@
 					  </div> 
 					</div>  
 					<div class="mt-3 text-center modal-footer">
-						<button type="button" id="okbt">적용하기</button>
-			        	<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" id="okbt">적용하기</button>
+			        	<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" data-dismiss="modal">취소</button>
 					</div>
 			      </div>
 			    </div>
