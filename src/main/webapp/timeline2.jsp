@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script> var currentId = "${sessionScope.loginId}";
 </script>
 <script src="resources/js/top.js"></script>
@@ -301,7 +303,7 @@ function getCaretPosition(editableDiv) {
     });         
   
     $(document).ready(function(){
-    	  
+    	AOS.init();
     	
     
     	function makeupHashtag (e) {
