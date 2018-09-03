@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import kh.sns.beans.SendEmail;
 import kh.sns.dto.MemberDTO;
 import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_LocationService;
 import kh.sns.interfaces.MemberBusinessService;
 import kh.sns.interfaces.MemberService;
 import kh.sns.interfaces.ProfileService;
@@ -38,6 +39,7 @@ public class MemberController {
 	@Autowired	private MemberService memberService;
 	@Autowired	private ProfileService profileService;
 	@Autowired	private BoardService boardService;
+	@Autowired	private Board_LocationService board_locationService;
 
 	@RequestMapping("/main.do")
 	public String toIndex() throws Exception {
@@ -99,12 +101,17 @@ public class MemberController {
 		int joinresult = 0;
 		int insertMem = 0 ;
 		int insertProfile = 0;
+		int insertMyMap = 0;
+		
 		try {
 			insertMem = this.memberService.signUp(dto);
 			insertProfile = this.memberService.insertProfile(dto.getId());
-
+			
 			if(insertMem> 0 && insertProfile > 0) {
-				joinresult = 1;
+				insertMyMap = this.board_locationService.insertMyMap(dto.getId());
+				if(insertMyMap > 0 ) {
+					joinresult = 1;
+				}
 			}
 
 		}catch(Exception e) {  

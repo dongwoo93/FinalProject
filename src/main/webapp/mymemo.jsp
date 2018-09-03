@@ -334,7 +334,7 @@ $(document).ready(function() {
 							<tr>
 								<th class="text-center"
 									style="width: 180px; font-family: NANUMBARUNPENR !important; box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
-									class="topA" href="mymap.jsp"
+									class="topA" href="mymap.bo"
 									style="font-family: NANUMBARUNPENR !important; font-size: 14px;">지도</a></th>
 								<th class="text-center"
 									style="width: 180px; font-family: NANUMBARUNPENR !important; box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a

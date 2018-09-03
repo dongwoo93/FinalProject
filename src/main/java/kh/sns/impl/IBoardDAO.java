@@ -153,6 +153,7 @@ public class IBoardDAO implements BoardDAO  {
 				media.setMedia_type(rs.getString(3));
 				media.setOriginal_file_name(rs.getString(4));
 				media.setSystem_file_name(rs.getString(5));
+				media.setFilterName(rs.getString(6));
 				return media;
 			}
 		});

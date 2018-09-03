@@ -1620,22 +1620,22 @@ $(window).scroll(function(){
             }
         });
 		
-//     	var globalThisCommentIsFocusedOnFirstSpecial = true;
+    	var globalThisCommentIsFocusedOnFirstSpecial = true;
     	
-//         $("div[id*=comment].insertSpecialField").focus(function() {
-//         	if(globalThisCommentIsFocusedOnFirstSpecial){
-//         		$(this).html("");
-//             	globalThisCommentIsFocusedOnFirstSpecial = false;
-//         	}
+        $("div[id*=comment].insertSpecialField").focus(function() {
+        	if(globalThisCommentIsFocusedOnFirstSpecial){
+        		$(this).html("");
+            	globalThisCommentIsFocusedOnFirstSpecial = false;
+        	}
         	
-//         });
+        });
         
-//         $("div[id*=comment].insertSpecialField").focusout(function() {
-//         	if($(this).text() == ""){
-//         		$(this).html("<span class=text-muted>댓글 달기...</span>");
-//         		globalThisCommentIsFocusedOnFirstSpecial = true;
-//         	}
-//         })
+        $("div[id*=comment].insertSpecialField").focusout(function() {
+        	if($(this).text() == ""){
+        		$(this).html("<span class=text-muted>댓글 달기...</span>");
+        		globalThisCommentIsFocusedOnFirstSpecial = true;
+        	}
+        })
         
 
 

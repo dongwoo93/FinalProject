@@ -560,7 +560,8 @@ public class BoardController {
 		mav.setViewName("myarticle3.jsp");    
 		mav.addObject("profileImg", profileImg);
 		mav.addObject("memNick", memNick);   // 닉네임
-		mav.addObject("memIntro", memIntro); // 소개
+		mav.addObject("memIntro", memIntro); // 소개  
+		mav.addObject("cat",cat);
 
 		//		String id = (String) session.getAttribute("loginId");
 
@@ -1456,6 +1457,7 @@ public class BoardController {
 		mav.addObject("result1", follow_list);
 		mav.setViewName("follow.jsp");
 		mav.addObject("pageid", id);
+		mav.addObject("category","1");
 
 		return mav;	
 	}
@@ -1494,7 +1496,7 @@ public class BoardController {
 		mav.addObject("result", follow_list);
 		mav.addObject("pageid", id);
 		mav.setViewName("follow.jsp");
-
+		mav.addObject("category", "2");
 
 		return mav;	
 	}
