@@ -165,6 +165,19 @@ public class IMemberService implements MemberService{
 		
 	}
 
+	@Override
+	public String extractEmail(String id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return dao.extractEmail(id);
+	}
+
+	@Override
+	public String extractPhone(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.extractPhone(id);
+	}
+
 
 }
 
