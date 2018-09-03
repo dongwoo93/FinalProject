@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
-<script src="resources/js/top.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/oneboard.css">
 <style>
 .pic{
@@ -739,5 +738,5 @@ $("#comment").keypress(function(event){
    
 </div>
 <!--  allwrapper-->
-										
-      <%@ include file="include/bottom.jsp"%>
+	<%@ include file="include/directMessage.jsp" %>								
+	<%@ include file="include/bottom.jsp"%>
