@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -617,10 +618,10 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
-														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
+														<a href="redirectAdUrl?r=${ ad.moreInfoWebsite }&bizseq=${ad.boardBizSeq}" class="text-light">구매하러 가기</a>
 													</c:when>
 													<c:otherwise>
-														<a href="${ ad.moreInfoWebsite }" class="text-light">더 알아보기</a>
+														<a href="redirectAdUrl?r=${ ad.moreInfoWebsite }&bizseq=${ad.boardBizSeq}" class="text-light">더 알아보기</a>
 													</c:otherwise>
 												</c:choose>
 											</c:if> 
@@ -698,12 +699,16 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
 										  </div>     
 									<a id="contplus${tmp.board_seq}" class='pointer' style="color:gray; display:none;">더보기</a>   
+									<%-- <c:set var="crcn" value="\r\n" />
+									<c:set var="unis" value="르르르" /> --%>
 									
-									<script> 
-							 
-							  var txt = "${tmp.contents}";  
+									<script> 							 
+									
+									
+							  var txt = "${tmp.contents}";
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>")
+					          .replace("\n", "<br>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 							$("#contdiv${tmp.board_seq}").html(newtxt);   
 							      
