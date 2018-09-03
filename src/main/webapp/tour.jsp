@@ -6,34 +6,48 @@
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 	
-	<script>    
+	<script>   
+	
+	   $(document).ready(function() {
+		   
+			  $('#boardmodal').on('hidden.bs.modal', function () {
+			      $(".first").remove();
+			      $("#firstli").attr('class', 'active');
+			      $("#firstItem").attr('class', 'carousel-item active');
+			      if($("#carousel-indicators li:nth-child(2)").length) {
+			         $(".element").remove();
+			      }
+			   });
+		   
+	   })    
+	
+	   
 	
 
 	
 	$(document).on("click","a[id*='tourmodal']",function() {
 
        
-       var objDiv = document.getElementById("articlecomment");  
-        objDiv.scrollTop = 0;               
+//        var objDiv = document.getElementById("articlecomment");  
+//         objDiv.scrollTop = 0;               
        var board_seq = $(this).attr('id').replace("tourmodal", "");
        var prev_seq = $(this).prev().attr("value");
        var next_seq = $(this).next().attr("value");
-       var isfirst =$(this).prev().attr("id");
-       var islast =$(this).next().attr("id");
+       var isfirst =$(this).prev().attr("name");
+       var islast =$(this).next().attr("name");
        alert(board_seq + " : " + prev_seq  + " : " + next_seq + " : " + isfirst + " : " + islast);       
-//        if(${status.count != 1}) {
-//        $("#prev").val(${result[status.index-1].board_seq});  }
-//        if(${status.count != result.size()}) {
-//        $("#next").val(${result[status.index+1].board_seq}); } 
+ 
 
 		$("#prev").val(prev_seq);
 		$("#next").val(next_seq);
        
-      // $("#hidden").val(${result[status.index].board_seq}); 
+     
     	  if(isfirst && islast) {
     	   $("#goPrev").hide();
            $("#goNext").hide();
       }
+    	  
+    	  
       else if(isfirst) {
            $("#goPrev").hide();
            $("#goNext").show();
@@ -114,7 +128,7 @@
                         +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
                }
                         
-               $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+//                $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
                $("div[id*='commenttxt']").keyup(function(e){
                 // =================== 복붙 =================== 
                   if(e.keyCode === 32){
@@ -382,19 +396,23 @@ function unmarkit(e) {
 <div id="contents">	
 
 <c:choose>
+
+
+
+
 <c:when test="${result.size() ==0}">    
 	<h1 >검색 결과가 없습니다.</h1> 
 </c:when>
 <c:when test="${result.size() >4}"> 
 	<div id=deck class="card-columns">
-	<c:forEach var="result" items="${result}" varStatus="status">
+	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<div class="card" id="card">
 			<h4 class="card-title" id="tourTop">
-			         
+			         </h4>
 							<c:choose>   
-						<c:when test="${profile_pic.containsKey(result.id)}">
+						<c:when test="${profile_pic.containsKey(tmp.id)}">
                   
-                  			<img src="AttachedMedia/<c:out value='${profile_pic[result.id]}'/>" alt="Card image cap" width="30" height="30" class="rounded-circle">
+                  			<img src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>" alt="Card image cap" width="30" height="30" class="rounded-circle">
                    
                    
                   </c:when>        
@@ -404,18 +422,18 @@ function unmarkit(e) {
                   </c:otherwise>
 					</c:choose>
 			
-			
+			       
 			
 	
-					<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
+					<a id="ids" href="board.bo?id=${tmp.id}&cat=1">${tmp.id}</a>
 					<!-- 북마크 -->
 						<c:choose> 
-										<c:when test="${bookmark.containsKey(result.board_seq)}">
+										<c:when test="${bookmark.containsKey(tmp.board_seq)}">
 
-												<i value="${result.board_seq}" id="mark"
+												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" style="display: none;"
 													onclick="markit(this)"></i>
-												<i value="${result.board_seq}"
+												<i value="${tmp.board_seq}"
 													style="font-weight: bold; color: #00B8D4;" id="markcancel"
 													class="far fa-bookmark icon pointer"
 													onclick="unmarkit(this)"></i>
@@ -423,9 +441,9 @@ function unmarkit(e) {
 											</c:when>
 											<c:otherwise>  
 
-												<i value="${result.board_seq}" id="mark"
+												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" onclick="markit(this)"></i>
-												<i value="${result.board_seq}"
+												<i value="${tmp.board_seq}"
 													style="font-weight: bold; color: #00B8D4; display: none;"
 													id="markcancel" class="far fa-bookmark icon pointer"
 													onclick="unmarkit(this)"></i>
@@ -434,81 +452,81 @@ function unmarkit(e) {
 									    </c:choose>   
 						<!-- 좋아요 -->
 							<c:choose>
-								<c:when test="${result3.containsKey(result.board_seq)}">
-									<i value="${result.board_seq}" style="cursor: pointer; display: none;" 
+								<c:when test="${result3.containsKey(tmp.board_seq)}">
+									<i value="${tmp.board_seq}" style="cursor: pointer; display: none;" 
 										id="likeit" class="far fa-heart icon mr-1" onclick="likeit1(this)">
 									</i>
-									<i value="${result.board_seq}" style="color: red; cursor: pointer;" 
+									<i value="${tmp.board_seq}" style="color: red; cursor: pointer;" 
 										id="likecancel" class="fas fa-heart" onclick="unlikeit1(this)">
 									</i>
 									<!-- 좋아요 카운트 -->
 									<c:choose>
-										<c:when test="${result4[result.board_seq] != null}">
+										<c:when test="${result4[tmp.board_seq] != null}">
 											<p id="p">
-												<i value="${result.board_seq}" id="count${result.board_seq}">
-												<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i>
+												<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
+												<c:out value="${result4[tmp.board_seq]}"/>명이 좋아합니다</i>
 											</p>
 										</c:when>
 											<c:otherwise>
 												<p id="p">
-													<i value="${result.board_seq}" id="count${result.board_seq}">
-													<c:out value="${result4[result.board_seq]}"/></i>
+													<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
+													<c:out value="${result4[tmp.board_seq]}"/></i>
 												</p>
 											</c:otherwise>
 									</c:choose>
 								</c:when>
 									<c:otherwise>   
-										<i value="${result.board_seq}" style="cursor: pointer;" 
+										<i value="${tmp.board_seq}" style="cursor: pointer;" 
 											id="likeit" class="far fa-heart icon mr-1" 
 											onclick="likeit1(this)">
 										</i>
-			                   			<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" 
+			                   			<i value="${tmp.board_seq}" style="color: red; display: none; cursor: pointer;" 
 			                   				id="likecancel" class="fas fa-heart" 
 			                   				onclick="unlikeit1(this)">
 			                   			</i>
 										<!-- 좋아요 카운트 -->
 										<c:choose>
-											<c:when test="${result4[result.board_seq] != null}">
+											<c:when test="${result4[tmp.board_seq] != null}">
 												<p id="p">
-													<i value="${result.board_seq}" id="count${result.board_seq}">
-													<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i>
+													<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
+													<c:out value="${result4[tmp.board_seq]}"/>명이 좋아합니다</i>
 												</p>
 											</c:when>
 												<c:otherwise>
 													<p id="p">
-														<i value="${result.board_seq}" id="count${result.board_seq}">
-														<c:out value="${result4[result.board_seq]}"/></i>
+														<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
+														<c:out value="${result4[tmp.board_seq]}"/></i>
 													</p>
 												</c:otherwise>
 										</c:choose>
 									</c:otherwise>
 							</c:choose>	
-			</h4> <div class="dropdown-divider"  id="modifydiv"></div>
+			 <div class="dropdown-divider"  id="modifydiv"></div>
 				<!-- 태그,글 보이기 -->
-					<div class="hidden" style="padding-left: 5px" id="hidden${result.board_seq}">
-						<script> $("#myContents${result.board_seq}").attr("style","overflow:visible"); </script>
-							<p id="myContents${result.board_seq}">${result.contents}</p>
+					<div class="hidden" style="padding-left: 5px" id="hidden${tmp.board_seq}">
+						<script> $("#myContents${tmp.board_seq}").attr("style","overflow:visible"); </script>
+							<p id="myContents${tmp.board_seq}">${tmp.contents}</p>
 								<script>    
-									var text = $("#myContents${result.board_seq}").text();  
+									var text = $("#myContents${tmp.board_seq}").text();  
 									var regex = /(#[^#\s,;]+)/gi  ;              
 									var newtxt;
 	  								if(text != null) {
 	  									 newtxt = text.replace(regex, "<a onclick='tag(this)' style='color:red ; cursor: pointer;'>"+"$1"+"</a>");
 	  								}        
-  							        $("#myContents${result.board_seq}").html(newtxt);  
+  							        $("#myContents${tmp.board_seq}").html(newtxt);  
 								</script>
 					</div>
 			<!-- 이미지 -->
 			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 		<c:choose>
 								<c:when test="${status.first}">
-								<input type=hidden value='' id="${status.first}">
+								<input type=hidden value='0' name="${status.first}">
 								</c:when>
 								<c:otherwise>
-								<input type=hidden value='${result[status.index-1].board_seq}' id="${status.first}">
+								<input type=hidden value='${result[status.index-1].board_seq}' name="${status.first}">
 								</c:otherwise>
 								</c:choose>
-									<a id='tourmodal${result.board_seq}'><!--src='AttachedMedia/${media.system_file_name}'-->
+									<a id='tourmodal${tmp.board_seq}'><!--src='AttachedMedia/${media.system_file_name}'-->
 										<img class="card-img-top" 
 						id="card" src='AttachedMedia/${media.system_file_name}'
 						alt="해당 게시글로 바로가기">
@@ -516,10 +534,10 @@ function unmarkit(e) {
 									
 										<c:choose>
 								<c:when test="${status.last}">
-								<input type=hidden value='' id="${status.last}">
+								<input type=hidden value='1' name="${status.last}">
 								</c:when>
 								<c:otherwise>
-									<input type=hidden value='${result[status.index+1].board_seq}' id="${status.last}">
+									<input type=hidden value='${result[status.index+1].board_seq}' name="${status.last}">
 								</c:otherwise>
 								</c:choose>
 								
@@ -536,8 +554,10 @@ function unmarkit(e) {
 <c:forEach var="result" items="${result}" varStatus="status">
 
 <div class="col-md-4">            
-					<div class="card" id="card">
-						<h4 class="card-title"  id="tourTop">  
+					<div class="card" id="card">   
+					
+					
+						<h4 class="card-title"  id="tourTop">  </h4>
 						
 						
 						
@@ -634,7 +654,7 @@ function unmarkit(e) {
 												</c:choose>
 											</c:otherwise>
 									</c:choose>	 
-							</h4> <div class="dropdown-divider"  id="modifydiv"></div>
+							 <div class="dropdown-divider"  id="modifydiv"></div>
 								<!-- 태그,글 보이기 -->
 								<div class="hidden" style="padding-left: 5px" id="hidden${result.board_seq}">
 									<script> $("#myContents${tmp.board_seq}").attr("style","overflow:visible"); </script>
@@ -652,11 +672,11 @@ function unmarkit(e) {
 									<!-- 이미지 -->
 								<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 								<c:choose>
-								<c:when test="${status.first}">
-								<input type=hidden value='' id="${status.first}">
+								<c:when test="${status.first}">    
+								<input type='hidden' value= "0" name="${status.first}">
 								</c:when>
-								<c:otherwise>
-								<input type=hidden value='${result[status.index-1].board_seq}' id="${status.first}">
+								<c:otherwise> 
+								<input type=hidden value='${result[status.index-1].board_seq}' name="${status.first}">
 								</c:otherwise>
 								</c:choose>
 									<a id='tourmodal${result.board_seq}'><!--src='AttachedMedia/${media.system_file_name}'-->
@@ -666,11 +686,11 @@ function unmarkit(e) {
 									</a>
 									
 										<c:choose>
-								<c:when test="${status.last}">
-								<input type=hidden value='' id="${status.last}">
+								<c:when test="${status.last}">     
+								<input type='hidden' value="1" name="${status.last}">
 								</c:when>
 								<c:otherwise>
-									<input type=hidden value='${result[status.index+1].board_seq}' id="${status.last}">
+									<input type=hidden value='${result[status.index+1].board_seq}' name="${status.last}">
 								</c:otherwise>
 								</c:choose>
 								
@@ -685,31 +705,10 @@ function unmarkit(e) {
 					</div>
 					   
 		    
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-	     <script>
-               
-       
-//     ////////////////////////////////////////                 
-                     
-             				</script>
+				
 				</c:forEach>
 </div>
-
+ 
 
 </c:otherwise>
 </c:choose>
@@ -717,6 +716,20 @@ function unmarkit(e) {
 	
 
 	</div>  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -865,94 +878,94 @@ function unmarkit(e) {
 					
 				
 					
-				
+				 
 				  /* ========================= 댓글달기 ========================= */
 				
-                $('#comment').keypress(function(event){
-                   var seq = $("#seq").val();
-                   /* var comment_contents = $("#comment").val(); */
-                   var comment_contents = $("#comment").text();
+//                 $('#comment').keypress(function(event){
+//                    var seq = $("#seq").val();
+//                    /* var comment_contents = $("#comment").val(); */
+//                    var comment_contents = $("#comment").text();
                      
-                    var keycode = (event.keyCode ? event.keyCode : event.which);
-                    if(keycode == '13'){ 
+//                     var keycode = (event.keyCode ? event.keyCode : event.which);
+//                     if(keycode == '13'){ 
                        
-                       /* var text = $("#comment${tmp.board_seq}").val(); */
-                       if(comment_contents == ""){
-                          alert("댓글을 입력해주세요");
-                       }  
-                       else {     
-                          $.ajax({
-                               type: "POST",  
-                               url: "comment.co",    
-                               data: {board_seq:seq, comment_contents : comment_contents},
-                               success : function(comment_seq) {
-                            	   var board_seq = $("#seq").val();
-                                /* $("#comment").val(""); */
-                                $("#comment").html("");
+//                        /* var text = $("#comment${tmp.board_seq}").val(); */
+//                        if(comment_contents == ""){
+//                           alert("댓글을 입력해주세요");
+//                        }  
+//                        else {     
+//                           $.ajax({
+//                                type: "POST",  
+//                                url: "comment.co",    
+//                                data: {board_seq:seq, comment_contents : comment_contents},
+//                                success : function(comment_seq) {
+//                             	   var board_seq = $("#seq").val();
+//                                 /* $("#comment").val(""); */
+//                                 $("#comment").html("");
                                 
-                                var regex = /(#[^#\s,;<>. ]+)/gi;            
-                                var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
-											 + "$1" + "</a><span class=fugue>") + "</span>";          
-									newtxt += "<kz></kz>"
+//                                 var regex = /(#[^#\s,;<>. ]+)/gi;            
+//                                 var newtxt = "<span class=fugue>" + comment_contents.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+// 											 + "$1" + "</a><span class=fugue>") + "</span>";          
+// 									newtxt += "<kz></kz>"
                                     
                                 
-                                $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
-                                		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
-                          			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
+//                                 $("#articlecomment:last-child").append("<ul id='ul"+comment_seq+"' value='"+comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)' ><li id='li1'><a href='' class='mr-2'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+comment_seq+"' class='commenttxt txt' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
+//                                 		+"<ul id='ul2"+comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+comment_seq+"' value='"+comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+comment_seq+"' value='"+comment_seq+"' onclick='modComment(this)'></i><li></ul>"
+//                           			  +"<input type=hidden id='modstate"+comment_seq+"' value='1'>");     
                                   
-                                $("#ul"+comment_seq).hide().fadeIn(500);     
+//                                 $("#ul"+comment_seq).hide().fadeIn(500);     
                                 
-                                $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
-                                $("div[id*='commenttxt']").keyup(function(e){
-                                	// =================== 복붙 =================== 
-                               	   if(e.keyCode === 32){
-                               		   if (parseInt($('#caretposition').val()) == 0) {                     	 
-                                          } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
-                                          } else {
-                                              return;
-                                          }
+//                                 $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+//                                 $("div[id*='commenttxt']").keyup(function(e){
+//                                 	// =================== 복붙 =================== 
+//                                	   if(e.keyCode === 32){
+//                                		   if (parseInt($('#caretposition').val()) == 0) {                     	 
+//                                           } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+//                                           } else {
+//                                               return;
+//                                           }
 
-                                          var regex = /(#[^#\s,;<>. ]+)/gi;
-                                          if (regex) {
-                                              var newtxt = "<span class=fugue>" + $(this).text()
-                                                  .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                                                      "</a><span class=fugue>") + "</span>"
+//                                           var regex = /(#[^#\s,;<>. ]+)/gi;
+//                                           if (regex) {
+//                                               var newtxt = "<span class=fugue>" + $(this).text()
+//                                                   .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+//                                                       "</a><span class=fugue>") + "</span>"
 
-                                              // console.log($('#editorDiv').text().length);   
-                                              // console.log(newtxt)   
-                                              newtxt += "<kz></kz>"
-                                              $(this).html(newtxt)
-                                              var el = this;
-                                              console.log("childNodes: " + el.childNodes.length);
-                                              var range = document.createRange();
-                                              var sel = window.getSelection();
-                                              range.setStart(el.lastChild, 0);
-                                              range.collapse(false);
-                                              sel.removeAllRanges();
-                                              sel.addRange(range);
+//                                               // console.log($('#editorDiv').text().length);   
+//                                               // console.log(newtxt)   
+//                                               newtxt += "<kz></kz>"
+//                                               $(this).html(newtxt)
+//                                               var el = this;
+//                                               console.log("childNodes: " + el.childNodes.length);
+//                                               var range = document.createRange();
+//                                               var sel = window.getSelection();
+//                                               range.setStart(el.lastChild, 0);
+//                                               range.collapse(false);
+//                                               sel.removeAllRanges();
+//                                               sel.addRange(range);
 
-                                              $(this).focusout();
-                                              $(this).focus();
-                                              if (parseInt($('#caretposition').val()) == $(this).text().length) {
+//                                               $(this).focusout();
+//                                               $(this).focus();
+//                                               if (parseInt($('#caretposition').val()) == $(this).text().length) {
 
-                                              }
+//                                               }
 
-                                          }
-                               	   } 
+//                                           }
+//                                	   } 
                                	   
                                	   
-                               	// =================== 복붙 =================== 
-                                  })
+//                                	// =================== 복붙 =================== 
+//                                   })
   
-                                var objDiv = document.getElementById("articlecomment");
-                                objDiv.scrollTop = objDiv.scrollHeight;    
+// //                                 var objDiv = document.getElementById("articlecomment");
+// //                                 objDiv.scrollTop = objDiv.scrollHeight;    
 
-                       }
-                    })
-                       }
-                    }
+//                        }
+//                     })
+//                        }
+//                     }
                     
-                });
+//                 });
                 
           
 
