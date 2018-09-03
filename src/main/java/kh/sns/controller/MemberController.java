@@ -1,5 +1,6 @@
 package kh.sns.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -381,6 +382,10 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("@@checkToggle: " + checkToggle);	
 		
+		if(checkToggle == null) {
+			checkToggle = "n";
+		}
+		
 		String id = session.getAttribute("loginId").toString();
 		System.out.println("@@loginId: " + id);
 		
@@ -414,5 +419,24 @@ public class MemberController {
 		}
 		return mav;
 		
+	}
+	
+	@RequestMapping("/pwdCheck.ajax")
+	public void pwdCheckAjax(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		response.setCharacterEncoding("UTF8");
+        try {
+			PrintWriter xout = response.getWriter();
+			String pwd = request.getParameter("pwd");
+			String hashedPwd = EncryptUtils.getSha256(pwd);
+			String currentLoginId = session.getAttribute("loginId").toString();
+			MemberDTO member = memberService.getOneMember(currentLoginId);
+			if(member.getPw().equals(hashedPwd)) {
+				xout.print("true");
+			} else {
+				xout.print("false");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}    
 	}
 }

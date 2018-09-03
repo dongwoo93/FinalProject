@@ -191,6 +191,30 @@
     		$('#frmDis').submit();
     	})
     	
+    	$('#inputPwdForDis').keyup(function(){
+    		var pwd = $('#inputPwdForDis').val()
+    		$.ajax({
+                url: "pwdCheck.ajax", // 처리할 페이지(서블릿) 주소
+                type: "post",
+                data: {pwd: pwd},    // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+                success: function(response) {
+                    console.log("AJAX Request 성공: " + response);
+                    if(response == "true"){
+                    	$('#ajaxCheckPwd').html('<span class="badge badge-pill badge-primary">✔</span> 비밀번호가 맞습니다.')
+                    } else {
+                    	$('#ajaxCheckPwd').html('<span class="badge badge-pill badge-danger">✘</span> 비밀번호가 틀립니다.')
+                    }               
+                },
+                error: function() {
+                    console.log("에러 발생");
+                },
+                complete: function(){
+                    // console.log("AJAX 종료");
+                }
+            });
+
+    	});
+    	
     })
     
     
@@ -734,7 +758,8 @@
 																</select> 
 																<br><br>
 																계속하려면 비밀번호를 다시 입력하세요  &nbsp;&nbsp;&nbsp;&nbsp;              
-																<input type=password id=inputPwdForDis placeholder="password" style="width:50%;">   
+																<input type=password id=inputPwdForDis placeholder="password" style="width:50%;">  
+																<div><p><small id=ajaxCheckPwd></small></div> 
 													      		<br><a href="#">비밀번호를 잊으셨나요?</a>          
 																 </p>      
 																
