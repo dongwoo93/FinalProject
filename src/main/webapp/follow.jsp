@@ -56,6 +56,11 @@ function follow(id1, id2, e) {
 
 		
 	}
+	
+	function goBoard(e){
+		$(location).attr("href","board.bo?id=${sessionScope.loginId}&cat=1");
+	}
+	
 </script>
 
 <div id="allwrapper" style="margin-top: 50px;">
@@ -227,6 +232,7 @@ function follow(id1, id2, e) {
 		</c:otherwise>
 		</c:choose>
 		<hr class="_5mToa">
+		<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" onclick="goBoard(this)">돌아가기</button>
 	</div>
 
 </div>

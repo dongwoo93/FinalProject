@@ -151,7 +151,19 @@ function unmarkit(e) {
 <c:forEach var="result" items="${result}" varStatus="status">
 		<div class="card" id="card">
 			<h4 class="card-title" id="tourTop">
-				<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
+			
+			<c:choose>
+					<c:when test="${profile_pic.containsKey(result.id)}">
+                  
+                  <img src="AttachedMedia/<c:out value='${profile_pic[result.id]}'/>" alt="Card image cap" width="30" height="30" class="rounded-circle">
+                     
+                  </c:when>
+                  <c:otherwise>
+                     <img src="resources/images/standard.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
+                  </c:otherwise>
+					</c:choose>
+				  
+				
 					<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
 					<!-- 북마크 -->
 						<c:choose> 
