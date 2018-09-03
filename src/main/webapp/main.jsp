@@ -16,9 +16,11 @@
 <title>SoicalWired</title>
      
 <script>
+
    if(${sessionScope.loginId != null}) {
       $(location).attr("href", "feed.bo");
    }
+   
 </script>
 
   
