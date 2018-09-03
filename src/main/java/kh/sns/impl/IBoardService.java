@@ -224,10 +224,10 @@ public class IBoardService implements BoardService {
 		return dao.deleteBoardTags(board_seq);
 	}
 	
-	//지도
+	// 지도
 	@Override
 	public Board_LocationDTO location(int seq) throws Exception {
-		return ldao.;
+		return dao.location(seq);
 	}
 
 }
