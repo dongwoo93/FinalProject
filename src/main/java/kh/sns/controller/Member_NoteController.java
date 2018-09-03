@@ -1,6 +1,7 @@
 package kh.sns.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,14 +12,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.sns.dto.Board_BookmarkDTO;
+import kh.sns.dto.Board_CommentDTO;
+import kh.sns.dto.Board_LikeDTO;
+import kh.sns.dto.FollowInfo;
 import kh.sns.dto.Member_NoteDTO;
+import kh.sns.interfaces.BoardService;
+import kh.sns.interfaces.Board_BookmarkService;
+import kh.sns.interfaces.Board_CommentService;
+import kh.sns.interfaces.Board_LikeService;
+import kh.sns.interfaces.Member_FollowService;
 import kh.sns.interfaces.Member_NoteService;
+import kh.sns.util.LogUtil;
 
 @Controller
 public class Member_NoteController {
 	
 	@Autowired
 	private Member_NoteService service;
+	@Autowired private LogUtil lu;
+	@Autowired private Member_FollowService fs;
+	@Autowired private Board_CommentService cs;
+	@Autowired private Board_LikeService ls;
+	@Autowired private BoardService bs;
+	@Autowired private Board_BookmarkService ks;
 	
 	@RequestMapping("/goNote.memo")
 	public ModelAndView getNote(HttpSession session) {
@@ -108,5 +125,46 @@ public class Member_NoteController {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	// ================ 로그 컨트롤러 ================ 
+	
+	@RequestMapping("/my.log")
+	public ModelAndView myLogMain(HttpServletResponse response, HttpSession session) throws Exception {
+		String id = session.getAttribute("loginId").toString();
+		ModelAndView mav = new ModelAndView();
+		List<String> logins = lu.readLog(id, "login");
+		List<String> logouts = lu.readLog(id, "logout");
+		String joinStr = lu.readLog(id, "join").get(0);
+		List<String> searches = lu.readLog(id, "search");
+		
+		List<FollowInfo> followList = fs.simpleFollowList(id);
+		List<Board_CommentDTO> commentList = cs.simpleGetComments(id);
+		
+		List<Board_LikeDTO> likeList = ls.simpleGetLikeStatus(id);
+		List<String> likeTitles = new ArrayList<>();
+		for(Board_LikeDTO b : likeList) {
+			likeTitles.add(bs.oneBoard(String.valueOf(b.getBoard_seq())).getContents());
+		}
+		
+		List<Board_BookmarkDTO> markList = ks.simpleGetMark(id);
+		List<String> markTitles = new ArrayList<>();
+		for(Board_BookmarkDTO b : markList) {
+			markTitles.add(bs.oneBoard(String.valueOf(b.getBoard_seq())).getContents());
+		}
+		
+		
+		mav.setViewName("mylog.jsp");
+		mav.addObject("logins", logins);
+		mav.addObject("logouts", logouts);
+		mav.addObject("joinStr", joinStr);
+		mav.addObject("searches", searches);
+		mav.addObject("followList", followList);
+		mav.addObject("commentList", commentList);
+		mav.addObject("likeList", likeList);
+		mav.addObject("likeTitles", likeTitles);
+		mav.addObject("markList", markList);
+		mav.addObject("markTitles", markTitles);
+		return mav;
 	}
 }

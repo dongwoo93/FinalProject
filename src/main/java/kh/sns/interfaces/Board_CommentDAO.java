@@ -19,6 +19,7 @@ public interface Board_CommentDAO {
 	public Board_CommentDTO getOneComment(int comment_seq) throws Exception;
 	
 	public int getBoard_seq(int comment_seq) throws Exception;
+	public List<Board_CommentDTO> simpleGetComments(String id);
 	
 
 }
