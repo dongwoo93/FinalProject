@@ -560,6 +560,7 @@ public class BoardController {
 		}
 
 		mav.addObject("result", result);
+		mav.addObject("thisId", id);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
 		mav.addObject("followerCount", followerCount);
