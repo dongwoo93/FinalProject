@@ -156,6 +156,7 @@ public class BoardController {
 			membersNick = new ArrayList<>();
 			for(BoardDTO b : list) {
 				membersNick.add(memService.getOneMember(b.getId()).getNickname());
+				b.setContents(b.getContents().replace("\r\n", "\\n\" + \""));
 			}
 			membersNick.forEach(System.out::println);
 			// ========================================
@@ -1347,6 +1348,7 @@ public class BoardController {
 				System.out.println(board_seq);
 
 				a = boardService.oneBoard(board_seq);
+				a.setContents(a.getContents().replace("\r\n", "\\n\" + \""));
 				media.add(boardService.search2(a.getBoard_seq()));
 
 

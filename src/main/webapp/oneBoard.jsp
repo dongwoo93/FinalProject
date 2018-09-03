@@ -617,12 +617,12 @@ $("#comment").keypress(function(event){
                            <%-- ${b.contents} --%>
                            	<script>
                         		  var regex = /(#[^#\s,;<>. ]+)/gi;
-                        		  var originalText = "${b.contents}"
+                        		  var originalText = "${b.contents}";
                         		  var innerCode = ""
                                   if (regex) {
                                       innerCode = "<span class=fugue>" + originalText
                                           .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                                              "</a><span class=fugue>") + "</span>"
+                                              "</a><span class=fugue>").replace("\n", "<br>")  + "</span>"
                                       innerCode += "<kz></kz>"
                                       /* document.write(innerCode) */
                                       $('#contdiv').html(innerCode);
@@ -667,7 +667,7 @@ $("#comment").keypress(function(event){
                                   if (regex) {
                                       innerCode = "<span class=fugue>" + originalText
                                           .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                                              "</a><span class=fugue>") + "</span>"
+                                              "</a><span class=fugue>").replace("\n", "<br>") + "</span>"
                                       innerCode += "<kz></kz>"
                                       /* document.write(innerCode) */
                                       $("#commentSection${item.comment_seq}").html(innerCode)

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/timeline.css">
 <script> var currentId = "${sessionScope.loginId}";
@@ -697,12 +698,16 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
 										  </div>     
 									<a id="contplus${tmp.board_seq}" class='pointer' style="color:gray; display:none;">더보기</a>   
+									<%-- <c:set var="crcn" value="\r\n" />
+									<c:set var="unis" value="르르르" /> --%>
 									
-									<script> 
-							 
-							  var txt = "${tmp.contents}";  
+									<script> 							 
+									
+									
+							  var txt = "${tmp.contents}";
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
+					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>")
+					          .replace("\n", "<br>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 							$("#contdiv${tmp.board_seq}").html(newtxt);   
 							      
