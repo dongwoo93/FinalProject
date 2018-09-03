@@ -11,6 +11,10 @@
 	margin-left: 10px;
 	text-align: left;
 }
+
+.divimg{
+	cursor:pointer;
+}
 </style>
 <script src="resources/js/myarticle.js"></script>
 
@@ -172,23 +176,23 @@ $(document).ready(function(){
     };
     
     function makeupHashtag (e) {
-
-        if ((e.keyCode === 32)) {
+    	console.log("length: " + $(this).text().length)
+        if ((e.keyCode === 32 )) {
             map[e.keyCode] = true;
             
             if(parseInt($('#caretposition').val()) == 0){
-           	 //                        	 
-            } else if (parseInt($('#caretposition').val()) == $(this).text().length){
-           	 // 
+           	 // alert('뭐?')                  	 
+            } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 엔터 고려하여 고친 부분 1
+             // alert( parseInt($('#caretposition').val()) + ":" +  $(this).text().length);
             } else {
            	 // 
            	 return;
             }
             
-
+			
             var regex = /(#[^#\s,;<>.]+)/gi;
             if (regex) {
-                var newtxt = "<span class=fugue>" + $(this).text()
+                var newtxt = "<span class=fugue>" + this.innerText	// 엔터 고려하여 고친 부분 2
                     .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
                         "</a><span class=fugue>") + "</span>"
 
@@ -210,7 +214,8 @@ $(document).ready(function(){
 
 
             }
-        }
+        }  
+    
     }
     
     $('#comment').on("mousedown mouseup keydown keyup", update);
@@ -522,12 +527,34 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">게시물</a></th>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">찜콕됨</a></th>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
-												href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">태그됨</a></th>
+											<c:choose>
+												<c:when test="${cat == '1'}">
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19); background-color:#12bbad;"><a
+													href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:white;font-size:14px;">게시물</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">찜콕됨</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+													href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">태그됨</a></th>
+												</c:when>
+												<c:when test="${cat=='2'}">
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">게시물</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19); background-color:#12bbad;"><a
+													href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:white;font-size:14px;">찜콕됨</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+													href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">태그됨</a></th>
+												</c:when>
+												<c:otherwise>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">게시물</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">찜콕됨</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);background-color:#12bbad;"><a 
+													href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:white;font-size:14px;">태그됨</a></th>
+												</c:otherwise>
+											</c:choose>
+											
+											
 										</tr>
 									</thead>
 								</table>
@@ -569,13 +596,13 @@ $(document).ready(function(){
 					value="${tmp.board_seq}" onmouseover="articleover(this)"
 					onmouseleave="articleleave(this)">
 					<img src="AttachedMedia/${result2[status.index].system_file_name}"
-						class="divimg pointer">
+						class="divimg pointer ${result2[status.index].filterName}">
 
 					<div class="divinfo divimg" id="divinfo${tmp.board_seq}"
-						style="display: none;">
+						style="display: none;">    
 						<ul>
 							<li class="divicons"><i class="fas fa-heart"></i> <c:out
-									value="${likecount[tmp.board_seq]}" /></li>
+									value="${likecount[tmp.board_seq]}" /></li>  
 							<li class="divicons"><i class="fas fa-comment"></i> <c:out
 									value="${commentcount[tmp.board_seq]}" /></li>
 						</ul>
@@ -663,10 +690,10 @@ $(document).ready(function(){
                                   $("#markcancel").val(data[0].board_seq);
                           
                                 
-                                  $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                                  $("#firstItem").append("<img class='first "+data[1][0].filterName+"' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
                                   for(var i = 1; i < data[1].length; i++) {
                                      $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
-                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
+                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element "+data[1][i].filterName+"' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
                                        
                                   }
                                       
@@ -863,7 +890,7 @@ $(document).ready(function(){
 						class="mt-2 mx-3">
 
 						<div id="articlecontents" class="mt-2 pb-2 mr-2 ">
-							<div class="bg-black" id="modalcontents"></div>
+							<div class="bg-black" id="modalcontents" style="white-space: pre-line;"></div>	<!-- 수정3 -->
 						</div>
 
 					</div>
@@ -902,10 +929,10 @@ $(document).ready(function(){
 
 					<!-- <input type="text" placeholder="댓글 달기..." class="creco" id="comment">  -->
 					<div contenteditable="true" class="editableDivCommentSection"
-						class="creco insertfield" id="comment">
+						class="creco insertfield" id="comment" >
 						<span class=text-muted>댓글 달기...</span>
 					</div>
-					<input type=hidden id="caretposition" value="0">
+					<input type=text id="caretposition" value="0">
 
 
 					<script>
@@ -1194,8 +1221,8 @@ function myFunction() {
 			            <div class="text-center col-4"><a href="mymap.jsp">
 			              <i class="fas fa-map-marked-alt fa-5x" ></i></a>
 			            </div>
-			            <div class="col-8">
-			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 지도</b></a></h1>
+			            <div class="col-8">  
+			              <h1 class="mt-3"><a href="mymap.bo"><b style=color:#6c757d;>나의 지도</b></a></h1>
 			            </div>
 			          </div>
 			        </div>

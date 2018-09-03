@@ -31,6 +31,10 @@ public interface MemberDAO {
 	public List<MemberDTO> myNick_Id(String id) throws Exception;
 	
 	public MemberDTO selectUserId(String nickname) throws Exception;
+	
+	// update disabled information(20180903)
+	public int updateDisabledInfo(MemberDTO member) throws Exception;
+	public int checkIdPwd(MemberDTO dto); 
 
 //	boolean isIdExist(String id);
 }

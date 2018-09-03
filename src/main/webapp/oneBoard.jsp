@@ -527,12 +527,12 @@ $("#comment").keypress(function(event){
 								</ul>
 								<div id="carousel-inner" class="carousel-inner" style="height: 600px;">
 									<div id="firstItem" class="carousel-item active">
-										<img class='boardimg' width='100%' src='AttachedMedia/${result2[0][0].system_file_name}' alt=''>
+										<img class='boardimg ${result2[0][0].filterName}' width='100%' src='AttachedMedia/${result2[0][0].system_file_name}' alt=''>
 									</div> 
 									<c:forEach begin="1" var="media"
 										items="${result2[0]}">
 										<div class="carousel-item">
-											<img class='boardimg' width='100%'
+											<img class='boardimg ${media.filterName}' width='100%'
 												src="AttachedMedia/${media.system_file_name}" alt="">
 										</div>
 									</c:forEach>

@@ -5,12 +5,58 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script> var currentId = "${sessionScope.loginId}";
+var globalThisCommentIsFocusedOnFirst = true;
 </script>
 <script src="resources/js/top.js"></script>
 <script src="resources/js/timeline.js"></script>
 <script>
 
 
+ 
+
+
+
+function makeupHashtag (e) {     
+
+    if ((e.keyCode === 32)) {
+
+        if (parseInt($('#caretposition').val()) == 0) {
+            // alert('뭐?')                        	 
+        } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+            // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
+        } else {
+            // alert('임마?')
+            return;
+        }
+
+        var regex = /(#[^#\s,;<>. ]+)/gi;
+        if (regex) {
+            var newtxt = "<span class=fugue>" + $(this).text()
+                .replace(regex, "</span><span class=text-danger>" + "$1" +
+                    "</span><span class=fugue>") + "</span>"
+
+            // console.log($('#editorDiv').text().length);   
+            // console.log(newtxt)   
+            newtxt += "<kz></kz>"
+            $(this).html(newtxt)
+            var el = this;
+            console.log("childNodes: " + el.childNodes.length);
+            var range = document.createRange();
+            var sel = window.getSelection();
+            range.setStart(el.lastChild, 0);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            $(this).focusout();
+            $(this).focus();
+            if (parseInt($('#caretposition').val()) == $(this).text().length) {
+				
+            }
+
+        }
+    }
+}
 
 function follow(id1, id2, e) {
 	   var id = id1; 
@@ -191,9 +237,46 @@ function getCaretPosition(editableDiv) {
 		
 	}
 	
+	
+	
+	$(document).on('mousedown mouseup keydown keyup',"div[id*='comment'].insertfield",update);
+	$(document).on('mousedown mouseup keydown keyup',"div[id*='commenttxt']",update);
+	
+	
+
+	$(document).on('keyup',"div[id*='comment'].insertfield",makeupHashtag);
+	$(document).on('keyup',"div[id*='commenttxt']",makeupHashtag);
+	
+	$(document).on('keypress',"div[id*='commenttxt']",function(e){   
+		if(e.keyCode === 13) { 
+			 e.preventDefault();
+		modComment(this);
+	 } 
+	});   
+	
+
+	$(document).on('focus',"div[id*=comment].insertfield",function(){   
+		if(globalThisCommentIsFocusedOnFirst){             
+			$(this).html("");
+	    	globalThisCommentIsFocusedOnFirst = false;
+		}   
+	});   
+	
+	$(document).on('focusout',"div[id*=comment].insertfield",function(){   
+		if($(this).text() == ""){
+			$(this).html("<span class=text-muted>댓글 달기...</span>");
+			globalThisCommentIsFocusedOnFirst = true; 
+		}
+	});   
+	
+	
+	
+	
 
 
-	$(document).on('keypress',"div[id*='comment'].insertfield",function(event){   
+	
+
+$(document).on('keypress',"div[id*='comment'].insertfield",function(event){   
 	    
 	    var keycode = (event.keyCode ? event.keyCode : event.which);  
 	    var obj = this
@@ -286,84 +369,59 @@ function getCaretPosition(editableDiv) {
         }  
     });
 	
-	
+	  
 	
  	
-	$(document).on("focus","div[id*=comment].insertfield", function() {  
+// 	$(document).on("focus","div[id*=comment].insertfield", function() {  
     	
-    		$(this).html("");
+//     		$(this).html("");
     	
-    });
+//     });
           
-    $(document).on("focusout","div[id*=comment].insertfield", function() { 
-    	if($(this).text() == ""){
-    		$(this).html("<span class=text-muted>댓글 달기...</span>");
+//     $(document).on("focusout","div[id*=comment].insertfield", function() { 
+//     	if($(this).text() == ""){
+//     		$(this).html("<span class=text-muted>댓글 달기...</span>");
     		     
-    	}
-    });         
-  
+//     	}
+//     });         
+	
+	
+	
     $(document).ready(function(){
     	AOS.init();
     	
-    
-    	function makeupHashtag (e) {
-
-            if ((e.keyCode === 32)) {
-
-                if (parseInt($('#caretposition').val()) == 0) {
-                    // alert('뭐?')                        	 
-                } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
-                    // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
-                } else {
-                    // alert('임마?')
-                    return;
-                }
-
-                var regex = /(#[^#\s,;<>. ]+)/gi;
-                if (regex) {
-                    var newtxt = "<span class=fugue>" + $(this).text()
-                        .replace(regex, "</span><span class=text-danger>" + "$1" +
-                            "</span><span class=fugue>") + "</span>"
-
-                    // console.log($('#editorDiv').text().length);   
-                    // console.log(newtxt)   
-                    newtxt += "<kz></kz>"
-                    $(this).html(newtxt)
-                    var el = this;
-                    console.log("childNodes: " + el.childNodes.length);
-                    var range = document.createRange();
-                    var sel = window.getSelection();
-                    range.setStart(el.lastChild, 0);
-                    range.collapse(false);
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-
-                    $(this).focusout();
-                    $(this).focus();
-                    if (parseInt($('#caretposition').val()) == $(this).text().length) {
-
-                    }
-
-                }
-            }
-        }
+//         $("div[id*=comment].insertfield").focus(function() {
+//         	if(globalThisCommentIsFocusedOnFirst){
+//         		$(this).html("");
+//             	globalThisCommentIsFocusedOnFirst = false;
+//         	}
+        	
+//         });   
+        
+//         $("div[id*=comment].insertfield").focusout(function() {
+//         	if($(this).text() == ""){
+//         		$(this).html("<span class=text-muted>댓글 달기...</span>");
+//         		globalThisCommentIsFocusedOnFirst = true;
+//         	}
+//         })
     	
-    	$("div[id*='comment'].insertfield").on("mousedown mouseup keydown keyup", update);
-    	$("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+
+    	////////////////////////////////////////////////
+//     	$("div[id*='comment'].insertfield").on("mousedown mouseup keydown keyup", update);
+//     	$("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
     	
-    	$("div[id*='comment'].insertfield").keyup(makeupHashtag)
-    	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
+//     	$("div[id*='comment'].insertfield").keyup(makeupHashtag)
+//     	$("div[id*='commenttxt']").keyup(makeupHashtag)  	
     
-    	$("div[id*='commenttxt']").keypress(function(e){
-			if(e.keyCode === 13) { 
-				 e.preventDefault();
-			modComment(this);
-		 } 
-		})     
+//     	$("div[id*='commenttxt']").keypress(function(e){
+// 			if(e.keyCode === 13) { 
+// 				 e.preventDefault();
+// 			modComment(this);
+// 		 } 
+// 		})
 		
 // 		$("div[id*='comment'].insertfield").keypress(function(event){
-      
-// 		    var keycode = (event.keyCode ? event.keyCode : event.which);  
+// 		    var keycode = (event.keyCode ? event.keyCode : event.which);
 // 		    var obj = this
 // 		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
 // 		    if(keycode == '13'){ 
@@ -373,7 +431,7 @@ function getCaretPosition(editableDiv) {
 // 		          alert("댓글을 입력해주세요");
 // 		       }
 // 	       		else { 
-// 	       			event.preventDefault();     
+	    	   
 // 	           $.ajax({ 
 // 	                  type: "POST",  
 // 	                  url: "comment.co",    
@@ -472,21 +530,22 @@ function getCaretPosition(editableDiv) {
 					<div class="py-2 my-5" data-aos="fade-up" data-aos-once="true"
 						id="feed">
 						<div class="profile-image">
-
-							<c:choose>
-								<c:when test="${profile_pic.containsKey(tmp.id)}">
-
-
-									<img class="ml-3 mr-2 pic"
-										src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
-
-								</c:when>
-								<c:otherwise>
-									<img class="ml-3 mr-2 pic" src="AttachedMedia/standard.jpg">
-								</c:otherwise>
-							</c:choose>
-
-							<br>
+						  
+						<c:choose>
+						<c:when test="${profile_pic.containsKey(tmp.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/standard.jpg">
+                  </c:otherwise>
+					</c:choose>
+							
+							<br> 
 							<c:choose>
 								<c:when test="${tmp.thisArticleForAd eq 1}">
 									<a class="mt-1 idtxt" id="id"
@@ -499,15 +558,15 @@ function getCaretPosition(editableDiv) {
 									</a>
 								</c:otherwise>
 							</c:choose>
-
+							
 						</div>
 						<div class="mt-2" id="boardimg">
-
+							
 
 
 							<div id="myCarousel${status.index}" class="carousel slide"
 								data-ride="carousel" data-interval="false" style="z-index: 5;">
-								<ul id="carousel-indicators" class="carousel-indicators">
+								<ul id="carousel-indicators" class="carousel-indicators" >
 									<li id="firstli" data-target="#myCarousel${status.index}"
 										data-slide-to="0" class="active"></li>
 									<c:forEach begin="1" var="media"
@@ -515,9 +574,9 @@ function getCaretPosition(editableDiv) {
 										<li data-target="#myCarousel${status.index}"
 											data-slide-to="${status2.index}"></li>
 									</c:forEach>
-								</ul>
-								<div id="carousel-inner" class="carousel-inner"
-									style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
+								</ul>  
+								<div id="carousel-inner" class="carousel-inner" 
+								style="height:${maxImgHeight[status.index]}px; max-height:700px; min-height:200px; display:table;">
 									<div id="firstItem" class="carousel-item active">
 										<img class='boardimg' width='100%'
 											src='AttachedMedia/${result2[status.index][0].system_file_name}'
@@ -543,48 +602,45 @@ function getCaretPosition(editableDiv) {
 								</a>
 							</div>
 
-						</div>
+						</div>						
 
 						<c:if test="${ tmp.thisArticleForAd eq 1 }">
 							<div class=row style="z-index: 199; position: relative;">
 								<div class=col-12>
 									<div class="btn btn-secondary btn-lg btn-block">
 										<c:forEach var="ad" items="${ adList }">
-
-											<c:if
-												test="${ Math.abs(ad.boardSeq) eq Math.abs(tmp.board_seq) }">
-
+										  
+											<c:if test="${ Math.abs(ad.boardSeq) eq Math.abs(tmp.board_seq) }">
+											
 												<c:choose>
 													<c:when test="${ ad.moreInfoWebsite eq null }">
-														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired
-															Profile 가기</a>
+														<a href="board.bo?id=${tmp.id}&cat=1" class="text-light">SocialWired Profile 가기</a>
 													</c:when>
 													<c:when test="${ ad.isWebsitePurposeOfPurchase eq 'y'}">
-														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러
-															가기</a>
+														<a href="${ ad.moreInfoWebsite }" class="text-light">구매하러 가기</a>
 													</c:when>
 													<c:otherwise>
-														<a href="${ ad.moreInfoWebsite }" class="text-light">더
-															알아보기</a>
+														<a href="${ ad.moreInfoWebsite }" class="text-light">더 알아보기</a>
 													</c:otherwise>
 												</c:choose>
-											</c:if>
+											</c:if> 
 										</c:forEach>
 									</div>
 								</div>
 							</div>
-						</c:if>
+						</c:if> 
 
 
 						<div id="cont">
 							<nav class="navbar navbar-expand-md navbar-dark pl-1 py-1 mt-1">
 								<div class="container">
-									<a class="navbar-brand"> <c:choose>
+									<a class="navbar-brand"> 
+									<c:choose>     
 											<c:when test="${like.containsKey( Math.abs(tmp.board_seq) )}">
 												<i value="${tmp.board_seq}" style="display: none;"
 													id="likeit" class="far fa-heart icon mr-1 pointer"
-													onclick="likeit(this)"></i>
-												<i value="${tmp.board_seq}"
+													onclick="likeit(this)"></i>  
+												<i value="${tmp.board_seq}"  
 													style="font-weight: bold; color: red;" id="likecancel"
 													class="far fa-heart icon mr-1 pointer"
 													onclick="unlikeit(this)"></i>
@@ -599,10 +655,10 @@ function getCaretPosition(editableDiv) {
 													onclick="unlikeit(this)"></i>
 
 											</c:otherwise>
-										</c:choose> <i class="far fa-comment icon"></i>
-									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>
-											<c:when
-												test="${bookmark.containsKey( Math.abs(tmp.board_seq))}">
+										</c:choose>  
+										 <i class="far fa-comment icon"></i>
+									</a> <a class="btn navbar-btn ml-2 text-white "> <c:choose>  
+											<c:when test="${bookmark.containsKey( Math.abs(tmp.board_seq))}">
 
 												<i value="${tmp.board_seq}" id="mark"
 													class="far fa-bookmark icon pointer" style="display: none;"
@@ -639,11 +695,10 @@ function getCaretPosition(editableDiv) {
 										href="board.bo?id=${tmp.id}&cat=1" style="font-weight:bold;font-size: 14px;color: #12bbad;">${tmp.id}</a>
     
 									<div class='pl-3 contdiv pr-2' id="contdiv${tmp.board_seq}"
-										style="word-wrap: break-word; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 350px; height: 20px;">
-									</div>
-									<a id="contplus${tmp.board_seq}" class='pointer'
-										style="color: gray; display: none;">더보기</a>
-
+										style="word-wrap: break-word; word-break: break-all;  overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  width: 350px ; height: 20px;">
+										  </div>     
+									<a id="contplus${tmp.board_seq}" class='pointer' style="color:gray; display:none;">더보기</a>   
+									
 									<script> 
 							 
 							  var txt = "${tmp.contents}";  
@@ -659,7 +714,7 @@ function getCaretPosition(editableDiv) {
 					
 							}
 							
-							 
+							<!-- 더보기-->   
 							  console.log(txt.length);     
 							if(txt.length > 48) {  
 								 $("#contplus${tmp.board_seq}").attr("style","color:gray;");   
@@ -673,9 +728,9 @@ function getCaretPosition(editableDiv) {
 							})
 						
   
-		</script>
-								</div>
-
+		</script>   
+								</div>   
+								 
 								<!-- 글내용자리 -->
 
 								<p class="text-info pointer pt-4 mb-1"
@@ -695,13 +750,13 @@ function getCaretPosition(editableDiv) {
                      $("#myComment${tmp.board_seq}").html("&nbsp&nbsp모두 ${commenttmp.value.size()}개의 댓글보기")
                      var num = 0;
                      </script>
-												</c:if>
+								 				</c:if>
 
 												<c:forEach var="comment" items="${commenttmp.value}">
 
 													<ul id="ul${comment.comment_seq}" style="display: none"
-														value="${comment.comment_seq}"
-														onmouseover="commentover(this)"
+														value="${comment.comment_seq}"  
+														onmouseover="commentover(this)"   
 														onmouseleave="commentleave(this)"
 														class='commentline navbar-nav co${tmp.board_seq}'>
 														<li id='li1'><a
@@ -713,7 +768,7 @@ function getCaretPosition(editableDiv) {
 
 														<li id='li3'><a id='commentdel${comment.comment_seq}'
 															value="${tmp.board_seq}:${comment.comment_seq}"
-															onclick="delComment(this)" class="pointer"></a></li>
+								 							onclick="delComment(this)" class="pointer"></a></li>
 														<li id='li4'><a id='commentmod${comment.comment_seq}'
 															value="${comment.comment_seq}" onclick="modComment(this)"
 															class="pointer"></a></li>
@@ -755,10 +810,16 @@ function getCaretPosition(editableDiv) {
 							<!--               -->
 
 
-							<div class="crecodiv pl-2 py-2 navbar-nav">
- 
+							<div class="crecodiv pl-2 py-2 navbar-nav"> 
+
+
+
+								<%-- 								<input type="text" placeholder="댓글 달기..."
+									name="comment_contents${tmp.board_seq}" class="creco ml-2 "
+									id="comment${tmp.board_seq}"> --%>
+
 								<div contenteditable=true class="creco ml-2 insertfield"
-									id="comment${ tmp.board_seq }">
+									id="comment${ tmp.board_seq }">       
 									<span class='text-muted ml-1'>댓글 달기...</span>
 								</div>
 
@@ -771,7 +832,7 @@ function getCaretPosition(editableDiv) {
 
 							</div>
 
-							<!-- 여기다 그 스크립트 -->
+<!-- 여기다 그 스크립트 -->
 						</div>
 						<!--cont  -->
 					</div>
@@ -854,7 +915,7 @@ function getCaretPosition(editableDiv) {
 					실시간 #트랜드     
 				</p>
 				<hr class="_5mToa">
-				<c:if test="${trend.size() > 0}">       
+				<c:if test="${trend.size() > 0}">  
 		  
 		  	<div style="overflow-y:auto; height:230px;">    		
 			<c:forEach var="trend" items="${trend}" varStatus="status" >
@@ -875,15 +936,17 @@ function getCaretPosition(editableDiv) {
 			}
 			
 			</script>
-
-			</c:forEach>
+		  
+				</c:forEach>
+			   	</div>
+		  
+		  
+				</c:if><hr class="_5mToa">
 			</div>
-		</c:if>
-		<hr class="_5mToa"> 
-		<br>
-		</div>
-		
-		<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
+
+
+
+<!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
 			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
 				<div class="container">
 					<div class="row">
@@ -896,11 +959,13 @@ function getCaretPosition(editableDiv) {
 				</div>
 		<!-- 			</div> -->
 
-			</div>
 		<!-- container -->
 
 	</div>
-	<!-- centerwrapper -->
+	<!-- container -->
+
+</div>
+<!-- centerwrapper -->
 </div>
 <!--  allwrapper-->
 
@@ -932,7 +997,7 @@ function getCaretPosition(editableDiv) {
 			</div>
 		</div>
 	</div>
-</div>
+</div>  
 
 <div class="modal" id="reportModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -967,9 +1032,9 @@ function getCaretPosition(editableDiv) {
 
 	</div>
 </div>
-
-<!--                                  DM -->
-<script>
+												
+					<!--                                  DM -->
+					<script>
 					function openDm() {
 						reloadFriendlist("");
 						reloadMessengerlist();
@@ -1172,128 +1237,122 @@ function getCaretPosition(editableDiv) {
 					
 					
 					</script>
-<div class="nav-side-menu" id="dm">
-	<!-- Brand -->
-	<div class="brand">
-		<i class="fab fa-facebook-messenger mr-1"></i>Messenger
-	</div>
+                     <div class="nav-side-menu" id="dm">
+					     <!-- Brand -->
+				            <div class="brand"><i class="fab fa-facebook-messenger mr-1"></i>Messenger</div>
 
-	<!-- Search body -->
-	<div>
-		<input type="text" id="dmSearch" class="form-control"
-			placeholder="Search">
-	</div>
+				            <!-- Search body -->
+				            <div>
+				                <input type="text" id="dmSearch" class="form-control" placeholder="Search" >
+				            </div>
+					  
+					        <div class="menu-list">
+					  
+					            <ul id="menu-content" class="menu-content collapse out">
+					         
+					                <li data-toggle="collapse" data-target="#currentmessenger" class="collapsed">
+					                  <a><i class="fab fa-fort-awesome-alt fa-lg"></i>최근 목록</a>
+					                </li>  
+					                <ul class="sub-menu collapse" id="currentmessenger">
 
-	<div class="menu-list">
+					                </ul>
+					                
+					            </ul>
+					            <li>
+					                  <a><i class="fas fa-circle onlineicon"></i>온라인 친구<span class="ml-2" id="onlinecount"></span></a>
+					                </li>
+					                <ul id="onlinefriendlist">
 
-		<ul id="menu-content" class="menu-content collapse out">
-
-			<li data-toggle="collapse" data-target="#currentmessenger"
-				class="collapsed"><a><i
-					class="fab fa-fort-awesome-alt fa-lg"></i>최근 목록</a></li>
-			<ul class="sub-menu collapse" id="currentmessenger">
-
-			</ul>
-
-		</ul>
-		<li><a><i class="fas fa-circle onlineicon"></i>온라인 친구<span
-				class="ml-2" id="onlinecount"></span></a></li>
-		<ul id="onlinefriendlist">
-
-		</ul>
-		<li><a><i class="fas fa-circle"></i>오프라인 친구<span class="ml-2"
-				id="offlinecount"></span></a></li>
-		<ul id="offlinefriendlist">
-
-		</ul>
-	</div>
-
-</div>
-
-
+					                </ul> 
+					                <li>
+					                  <a><i class="fas fa-circle"></i>오프라인 친구<span class="ml-2" id="offlinecount"></span></a>
+					                </li>
+					                <ul id="offlinefriendlist">
+					    	 			 
+					    		    </ul>
+					    	 </div>
+					    	 
+					</div>
+					
+					
 <!--          DM메세지창 -->
-<div class="chatbox-holder">
+                 <div class="chatbox-holder">
+  
+  <div class="chatbox group-chat" style="display:none;">
+    <div class="chatbox-top">
+      <div class="chatbox-avatar">
+        <a target="_blank" href=""><img src="루이.jpg" /></a>
+      </div>
+      
+      <div class="chat-group-name" id="dmnickname">
+        
+      </div>
+      <input type="hidden" id="userId">
+      <div class="chatbox-icons">
+        <label for="chkSettings"><i class="fa fa-gear"></i></label><input type="checkbox" id="chkSettings" />
+        <div class="settings-popup">
+          <ul>
+            <li><a href="#">Group members</a></li>
+            <li><a href="#">Add members</a></li>
+            <li><a href="#">Delete members</a></li>
+            <li><a href="#">Leave group</a></li>
+          </ul>
+        </div>
+        <a href="javascript:void(0);"><i class="fa fa-minus"></i></a>
+        <a href="javascript:void(0);"><i class="fa fa-close"></i></a>       
+      </div>      
+    </div>
+    
+    <div class="chat-messages" id="messagebox">
 
-	<div class="chatbox group-chat" style="display: none;">
-		<div class="chatbox-top">
-			<div class="chatbox-avatar">
-				<a target="_blank" href=""><img src="루이.jpg" /></a>
-			</div>
-
-			<div class="chat-group-name" id="dmnickname"></div>
-			<input type="hidden" id="userId">
-			<div class="chatbox-icons">
-				<label for="chkSettings"><i class="fa fa-gear"></i></label><input
-					type="checkbox" id="chkSettings" />
-				<div class="settings-popup">
-					<ul>
-						<li><a href="#">Group members</a></li>
-						<li><a href="#">Add members</a></li>
-						<li><a href="#">Delete members</a></li>
-						<li><a href="#">Leave group</a></li>
-					</ul>
-				</div>
-				<a href="javascript:void(0);"><i class="fa fa-minus"></i></a> <a
-					href="javascript:void(0);"><i class="fa fa-close"></i></a>
-			</div>
-		</div>
-
-		<div class="chat-messages" id="messagebox"></div>
-
-		<div class="chat-input-holder">
-			<input type="text" class="chat-input" id="sendDm">
-		</div>
-
-		<div class="attachment-panel"
-			style='overflow-x: scroll; white-space: nowrap'>
-			<img src="resources/images/imoticon/1.png" class="imoticon"> <img
-				src="resources/images/imoticon/2.png" class="imoticon"> <img
-				src="resources/images/imoticon/3.png" class="imoticon"> <img
-				src="resources/images/imoticon/4.png" class="imoticon"> <img
-				src="resources/images/imoticon/5.png" class="imoticon"> <img
-				src="resources/images/imoticon/6.png" class="imoticon"> <img
-				src="resources/images/imoticon/7.png" class="imoticon"> <img
-				src="resources/images/imoticon/8.png" class="imoticon"> <img
-				src="resources/images/imoticon/9.png" class="imoticon"> <img
-				src="resources/images/imoticon/10.png" class="imoticon"> <img
-				src="resources/images/imoticon/11.png" class="imoticon"> <img
-				src="resources/images/imoticon/12.png" class="imoticon"> <img
-				src="resources/images/imoticon/13.png" class="imoticon"> <img
-				src="resources/images/imoticon/14.png" class="imoticon"> <img
-				src="resources/images/imoticon/15.png" class="imoticon"> <img
-				src="resources/images/imoticon/16.png" class="imoticon"> <img
-				src="resources/images/imoticon/17.png" class="imoticon"> <img
-				src="resources/images/imoticon/18.png" class="imoticon"> <img
-				src="resources/images/imoticon/19.png" class="imoticon"> <img
-				src="resources/images/imoticon/20.png" class="imoticon"> <img
-				src="resources/images/imoticon/21.png" class="imoticon"> <img
-				src="resources/images/imoticon/22.png" class="imoticon"> <img
-				src="resources/images/imoticon/23.png" class="imoticon"> <img
-				src="resources/images/imoticon/24.png" class="imoticon"> <img 
-				src="resources/images/imoticon/25.png" class="imoticon"> <img
-				src="resources/images/imoticon/26.png" class="imoticon"> <img
-				src="resources/images/imoticon/27.png" class="imoticon">
-		</div>
-	</div>
+            
+    </div>
+    
+    <div class="chat-input-holder">
+      <input type="text" class="chat-input" id="sendDm">
+    </div>
+    
+    <div class="attachment-panel" style='overflow-x:scroll; white-space:nowrap'>
+    	<img src="resources/images/imoticon/1.png" class="imoticon">
+    	<img src="resources/images/imoticon/2.png" class="imoticon">
+    	<img src="resources/images/imoticon/3.png" class="imoticon">
+    	<img src="resources/images/imoticon/4.png" class="imoticon">
+    	<img src="resources/images/imoticon/5.png" class="imoticon">
+    	<img src="resources/images/imoticon/6.png" class="imoticon">
+    	<img src="resources/images/imoticon/7.png" class="imoticon">
+    	<img src="resources/images/imoticon/8.png" class="imoticon">
+    	<img src="resources/images/imoticon/9.png" class="imoticon">
+    	<img src="resources/images/imoticon/10.png" class="imoticon">
+    	<img src="resources/images/imoticon/11.png" class="imoticon">
+    	<img src="resources/images/imoticon/12.png" class="imoticon">
+    	<img src="resources/images/imoticon/13.png" class="imoticon">
+    	<img src="resources/images/imoticon/14.png" class="imoticon">
+    	<img src="resources/images/imoticon/15.png" class="imoticon">
+    	<img src="resources/images/imoticon/16.png" class="imoticon">
+    	<img src="resources/images/imoticon/17.png" class="imoticon">
+    	<img src="resources/images/imoticon/18.png" class="imoticon">
+    	<img src="resources/images/imoticon/19.png" class="imoticon">
+    	<img src="resources/images/imoticon/20.png" class="imoticon">
+    	<img src="resources/images/imoticon/21.png" class="imoticon">
+    	<img src="resources/images/imoticon/22.png" class="imoticon">
+    	<img src="resources/images/imoticon/23.png" class="imoticon">
+    	<img src="resources/images/imoticon/24.png" class="imoticon">
+    	<img src="resources/images/imoticon/25.png" class="imoticon">
+    	<img src="resources/images/imoticon/26.png" class="imoticon">
+    	<img src="resources/images/imoticon/27.png" class="imoticon">
+    </div>
+  </div>  
 </div>
 
-<div class="chatbox-holder row" style='display: none;'
-	id='alertmessenger'>
-	<div class="alert alert-secondary alert-dismissible" role="alert">
-		<button type="button"
-			onclick="this.parentNode.parentNode.removeChild(this.parentNode);"
-			class="close" data-dismiss="alert">
-			<span aria-hidden="true" class='mr-2'>×</span><span class="sr-only">Close</span>
-		</button>
-		<i class="far fa-envelope mr-2"></i><strong id="alertsender"></strong>
-		<marquee>
-			<p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt"
-				id='alertmsg'></p>
-		</marquee>
+	<div class="chatbox-holder row" style='display:none;' id='alertmessenger'>
+		<div class="alert alert-secondary alert-dismissible" role="alert">
+		  <button type="button" onclick="this.parentNode.parentNode.removeChild(this.parentNode);" class="close" data-dismiss="alert"><span aria-hidden="true" class='mr-2'>×</span><span class="sr-only">Close</span></button>
+		  <i class="far fa-envelope mr-2"></i><strong id="alertsender"></strong> 
+		  <marquee><p class="mt-2 alertmsg" style="font-family: Impact; font-size: 14pt" id='alertmsg'></p></marquee>
+		</div>
 	</div>
-</div>
 
-
+ 
 <script>
 $(function(){
 	  $('.fa-minus').click(function(){    
@@ -1346,7 +1405,7 @@ $(window).scroll(function(){
             						
             				}
             			}
-            			$('#board').append("<br>");      
+            			$('#board').append("<br>");
             			$('#board').append("<hr>");
             		}  */
             		
@@ -1458,9 +1517,13 @@ $(window).scroll(function(){
 	            		
 	            		divStr += "</div>"	// navbar-nav div의 끝
 	            		divStr += "<p class='text-info pointer pt-4 mb-1' id='myComment" + boardSeq + "' onclick='commentdisplay(this)'>"
+	            		   
+	            		if(r.commentcnt[boardSeq] > 2){      
+	            		divStr += "모두 " + r.commentcnt[boardSeq]  + " 개의 댓글보기"
+	            		}
 	            		
-	            		divStr += "</p>"
-	            		divStr += "<input type=hidden value='" + boardSeq + ">"
+	            		divStr += "</p>"   
+	            		divStr += "<input type=hidden value='" + boardSeq + "'>"   
 	            		
 	            		divStr += "<div class='comment-contents' id='comment-contents" + boardSeq + "'>" 		
 	            		
@@ -1468,17 +1531,17 @@ $(window).scroll(function(){
 						for(item in r.commentlist){
 							if(item == boardSeq) {	
 								
-								//  보완 test='${commenttmp.value.size() > 2 }'
-								if(r.commentlist[item].length > 2){
-									// pure script
-									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
-										var num = 0;
-									/* $(document).ready(function(){
-										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
-										var num = 0;
-									}) */
+// 								//  보완 test='${commenttmp.value.size() > 2 }'
+// 								if(r.commentlist[item].length > 2){
+// 									// pure script
+// 									$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+// 										var num = 0;
+// 									/* $(document).ready(function(){
+// 										$('#myComment' + boardSeq).html("&nbsp&nbsp모두 " + r.commentlist[item].length + "개의 댓글보기")
+// 										var num = 0;
+// 									}) */
 									
-								}
+// 								}
 								
 								for(elem in r.commentlist[item]){
 									console.log(r.commentlist[item][elem])
@@ -1486,8 +1549,15 @@ $(window).scroll(function(){
 									var commentId = r.commentlist[item][elem].id;
 									var commentContent = r.commentlist[item][elem].comment_contents;
 									console.log("comc: " + commentContent)
-																		// display: none
-									divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									      
+									
+									if(elem < 2) {   
+										divStr += "<ul id='ul" + commentSeq + "' style='' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									}else{
+										// display: none
+										divStr += "<ul id='ul" + commentSeq + "' style='display: none;' value='" + commentSeq + "' onmouseover='commentover(this)' onmouseleave='commentleave(this)' class='commentline navbar-nav co" + boardSeq + "'>"
+									}
+									
 									divStr += "<li id='li1'><a href='board.bo?id=" + commentId + "&cat=1'>" + commentId + "</a></li>"
 									divStr += "<li id='li2'>"
 									var newComment = '<span class=fugue>' 
@@ -1534,7 +1604,7 @@ $(window).scroll(function(){
 	            		copyStartOfNum++;
 	            		kn++;
 	            		$('#board').append(divStr);
-            		}  
+            		}      
             		
             		globalStartNum = parseInt(r.nextStartNum);
             		return true;
@@ -1551,37 +1621,36 @@ $(window).scroll(function(){
             }
         });
 		
-//     	var globalThisCommentIsFocusedOnFirstSpecial = true;
+    	var globalThisCommentIsFocusedOnFirstSpecial = true;
     	
-//         $("div[id*=comment].insertSpecialField").focus(function() {
-//         	if(globalThisCommentIsFocusedOnFirstSpecial){
-//         		$(this).html("");
-//             	globalThisCommentIsFocusedOnFirstSpecial = false;
-//         	}
+        $("div[id*=comment].insertSpecialField").focus(function() {
+        	if(globalThisCommentIsFocusedOnFirstSpecial){
+        		$(this).html("");
+            	globalThisCommentIsFocusedOnFirstSpecial = false;
+        	}
         	
-//         });
+        });
         
-//         $("div[id*=comment].insertSpecialField").focusout(function() {
-//         	if($(this).text() == ""){
-//         		$(this).html("<span class=text-muted>댓글 달기...</span>");
-//         		globalThisCommentIsFocusedOnFirstSpecial = true;
-//         	}
-//         })
+        $("div[id*=comment].insertSpecialField").focusout(function() {
+        	if($(this).text() == ""){
+        		$(this).html("<span class=text-muted>댓글 달기...</span>");
+        		globalThisCommentIsFocusedOnFirstSpecial = true;
+        	}
+        })
         
 
 
 		$("div[id*='comment'].insertSpecialField").keydown(function(event){
 		    var keycode = (event.keyCode ? event.keyCode : event.which);
 		    var obj = this
-		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))  
+		    var toBoardSeq = parseInt($(this).attr('id').replace("comment", ""))
 		    if(keycode == '13'){
-		    	   
 		       var text = $(this).text();
 		       if(text == ""){
 		          alert("댓글을 입력해주세요");
 		       }
 		   		else { 
-		   			event.preventDefault();    
+			   
 		       $.ajax({ 
 		              type: "POST",  
 		              url: "comment.co",    
@@ -1653,7 +1722,7 @@ $(window).scroll(function(){
 		              error: function(){
 		                  console.log("에러 발생");
 		              }
-		         }); //ajax 
+		         }); //ajax   
 		       }    
 		    }  
 		});

@@ -350,6 +350,10 @@ padding: 10px;
 
 }  
 
+.table thead th{
+	border-bottom:1px solid black;
+}
+
   
 .comment-contents li {
 position:relative;	
