@@ -38,6 +38,7 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
 import kh.sns.dto.Profile_ImageDTO;
@@ -1175,15 +1176,20 @@ public class BoardController {
 		}
 		
 		List<Member_TagsDTO> membertag = new ArrayList<>();
-		
-		if(persontag.isEmpty()) {
-			membertag = null;
-		}
-		else {
-			for(String tmp : persontag) {
-				Member_TagsDTO membertagdto = new Member_TagsDTO(0,tmp,"");
-				membertag.add(membertagdto);
+		try {
+			if(persontag.isEmpty()) {
+				membertag = null;
 			}
+			else {
+				for(String tmp : persontag) {
+					MemberDTO dto = new MemberDTO();
+					dto = memService.selectUserId(tmp);
+					Member_TagsDTO membertagdto = new Member_TagsDTO(0,dto.getId(),"");
+					membertag.add(membertagdto);
+				}
+			}
+		}catch(Exception e){
+			
 		}
 		
 		
