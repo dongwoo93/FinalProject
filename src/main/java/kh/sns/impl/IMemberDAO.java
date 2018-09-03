@@ -81,8 +81,8 @@ public class IMemberDAO implements MemberDAO {
 	@Override
 	public int signUp(MemberDTO dto)  throws Exception {
 		// TODO Auto-generated method stub
-		String sql = "insert into member values(?,?,?,?,?,?,?) ";
-		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
+		String sql = "insert into member values(?,?,?,?,?,?,?,default,default,?,?) ";
+		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName(),dto.getLastDisabledDate(),dto.getDisabledReason());
 				
 	}
 	
