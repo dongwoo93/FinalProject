@@ -875,8 +875,18 @@ $(document).ready(function(){
 				<div id="board" class="bg-white">
 					<br>
 					<div class="profile-image">
-						<img class="ml-3 mr-2"
-							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+					<c:choose>
+						<c:when test="${profileImg.size() > 0}">
+						<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
+							src="AttachedMedia/<c:out value='${profileImg[0].system_file_name}'/>">
+						</c:when>
+						<c:otherwise>
+						<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
+							src="resources/images/DefaultProfile.jpg">
+						</c:otherwise>
+					</c:choose>
+					
+						
 						<div class="pointer" id="modalid2" style="font-size: 17px;color:#12bbad;font-wight:bold;"></div>
 					</div>
 
