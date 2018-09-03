@@ -41,6 +41,7 @@ import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
+import kh.sns.dto.ProfileDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardBusinessService;
 import kh.sns.interfaces.BoardDAO;
@@ -559,6 +560,7 @@ public class BoardController {
 		}
 
 		mav.addObject("result", result);
+		mav.addObject("thisId", id);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
 		mav.addObject("followerCount", followerCount);
@@ -1386,6 +1388,7 @@ public class BoardController {
 			Map<String, String> getAllProfilePic = new HashMap<>();
 			Board_LikeDTO like = null;
 			Board_BookmarkDTO bookmark = null;
+			ProfileDTO profile = null;
 
 			try {
 				profile_image = profileService.getAllProfileImage();
@@ -1400,13 +1403,13 @@ public class BoardController {
 				a = boardService.oneBoard(board_seq);
 				a.setContents(a.getContents().replace("\r\n", "\\n\" + \""));
 				media.add(boardService.search2(a.getBoard_seq()));
-
-
 				result = board_commentService.getCommentList(Integer.parseInt(board_seq));
 
 				like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
 
 				bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
+				
+				profile = profileService.getOneProfile(id);
 
 			}catch(Exception e) {
 				System.out.println("oneboard.do");
@@ -1425,6 +1428,7 @@ public class BoardController {
 			mav.addObject("like", like);
 			mav.addObject("bookmark", bookmark);
 			mav.addObject("profile_pic",getAllProfilePic);
+			mav.addObject("profile", profile);
 		}else {
 			mav.setViewName("redirect:main.jsp");
 		}
