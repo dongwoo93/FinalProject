@@ -273,5 +273,5 @@ function follow(id1, id2, e) {
 
 
 
-
+<%@ include file="include/directMessage.jsp" %>
 <%@ include file="include/bottom.jsp"%>

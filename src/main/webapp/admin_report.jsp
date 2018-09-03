@@ -660,4 +660,5 @@ html,body {
 		</div>
 		<br>
 	</div>
+	<%@ include file="include/directMessage.jsp" %>
 	<%@ include file="include/bottom.jsp"%>
