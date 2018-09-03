@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
     <%@ include file="include/top.jsp"%>
     <script src="resources/js/top.js"></script>
-    <link rel="stylesheet" href="resources/css/instagram.css">
     <link rel="stylesheet" type="text/css" href="resources/css/write.css">
 <script>
         // var filesArr = Array.prototype.slice.call(files);
@@ -225,20 +224,26 @@
             $("#personmodalbt").click(function(e){
          	   var textValue = $(".tags li").length;
          	   if(textValue == 0){
+         		   var tag = $("#person .tagicon").text();  
+         		   console.log(tag);  
+         		   if(tag == ""){
+         			   $("#person *").remove();
+         			   $("#person").append("<i class='fas fa-users tagicon mr-2 pr-1'></i><a onclick='personmodal()' style='cursor: pointer;''>사람 태그하기</a>")
+         		   }
          		  $('#personModal').modal('hide');
          	   }else{
          		  
              	   $("#person *").remove();
              	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
 
-             	   for(var i = 1; i<textValue+1;i++){
+             	   for(var i = 2; i<textValue+2;i++){
     		            
                     var realValue = $(".tags li:nth-child("+i+")").attr("id");
-                   		 $(".tag").append('<li class="addedTag">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
+                   		 $(".tag").append('<li class="addedTag mb-2">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
                    		 $('#personModal').modal('hide');
                     }
              	   
-             	   $("#searchfriend").val("");
+             	   $("#searchfriend").val("");  
          	   }
          	  
             });
@@ -780,7 +785,7 @@
       
       function initAutocomplete() {
           map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.8688, lng: 151.2195},
+          center: {lat: 36.082402, lng: 128.088226},
           zoom: 13,
           mapTypeControl: false,
           streetViewControl: false,
