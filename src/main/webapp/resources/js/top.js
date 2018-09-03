@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://192.168.1.218:8080/controller/websocket?loginId="+currentId);         
+var ws = new WebSocket("ws://localhost/websocket?loginId="+currentId);         
 
 
 $(function () {
@@ -295,7 +295,7 @@ $(document).ready(function() {
 	  
 	$("#allwrapper").click(function(){
 		closeDm();
-	});
+	}); 
 	
 ////////////	Messenger SideBar Hide 
 	
