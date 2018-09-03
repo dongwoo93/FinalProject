@@ -19,4 +19,5 @@ public interface Board_CommentService {
 	public Board_CommentDTO getOneComment(int comment_seq) throws Exception;
 	public int getBoard_seq(int comment_seq) throws Exception;
 
+
 }

@@ -33,9 +33,8 @@ public class IBoardBusinessService implements BoardBusinessService {
 	}
 
 	@Override
-	public int selectAnBoardBiz(int boardBizSeq) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public BoardBusinessDTO selectAnBoardBiz(int boardBizSeq) throws Exception {
+		return bbdao.selectAnBoardBiz(boardBizSeq);
 	}
 
 	@Override
@@ -57,6 +56,11 @@ public class IBoardBusinessService implements BoardBusinessService {
 	@Override
 	public List<BoardBusinessDTO> pickAds(int count) throws Exception {
 		return bbdao.pickAds(count);
+	}
+	
+	@Override
+	public int updateClickCount(BoardBusinessDTO bbiz) throws Exception {
+		return bbdao.updateClickCount(bbiz);
 	}
 	
 }

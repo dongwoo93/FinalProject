@@ -31,22 +31,20 @@ public class WebSocket{
 	@OnMessage 
 	public void handleMessage(String message) throws Exception{
 		System.out.println(message + "!!!!!!!!!!::::::::");   
-		if((message.startsWith("comment")) ) {     
+		if(!(message.contains("뇽")) && (message.startsWith("comment")) ) {     
 			System.out.println("어어어어억ㅋ");
 			
 			String id = message.split(":")[1];   
 			for(String tmp : onlineUser.keySet()) {   
 				if(tmp.equals(id)) {
-					System.out.println(tmp);
 					onlineUser.get(tmp).getBasicRemote().sendText("comment");
 				}
 			}
 		}  
-		else if(message.startsWith("like:")) {
+		else if(!(message.contains("뇽")) && message.startsWith("like:")) {
 			String id = message.split(":")[1];   
 			for(String tmp : onlineUser.keySet()) {
 				if(tmp.equals(id)) {
-					System.out.println(tmp);
 					onlineUser.get(tmp).getBasicRemote().sendText("like");
 				}
 			}
@@ -55,9 +53,7 @@ public class WebSocket{
 		else {
 			System.out.println("zzlzllzlzll");
 		String receiver = message.split("뇽뇽뇽뇽123뇽뇽뇽뇽")[0];
-		System.out.println("receiver : " + receiver);
 		String msg = message.split("뇽뇽뇽뇽123뇽뇽뇽뇽")[1];
-		System.out.println("msg : " + msg);
 		for(String tmp : onlineUser.keySet()) {
 			if(tmp.equals(receiver)) {
 				System.out.println(tmp);

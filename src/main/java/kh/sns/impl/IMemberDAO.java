@@ -81,8 +81,8 @@ public class IMemberDAO implements MemberDAO {
 	@Override
 	public int signUp(MemberDTO dto)  throws Exception {
 		// TODO Auto-generated method stub
-		String sql = "insert into member values(?,?,?,?,?,?,?) ";
-		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName());
+		String sql = "insert into member values(?,?,?,?,?,?,?,default,default,?,?) ";
+		return template.update(sql,dto.getId(),dto.getPw(),dto.getNickname(),dto.getEmail(),dto.getPhone(),dto.getGender(),dto.getName(),dto.getLastDisabledDate(),dto.getDisabledReason());
 				
 	}
 	
@@ -132,6 +132,10 @@ public class IMemberDAO implements MemberDAO {
 			member.setNickname(rs.getString("nickname"));
 			member.setPhone(rs.getString("phone"));
 			member.setPw(rs.getString("pw"));
+			member.setIsDisabledAccount(rs.getString("is_disabled_account"));
+			member.setIsBlockedAccount(rs.getString("is_blocked_account"));
+			member.setDisabledReason(rs.getInt("disabled_reason"));
+			member.setLastDisabledDate(rs.getString("last_disabled_date"));
 			return member;			
 		});		
 		
@@ -252,4 +256,15 @@ public class IMemberDAO implements MemberDAO {
 		
 	}
 	
+	@Override
+	public int updateDisabledInfo(MemberDTO member) throws Exception {
+		String sql = "update member set is_disabled_account = ?, LAST_DISABLED_DATE = sysdate, DISABLED_REASON = ? where id = ?";
+		return template.update(sql, member.getIsDisabledAccount(), member.getDisabledReason(), member.getId());
+	}
+	
+	@Override
+	public int checkIdPwd(MemberDTO dto) {
+		String sql = "select * from member where id=? and pw=?";
+		return template.update(sql, dto.getId(), dto.getPw());
+	}
 }

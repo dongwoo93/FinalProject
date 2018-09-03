@@ -2,6 +2,7 @@
     pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -13,6 +14,7 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/main.css">
 <script src="resources/js/main.js"></script>
+
 <title>SoicalWired</title>
      
 <script>
@@ -20,6 +22,8 @@
       $(location).attr("href", "feed.bo");
    }
 </script>
+
+  
 </head>
 <body>
  
@@ -53,7 +57,7 @@
       <form id="loginform" method="post"> 
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">ID</p>
-            <input type="id" name="id" i]d="id" class="form-style" autocomplete="off"/>
+            <input type="id" name="id" id="id" class="form-style" autocomplete="off"/>
          </div>
          <div class="form-item">
             <p class="formLabel" style="font-weight:bold;">Password</p>

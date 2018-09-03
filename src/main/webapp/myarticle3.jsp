@@ -1,12 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
-<link rel="stylesheet" type="text/css"
-	href="resources/css/myarticle.css">
+<script src="resources/js/top.js"></script>
+<link rel="stylesheet" type="text/css" href="resources/css/myarticle.css">
+
+
+
 <style>
 .editableDivCommentSection {
 	margin-left: 10px;
 	text-align: left;
+}
+
+.divimg{
+	cursor:pointer;
 }
 </style>
 <script src="resources/js/myarticle.js"></script>
@@ -170,23 +177,23 @@ $(document).ready(function(){
     };
     
     function makeupHashtag (e) {
-
-        if ((e.keyCode === 32)) {
+    	console.log("length: " + $(this).text().length)
+        if ((e.keyCode === 32 )) {
             map[e.keyCode] = true;
             
             if(parseInt($('#caretposition').val()) == 0){
-           	 //                        	 
-            } else if (parseInt($('#caretposition').val()) == $(this).text().length){
-           	 // 
+           	 // alert('뭐?')                  	 
+            } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 엔터 고려하여 고친 부분 1
+             // alert( parseInt($('#caretposition').val()) + ":" +  $(this).text().length);
             } else {
            	 // 
            	 return;
             }
             
-
+			
             var regex = /(#[^#\s,;<>.]+)/gi;
             if (regex) {
-                var newtxt = "<span class=fugue>" + $(this).text()
+                var newtxt = "<span class=fugue>" + this.innerText	// 엔터 고려하여 고친 부분 2
                     .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
                         "</a><span class=fugue>") + "</span>"
 
@@ -208,7 +215,8 @@ $(document).ready(function(){
 
 
             }
-        }
+        }  
+    
     }
     
     $('#comment').on("mousedown mouseup keydown keyup", update);
@@ -306,6 +314,10 @@ $(document).ready(function(){
 		 $('#profileimg').attr('src', "AttachedMedia/"+name);
 		 $("#hiddenimgname").val(name);
 	}
+	function updateImgDefault() {
+		 $('#profileimg').attr('src', "resources/images/DefaultProfile.jpg");
+		 $("#hiddenimgname").val("resources/images/DefaultProfile.jpg");
+	}
 	</script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<script>    
@@ -322,13 +334,14 @@ $(document).ready(function(){
 <div id="allwrapper">
 
 
+	
 	<div class="container my">
-		<div class="profile">
-			<div class="profile-image">
+	 <div class="profile">
+	 <div class="profile-image">
 
-
+<c:set var="id" value="${thisId}"/>
 				<c:choose>
-					<c:when test="${profileImg.size() > 0}">
+					<c:when test="${profileImg.size() > 0 && profile_pic.containsKey(id)}">
 						<c:forEach items="${profileImg}" var="proimg">
 							<c:if test="${proimg.is_selected eq 'y'}">
 
@@ -354,12 +367,12 @@ $(document).ready(function(){
 							<c:when test="${sessionScope.loginId == pageid}">
 								<a data-target="#profileimage" data-toggle="modal"
 									style="cursor: pointer;"> <img
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									src="resources/images/DefaultProfile.jpg"
 									width="152px" height="152px" style="object-fit: cover;"></a>
 							</c:when>
 							<c:otherwise>
 								<img
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									src="resources/images/DefaultProfile.jpg"
 									width="152px" height="152px" style="object-fit: cover;">
 							</c:otherwise>
 						</c:choose>
@@ -395,7 +408,7 @@ $(document).ready(function(){
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
 							id="follow" style="background-color: #f3f3f3; display: none;">팔로우&nbsp;<i class="fas fa-plus"></i></div>
 						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
+							<i class="fas fa-user-slash" onclick="myFunction1()"></i>
 						</div>
 
 					</div>
@@ -413,7 +426,7 @@ $(document).ready(function(){
 							onclick="follow('${sessionScope.loginId}', '${pageid}')"
 							id="follow" style="background-color: #f3f3f3;">팔로우&nbsp;<i class="fas fa-plus"></i></div>
 						<div class="profile-settings-btn">
-							<i class="fas fa-undo-alt"></i>
+							<i class="fas fa-user-slash" onclick="myFunction1()"></i>
 						</div>
 
 					</div>
@@ -421,9 +434,11 @@ $(document).ready(function(){
 				</c:otherwise>
 			</c:choose>
 
-
-
-
+			<script>
+			function myFunction1() {	
+				alert("사용자 신고가 완료 되었습니다.");	    
+			}
+			</script>
 
 			<!-- Modal -->
 			<div class="modal fade" id="exampleModalCenter" tabindex="-1"
@@ -517,12 +532,34 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">게시물</a></th>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
-												href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">찜콕됨</a></th>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
-												href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;;font-size:14px;">태그됨</a></th>
+											<c:choose>
+												<c:when test="${cat == '1'}">
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19); background-color:#12bbad;"><a
+													href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:white;font-size:14px;">게시물</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">찜콕됨</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+													href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">태그됨</a></th>
+												</c:when>
+												<c:when test="${cat=='2'}">
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">게시물</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19); background-color:#12bbad;"><a
+													href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:white;font-size:14px;">찜콕됨</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a 
+													href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">태그됨</a></th>
+												</c:when>
+												<c:otherwise>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=1" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">게시물</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a
+													href="board.bo?id=${pageid}&cat=2" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">찜콕됨</a></th>
+													<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);background-color:#12bbad;"><a 
+													href="board.bo?id=${pageid}&cat=3" style="font-wight:bold;font-family: NANUMBARUNPENR !important;color:white;font-size:14px;">태그됨</a></th>
+												</c:otherwise>
+											</c:choose>
+											
+											
 										</tr>
 									</thead>
 								</table>
@@ -539,7 +576,7 @@ $(document).ready(function(){
 								<table class="table">
 									<thead>
 										<tr>
-											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#4f70ce;font-size:14px;">게시물</a></th>
+											<th class="text-center" style="font-family: NANUMBARUNPENR !important;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);"><a href="" style="font-family: NANUMBARUNPENR !important;color:#12bbad;font-size:14px;">게시물</a></th>
 
 										</tr>
 									</thead>
@@ -564,13 +601,13 @@ $(document).ready(function(){
 					value="${tmp.board_seq}" onmouseover="articleover(this)"
 					onmouseleave="articleleave(this)">
 					<img src="AttachedMedia/${result2[status.index].system_file_name}"
-						class="divimg pointer">
+						class="divimg pointer ${result2[status.index].filterName}">
 
 					<div class="divinfo divimg" id="divinfo${tmp.board_seq}"
-						style="display: none;">
+						style="display: none;">    
 						<ul>
 							<li class="divicons"><i class="fas fa-heart"></i> <c:out
-									value="${likecount[tmp.board_seq]}" /></li>
+									value="${likecount[tmp.board_seq]}" /></li>  
 							<li class="divicons"><i class="fas fa-comment"></i> <c:out
 									value="${commentcount[tmp.board_seq]}" /></li>
 						</ul>
@@ -658,10 +695,10 @@ $(document).ready(function(){
                                   $("#markcancel").val(data[0].board_seq);
                           
                                 
-                                  $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+                                  $("#firstItem").append("<img class='first "+data[1][0].filterName+"' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
                                   for(var i = 1; i < data[1].length; i++) {
                                      $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
-                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
+                                     $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element "+data[1][i].filterName+"' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
                                        
                                   }
                                       
@@ -767,7 +804,7 @@ $(document).ready(function(){
 
 		<div class="modal-content view"
 			style="flex-direction: row; width: 60px; height: auto; opacity: 0.5;">
-			<div class="" style="width: 30px;; height: auto;">
+			<div class="" style="width: 30px; height: auto;">
 				<i class="fas fa-angle-double-left " id="goPrev"
 					style="font-size: 25px;"></i>
 			</div>
@@ -832,7 +869,7 @@ $(document).ready(function(){
 			</div>
 
 
-			<div class="modal-content view" style="width: 400px; height: auto;">
+			<div class="modal-content view" style="width: 350px; height: auto;">
 
 
 				<div class="hidden" id="hidden"></div>
@@ -843,8 +880,18 @@ $(document).ready(function(){
 				<div id="board" class="bg-white">
 					<br>
 					<div class="profile-image">
-						<img class="ml-3 mr-2"
-							src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
+					<c:choose>
+						<c:when test="${profileImg.size() > 0}">
+						<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
+							src="AttachedMedia/<c:out value='${profileImg[0].system_file_name}'/>">
+						</c:when>
+						<c:otherwise>
+						<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
+							src="resources/images/DefaultProfile.jpg">
+						</c:otherwise>
+					</c:choose>
+					
+						
 						<div class="pointer" id="modalid2" style="font-size: 17px;color:#12bbad;font-wight:bold;"></div>
 					</div>
 
@@ -858,7 +905,7 @@ $(document).ready(function(){
 						class="mt-2 mx-3">
 
 						<div id="articlecontents" class="mt-2 pb-2 mr-2 ">
-							<div class="bg-black" id="modalcontents"></div>
+							<div class="bg-black" id="modalcontents" style="white-space: pre-line;"></div>	<!-- 수정3 -->
 						</div>
 
 					</div>
@@ -897,10 +944,10 @@ $(document).ready(function(){
 
 					<!-- <input type="text" placeholder="댓글 달기..." class="creco" id="comment">  -->
 					<div contenteditable="true" class="editableDivCommentSection"
-						class="creco insertfield" id="comment">
+						class="creco insertfield" id="comment" >
 						<span class=text-muted>댓글 달기...</span>
 					</div>
-					<input type=hidden id="caretposition" value="0">
+					<input type=text id="caretposition" value="0">
 
 
 					<script>
@@ -1027,10 +1074,10 @@ $(document).ready(function(){
 							<br>
 							<br>
 							<div class="btn-group bg-white">
-								<button class="btn dropdown-toggle bg-white"
+								<button class="btn dropdown-toggle bg-white" 
 									data-toggle="dropdown" id="etc"></button>
 								<div class="dropdown-menu">							
-									<a class="dropdown-item" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
+									<a class="dropdown-item" onclick="myFunction()" id="singo" href="#" style="font-family: NANUMBARUNPENR !important;font-size: 12px;"><i class="far fa-times-circle mr-1 pr-1 fa-1x"></i>부적절한콘텐츠신고</a>
 								</div>
 							</div>
 
@@ -1063,6 +1110,13 @@ $(document).ready(function(){
 
 	</div>
 </div>
+
+<script>
+function myFunction() {	
+	alert("신고완료");	    
+}
+
+</script>
 
 
 <form id="fileForm">
@@ -1118,7 +1172,8 @@ $(document).ready(function(){
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-
+				<button onclick="updateImgDefault()" type=button class="btn btn-light text-dark" id="setDefault"
+						style="font-weight: bold; width: 100px;">기본 이미지 설정</button>
 					<button type=button class="btn btn-light text-dark" id="savebtn"
 						style="font-weight: bold; width: 100px;">저장</button>
 					<button type=button class="btn btn-light text-dark"
@@ -1182,8 +1237,8 @@ $(document).ready(function(){
 			            <div class="text-center col-4"><a href="mymap.jsp">
 			              <i class="fas fa-map-marked-alt fa-5x" ></i></a>
 			            </div>
-			            <div class="col-8">
-			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 지도</b></a></h1>
+			            <div class="col-8">  
+			              <h1 class="mt-3"><a href="mymap.bo"><b style=color:#6c757d;>나의 지도</b></a></h1>
 			            </div>
 			          </div>
 			        </div>
@@ -1193,7 +1248,7 @@ $(document).ready(function(){
 			              <i class="far fa-calendar-alt fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			               <h1 class="mt-3"><a href="calendar2.jsp"><b style=color:#6c757d;>나의 일정</b></a></h1>
+			               <h1 class="mt-3"><a href="calendar.bo"><b style=color:#6c757d;>나의 일정</b></a></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>
@@ -1208,7 +1263,7 @@ $(document).ready(function(){
 			              <i class="fas fa-sticky-note fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			              <h1 class="mt-3"><a href="mymap.jsp"><b style=color:#6c757d;>나의 메모</b></a></h1>
+			              <h1 class="mt-3"><a href="goNote.memo"><b style=color:#6c757d;>나의 메모</b></a></h1>
 			            </div>
 			          </div>
 			        </div>
@@ -1240,5 +1295,4 @@ $(document).ready(function(){
 </div>
 
 
-
-<%@ include file="include/bottom.jsp"%>
+<%@ include file="include/bottom3.jsp"%>

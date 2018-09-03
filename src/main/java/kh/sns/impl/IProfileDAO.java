@@ -51,8 +51,8 @@ public class IProfileDAO implements ProfileDAO {
 	
 	@Override
 	public int updateProfileCheckbox(ProfileDTO profile, String fieldName, boolean isYes) throws Exception {
-		String sql = "update profile set " + fieldName + " = ?";
-		return template.update(sql, isYes ? "y" : "n");
+		String sql = "update profile set " + fieldName + " = ? where id = ?";
+		return template.update(sql, isYes ? "y" : "n", profile.getId());	// 수정
 	}
 	
 	public boolean isNotPublic(String id) throws Exception {

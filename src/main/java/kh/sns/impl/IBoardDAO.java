@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.interfaces.BoardDAO;
 import kh.sns.util.HashTagUtil;
@@ -154,6 +154,7 @@ public class IBoardDAO implements BoardDAO  {
 				media.setMedia_type(rs.getString(3));
 				media.setOriginal_file_name(rs.getString(4));
 				media.setSystem_file_name(rs.getString(5));
+				media.setFilterName(rs.getString(6));
 				return media;
 			}
 		});
@@ -275,6 +276,15 @@ public class IBoardDAO implements BoardDAO  {
 				
 		
 	}
+	
+	@Override
+	public int deleteBoardTags(int board_seq) throws Exception {   
+		String sql = "delete from board_tags where board_seq=? and comment_seq=0";
+		return template.update(sql,board_seq);
+				
+		
+	}
+	
 	
 
 	@Override
@@ -518,6 +528,29 @@ public class IBoardDAO implements BoardDAO  {
 			
 		});
 		
+	}
+	
+	@Override
+	public Board_LocationDTO location(int seq) throws Exception {
+		String sql = "select * from board_location where board_seq=?";
+		Board_LocationDTO dto;
+		List<Board_LocationDTO> list = template.query(sql, new Object[] {seq}, new RowMapper<Board_LocationDTO>() {
+
+			@Override
+			public Board_LocationDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Board_LocationDTO tmp = new Board_LocationDTO();
+				tmp.setBoard_seq(rs.getInt(1));
+				tmp.setLocation_name(rs.getString(2));
+				tmp.setLocation_latitude(rs.getString(3));
+				tmp.setLocation_longitude(rs.getString(4));
+				return tmp;
+			}
+
+		});
+		if(list.size() > 0) {
+			return list.get(0);
+		}
+		return dto = new Board_LocationDTO(0, " ", " ", " ");
 	}
 
 }

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/tour.css">
+<script src="resources/js/top.js"></script>
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 	
@@ -150,7 +151,19 @@ function unmarkit(e) {
 <c:forEach var="result" items="${result}" varStatus="status">
 		<div class="card" id="card">
 			<h4 class="card-title" id="tourTop">
-				<img src="루이.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
+			
+			<c:choose>
+					<c:when test="${profile_pic.containsKey(result.id)}">
+                  
+                  <img src="AttachedMedia/<c:out value='${profile_pic[result.id]}'/>" alt="Card image cap" width="30" height="30" class="rounded-circle">
+                     
+                  </c:when>
+                  <c:otherwise>
+                     <img src="resources/images/standard.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
+                  </c:otherwise>
+					</c:choose>
+				  
+				
 					<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
 					<!-- 북마크 -->
 						<c:choose> 
@@ -245,7 +258,7 @@ function unmarkit(e) {
 			<!-- 이미지 -->
 			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 				<a href="oneBoard.do?board_seq=${result.board_seq}" > <!--src='AttachedMedia/${media.system_file_name}'-->
-					<img class="card-img-top" 
+					<img class="card-img-top ${media.filterName}" 
 						id="card" src='AttachedMedia/${media.system_file_name}'
 						alt="해당 게시글로 바로가기">
 				</a>

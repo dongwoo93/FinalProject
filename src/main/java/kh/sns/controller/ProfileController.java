@@ -182,6 +182,21 @@ public class ProfileController {
         response.getWriter().close();
 	}
 	
+	@RequestMapping("updateDefault.profile")
+	public void updateDefault(HttpServletResponse response, String id, HttpSession seesion) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		int result = profileService.updateProfileImages(id);
+		
+		if(result > 0) {
+			response.getWriter().print("적용 완료");
+		}else {
+			response.getWriter().print("적용 실패");
+		}
+		
+		response.getWriter().flush();
+        response.getWriter().close();
+	}
+	
 	// 최초 1회 변경입니다.
 	@RequestMapping("/changeBizAccount.profile")
 	public ModelAndView changeBizAccount(HttpSession session, HttpServletResponse response) throws Exception {
