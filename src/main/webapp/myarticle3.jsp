@@ -20,6 +20,48 @@
 
 <script>
 
+
+
+
+
+$(document).on("keypress","div[id*='commenttxt']", function(event){
+	
+     var keycode = (event.keyCode ? event.keyCode : event.which);
+     var comment_seq = $(this).attr("id").replace("commenttxt", "");
+     if(keycode == '13'){
+    	var comment_contents = $(this).text();
+    	 
+     	event.preventDefault();        
+     
+        if(comment_contents == ""){
+           alert("댓글을 입력해주세요");
+        }  
+        else {    
+     	   alert(comment_seq + " : " + comment_contents);    
+        	$.ajax({    
+                type: "POST",    
+                url: "commentmod.co",    
+                data: {comment_seq:comment_seq, comment_contents:comment_contents},   
+                success : function() {
+              	$("#commenttxt"+comment_seq).attr("contentEditable",false);
+	                $("#commenttxt"+comment_seq).attr("style","border:none"); 
+	                $("#commenttxt"+comment_seq).attr("style","background-color:#E1F5FE");
+	                $("#modstate"+comment_seq).val("1");  
+	                $("#ul"+comment_seq).hide().fadeIn(500);
+	                $("#del"+comment_seq).attr("style",false);
+	          		$("#mod"+comment_seq).attr("style",false);
+	          
+                }  
+           }); //ajax 
+           
+        }
+     }
+     
+ });
+	  
+ 	
+
+
 	function tag(e) {
 		var search = $(e).html().split("#")[1]; 
 		$(location).attr("href","search.bo?search="+search); 
@@ -109,8 +151,7 @@
 		 var modstate = $("#modstate"+comment_seq).val();
 		   
 		 if(modstate == "1") {
-			
-			 $("#commentmod"+comment_seq).html("완료");
+		
 			 $("#commenttxt"+comment_seq).attr("contentEditable",true);
 		  	 $("#commenttxt"+comment_seq).attr("style","border:0.5px solid lightgray");
 		  	 $("#commenttxt"+comment_seq).focus();  
@@ -139,14 +180,17 @@
 			                $("#ul"+comment_seq).hide().fadeIn(500);
 			                $("#del"+comment_seq).attr("style",false);
 			          		$("#mod"+comment_seq).attr("style",false);
-			          		$("#commentmod"+comment_seq).html("수정");
+			          
 	                      }  
 	                 }); //ajax 
+	                 
+	                 
 		 }
 	  
-	}
+	}    
+	
 
-
+  
 
 $(document).ready(function(){
 	
@@ -276,6 +320,7 @@ $(document).ready(function(){
 		success: function(data)
 		{
 		if(data == 1){
+	  
 			$("#modalcontents").html(contents);
 			$("#modalcontents").attr("contentEditable","false");
 														
@@ -879,18 +924,21 @@ $(document).ready(function(){
 				<div id="board" class="bg-white">
 					<br>
 					<div class="profile-image">
-					<c:choose>
-						<c:when test="${profileImg.size() > 0}">
-						<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
-							src="AttachedMedia/<c:out value='${profileImg[0].system_file_name}'/>">
-						</c:when>
-						<c:otherwise>
+						<c:choose>
+						<c:when test="${myprofile ne null}">
+                  
+					    
+		
+						<img class="ml-3 mr-2"
+							 src="AttachedMedia/${myprofile}" style='width:30px; height:30px;'>
+
+                   
+                  </c:when>
+                  <c:otherwise>   
 						<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
 							src="resources/images/DefaultProfile.jpg">
 						</c:otherwise>
 					</c:choose>
-					
-						
 						<div class="pointer" id="modalid2" style="font-size: 17px;color:#12bbad;font-wight:bold;"></div>
 					</div>
 
@@ -1042,8 +1090,11 @@ $(document).ready(function(){
                     }
                     
                 });
-                
-          
+				  
+				  
+				  
+				  
+			
 
                 </script>
                
