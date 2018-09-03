@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<script src="resources/js/top.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/search.css">
 <script> var list= []; </script>
 <c:forEach var="tmp" items="${result}" varStatus="status">
@@ -1438,5 +1439,4 @@ $(document).ready(function() {
 
 
 
-
-			<%@ include file="include/bottom.jsp"%>
+<%@ include file="include/bottom3.jsp"%>

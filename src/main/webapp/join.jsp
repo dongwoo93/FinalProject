@@ -425,8 +425,8 @@ $("#sign").click(function(){
 		console.log("클릭");
 		var phone = $("#phone").val();
 		if(phoneCheck==1){
-			console.log("맞아용");
-			var yes = confirm(phone+"맞아용?");
+			console.log("맞습니다.");
+			var yes = confirm(phone+"맞습니까?");
 			
 			if(yes){
 				
@@ -863,7 +863,7 @@ $(location).attr("href", "main.jsp");
 								<button
 									class="btn btn-large btn-register waves-effect waves-light"
 									type="button" id="cancel" name="action" style="height: 90%">
-									다시쓰기^^7 <i class="material-icons right">done</i>
+									다시쓰기<i class="material-icons right">done</i>
 								</button>
 							</div>
 
