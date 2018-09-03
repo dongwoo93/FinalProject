@@ -45,11 +45,58 @@ body {
  
 opacity: 0.7; 
 }
-</style>
+.wrap-loading { /*화면 전체를 어둡게 합니다.*/
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.2); /*not in ie */
+	filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000',
+		endColorstr='#20000000'); /* ie */
+}
+
+.wrap-loading div { /*로딩 이미지*/
+	position: fixed;
+	top: 40%;
+	left: 44.5%;
+	margin-left: -21px;
+	margin-top: -21px;
+}
+.display-none { /*감추기*/
+	display: none;
+}
+
+</style>   
+
 <body>
+<script>
+$(document).ready(function() {
+	$('#send1').on("click",function() {
+		  // your stuff
+		 $('.wrap-loading').removeClass('display-none');
+		 $("#login-form").submit();
+			 
+			   
+			 
+		  
+	});
+	  $("#send2").on('click',function(){
+		  $('.wrap-loading').removeClass('display-none');
+		  $("#login-form2").submit();
+	
+	   
+	  });
+  
+		
+	  
+});
+
+</script>
 <c:choose>
 <c:when test="${result=='0'}">
 <script>
+$('.wrap-loading').addClass('display-none');
 alert("맞지 않는 계정 정보입니다. 다시 입력해주세요");
 $("#id").val("");
 $("#Cemail").val("");
@@ -62,7 +109,7 @@ $("#id").focus();
 
 <c:when test="${result=='1'}">
 <script>
-
+$('.wrap-loading').addClass('display-none');
 alert("임시 비밀번호 전송 완료");
 
 $(location).attr('href',"main.do");
@@ -70,17 +117,23 @@ $(location).attr('href',"main.do");
 </c:when>
 <c:when test="${result=='2'}">
 <script>
+$('.wrap-loading').addClass('display-none');
 alert("이메일 전송 완료");
 
 $(location).attr('href',"main.do");
 </script>
 </c:when>
 </c:choose>
-
+  
 
 <!------ Include the above in your HEAD tag ---------->
 
 <div class="container">
+							<div class="wrap-loading display-none" style="z-index:1000">
+				<div>
+					<img src="resources/images/loading3.gif">
+				</div> 
+			</div>
     	<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-login">
@@ -90,7 +143,7 @@ $(location).attr('href',"main.do");
 								<a href="main.jsp" class="active" id="login-form-link">Login</a>
 							</div>
 							<div class="col-xs-6">
-								<a href="join.jsp" id="register-form-link">Register</a>
+								<a href="join.jsp" id="register-form-link" style="float:right;">Register</a>
 							</div>
 						</div>
 						<hr>
@@ -112,11 +165,11 @@ $(location).attr('href',"main.do");
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="SEND">
+												<input type="button" name="login-submit" id="send1" tabindex="4" class="form-control btn btn-login" value="SEND">
 											</div>
 										</div>
 									</div>
-									
+			
 								</form>
 								
 							</div>
@@ -136,11 +189,11 @@ $(location).attr('href',"main.do");
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="findId" id="findId" tabindex="4" class="form-control btn btn-login" value="SEND">
+												<input type="button" name="findId" id="send2"   tabindex="4" class="form-control btn btn-login" value="SEND">
 											</div>
 										</div>
 									</div>
-								
+			
 								</form>
 								
 								

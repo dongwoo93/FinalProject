@@ -177,7 +177,7 @@ scale
 .wrap-loading div { /*로딩 이미지*/
 	position: fixed;
 	top: 40%;
-	left: 40%;
+	left: 47%;
 	margin-left: -21px;
 	margin-top: -21px;
 }
@@ -755,6 +755,11 @@ $(location).attr("href", "main.jsp");
 		</c:when>
 		<c:otherwise>
 			<div class="container" style="opacity: 0.8">
+				<div class="wrap-loading display-none">
+				<div>
+					<img src="resources/images/loading.gif">
+				</div>
+			</div>
 				<div class="row">
 					<form class="col s12" id="reg-form" action="sign.do" method="post">
 						<div class="row">
@@ -872,11 +877,7 @@ $(location).attr("href", "main.jsp");
 					class="ngl btn-floating btn-large waves-effect waves-light red"><i
 					class="material-icons" id="back">input</i></a>
 			</div>
-			<div class="wrap-loading display-none">
-				<div>
-					<img src="resources/images/loading.gif">
-				</div>
-			</div>
+		
 		</c:otherwise>
 	</c:choose>
 </body>
