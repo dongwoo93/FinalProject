@@ -267,4 +267,18 @@ public class IMemberDAO implements MemberDAO {
 		String sql = "select * from member where id=? and pw=?";
 		return template.update(sql, dto.getId(), dto.getPw());
 	}
+	@Override
+	public String extractEmail(String id) throws Exception {
+		// TODO Auto-generated method stub
+	
+		
+		String sql = "select email from member where id=?";
+		List<MemberDTO> temp = template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+			MemberDTO member = new MemberDTO("","","",rs.getString("email"),"","","");
+			
+			return member;			
+		});		
+		
+		return temp.get(0).getEmail();
+	}
 }

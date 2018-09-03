@@ -35,6 +35,5 @@ public interface MemberDAO {
 	// update disabled information(20180903)
 	public int updateDisabledInfo(MemberDTO member) throws Exception;
 	public int checkIdPwd(MemberDTO dto); 
-
-//	boolean isIdExist(String id);
+	public String extractEmail(String id) throws Exception;
 }

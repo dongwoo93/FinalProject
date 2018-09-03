@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.sns.beans.SendEmail;
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
 import kh.sns.dto.ProfileDTO;
@@ -88,8 +89,19 @@ public class ProfileController {
 		
 		response.setCharacterEncoding("UTF8");
 		try {
-			PrintWriter xout = response.getWriter();
+			PrintWriter xout = response.getWriter(); 
+			String loginId = (String) seesion.getAttribute(("loginId"));
 			String fieldName = request.getParameter("fieldName");
+			
+			String email = memberService.extractEmail(loginId);
+			if(fieldName.equals("is_allow_email")){
+				System.out.println("이메일이에요");
+				SendEmail send = new SendEmail(3,loginId,email); 
+				send.sendEmail();
+			}else if(fieldName.equals("is_allow_sms")){
+				System.out.println("문자에요");
+			}
+			
 			System.out.println("@@fieldName: " + fieldName);
 			int result = profileService.toggleProfileCheckbox(profileService.getOneProfile(request.getSession().getAttribute("loginId").toString())
 					, fieldName);
