@@ -266,7 +266,7 @@ function unmarkit(e) {
 			<!-- 이미지 -->
 			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
 				<a href="oneBoard.do?board_seq=${result.board_seq}" > <!--src='AttachedMedia/${media.system_file_name}'-->
-					<img class="card-img-top ${media.filterName}" 
+					<img class="card-img-top ${media.filterName}"  
 						id="card" src='AttachedMedia/${media.system_file_name}'
 						alt="해당 게시글로 바로가기">
 				</a>
@@ -568,9 +568,7 @@ function unmarkit(e) {
 	           				// c += "<a href='#' >"
 	           				try {
 	           					c += "<a href='oneBoard.do?board_seq=" + boardSeq + "'>" 
-							    c += "<img class='card-img-top' id='card' src='AttachedMedia/" 
-									+ r.media[ele][0].system_file_name + "' alt='해당 게시글로 바로가기'"
-								c += "</a>"
+							    c += "<img class='card-img-top' id='card' src='AttachedMedia/"+ r.media[ele][0].system_file_name + "' alt='해당 게시글로 바로가기'></a>"
 							}
 							catch(e) {
 								console.log(e)
