@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
     <%@ include file="include/top.jsp"%>
     <script src="resources/js/top.js"></script>
-    <link rel="stylesheet" href="resources/css/instagram.css">
     <link rel="stylesheet" type="text/css" href="resources/css/write.css">
 <script>
         // var filesArr = Array.prototype.slice.call(files);
@@ -25,7 +24,8 @@
         //   }
         
         document.addEventListener('keydown', function(event) {
-        	    if (event.keyCode === 13) {
+        	console.log($( document.activeElement )[0].tagName);
+        	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName != "DIV") {
         	        event.preventDefault();
         	    }
         	}, true);
@@ -54,7 +54,7 @@
         	
         	
         	
-        	console.log('1xxxxssf31');
+        	console.log('Vulkan');
         	var globalBizFormEnabled = false;
         	        	  	  
               function getCaretPosition(editableDiv) {   
@@ -120,12 +120,12 @@
               var map = {16: false, 32: false}; 
               $("#editorDiv").keyup(function(e){   
             	   
-                  if ( (e.keyCode === 32 ) || (e.keyCode === 13 ) ) {   
+                  if ( (e.keyCode === 32 )  ) {   
                          map[e.keyCode] = true;     
                          
                          if(parseInt($('#caretposition').val()) == 0){
                         	 // alert('뭐?')                        	 
-                         } else if (parseInt($('#caretposition').val()) == $('#editorDiv').text().length){
+                         } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 고친 부분 1
                         	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
                          } else {
                         	 // alert('임마?')
@@ -133,9 +133,9 @@
                          }
                          
                          
-                         var regex = /(#[^#\s,;<>. ]+)/gi;  
-                             if(regex){      
-                            	 var newtxt = "<span class=fugue>" + $('#editorDiv').text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
+                         var regex = /(#[^#\s,;<>.]+)/gi;  
+                             if(regex){      // 고친 부분 2 text() -> innerText
+                            	 var newtxt = "<span class=fugue>" + this.innerText.replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
                             	 									  
        							 // console.log($('#editorDiv').text().length);   
                              	// console.log(newtxt)   
@@ -225,20 +225,26 @@
             $("#personmodalbt").click(function(e){
          	   var textValue = $(".tags li").length;
          	   if(textValue == 0){
+         		   var tag = $("#person .tagicon").text();  
+         		   console.log(tag);  
+         		   if(tag == ""){
+         			   $("#person *").remove();
+         			   $("#person").append("<i class='fas fa-users tagicon mr-2 pr-1'></i><a onclick='personmodal()' style='cursor: pointer;''>사람 태그하기</a>")
+         		   }
          		  $('#personModal').modal('hide');
          	   }else{
          		  
              	   $("#person *").remove();
              	   $("#person").append("<ul class='tag' onclick='personmodal()' style='cursor: pointer;'></ul>")
 
-             	   for(var i = 1; i<textValue+1;i++){
+             	   for(var i = 2; i<textValue+2;i++){
     		            
                     var realValue = $(".tags li:nth-child("+i+")").attr("id");
-                   		 $(".tag").append('<li class="addedTag">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
+                   		 $(".tag").append('<li class="addedTag mb-2">' + realValue + '<input type="hidden" value="' + realValue + '" name="tags[]"></li>');
                    		 $('#personModal').modal('hide');
                     }
              	   
-             	   $("#searchfriend").val("");
+             	   $("#searchfriend").val("");  
          	   }
          	  
             });
@@ -471,7 +477,7 @@
 							
 							<!-- 글쓰기 칸 -->
 							<span style="font-family: NANUMBARUNPENR !important;font-size: 14px;background-color: #F5F4F4;">Contents</span>
-								<div class="card-body" contenteditable="true" id="editorDiv" style="overflow:auto;"></div>
+								<div class="card-body" contenteditable="true" id="editorDiv" style="overflow:auto; white-space: pre-line;" ></div>
 								<input type=hidden id="caretposition" value="0">
 								<input type=hidden name=contents id=contentsHidden> 
 								<input type=hidden name=filters id=filtersHidden>
@@ -780,7 +786,7 @@
       
       function initAutocomplete() {
           map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.8688, lng: 151.2195},
+          center: {lat: 36.082402, lng: 128.088226},
           zoom: 13,
           mapTypeControl: false,
           streetViewControl: false,

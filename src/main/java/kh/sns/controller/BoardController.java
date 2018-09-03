@@ -38,8 +38,10 @@ import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
 import kh.sns.dto.FollowInfo;
 import kh.sns.dto.MemberBusinessDTO;
+import kh.sns.dto.MemberDTO;
 import kh.sns.dto.Member_CalendarDTO;
 import kh.sns.dto.Member_TagsDTO;
+import kh.sns.dto.ProfileDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.BoardBusinessService;
 import kh.sns.interfaces.BoardDAO;
@@ -156,6 +158,7 @@ public class BoardController {
 			membersNick = new ArrayList<>();
 			for(BoardDTO b : list) {
 				membersNick.add(memService.getOneMember(b.getId()).getNickname());
+				b.setContents(b.getContents().replace("\r\n", "\\n\" + \""));
 			}
 			membersNick.forEach(System.out::println);
 			// ========================================
@@ -259,7 +262,7 @@ public class BoardController {
 
 			for(int tmp : like) {  
 				maplike.put(tmp, "y");
-				System.out.println(tmp);
+				System.out.println(tmp + "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
 			}
 
 		
@@ -271,6 +274,7 @@ public class BoardController {
 			
 			trend = searchService.trend();
 
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
@@ -512,6 +516,15 @@ public class BoardController {
 		
 		String myprofile = profileService.selectOneProfileImage(id);
 		
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		profile_image = profileService.getAllProfileImage();
+		
+		for(Profile_ImageDTO dto : profile_image) {
+			getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+		};
 
 		// NickName
 		String memNick = memService.myNick_Id(id).get(0).getNickname();
@@ -552,6 +565,7 @@ public class BoardController {
 		
 		mav.addObject("myprofile", myprofile);
 		mav.addObject("result", result);
+		mav.addObject("thisId", id);
 		mav.addObject("result2", result2);
 		mav.addObject("boardCount", boardCount);
 		mav.addObject("followerCount", followerCount);
@@ -561,11 +575,13 @@ public class BoardController {
 		mav.addObject("isBlock", isBlock);   
 		mav.addObject("isFollow", isFollow);
 		mav.addObject("isNotPublic", isNotPublic);  
-		mav.addObject("profileImg", profileImg);  
+		mav.addObject("profileImg", profileImg);
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.setViewName("myarticle3.jsp");    
 		mav.addObject("profileImg", profileImg);
 		mav.addObject("memNick", memNick);   // 닉네임
-		mav.addObject("memIntro", memIntro); // 소개
+		mav.addObject("memIntro", memIntro); // 소개  
+		mav.addObject("cat",cat);
 
 		//		String id = (String) session.getAttribute("loginId");
 
@@ -673,6 +689,19 @@ public class BoardController {
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		profile_image = profileService.getAllProfileImage();
+
+
+
+		for(Profile_ImageDTO dto : profile_image) {
+						getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+					};
+
+		
+		
 		for(int tmp : mark) {
 			mapmark.put(tmp, "y");
 		}
@@ -729,6 +758,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4", countlike);	// 조회
 		mav.addObject("bookmark", mapmark);
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("SEARCH_PER_PAGE", SEARCH_PER_PAGE);
 		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
@@ -932,6 +962,18 @@ public class BoardController {
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
+		
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		profile_image = profileService.getAllProfileImage();
+
+
+
+		for(Profile_ImageDTO dto : profile_image) {
+						getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+					};
+		
 		for(int tmp : mark) {
 			mapmark.put(tmp, "y");
 		}
@@ -1004,6 +1046,7 @@ public class BoardController {
 		mav.addObject("result3", map);			// 누를때
 		mav.addObject("result4",countlike);		// 조회
 		mav.addObject("TOUR_PER_PAGE", TOUR_PER_PAGE);
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
 		return mav;
@@ -1205,15 +1248,20 @@ public class BoardController {
 		}
 		
 		List<Member_TagsDTO> membertag = new ArrayList<>();
-		
-		if(persontag.isEmpty()) {
-			membertag = null;
-		}
-		else {
-			for(String tmp : persontag) {
-				Member_TagsDTO membertagdto = new Member_TagsDTO(0,tmp,"");
-				membertag.add(membertagdto);
+		try {
+			if(persontag.isEmpty()) {
+				membertag = null;
 			}
+			else {
+				for(String tmp : persontag) {
+					MemberDTO dto = new MemberDTO();
+					dto = memService.selectUserId(tmp);
+					Member_TagsDTO membertagdto = new Member_TagsDTO(0,dto.getId(),"");
+					membertag.add(membertagdto);
+				}
+			}
+		}catch(Exception e){
+			
 		}
 		
 		
@@ -1377,29 +1425,42 @@ public class BoardController {
 			BoardDTO a = null;
 			List<Board_CommentDTO> result = null;
 			List<List<Board_MediaDTO>> media = new ArrayList<>();
-
+			List<Profile_ImageDTO> profile_image = new ArrayList<>();
+			Map<String, String> getAllProfilePic = new HashMap<>();
 			Board_LikeDTO like = null;
 			Board_BookmarkDTO bookmark = null;
+			ProfileDTO profile = null;
 
-
+			try {
+				profile_image = profileService.getAllProfileImage();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
 
 			try {
 				System.out.println(board_seq);
 
 				a = boardService.oneBoard(board_seq);
+				a.setContents(a.getContents().replace("\r\n", "\\n\" + \""));
 				media.add(boardService.search2(a.getBoard_seq()));
-
-
 				result = board_commentService.getCommentList(Integer.parseInt(board_seq));
 
 				like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
 
 				bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
+				
+				profile = profileService.getOneProfile(id);
 
 			}catch(Exception e) {
 				System.out.println("oneboard.do");
 				e.printStackTrace();
 			}
+			
+			for(Profile_ImageDTO dto : profile_image) {
+				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+			};
 
 			mav.setViewName("oneBoard.jsp");
 			mav.addObject("b", a);
@@ -1407,6 +1468,8 @@ public class BoardController {
 			mav.addObject("result2", media);
 			mav.addObject("like", like);
 			mav.addObject("bookmark", bookmark);
+			mav.addObject("profile_pic",getAllProfilePic);
+			mav.addObject("profile", profile);
 		}else {
 			mav.setViewName("redirect:main.jsp");
 		}
@@ -1497,6 +1560,7 @@ public class BoardController {
 		mav.addObject("result1", follow_list);
 		mav.setViewName("follow.jsp");
 		mav.addObject("pageid", id);
+		mav.addObject("category","1");
 
 		return mav;	
 	}
@@ -1535,7 +1599,7 @@ public class BoardController {
 		mav.addObject("result", follow_list);
 		mav.addObject("pageid", id);
 		mav.setViewName("follow.jsp");
-
+		mav.addObject("category", "2");
 
 		return mav;	
 	}

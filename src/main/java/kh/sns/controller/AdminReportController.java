@@ -161,5 +161,29 @@ public class AdminReportController {
 
 	}
 	
+	@RequestMapping("/redirectAdUrl")
+	public ModelAndView redirectAdurl(String r, int bizseq) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(r);
+		System.out.println(bizseq);
+		try {
+			BoardBusinessDTO bbiz = bbs.selectAnBoardBiz(bizseq);
+			int currentCount = bbiz.getClickCount();
+			bbiz.setClickCount(currentCount + 1);
+			int result = bbs.updateClickCount(bbiz);
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(r.startsWith("https://") || r.startsWith("http://")) {
+			mav.setViewName("redirect:" + r);
+		} else {
+			mav.setViewName("redirect:http://" + r);
+		}
+		
+		return mav;
+			
+	}
+	
 	
 }

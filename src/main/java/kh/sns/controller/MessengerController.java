@@ -51,19 +51,36 @@ public class MessengerController {
 		List<String> onlinefriendimg = new ArrayList<>();
 		List<String> offlinefriendimg = new ArrayList<>();
 		
-		
+//		/standard.jpg
 		try {
 			list = memberService.selectfollowlist(id,searchtext);
 			System.out.println("해당하는거잘찾았냐");
 			
 			for(MemberDTO tmp : list) {
+				String image = profileService.selectOneProfileImage(tmp.getId());
+				String allowstatus = profileService.getOneProfile(tmp.getId()).getIs_allow_status();
 				if(WebSocket.onlineUser.containsKey(tmp.getId())) {
-					onlinefriendlist.add(tmp);
-					onlinefriendimg.add(profileService.selectOneProfileImage(tmp.getId()));
+					if(allowstatus.equals("n")) {
+						offlinefriendlist.add(tmp);
+					}
+					else {
+						onlinefriendlist.add(tmp);
+					}
+					if(image == ""){
+						onlinefriendimg.add("standard.jpg");
+					}
+					else{
+						onlinefriendimg.add(image);
+					}
 				}
 				else {
 					offlinefriendlist.add(tmp);
-					offlinefriendimg.add(profileService.selectOneProfileImage(tmp.getId()));
+					if(image == ""){
+						offlinefriendimg.add("standard.jpg");
+					}
+					else{
+						offlinefriendimg.add(image);
+					}
 				}
 			}
 		}catch(Exception e) {
