@@ -164,7 +164,6 @@ public class BoardController {
 			membersNick = new ArrayList<>();
 			for(BoardDTO b : list) {
 				membersNick.add(memService.getOneMember(b.getId()).getNickname());
-				b.setContents(b.getContents().replace("\r\n", "\\n\" + \""));
 			}
 			membersNick.forEach(System.out::println);
 			// ========================================
@@ -268,7 +267,7 @@ public class BoardController {
 
 			for(int tmp : like) {  
 				maplike.put(tmp, "y");
-				System.out.println(tmp + "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+				System.out.println(tmp);
 			}
 
 		
@@ -280,7 +279,6 @@ public class BoardController {
 			
 			trend = searchService.trend();
 
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
@@ -361,8 +359,7 @@ public class BoardController {
 
 
 		return mav;
-	}
-	
+	}   
 	@RequestMapping("/feedForJson.ajax")
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
 
@@ -553,6 +550,10 @@ public class BoardController {
 		List<int[]> commentcnt = board_commentService.selectCommentCount();
 		Map<Integer, Integer> commentcount = new HashMap<>();
 		List<Profile_ImageDTO> profileImg = profileService.selectProfileImage(id);
+		
+		
+		String myprofile = profileService.selectOneProfileImage(id);
+		
 		Map<String, String> getAllProfilePic = new HashMap<>();
 		
 		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
@@ -599,7 +600,8 @@ public class BoardController {
 		for(int i = 0; i < result.size(); i++) {
 			result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 		}
-
+		
+		mav.addObject("myprofile", myprofile);
 		mav.addObject("result", result);
 		mav.addObject("thisId", id);
 		mav.addObject("result2", result2);
@@ -718,11 +720,14 @@ public class BoardController {
 		List<BoardDTO> result = boardService.search(search, 1, SEARCH_PER_PAGE);
 		List<List<Board_MediaDTO>> result2 = new ArrayList<>();		// 사진 
 		List<Integer> result3 = board_likeService.searchLike(id);	// 좋아요
+		List<Profile_ImageDTO> profile_image = new ArrayList<>();
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		
+		
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
-		Map<String, String> getAllProfilePic = new HashMap<>();
-		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+ 
 		profile_image = profileService.getAllProfileImage();
 
 
@@ -764,6 +769,13 @@ public class BoardController {
 			}
 		}
 		
+		
+		profile_image = profileService.getAllProfileImage();
+        for(Profile_ImageDTO dto : profile_image) {
+            getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+         }; //프로필
+		
 		/* tour.bo의 오브젝트
 		mav.addObject("bookmark", mapmark);
 		mav.addObject("category", category);	// 카테고리
@@ -776,6 +788,8 @@ public class BoardController {
 		 */
 
 		System.out.println("사이즈 : " + result.size());
+		
+		mav.addObject("profile_pic",getAllProfilePic); 
 		mav.addObject("result", result); 		// 검색어
 		mav.addObject("result2", result2);		// 사진
 		mav.addObject("result3", map);			// 누를때
@@ -895,6 +909,10 @@ public class BoardController {
 		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		 List<Profile_ImageDTO> profile_image = new ArrayList<>();
+		
+		
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
@@ -943,6 +961,13 @@ public class BoardController {
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
 		}
+		
+		   profile_image = profileService.getAllProfileImage();
+	       for(Profile_ImageDTO dto : profile_image) {
+	            getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+	         };
+	         mav.addObject("profile_pic",getAllProfilePic); 
 		mav.addObject("bookmark", mapmark);
 		mav.addObject("category", category);	// 카테고리
 		mav.addObject("result", result);		// 전체 
@@ -968,12 +993,14 @@ public class BoardController {
 		Map<Integer,String> map = new HashMap<>();					// 누를때 맵
 		Map<Integer,Integer> countlike = new HashMap<>();			// 조회 맵
 
+		   List<Profile_ImageDTO> profile_image = new ArrayList<>();
+		Map<String, String> getAllProfilePic = new HashMap<>();
+		
 		List<Integer> mark = new ArrayList<>();
 		Map<Integer,String> mapmark = new HashMap<>();
 		mark = board_bookmarkService.searchMark(id);
-		
-		Map<String, String> getAllProfilePic = new HashMap<>();
-		List<Profile_ImageDTO> profile_image = new ArrayList<>(); 
+		 
+	
 		profile_image = profileService.getAllProfileImage();
 
 
@@ -990,6 +1017,12 @@ public class BoardController {
 		if(cat == null) {
 			cat = "1";
 		}
+		
+		profile_image = profileService.getAllProfileImage();
+        for(Profile_ImageDTO dto : profile_image) {
+            getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
+
+         };
 
 		// 최신글
 		if(cat.equals("1")) {
@@ -1006,6 +1039,8 @@ public class BoardController {
 			}
 			
 		}
+		
+		
 
 		// 인기 태그
 		else if(cat.equals("3")) {
@@ -1039,6 +1074,7 @@ public class BoardController {
 		for(int[] list : result4) {
 			countlike.put(list[0], list[1]);
 		}
+		mav.addObject("profile_pic",getAllProfilePic);
 		mav.addObject("bookmark", mapmark);
 		mav.addObject("category", category);	// 카테고리
 		mav.addObject("result", result);		// 전체 
@@ -1050,7 +1086,7 @@ public class BoardController {
 		mav.addObject("pageName", request.getServletPath());	// 컨트롤러 확인용
 		mav.setViewName("tour.jsp");
 		return mav;
-	}
+	}      
 	
 	@RequestMapping("/tourForJson.ajax")
 	public void tourForJson(HttpServletResponse response, HttpServletRequest request, HttpSession session, String start, String cat) throws Exception {

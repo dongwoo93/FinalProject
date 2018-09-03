@@ -18,16 +18,22 @@
 <title>SoicalWired</title>
      
 <script>
+
    if(${sessionScope.loginId != null}) {
       $(location).attr("href", "feed.bo");
    }
+   
 </script>
 
   
 </head>
 <body>
- 
 
+<div>
+	<video autoplay loop muted >
+	<source src="resources/images/Sea.mp4" type="video/mp4">
+	</video>
+</div>
 
 <!-- <div id="formWrapper"> -->
 <!--    <base href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/"> -->
