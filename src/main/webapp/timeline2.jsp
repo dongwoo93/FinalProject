@@ -285,39 +285,41 @@ $(document).on('keypress',"div[id*='comment'].insertSpecialField",function(event
 	
 	
  	
-	$(document).on("focus","div[id*=comment].insertfield", function() {  
+// 	$(document).on("focus","div[id*=comment].insertfield", function() {   
+		                              
+//     if( ($(this).html().indexOf(">댓글 달기...<") >= 0) ){ 
+//     	$(this).html(""); 
+//     	}  
     	
-    		$(this).html("");
-    	
-    });
+//     });
           
-    $(document).on("focusout","div[id*=comment].insertfield", function() { 
-    	if($(this).text() == ""){
-    		$(this).html("<span class=text-muted>댓글 달기...</span>");
+//     $(document).on("focusout","div[id*=comment].insertfield", function() { 
+//     	if($(this).text() == ""){
+//     		$(this).html("<span class=text-muted>댓글 달기...</span>");
     		     
-    	}
-    });         
+//     	}
+//     });             
 	
 	
 	
     $(document).ready(function(){
     	
-//     	var globalThisCommentIsFocusedOnFirst = true;
+    	var globalThisCommentIsFocusedOnFirst = true;
     	
-//         $("div[id*=comment].insertfield").focus(function() {
-//         	if(globalThisCommentIsFocusedOnFirst){
-//         		$(this).html("");
-//             	globalThisCommentIsFocusedOnFirst = false;
-//         	}
+        $("div[id*=comment].insertfield").focus(function() {
+        	if(globalThisCommentIsFocusedOnFirst){
+        		$(this).html("");
+            	globalThisCommentIsFocusedOnFirst = false;
+        	}
         	
-//         });
+        });     
         
-//         $("div[id*=comment].insertfield").focusout(function() {
-//         	if($(this).text() == ""){
-//         		$(this).html("<span class=text-muted>댓글 달기...</span>");
-//         		globalThisCommentIsFocusedOnFirst = true;
-//         	}
-//         })
+        $("div[id*=comment].insertfield").focusout(function() {
+        	if($(this).text() == ""){
+        		$(this).html("<span class=text-muted>댓글 달기...</span>");
+        		globalThisCommentIsFocusedOnFirst = true;
+        	}
+        })
     	
 
     	function makeupHashtag (e) {
@@ -333,31 +335,39 @@ $(document).on('keypress',"div[id*='comment'].insertSpecialField",function(event
                     return;
                 }
 
+              
+                
                 var regex = /(#[^#\s,;<>. ]+)/gi;
                 if (regex) {
-                    var newtxt = "<span class=fugue>" + $(this).text()
-                        .replace(regex, "</span><span class=text-danger>" + "$1" +
+              
+                    var newtxt = "<span class=fugue>" + $(this).text().replace(regex, "</span><span class=text-danger>" + "$1" +
                             "</span><span class=fugue>") + "</span>"
+                            
+                          // alert("id : " +  $(this).attr("id") );            
 
                     // console.log($('#editorDiv').text().length);   
                     // console.log(newtxt)   
-                    newtxt += "<kz></kz>"
-                    $(this).html(newtxt)
+                    newtxt += "<kz></kz>"  
+                  //  $(this).html(newtxt);       
+                  //  alert($(this).text());                
                     var el = this;
                     console.log("childNodes: " + el.childNodes.length);
                     var range = document.createRange();
                     var sel = window.getSelection();
                     range.setStart(el.lastChild, 0);
+                      
                     range.collapse(false);
+                    
                     sel.removeAllRanges();
+                    
                     sel.addRange(range);
-
-                    $(this).focusout();
+                 
+                    $(this).focusout(); 
                     $(this).focus();
                     if (parseInt($('#caretposition').val()) == $(this).text().length) {
-
+                    	
                     }
-
+                  
                 }
             }
         }
