@@ -469,6 +469,7 @@ function deleteEvent() {
 </style>
 </head>
 <body>
+	<div id="allwrapper">
 			<div class="container">
 			<br>
 				<div class="tagmenu">
@@ -495,6 +496,7 @@ function deleteEvent() {
 	
 
 	<div id='calendar'></div>
+	</div>
 	<!-- <div id="calendarTrash" class="calendar-trash"><img src="resources/images/trash.png" /></div> -->
 	<!-- Modal -->
 	<div id="createEventModal" class="modal fade">
@@ -693,3 +695,4 @@ $(function() {
 
 </body>
 </html>
+<%@ include file="include/directMessage.jsp" %>

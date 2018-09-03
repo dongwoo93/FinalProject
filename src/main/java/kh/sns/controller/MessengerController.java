@@ -60,19 +60,19 @@ public class MessengerController {
 				String image = profileService.selectOneProfileImage(tmp.getId());
 				String allowstatus = profileService.getOneProfile(tmp.getId()).getIs_allow_status();
 				if(WebSocket.onlineUser.containsKey(tmp.getId())) {
-					if(allowstatus.equals("n")) {
-						offlinefriendlist.add(tmp);
-					}
-					else {
-						onlinefriendlist.add(tmp);
-					}
-					if(image == ""){
-						onlinefriendimg.add("standard.jpg");
-					}
-					else{
-						onlinefriendimg.add(image);
-					}
-				}
+		               if(allowstatus.equals("n")) {
+		                  offlinefriendlist.add(tmp);
+		               }
+		               else {
+		                  onlinefriendlist.add(tmp);
+		               }
+		               if(image == ""){
+		                  onlinefriendimg.add("standard.jpg");
+		               }
+		               else{
+		                  onlinefriendimg.add(image);
+		               }
+		            }
 				else {
 					offlinefriendlist.add(tmp);
 					if(image == ""){
