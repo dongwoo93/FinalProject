@@ -501,9 +501,17 @@ $("#comment").keypress(function(event){
 		<div id="board">
 		<div class="py-2 my-5" id="feed">
                   <div class="profile-image">
-                     <img class="ml-3 mr-2"
-                        src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=30&amp;h=30&amp;fit=crop&amp;crop=faces">
-                  
+                     <c:choose>
+						<c:when test="${profileImg.size() > 0}">
+							<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
+								 src="AttachedMedia/<c:out value='${profileImg[0].system_file_name}'/>">
+						</c:when>
+							<c:otherwise>
+								<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
+									 src="resources/images/DefaultProfile.jpg">
+							</c:otherwise>
+					</c:choose>
+                    	 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
                      <br> 
                      <a class="mt-1 idtxt" id="id" href="board.bo?id=${b.id}&cat=1" style="color:#12bbad;font-weight:bold;font-size:16px;">
                     
@@ -527,12 +535,12 @@ $("#comment").keypress(function(event){
 								</ul>
 								<div id="carousel-inner" class="carousel-inner" style="height: 600px;">
 									<div id="firstItem" class="carousel-item active">
-										<img class='boardimg' width='100%' src='AttachedMedia/${result2[0][0].system_file_name}' alt=''>
+										<img class='boardimg ${result2[0][0].filterName}' width='100%' src='AttachedMedia/${result2[0][0].system_file_name}' alt=''>
 									</div> 
 									<c:forEach begin="1" var="media"
 										items="${result2[0]}">
 										<div class="carousel-item">
-											<img class='boardimg' width='100%'
+											<img class='boardimg ${media.filterName}' width='100%'
 												src="AttachedMedia/${media.system_file_name}" alt="">
 										</div>
 									</c:forEach>
@@ -617,12 +625,12 @@ $("#comment").keypress(function(event){
                            <%-- ${b.contents} --%>
                            	<script>
                         		  var regex = /(#[^#\s,;<>. ]+)/gi;
-                        		  var originalText = "${b.contents}"
+                        		  var originalText = "${b.contents}";
                         		  var innerCode = ""
                                   if (regex) {
                                       innerCode = "<span class=fugue>" + originalText
                                           .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                                              "</a><span class=fugue>") + "</span>"
+                                              "</a><span class=fugue>").replace("\n", "<br>")  + "</span>"
                                       innerCode += "<kz></kz>"
                                       /* document.write(innerCode) */
                                       $('#contdiv').html(innerCode);
@@ -667,7 +675,7 @@ $("#comment").keypress(function(event){
                                   if (regex) {
                                       innerCode = "<span class=fugue>" + originalText
                                           .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                                              "</a><span class=fugue>") + "</span>"
+                                              "</a><span class=fugue>").replace("\n", "<br>") + "</span>"
                                       innerCode += "<kz></kz>"
                                       /* document.write(innerCode) */
                                       $("#commentSection${item.comment_seq}").html(innerCode)

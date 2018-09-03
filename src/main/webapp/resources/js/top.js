@@ -1,5 +1,5 @@
 var ws = new WebSocket("ws://localhost/websocket?loginId="+currentId);         
-AOS.init();
+
 
 $(function () {
 	ws.onopen = function () {
@@ -322,5 +322,3 @@ $(document).ready(function() {
 			});
 
 })
-
- AOS.init();
