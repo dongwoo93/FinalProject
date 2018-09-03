@@ -390,7 +390,7 @@ function unmarkit(e) {
 		
 </div>
 
-
+<div id="allwrapper">
 <!-- 카드 DIV -->
 <div id="contents">	
 
@@ -714,7 +714,8 @@ function unmarkit(e) {
 
 	
 
-	</div>  
+	</div>
+	</div>
     
     
     
