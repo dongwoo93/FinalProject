@@ -677,7 +677,8 @@ $(document).ready(function(){
                           for(var i =0; i<list.length; i++) {
                             if(seq == list[i]) {
                                if(list.length == 1) {
-                              $("#modalbtn").hide();
+                            	   $("#goPrev").hide();
+                            	   $("#goNext").hide();
                            }
                            else if(i==0) {
                               $("#goPrev").hide();
