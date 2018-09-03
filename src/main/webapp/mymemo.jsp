@@ -1,10 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<script src="resources/js/top.js"></script>
 <link
 	href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"
 	rel="stylesheet" type="text/css">
 <style>
+@CHARSET "UTF-8";
+
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
+
+
+
 * {
 	margin: 0;
 	padding: 0;
@@ -131,6 +140,9 @@ color: white;
 /* #memotable {
     background-color: #0000006b;
 } */
+
+
+
 </style>
 <script>
 $(document).ready(function() {
@@ -346,19 +358,21 @@ $(document).ready(function() {
 	<div id="ul-wrapper">
 		4
 		<div style="text-align: center;">
-			<button type="button" class="btn btn-success" onclick="addNote()">메모
+			<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" onclick="addNote()">메모
 				추가</button>
+				
+				
 		</div>
 		<ul class="memoul">
 			<c:choose>
 				<c:when test="${result.size() > 0}">
 					<c:forEach var="memo" items="${result}" varStatus="status">
 						<li class="memoli"><a>
-								<h2 id="title1" class="memotitle">${memo.title}
-									<i class="fas fa-trash" onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
-									<i class="fas fa-pencil-alt" onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
+								<h2 id="title1" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" class="memotitle">${memo.title}
+									<i class="fas fa-trash"  onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
+									<i class="fas fa-pencil-alt"  onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
 								</h2>
-								<p class="memocontent" onkeydown="check(this, event);">${memo.content}</p>
+								<p class="memocontent" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;" onkeydown="check(this, event);">${memo.content}</p>
 						</a></li>
 					</c:forEach>
 				</c:when>
