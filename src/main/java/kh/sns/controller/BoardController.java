@@ -439,16 +439,6 @@ public class BoardController {
 					} 
 				}
 			}
-			else if(cat.equals("3")) {
-				List<int[]> tagArr = boardService.myTags(id);
-				for(int i = 0; tagArr.size() > i; i++) {
-					result.add(boardService.oneBoard(Integer.toString(tagArr.get(i)[0])));
-				}
-			}
-			
-			List<Board_MediaDTO> result2 = new ArrayList<>();
-			for(int i = 0; i < result.size(); i++) {
-				result2.add(boardService.search2(result.get(i).getBoard_seq()).get(0));
 
 			for(Profile_ImageDTO dto : profile_image) {
 				getAllProfilePic.put(dto.getId(),dto.getSystem_file_name());
