@@ -261,7 +261,7 @@ public class BoardController {
 
 			for(int tmp : like) {  
 				maplike.put(tmp, "y");
-				System.out.println(tmp);
+				System.out.println(tmp + "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
 			}
 
 		
@@ -273,6 +273,7 @@ public class BoardController {
 			
 			trend = searchService.trend();
 
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
