@@ -20,6 +20,7 @@
 
 
 <script>
+
 	function tag(e) {
 		var search = $(e).html().split("#")[1]; 
 		$(location).attr("href","search.bo?search="+search); 
@@ -313,6 +314,10 @@ $(document).ready(function(){
 		 $('#profileimg').attr('src', "AttachedMedia/"+name);
 		 $("#hiddenimgname").val(name);
 	}
+	function updateImgDefault() {
+		 $('#profileimg').attr('src', "resources/images/DefaultProfile.jpg");
+		 $("#hiddenimgname").val("resources/images/DefaultProfile.jpg");
+	}
 	</script>
 	<c:forEach var="tmp" items="${result}" varStatus="status">
 		<script>    
@@ -334,9 +339,9 @@ $(document).ready(function(){
 	 <div class="profile">
 	 <div class="profile-image">
 
-
+<c:set var="id" value="${thisId}"/>
 				<c:choose>
-					<c:when test="${profileImg.size() > 0}">
+					<c:when test="${profileImg.size() > 0 && profile_pic.containsKey(id)}">
 						<c:forEach items="${profileImg}" var="proimg">
 							<c:if test="${proimg.is_selected eq 'y'}">
 
@@ -362,12 +367,12 @@ $(document).ready(function(){
 							<c:when test="${sessionScope.loginId == pageid}">
 								<a data-target="#profileimage" data-toggle="modal"
 									style="cursor: pointer;"> <img
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									src="resources/images/DefaultProfile.jpg"
 									width="152px" height="152px" style="object-fit: cover;"></a>
 							</c:when>
 							<c:otherwise>
 								<img
-									src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
+									src="resources/images/DefaultProfile.jpg"
 									width="152px" height="152px" style="object-fit: cover;">
 							</c:otherwise>
 						</c:choose>
@@ -1167,7 +1172,8 @@ function myFunction() {
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-
+				<button onclick="updateImgDefault()" type=button class="btn btn-light text-dark" id="setDefault"
+						style="font-weight: bold; width: 100px;">기본 이미지 설정</button>
 					<button type=button class="btn btn-light text-dark" id="savebtn"
 						style="font-weight: bold; width: 100px;">저장</button>
 					<button type=button class="btn btn-light text-dark"

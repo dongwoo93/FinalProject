@@ -3,6 +3,12 @@
 <%@ include file="include/top.jsp"%>
 <script src="resources/js/top.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/oneboard.css">
+<style>
+.pic{
+	width : 30px;
+	height : 30px;   
+}
+</style>
 <script>
 
 function tag(e) {
@@ -501,15 +507,19 @@ $("#comment").keypress(function(event){
 		<div id="board">
 		<div class="py-2 my-5" id="feed">
                   <div class="profile-image">
+                  <c:set var="oneboard" value="${b}"/>
                      <c:choose>
-						<c:when test="${profileImg.size() > 0}">
-							<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
-								 src="AttachedMedia/<c:out value='${profileImg[0].system_file_name}'/>">
-						</c:when>
-							<c:otherwise>
-								<img class="ml-3 mr-2" style=" width:30px; height: 30px;"
-									 src="resources/images/DefaultProfile.jpg">
-							</c:otherwise>
+						<c:when test="${profile_pic.containsKey(oneboard.id)}">
+                  
+                  
+                     <img class="ml-3 mr-2 pic"
+                        src="AttachedMedia/<c:out value='${profile_pic[oneboard.id]}'/>">
+                   
+                  </c:when>
+                  <c:otherwise>
+                     <img class="ml-3 mr-2 pic"
+                        src="resources/images/DefaultProfile.jpg">
+                  </c:otherwise>
 					</c:choose>
                     	 <%--               <h5 class="mt-1 idtxt">${tmp.id}</h5>  --%>
                      <br> 
@@ -546,13 +556,15 @@ $("#comment").keypress(function(event){
 									</c:forEach>
 
 								</div>
-
+								
+								<c:if test="${result2[0].size() > 1}">
 								<a id="carousel-prev0" class="carousel-control-prev" href="#myCarousel0"
 									data-slide="prev"> <span class="carousel-control-prev-icon"></span>
 								</a> <a id="carousel-next0" class="carousel-control-next"
 									href="#myCarousel0" data-slide="next"> <span
 									class="carousel-control-next-icon"></span>
 								</a>
+								</c:if>
 							</div>
 
 						</div>

@@ -345,10 +345,24 @@ $(document).ready(function() {
 			});
 		}else {
 			var fileName = $("#hiddenimgname").val();
+			var id = $("#hiddenid").val();
 			if(fileName == "") {
 				alert("사진을 등록해주세요");
+			}else if(fileName == "resources/images/DefaultProfile.jpg") {
+				$.ajax({
+					type:"POST",
+					url:"updateDefault.profile",
+					data: {id:id},
+					success: function(data) {
+						alert(data);
+						location.reload();
+					},
+					error : function(error) {
+		                console.log(error);
+		                console.log(error.status);
+		            }
+				});
 			}else {
-				var id = $("#hiddenid").val();
 				$.ajax({
 					type:"POST",
 					url:"updateImg.profile",
