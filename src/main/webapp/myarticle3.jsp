@@ -172,23 +172,23 @@ $(document).ready(function(){
     };
     
     function makeupHashtag (e) {
-
-        if ((e.keyCode === 32)) {
+    	console.log("length: " + $(this).text().length)
+        if ((e.keyCode === 32 )) {
             map[e.keyCode] = true;
             
             if(parseInt($('#caretposition').val()) == 0){
-           	 //                        	 
-            } else if (parseInt($('#caretposition').val()) == $(this).text().length){
-           	 // 
+           	 // alert('뭐?')                  	 
+            } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 엔터 고려하여 고친 부분 1
+             // alert( parseInt($('#caretposition').val()) + ":" +  $(this).text().length);
             } else {
            	 // 
            	 return;
             }
             
-
+			
             var regex = /(#[^#\s,;<>.]+)/gi;
             if (regex) {
-                var newtxt = "<span class=fugue>" + $(this).text()
+                var newtxt = "<span class=fugue>" + this.innerText	// 엔터 고려하여 고친 부분 2
                     .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
                         "</a><span class=fugue>") + "</span>"
 
@@ -210,7 +210,8 @@ $(document).ready(function(){
 
 
             }
-        }
+        }  
+    
     }
     
     $('#comment').on("mousedown mouseup keydown keyup", update);
@@ -863,7 +864,7 @@ $(document).ready(function(){
 						class="mt-2 mx-3">
 
 						<div id="articlecontents" class="mt-2 pb-2 mr-2 ">
-							<div class="bg-black" id="modalcontents"></div>
+							<div class="bg-black" id="modalcontents" style="white-space: pre-line;"></div>	<!-- 수정3 -->
 						</div>
 
 					</div>
@@ -902,10 +903,10 @@ $(document).ready(function(){
 
 					<!-- <input type="text" placeholder="댓글 달기..." class="creco" id="comment">  -->
 					<div contenteditable="true" class="editableDivCommentSection"
-						class="creco insertfield" id="comment">
+						class="creco insertfield" id="comment" >
 						<span class=text-muted>댓글 달기...</span>
 					</div>
-					<input type=hidden id="caretposition" value="0">
+					<input type=text id="caretposition" value="0">
 
 
 					<script>
