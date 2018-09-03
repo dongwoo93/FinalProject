@@ -10,6 +10,24 @@ var globalThisCommentIsFocusedOnFirst = true;
 </script>
 <script src="resources/js/top.js"></script>
 <script src="resources/js/timeline.js"></script>
+
+<!-- 달력cdn -->
+<link href='resources/fullcalendar/fullcalendar.min.css'
+	rel='stylesheet' />
+<link href='resources/fullcalendar/fullcalendar.print.min.css'
+	rel='stylesheet' media='print' />
+<script src='resources/fullcalendar/lib/moment.min.js'></script>
+<script src='resources/fullcalendar/fullcalendar.min.js'></script>
+<script src='resources/fullcalendar/locale/ko.js'></script>
+<script src='resources/fullcalendar/gcal.min.js'></script>
+<script type="text/javascript"
+	src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript"
+	src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	
+<!-- 달력cdn끝 -->
 <script>
 
 
@@ -868,7 +886,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 				</p>
 				<hr class="_5mToa">
 				<c:if test="${result3.size() > 0}">  
-				<div style="overflow-y:auto; height:230px; font-family:NANUMBARUNPENR !important;font-size: 14px;"">    		
+				<div style="overflow-y:auto; height:230px; font-family:NANUMBARUNPENR !important;font-size: 14px;">    		
 		<c:forEach var="followtmp" items="${result3}" varStatus="status">
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
@@ -947,8 +965,584 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 		  
 				</c:if><hr class="_5mToa">
 			</div>
+<!-- 			나의지도 -->
+<%-- 			<div id="map" class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;">
+	
+			</div>  
 
+			<script>      
+				var pin = [];
+				var mypin = "${mymap.pinimg}";
+				var mycluster = "${mymap.clusterimg}";
+			</script>
+			<c:forEach var="p" items="${pin}" varStatus="status">
+				<script>
+					var lat = parseFloat("${p.location_latitude}");
+					var lng = parseFloat("${p.location_longitude}");
+					var place = "${p.location_name}";
+					var index = parseInt("${status.index}");
+					var board_seq = "${p.board_seq}";
+					
+					pin.push([place,lat,lng,board_seq]);
+				</script>
+			</c:forEach>
+			
+			<script>
+				var map;
+				var markers = [];
+				var marker;
+				var mapOptions;
+				var clusterStyles;
+				
+				function initMap() {
+					var infowindow = new google.maps.InfoWindow();
+					
+					
+					var image = {
+					          url: mypin,
+					};
 
+					mapOptions = {
+							  center: {lat: 36.082402, lng: 128.088226},
+					          zoom: 6,   
+					          mapTypeControl: false,
+					          streetViewControl: false,
+					          fullscreenControl: false
+			            };
+					map = new google.maps.Map(document.getElementById('map'), mapOptions);
+					clearMarkers();
+					
+			        for (var i = 0; i < pin.length; i++) {
+			        	if(mypin == "resources/images/pin/basicpin1.png"){
+			        		marker = new google.maps.Marker({
+				                position: new google.maps.LatLng(pin[i][1], pin[i][2]),
+				                map: map,
+				                title: pin[i][0],
+					            animation: google.maps.Animation.DROP
+				              });
+			        	}else{
+			        		marker = new google.maps.Marker({
+				                position: new google.maps.LatLng(pin[i][1], pin[i][2]),
+				                map: map,
+				                title: pin[i][0],
+				                icon:image,
+					            animation: google.maps.Animation.DROP
+				              });
+			        	}
+			        	markers.push(marker);
+
+			            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+			                return function() {
+			                	$.ajax({
+					                url: "getBoard.do", 
+					                type: "get",
+					                data: {id:"${sessionScope.loginId}",lat:pin[i][1],lng:pin[i][2]},    
+					                success: function(response) {
+					                	var content = "<ul class='list-group' style='width:200px; font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 9px;'><li class='list-group-item' style='background-color:#f3f3f3; '>"+pin[i][0]+"</li>";
+					                	for(var k = 0 ; k<response[0].length;k++){
+					                		content  = content + "<a href='oneBoard.do?board_seq="+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list' class='mb-0'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:30px; height:30px; margin-left:100px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
+					                	}
+					                	content = content + "</ul>";  
+					                	infowindow.setContent(content);  
+						                infowindow.open(map, marker);  
+					                },
+					                error: function() { 
+					                    console.log("에러 발생");
+					                },
+					                complete: function(){
+					                    console.log("AJAX 종료");
+					                }
+					            });
+			                  
+			                }
+			            })(marker, i));
+			            
+			        }
+			       
+			        if(mycluster == "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"){
+						 var markerCluster = new MarkerClusterer(map,markers,{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+					}
+					else {
+						clusterStyles = [
+							  { 
+							    textColor: 'black',   
+							    url: mycluster,
+							    height: 50,
+							    width: 50
+							  } 
+							];
+						var mcOptions = {
+							    gridSize: 50,
+							    styles: clusterStyles,
+							    maxZoom: 15
+							}; 
+						 var markerCluster = new MarkerClusterer(map,markers,mcOptions);
+					}
+					
+			       
+			    }
+
+			      function clearMarkers() {
+			        for (var i = 0; i < markers.length; i++) {
+			          markers[i].setMap(null);
+			        }
+			        markers = [];
+			      }
+			      
+			      $("#sharebt").click(function(){
+			    	  Export();
+			    	  
+			    	  $("body").attr("style","opacity:0.3;");
+			 
+			    	  setTimeout(function(){
+			    		  $("body").attr("style","");
+			    	  },200);       
+			    	  
+			    	  $('#exampleModal').modal('show'); 
+			      })
+			      
+			      function Export() {
+			            var staticMapUrl = "https://maps.googleapis.com/maps/api/staticmap";
+			 
+			            staticMapUrl += "?center=" + map.center.lat() + "," + map.center.lng();
+			 
+			            staticMapUrl += "&size=1110x700";
+			 
+			            staticMapUrl += "&zoom=" + map.zoom;
+			            
+			            staticMapUrl += "&maptype=" + mapOptions.mapTypeId;
+			            
+			            for (var i = 0; i < markers.length; i++) {   
+			            	console.log(markers[i].getPosition());   
+			                staticMapUrl += "&markers=color:red|" + markers[i].getPosition().lat()+ "," + markers[i].getPosition().lng();
+			            }
+			 			      
+			            staticMapUrl += "&key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY"; 
+			            $("#mapimg").attr("src",staticMapUrl);
+			        }
+			      
+			      $("#setup").click(function(){
+			    	  $('#setupModal').modal('show'); 
+			      })
+			      
+			</script>
+			<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initMap" async defer></script> --%>
+<!-- 나의지도 끝 -->
+
+<!-- 나의 메모 -->  
+
+	<%-- <div id="carouselExampleControls" class="carousel container memowrapper" data-ride="carousel" style="width: 300px; margin-top: 20px; height:300px; margin-left:30px;">
+	  <div class="carousel-inner" style="height:100%;">
+		<ul class="memoul">  
+		<i class="fas fa-thumbtack fa-2x mt-2"></i>
+	  <c:choose>
+	   <c:when test="${memo.size() > 0}">
+	   		<div class="carousel-item active" style="height:250px; width:250px; cursor:pointer;" onclick="gomymemo()">  
+			     	<li class="memoli">
+			     	<a id="memoa">
+						<h2 id="title1" class="memotitle">${memo[0].title}</h2>
+						<div class="memocontent">${memo[0].content}</div>  
+					</a>
+					</li>
+			</div>
+			<c:forEach var="memo" begin="1" items="${memo}" varStatus="status">
+			    <div class="carousel-item" style="height:250px; width:250px; cursor:pointer;" onclick="gomymemo()">
+			     	<li class="memoli">
+			     	<a id="memoa">
+						<h2 id="title1" class="memotitle">${memo.title}</h2>
+						<div class="memocontent">${memo.content}</div>
+					</a>
+					</li>
+			    </div>
+		    </c:forEach>
+		    <script>
+		    	function gomymemo(){
+		    		$(location).attr("href","goNote.memo");
+		    	}
+		    </script>
+		</c:when>
+		
+		<c:otherwise>
+			<li class="memoli">메모가 없습니다.</li>
+		</c:otherwise>
+			
+		</c:choose>
+		</ul>
+		</div>
+	  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Previous</span>
+	  </a>
+	  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Next</span>
+	  </a>
+	</div> --%>
+
+<!-- 나의 메모 끝-->
+
+<!-- 나의 달력 -->
+	<div id='calendar' class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;"></div>
+	
+	<script>
+$(function() {
+  $('input[name="datetimes"]').daterangepicker({
+	timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'YYYY-MM-DD HH:mm',
+      "daysOfWeek": [
+          "일",
+          "월",
+          "화",
+          "수",
+          "목",
+          "금",
+          "토"
+      ],
+      "monthNames": [
+          "1월",
+          "2월",
+          "3월",
+          "4월",
+          "5월",
+          "6월",
+          "7월",
+          "8월",
+          "9월",
+          "10월",
+          "11월",
+          "12월"
+      ]
+    }
+  });
+});
+
+$(document).on('show.bs.modal', '.modal', function () {
+    var zIndex = 1040 + (10 * $('.modal:visible').length);
+    $(this).css('z-index', zIndex);
+    setTimeout(function() {
+        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+    }, 0);
+});
+function showmodimodal(e) {
+	var currentEv = $("#calTitle").text();
+	var start = $("#hiddenStart").text();
+	var end = $("#hiddenEnd").text();
+	$("#modifyEventModal").modal();
+	$("#eventName2").val(currentEv);
+	$("#eventDueDate2").val("");
+}
+
+function myAlertBottom(msg){
+	$("#alertmsg").text(msg);
+	  $(".myAlert-bottom").fadeIn();
+	  setTimeout(function(){
+	    $(".myAlert-bottom").fadeOut(); 
+	  }, 2000);
+	}
+
+function deleteEvent() {
+	var id = $('#hiddenid').val();
+	$.ajax({
+        url : "delete.cal",
+        type : "post",
+        data : {
+           id : id
+        },
+        success : function(resp) {
+        	if(resp == 0) {
+        		alert("삭제에 실패 하였습니다");
+        		$('#calendar').fullCalendar('unselect');
+        	}else {
+        		$("#calModal").modal("hide");
+        		$('#calendar').fullCalendar('removeEvents', id);
+        		myAlertBottom("일정이 삭제 되었습니다");
+        	}
+        },
+        error : function() {
+           console.log("에러 발생!");
+           }
+        })
+}
+
+  $(document).ready(function() {
+	  $('#submitButton').on('click', function(e){
+		  var content = $('#eventName').val();
+		  if(content == "") {
+			  alert("내용을 입력해주세요");
+			  return;
+		  }
+          // We don't want this to act as a link so cancel the link action
+          e.preventDefault();
+
+          doSubmit();
+        });
+	  
+	  $('#submitButton2').on('click', function(e){
+		  var content = $('#eventName2').val();
+		  if(content == "") {
+			  alert("내용을 입력해주세요");
+			  return;
+		  }
+          // We don't want this to act as a link so cancel the link action
+          e.preventDefault();
+
+          doSubmit2();
+        });
+
+    function doSubmit(){
+    	var content = $('#eventName').val();
+    	var startEnd = $("#eventDueDate").val();
+    	var startTime = startEnd.split(' - ')[0];
+    	var endTime = startEnd.split(' - ')[1];
+    	$.ajax({
+            url: 'insert.cal',
+            type: 'post',
+            data : {
+            	date_start : startTime,
+            	date_end : endTime,
+            	content : content
+             },
+            success: function (data) {
+            	if(data.result == 0) {
+            		alert("등록에 실패 하였습니다");
+            		$('#calendar').fullCalendar('unselect');
+            	}else {
+            		$("#calendar").fullCalendar('renderEvent',
+            		          {
+            						id: data.seq,
+            		              title: content,
+            		              start: new Date(startTime),
+            		              end: new Date(endTime)
+            		          },
+            		          true);
+            		myAlertBottom("일정이 등록 되었습니다");
+            	}
+            },
+            error : function() {
+                console.log("에러 발생!");
+                }
+        });
+      $("#createEventModal").modal('hide');
+      
+     }
+    
+    function doSubmit2(){
+    	var seq = $("#hiddenid").val();
+    	var content = $('#eventName2').val();
+    	var startEnd = $("#eventDueDate2").val();
+    	var startTime = startEnd.split(' - ')[0];
+    	var endTime = startEnd.split(' - ')[1];
+    	var eventData;
+    	$.ajax({
+            url: 'update.cal',
+            type: 'post',
+            data : {
+            	seq : seq,
+            	date_start : startTime,
+            	date_end : endTime,
+            	content : content
+             },
+            success: function (data) {
+            	if(data == 0) {
+            		alert("등록에 실패 하였습니다");
+            	}
+            	eventData = {
+        				id: seq,
+        	            title: event.title,
+        	            start: event.start,
+        	            end: event.end
+        	          };
+            	$('#calendar').fullCalendar('removeEvents', seq);
+            	$("#calendar").fullCalendar('renderEvent',
+      		          {
+      						id: seq,
+      		              title: content,
+      		              start: new Date(startTime),
+      		              end: new Date(endTime)
+      		          },
+      		          true);
+            	$("#modifyEventModal").modal("hide");
+            	$("#calModal").modal('hide');
+              	myAlertBottom("일정이 변경 되었습니다");
+            },
+            error : function() {
+                console.log("에러 발생!");
+                }
+        });
+      $("#createEventModal").modal('hide');
+      
+     }
+
+    $('#calendar').fullCalendar({
+    	customButtons: {
+    	    myCustomButton: {
+    	      text: '일정 추가',
+    	      click: function() {
+    	    	  $('#createEventModal').modal('show');
+    	      }
+    	    }
+    	  },
+      header: {
+      },
+      footer: {
+      },
+      slotDuration: '00:10:00',
+      slotLabelFormat: 'a h:mm',
+      themeSystem: 'bootstrap4',
+      nowIndicator: true,
+      now: new Date(),
+      defaultDate: new Date(),
+      navLinks: true, // can click day/week names to navigate views
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end) {
+        var title = prompt('일정을 입력하세요:');
+        var eventData;
+        if (title) {
+        $.ajax({
+            url: 'insert.cal',
+            type: 'post',
+            data : {
+            	date_start : start.format(),
+            	date_end : end.format(),
+            	content : title
+             },
+            success: function (data) {
+            	if(data.result == 0) {
+            		alert("등록에 실패 하였습니다");
+            		$('#calendar').fullCalendar('unselect');
+            	}else {
+            		eventData = {
+            				id: data.seq,
+            	            title: title,
+            	            start: start,
+            	            end: end
+            	          };
+            		$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            		myAlertBottom("일정이 등록 되었습니다");
+            	}
+            },
+            error : function() {
+                console.log("에러 발생!");
+                }
+        });
+        
+        }
+        $('#calendar').fullCalendar('unselect');
+      },
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      eventClick: function(event) {
+    	  $(".fc-event").removeAttr("href");
+    	  if($(this).css("background-color")== "rgb(255, 0, 0)") {
+    		  $("#calHeader2").css("background-color", "red");
+        	  $("#calTitle2").text(event.title);
+        	  $("#hiddenStart2").text(event.start.format());
+        	  $("#hiddenEnd2").text(event.end.format());
+        	  $("#timecontent2").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
+        	  $("#calModal2").modal("show");
+        	  
+    	  }else {
+    		  //$("#calHeader").css("background-color", "#3a87ad");
+    		  $("#hiddenid").val(event.id);
+        	  $("#calTitle").text(event.title);
+        	  $("#hiddenStart").text(event.start.format());
+        	  $("#hiddenEnd").text(event.end.format());
+        	  $("#timecontent").text(event.start.format("YYYY년 MM월 DD일, a hh:mm")+' ~ ' +event.end.format("YYYY년 MM월 DD일, a hh:mm"));
+        	  $("#calModal").modal("show");
+    	  }
+    	  
+    	  
+    	    
+    	  },
+      eventDrop: function(event, delta, revertFunc) {
+    	    if (!confirm("일정을 변경 하시겠습니까?")) {
+    	      revertFunc();
+    	    }else {
+    	    	$.ajax({
+    	            url: 'update.cal',
+    	            type: 'post',
+    	            data : {
+    	            	seq: event.id,
+    	            	date_start : event.start.format(),
+    	            	date_end : event.end.format(),
+    	            	content : event.title
+    	             },
+    	            success: function (data) {
+    	            	if(data == 0) {
+    	            		alert("등록에 실패 하였습니다");
+    	            		revertFunc();
+    	            	}
+    	            	myAlertBottom("일정이 변경 되었습니다");
+    	            },
+    	            error : function() {
+    	                console.log("에러 발생!");
+    	                }
+    	        });
+    	    }
+
+    	  },
+
+      eventResize: function(event, delta, revertFunc) {
+
+    	    if (!confirm("일정을 변경 하시겠습니까?")) {
+    	      revertFunc();
+    	    }else {
+    	    	$.ajax({
+    	            url: 'update.cal',
+    	            type: 'post',
+    	            data : {
+    	            	seq: event.id,
+    	            	date_start : event.start.format(),
+    	            	date_end : event.end.format(),
+    	            	content : event.title
+    	             },
+    	            success: function (data) {
+    	            	if(data == 0) {
+    	            		alert("등록에 실패 하였습니다");
+    	            		revertFunc();
+    	            	}
+    	            	myAlertBottom("일정이 변경 되었습니다");
+    	            },
+    	            error : function() {
+    	                console.log("에러 발생!");
+    	                }
+    	        });
+    	    }
+
+    	  },
+      googleCalendarApiKey: 'AIzaSyBLzmfo25SUyDaDRjI7wrhI1cyIhs6sYAc',
+      eventSources : [
+    	  	{
+    	  		 events: [
+    	  		<c:forEach var='event' items='${calendar}'>
+    	  	    { 	id: '${event.seq}',
+    	  	    	title: '${event.content}',
+    	  	    	start: '${event.date_start}',
+    	  	    	end: '${event.date_end}'
+    	  	    },
+    	  	  </c:forEach>
+    	  	    	{}
+    	  	]
+    	  	},
+          	{
+            	googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+            	color: 'red',
+            editable: false
+            }
+          	
+      ]
+      
+    });
+
+  });
+
+</script>
+<!-- 나의달력 끝 -->
 
 <!-- 			<div class="pt-4 pb-3" id="footer" style="font-size: 5px; margin-left: 20px;"> -->
 			<div class="pt-4 pb-3" style="font-size: 5px; margin-left: 20px;"> 
@@ -967,6 +1561,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 
 	</div>
 	<!-- container -->
+	
 
 </div>
 <!-- centerwrapper -->
