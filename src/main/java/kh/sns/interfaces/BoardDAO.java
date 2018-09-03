@@ -2,13 +2,9 @@ package kh.sns.interfaces;
 
 import java.util.List;
 
-import kh.sns.dto.BoardBusinessDTO;
 import kh.sns.dto.BoardDTO;
+import kh.sns.dto.Board_LocationDTO;
 import kh.sns.dto.Board_MediaDTO;
-
-import kh.sns.dto.Board_TagsDTO;
-import kh.sns.dto.FollowInfo;
-import kh.sns.dto.Profile_ImageDTO;
 public interface BoardDAO {
 	
 	public List<BoardDTO> getFeed(String id) throws Exception ;
@@ -61,4 +57,6 @@ public interface BoardDAO {
 	
 	public int deleteBoardTags(int board_seq) throws Exception;
 	
+	// 지도
+	public Board_LocationDTO location(int seq)throws Exception;
 }
