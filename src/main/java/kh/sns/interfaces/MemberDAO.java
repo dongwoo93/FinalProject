@@ -36,4 +36,5 @@ public interface MemberDAO {
 	public int updateDisabledInfo(MemberDTO member) throws Exception;
 	public int checkIdPwd(MemberDTO dto); 
 	public String extractEmail(String id) throws Exception;
+	public String extractPhone(String id) throws Exception;
 }

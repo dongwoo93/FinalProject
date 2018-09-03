@@ -35,5 +35,6 @@ public interface MemberService {
 	// update disabled information(20180903)
 	public int updateDisabledInfo(MemberDTO member, boolean isToggleToNo) throws Exception; 
 	public String extractEmail(String id) throws Exception;
+	public String extractPhone(String id) throws Exception;
 	
 }

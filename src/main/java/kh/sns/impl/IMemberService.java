@@ -172,6 +172,12 @@ public class IMemberService implements MemberService{
 		return dao.extractEmail(id);
 	}
 
+	@Override
+	public String extractPhone(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.extractPhone(id);
+	}
+
 
 }
 

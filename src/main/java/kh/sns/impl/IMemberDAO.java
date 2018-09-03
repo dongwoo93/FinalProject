@@ -281,4 +281,17 @@ public class IMemberDAO implements MemberDAO {
 		
 		return temp.get(0).getEmail();
 	}
+	@Override
+	public String extractPhone(String id) throws Exception {
+		// TODO Auto-generated method stub
+		String sql = "select phone from member where id=?";
+		List<MemberDTO> temp = template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+			MemberDTO member = new MemberDTO("","","","",rs.getString("phone"),"","");
+			
+			return member;			
+		});		 
+		
+		return temp.get(0).getPhone();
+	
+	}
 }

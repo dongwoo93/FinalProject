@@ -487,8 +487,8 @@
 							 <div class="form-check" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 						        <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y" 
-									${ profile.is_allow_email eq 'y	' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">뉴스 이메일</strong>
+									>
+						           <strong style="font-weight:bold;">${ profile.is_allow_email}</strong>
 						        </label>
 						        <br>유용한 최신 정보를 빠짐없이 받아보세요.
 						      </div><br>

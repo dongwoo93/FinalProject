@@ -1,8 +1,13 @@
 package kh.sns.controller;
 
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,6 +105,37 @@ public class ProfileController {
 				send.sendEmail();
 			}else if(fieldName.equals("is_allow_sms")){
 				System.out.println("문자에요");
+				String phone = memberService.extractPhone(loginId);
+				
+				String to = "82"+phone;
+	            String from="33644643087";
+	            String finalMsg = ( loginId + " 님 저희 Social Wired와 함께 해주셔서 감사합니다.<br>"
+            			+"더욱 발전하는 서비스가 되도록 노력하겠습니다. 늘 새로운 상생을 꿈꾸는 SocialWired Copyright © SocialWired Corp.");              
+	            
+	            String message = URLEncoder.encode(finalMsg, "UTF-8");
+	            
+	            String sendUrl = "https://www.proovl.com/api/send.php?user=6394162&token=mZJb0hlGqKxlgbpx4GqNTH4lX0aNAQ04";
+	            StringBuilder sb = new StringBuilder();
+	            sb.append(sendUrl);
+	            sb.append("&to="+to);
+	            sb.append("&from="+from);
+	            sb.append("&text="+message);
+	            System.out.println(sb.toString());
+	            URL url = new URL(sb.toString());
+	            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+	            int result = con.getResponseCode();
+	            
+	            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	            String line = null;
+	            
+	            while((line = br.readLine())!=null) {
+	               System.out.println(line);
+	            }
+	            
+	            System.out.println(result);
+	            con.disconnect();            
+	            br.close();
+	          
 			}
 			
 			System.out.println("@@fieldName: " + fieldName);
