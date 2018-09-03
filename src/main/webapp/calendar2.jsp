@@ -639,11 +639,7 @@ function deleteEvent() {
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<span id="alertmsg"></span>
 	</div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+  
    
   
 
@@ -654,9 +650,6 @@ function deleteEvent() {
                   <a href="footinfo.jsp"><p class="lead" style="font-family: NANUMBARUNPENR !important;font-size:14px;color:#212529;font-weight:bold;"><i class="far fa-copyright"></i>
                   SocialWired about정보.채용.개인정보처리방침 .약관.플랫폼</p></a>
                 </div>
-<!--                 <div class="col-4 col-md-2 align-self-center" style="font-family: NANUMBARUNPENR !important;font-size: 14px;"> -->
-<!--                   <p><i class="far fa-copyright"></i>2018SocialWired</p> -->
-<!--                 </div> -->
               </div>
           </div>
       </div>
