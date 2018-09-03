@@ -8,7 +8,6 @@
 <script> var currentId = "${sessionScope.loginId}";
 var globalThisCommentIsFocusedOnFirst = true;
 </script>
-<script src="resources/js/top.js"></script>
 <script src="resources/js/timeline.js"></script>
 <script>
 

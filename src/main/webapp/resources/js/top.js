@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://localhost/websocket?loginId="+currentId);         
+var ws = new WebSocket("ws://192.168.1.218:8080/controller/websocket?loginId="+currentId);         
 
 
 $(function () {
@@ -20,12 +20,14 @@ $(function () {
 		var receivernickname = $("#dmnickname").text();
 		var receiverId = $("#userId").val();
 		if(receiverId == sender){
-	    	$("#message").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
+			console.log("onmessage if들어옴")
+	    	$("#messagebox").append("<div class='message-box-holder'><div class='message-sender'><a>"+receivernickname+"</a></div><div class='message-box message-partner'>"+message+"</div></div>");
 	    	var objDiv = document.getElementById("messagebox");
 	    	objDiv.scrollTop = objDiv.scrollHeight;
 	    	setRead(receiverId);
 		}
 		else{
+			console.log("onmessage else 나옴");
 			$("#alertsender").text(sender);
 			$("#alertmsg").html(message);
 			 
@@ -45,6 +47,7 @@ $(function () {
     $("#sendDm").keydown(function(key) {
 		var message = $("#sendDm").val(); 
 		var receiver = $("#userId").val();
+		console.log(message + ":" + receiver);
 		if (key.keyCode == 13) {
 			$("#sendDm").val("");
 			sendMsg(message,receiver);
@@ -52,6 +55,7 @@ $(function () {
 	});
     
     $(".imoticon").dblclick(function(){
+    	console.log("dbclick 실행됨")
     	var url = $(this).attr("src");
     	var message = "<img src="+url+" class='imoticon'>"
     	var receiver = $("#userId").val();
@@ -65,6 +69,7 @@ $(function () {
     });
     
     function sendMsg(message,receiver){
+    	console.log("sendMsg msg :" + message + ":" + receiver);
     	$.ajax({
             url: "insertMessage.do", // 처리할 페이지(서블릿) 주소
             type: "get",

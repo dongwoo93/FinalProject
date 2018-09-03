@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
-<script src="resources/js/top.js"></script>
 <link
 	href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"
 	rel="stylesheet" type="text/css">
@@ -364,7 +363,7 @@ function cancelNote(e) {
 		}, 500);
 	}
 </script>
-
+<div id="allwrapper">
 <div id="wrapper">
 	<div class="container">
 		<br>
@@ -427,4 +426,6 @@ function cancelNote(e) {
 		</ul>
 	</div>
 </div>
+</div>
+<%@ include file="include/directMessage.jsp" %>
 <%@ include file="include/bottom.jsp"%>

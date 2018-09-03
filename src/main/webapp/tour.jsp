@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
 <link rel="stylesheet" type="text/css" href="resources/css/tour.css">
-<script src="resources/js/top.js"></script>
 <script> var currentId = "${sessionScope.loginId}"; </script>
 <script src="resources/js/timeline.js"></script>
 	
@@ -419,5 +418,5 @@ function unmarkit(e) {
 
 
 </script>
-
+<%@ include file="include/directMessage.jsp" %>
 <%@ include file="include/bottom.jsp"%>

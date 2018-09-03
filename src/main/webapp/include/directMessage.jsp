@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<link rel="stylesheet" type="text/css" href="resources/css/directMessage.css">
 <!--                                  DM -->
 					<script>
 					$(document).ready(function() {
@@ -79,13 +80,14 @@
 					}
 					
 					function reloadMessengerlist(){
-						$("#currentmessenger *").remove();
+						
 						var notreadcount=0;
 						$.ajax({
 			                url: "currentMessenger.do",
 			                type: "get",
 			                data: {id:"${sessionScope.loginId}"}, 
 			                success: function(response) {
+			                	$("#currentmessenger *").remove();
 			                	for (var key in response) {
 			                		if(response[key].read == 0){
 				                	    $("#currentmessenger").append("<li onclick='openmessage(this)' onmouseover='showdelete(this)' onmouseleave='hidedelete(this)' style='font-size:13px;'>"+response[key].receiver+"<input type='hidden' id='usernickname' value='"+response[key].receiver+"'><span style='float:right;' class='mr-3'>"+response[key].message_date.split(" ")[0]+"</span><p class='ml-3' style='width: 200px;'>"+response[key].message+"</p><div onclick='deletemessenger(this)' id='"+response[key].sender+"' class='messengerdelete' style='display:none;'>삭제하기<input type='hidden' id='hiddennick' value='"+response[key].receiver+"''></div></li>");
