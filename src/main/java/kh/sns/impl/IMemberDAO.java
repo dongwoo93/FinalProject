@@ -132,6 +132,10 @@ public class IMemberDAO implements MemberDAO {
 			member.setNickname(rs.getString("nickname"));
 			member.setPhone(rs.getString("phone"));
 			member.setPw(rs.getString("pw"));
+			member.setIsDisabledAccount(rs.getString("is_disabled_account"));
+			member.setIsBlockedAccount(rs.getString("is_blocked_account"));
+			member.setDisabledReason(rs.getInt("disabled_reason"));
+			member.setLastDisabledDate(rs.getString("last_disabled_date"));
 			return member;			
 		});		
 		
@@ -252,4 +256,15 @@ public class IMemberDAO implements MemberDAO {
 		
 	}
 	
+	@Override
+	public int updateDisabledInfo(MemberDTO member) throws Exception {
+		String sql = "update member set is_disabled_account = ?, LAST_DISABLED_DATE = sysdate, DISABLED_REASON = ? where id = ?";
+		return template.update(sql, member.getIsDisabledAccount(), member.getDisabledReason(), member.getId());
+	}
+	
+	@Override
+	public int checkIdPwd(MemberDTO dto) {
+		String sql = "select * from member where id=? and pw=?";
+		return template.update(sql, dto.getId(), dto.getPw());
+	}
 }

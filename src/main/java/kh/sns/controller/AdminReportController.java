@@ -161,5 +161,20 @@ public class AdminReportController {
 
 	}
 	
+	@RequestMapping("/redirectAdUrl")
+	public ModelAndView redirectAdurl(String r) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(r.startsWith("https://"));
+		System.out.println(r.startsWith("http://"));
+		if(r.startsWith("https://") || r.startsWith("http://")) {
+			mav.setViewName("redirect:" + r);
+		} else {
+			mav.setViewName("redirect:http://" + r);
+		}
+		
+		return mav;
+			
+	}
+	
 	
 }
