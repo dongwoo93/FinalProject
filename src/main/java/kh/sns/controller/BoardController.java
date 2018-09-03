@@ -158,7 +158,6 @@ public class BoardController {
 			membersNick = new ArrayList<>();
 			for(BoardDTO b : list) {
 				membersNick.add(memService.getOneMember(b.getId()).getNickname());
-				b.setContents(b.getContents().replace("\r\n", "\\n\" + \""));
 			}
 			membersNick.forEach(System.out::println);
 			// ========================================
@@ -262,7 +261,7 @@ public class BoardController {
 
 			for(int tmp : like) {  
 				maplike.put(tmp, "y");
-				System.out.println(tmp + "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+				System.out.println(tmp);
 			}
 
 		
@@ -274,7 +273,6 @@ public class BoardController {
 			
 			trend = searchService.trend();
 
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}	  
@@ -320,8 +318,7 @@ public class BoardController {
 
 
 		return mav;
-	}
-	
+	}   
 	@RequestMapping("/feedForJson.ajax")
 	public void feedForJson(HttpServletResponse response, HttpServletRequest request, HttpSession seesion, String start) {
 
