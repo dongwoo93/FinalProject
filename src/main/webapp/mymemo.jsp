@@ -240,7 +240,9 @@ $(document).ready(function() {
 					titleElement.attr('contenteditable', 'false');
 					contentElement.attr('contenteditable', 'false');
 					titleElement.append(myvar);
+					$(e).next().remove();
 					$(e).remove();
+					
 				}else {
 					alert("저장 실패");
 				}
