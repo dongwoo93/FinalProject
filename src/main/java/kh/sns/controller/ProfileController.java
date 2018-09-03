@@ -90,9 +90,14 @@ public class ProfileController {
 		try {
 			PrintWriter xout = response.getWriter();
 			String fieldName = request.getParameter("fieldName");
-			System.out.println("@@fieldName: " + fieldName);
+		    System.out.println("@@fieldName: " + fieldName); 
+			
+			
+			
 			int result = profileService.toggleProfileCheckbox(profileService.getOneProfile(request.getSession().getAttribute("loginId").toString())
 					, fieldName);
+			
+			
 			System.out.println("@@result: " + result);
 			xout.print(result);
 			xout.flush();

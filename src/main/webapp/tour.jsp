@@ -7,8 +7,14 @@
 <script src="resources/js/timeline.js"></script>
 	
 	<script>
+
+	function tag(e) {
+		var search = $(e).html().split("#")[1]; 
+		$(location).attr("href","search.bo?search="+search);     
+	
+	}
 /* 좋아요 Script */
-function likeit(e) {
+function likeit1(e) {   
 	var board_seq = $(e).attr("value");
 	$.ajax({
 		url : "like.bo",
@@ -36,7 +42,7 @@ function likeit(e) {
 		})
 }
 
-function unlikeit(e) {
+function unlikeit1(e) {
 	var board_seq = $(e).attr("value");
 	$.ajax({
 		url : "like.bo",
@@ -51,7 +57,7 @@ function unlikeit(e) {
 			$(e).prev().show();
 			$(e).hide(); 
 			/* 좋아요 카운트 */
-			if(resp != 0) {
+			if(resp != 0) {    
 				$("#count"+board_seq).text(resp + "명이 좋아합니다");
 			}else {
 				$("#count"+board_seq).text("");
@@ -195,10 +201,10 @@ function unmarkit(e) {
 							<c:choose>
 								<c:when test="${result3.containsKey(result.board_seq)}">
 									<i value="${result.board_seq}" style="cursor: pointer; display: none;" 
-										id="likeit" class="far fa-heart icon mr-1" onclick="likeit(this)">
+										id="likeit" class="far fa-heart icon mr-1" onclick="likeit1(this)">
 									</i>
 									<i value="${result.board_seq}" style="color: red; cursor: pointer;" 
-										id="likecancel" class="fas fa-heart" onclick="unlikeit(this)">
+										id="likecancel" class="fas fa-heart" onclick="unlikeit1(this)">
 									</i>
 									<!-- 좋아요 카운트 -->
 									<c:choose>
@@ -219,11 +225,11 @@ function unmarkit(e) {
 									<c:otherwise>   
 										<i value="${result.board_seq}" style="cursor: pointer;" 
 											id="likeit" class="far fa-heart icon mr-1" 
-											onclick="likeit(this)">
+											onclick="likeit1(this)">
 										</i>
 			                   			<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" 
 			                   				id="likecancel" class="fas fa-heart" 
-			                   				onclick="unlikeit(this)">
+			                   				onclick="unlikeit1(this)">
 			                   			</i>
 										<!-- 좋아요 카운트 -->
 										<c:choose>
@@ -334,9 +340,9 @@ function unmarkit(e) {
 									<c:choose>
 										<c:when test="${result3.containsKey(result.board_seq)}">
 											<i value="${result.board_seq}" style="cursor: pointer; display: none;" 
-												id="likeit" class="far fa-heart icon mr-1 lk" onclick="likeit(this)"></i>
+												id="likeit" class="far fa-heart icon mr-1 lk" onclick="likeit1(this)"></i>
 											<i value="${result.board_seq}" style="color: red; cursor: pointer;" 
-												id="likecancel" class="fas fa-heart lkc" onclick="unlikeit(this)"></i>
+												id="likecancel" class="fas fa-heart lkc" onclick="unlikeit1(this)"></i>
 											<!-- 좋아요 카운트 -->
 											<c:choose>
 												<c:when test="${result4[result.board_seq] != null}">
@@ -358,10 +364,10 @@ function unmarkit(e) {
 											<c:otherwise>   
 												<i value="${result.board_seq}" style="cursor: pointer;" id="likeit" 
 													class="far fa-heart icon mr-1 lk" 
-													onclick="likeit(this)"></i>
+													onclick="likeit1(this)"></i>
 			                   					<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" 
 			                   						id="likecancel" class="fas fa-heart lkc" 
-			                   						onclick="unlikeit(this)"></i>
+			                   						onclick="unlikeit1(this)"></i>
 												<!-- 좋아요 카운트 -->
 												<c:choose>
 													<c:when test="${result4[result.board_seq] != null}">
@@ -489,7 +495,16 @@ function unmarkit(e) {
 	           				// console.log(r.result[ele]);
 		           			c += "<div class='card' id='card'>"
 		           			c += "<h4 class='card-title' id='tourTop'>"
-		           			c += "<img src='루이.jpg' alt='Card image cap' width='30' height='30' class='rounded-circle'>"	// ★★  이 부분 사진 주소 수정
+		           			
+		           			if(r.profile_pic[r.result.id] != null) {
+		           				c += "<img src='"+r.profile_pic[r.result.id]+"' alt='Card image cap' width='30' height='30' class='rounded-circle'>"
+		           			}
+		           			else{     
+		           			
+		           			c += "<img src='resources/images/DefaultProfile.jpg' alt='Card image cap' width='30' height='30' class='rounded-circle'>"	
+		           			
+		           			}
+		           			// ★★  이 부분 사진 주소 수정
 		           		 	c += "<a id='ids' href='board.bo?id=" + r.result[ele].id + "&cat=1'>" + r.result[ele].id + "</a>"	   
 		           		 	
 		           		 	// test='bookmark.containsKey(result.board_seq)'
@@ -509,9 +524,9 @@ function unmarkit(e) {
 		           		 	// if: result3(map).containsKey(result.board_seq)
 		           		 	if( typeof r.map[boardSeq] != "undefined" ){
 		           		 		c += "<i value='" + boardSeq + "' style='cursor: pointer; display: none;'" 
-		           		 		c += "id='likeit' class='far fa-heart icon mr-1' onclick='likeit(this)'></i>"
+		           		 		c += "id='likeit' class='far fa-heart icon mr-1' onclick='likeit1(this)'></i>"
 								c += "<i value='" + boardSeq + "' style='color: red; cursor: pointer;' id='likecancel'"
-								c += "class='fas fa-heart' onclick='unlikeit(this)'></i>"
+								c += "class='fas fa-heart' onclick='unlikeit1(this)'></i>"
 								
 								// if: countlike[result.board_seq] != null
 								if(typeof r.countlike[board_seq] != "undefined" && r.countlike[board_seq] != null){
@@ -522,9 +537,9 @@ function unmarkit(e) {
 								}								
 		           		 	} else {
 		           		 		c += "<i value='" + boardSeq + "' style='cursor: pointer;' id='likeit' "
-		           		 		c += "class='far fa-heart icon mr-1' onclick='likeit(this)'></i><i value='" + boardSeq + "' " 
+		           		 		c += "class='far fa-heart icon mr-1' onclick='likeit1(this)'></i><i value='" + boardSeq + "' " 
 		           		 		c += "style='color: red; display: none; cursor: pointer;' id='likecancel' class='fas fa-heart'  "
-		                   		c += "onclick='unlikeit(this)'></i>"
+		                   		c += "onclick='unlikeit1(this)'></i>"
 		                   		// if: countlike[result.board_seq] != null
 									if(typeof r.countlike[board_seq] != "undefined" && r.countlike[board_seq] != null){
 										c += "<p id='p'><i value='" + boardSeq + "' id='count" + boardSeq + "'>"
