@@ -805,6 +805,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 
 
 
+
 							<!--               -->
 
 
@@ -855,7 +856,8 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
-<br>	<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
+			<br>	
+			<p class="" style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					추천 Follow를 추가하세요
 				</p>
 				<hr class="_5mToa">
@@ -896,7 +898,9 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 		  
 				</c:forEach>
 			   	</div>
-				</c:if><hr class="_5mToa">
+				</c:if>
+				<hr class="_5mToa">
+				<br>
 			</div>
 			 
 			
@@ -905,7 +909,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 						style="width: 300px; margin-top: 20px; margin-left: 30px;">
 					
 <!-- 			<hr class="_5mToa"> -->
-<br>
+				<br>
 				<p class=""  style="font-weight:bold;font-family:NANUMBARUNPENR !important;font-size: 15px;">
 					실시간 #트랜드     
 				</p>
@@ -913,13 +917,13 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 				<c:if test="${trend.size() > 0}">  
 		  
 		  	<div style="overflow-y:auto; height:230px;">    		
-		<c:forEach var="trend" items="${trend}" varStatus="status" >
+			<c:forEach var="trend" items="${trend}" varStatus="status" >
 		
 					<div class="container" >     
 					<ul class="navbar-nav pointer text-left" value="${trend}" onclick="trendsearch(this)" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					
 					<li class="pt-2" style="width:40%;font-family:NANUMBARUNPENR !important;font-size: 14px;">	<a class="trendrank"            
-								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;"     
+								style="font-size: 14px;font-family:NANUMBARUNPENR !important;font-size: 14px;color:#212529;"     
 								href="">${status.count}</a></li>  
 					<li class="pt-2"><a id="keywordlink" style="color:#12bbad;font-family:NANUMBARUNPENR !important;font-size: 14px;">#${trend}</a></li>           	  
 					</ul>   
@@ -952,11 +956,9 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 						</div>
 					</div>
 				</div>
-			</div>	
-<!-- 			</div> -->
+		<!-- 			</div> -->
 
-		</div>
-  
+		<!-- container -->
 
 	</div>
 	<!-- container -->
@@ -1728,9 +1730,8 @@ $(window).scroll(function(){
 });
 
 </script>
-                      
-                        
-      <%@ include file="include/bottom.jsp"%>
-      
-      
-  
+
+
+<%@ include file="include/bottom2.jsp"%>
+
+

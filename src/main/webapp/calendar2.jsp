@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<script src="resources/js/top.js"></script>
 <link href='resources/fullcalendar/fullcalendar.min.css'
 	rel='stylesheet' />
 <link href='resources/fullcalendar/fullcalendar.print.min.css'
@@ -429,10 +430,41 @@ function deleteEvent() {
     right: 25%;
     left: 50%;
     margin-left: -150px;
-    
-    
-    
+
 }
+
+.btn-primary {
+    color: #212529;
+    background-color: #f3f3f3;
+    border-color: rgba(255, 255, 255, 0.15);    
+    font-weight:bold;
+    font-family: NANUMBARUNPENR !important;
+    font-size: 14px;
+  
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #212529;
+    background-color: #f3f3f3;
+    border-color: rgba(255, 255, 255, 0.15);    
+    font-weight:bold;
+    font-family: NANUMBARUNPENR !important;
+    }
+    
+    .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+    color: #212529;
+    background-color: #f3f3f3;
+    border-color:  rgba(255, 255, 255, 0.15);  
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #212529;
+    background-color: #f3f3f3;
+    border-color: #12bbad;  
+    outline:#12bbad;  
+}
+
+
 
 </style>
 </head>
@@ -607,7 +639,20 @@ function deleteEvent() {
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		<span id="alertmsg"></span>
 	</div>
+  
+   
+  
 
+<div class="pt-4 pb-3" id="footer" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">
+           <div class="container">
+              <div class="row" >
+                <div class="col-md-10">
+                  <a href="footinfo.jsp"><p class="lead" style="font-family: NANUMBARUNPENR !important;font-size:14px;color:#212529;font-weight:bold;"><i class="far fa-copyright"></i>
+                  SocialWired about정보.채용.개인정보처리방침 .약관.플랫폼</p></a>
+                </div>
+              </div>
+          </div>
+      </div>
 
 	<script>
 $(function() {

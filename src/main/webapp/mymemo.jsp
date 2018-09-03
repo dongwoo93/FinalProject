@@ -1,10 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<script src="resources/js/top.js"></script>
 <link
 	href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"
 	rel="stylesheet" type="text/css">
 <style>
+@CHARSET "UTF-8";
+
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+
+
+
+
 * {
 	margin: 0;
 	padding: 0;
@@ -131,11 +140,22 @@ color: white;
 /* #memotable {
     background-color: #0000006b;
 } */
+
+
+
 </style>
 <script>
 $(document).ready(function() {
 
 })
+
+/**
+ * 바이트수 반환  
+ * 
+ * @param el : tag jquery object
+ * @returns {Number}
+ */
+
 	function check(e, evt) {
 	evt = evt || window.event;
     var code = evt.keyCode;
@@ -147,15 +167,27 @@ $(document).ready(function() {
 	      return false;
 
 	    }
-		var height = $(e).height();
+		/* var height = $(e).height();
 		var curlength = $(e).text().length;
 		console.log(curlength);
 		if (height > 195) {
 			var result = $(e).text().substr(0, curlength - 10);
 			alert("글자수를 초과하였습니다");
-			$(e).text("");
+			$(e).text(""); */
+			var codeByte = 0;
+		    for (var idx = 0; idx < $(e).html().length; idx++) {
+		        var oneChar = escape($(e).html().charAt(idx));
+		        if ( oneChar.length == 1 ) {
+		            codeByte ++;
+		        } else if (oneChar.indexOf("%u") != -1) {
+		            codeByte += 2;
+		        } else if (oneChar.indexOf("%") != -1) {
+		            codeByte ++;
+		        }
+		    }
+		    console.log(codeByte);
+			
 		}
-	}
 
 	function submit(e) {
 		var titleElement = $(e).next();
@@ -279,9 +311,12 @@ $(document).ready(function() {
 				'      </a>' + '    </li>';
 
 		$(".memoul").prepend(myvar);
-		$('.memotitle').first().attr('contenteditable', 'true');
-		$('.memocontent').first().attr('contenteditable', 'true');
-		$('.memotitle').first().focus();
+		$(".memoli").first().hide().slideDown(200, function() {
+			$('.memotitle').first().attr('contenteditable', 'true');
+			$('.memocontent').first().attr('contenteditable', 'true');
+			$('.memotitle').first().focus();
+		});
+		
 		$('#ul-wrapper').animate({
 			scrollTop : $('#ul-wrapper').prop("scrollHeight")
 		}, 500);
@@ -323,19 +358,21 @@ $(document).ready(function() {
 	<div id="ul-wrapper">
 		4
 		<div style="text-align: center;">
-			<button type="button" class="btn btn-success" onclick="addNote()">메모
+			<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" onclick="addNote()">메모
 				추가</button>
+				
+				
 		</div>
 		<ul class="memoul">
 			<c:choose>
 				<c:when test="${result.size() > 0}">
 					<c:forEach var="memo" items="${result}" varStatus="status">
 						<li class="memoli"><a>
-								<h2 id="title1" class="memotitle">${memo.title}
-									<i class="fas fa-trash" onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
-									<i class="fas fa-pencil-alt" onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
+								<h2 id="title1" style="font-weight:bold;font-family: NANUMBARUNPENR !important;" class="memotitle">${memo.title}
+									<i class="fas fa-trash"  onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
+									<i class="fas fa-pencil-alt"  onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
 								</h2>
-								<p class="memocontent" onkeydown="check(this, event);">${memo.content}</p>
+								<p class="memocontent" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size:14px;" onkeydown="check(this, event);">${memo.content}</p>
 						</a></li>
 					</c:forEach>
 				</c:when>

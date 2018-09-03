@@ -1,7 +1,4 @@
 
-
-
-
 @CHARSET "UTF-8";
 
 @font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
@@ -290,14 +287,14 @@
 	}
 
 
- 	.bo {
-    /* margin-top: 150px; */
-    /* margin-left: 1px; */
-    /* padding-left: 450px; */
-    display: table;
-    margin-top: 200px;
-	}
-	
+ 	.bo{  
+  		/* margin-top : 150px; 	
+  		margin-left: 1px; 
+  		padding-left : 450px; */
+  		margin-top: 200px;
+    	display: table;
+    	
+  	}  
  	.view{ 
  		width:100%; 
  		height:100%;
@@ -410,5 +407,7 @@ a:link {
 	text-decoration: none;
 
 }
+
+
    
   
