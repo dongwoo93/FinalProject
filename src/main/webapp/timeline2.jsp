@@ -869,8 +869,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 				<hr class="_5mToa">
 				<c:if test="${result3.size() > 0}">  
 				<div style="overflow-y:auto; height:230px; font-family:NANUMBARUNPENR !important;font-size: 14px;"">    		
-		<c:forEach var="followtmp" items="${result3}" varStatus="status" >
-		
+		<c:forEach var="followtmp" items="${result3}" varStatus="status">
 					<div class="container py-1">  
 					<ul class="navbar-nav" style="font-family:NANUMBARUNPENR !important;font-size: 14px;">  
 					   <li>
@@ -1080,12 +1079,15 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 			                	for(var i=0;i<2;i++){
 			                		if(i==0){
 			                			for(var k=0;k<response[0].length;k++){
+				                			console.log(response[2][k]);
 			                				$("#onlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[2][k]+"' class='dmimg'>"+response[0][k].nickname+"<input type='hidden' id='usernickname' value='"+response[0][k].nickname+"'><a class='favorite'><i class='fas fa-circle onlineicon'></a></li>");
 			                			}
 			       
 			                		}
 			                		else{
 			                			for(var k=0;k<response[1].length;k++){
+				                			console.log(response[3][k]);
+				                			
 			                				$("#offlinefriendlist").append("<li onclick='openmessage(this)'><img src='AttachedMedia/"+response[3][k]+"' class='dmimg'>"+response[1][k].nickname+"<input type='hidden' id='usernickname' value='"+response[1][k].nickname+"'><a class='favorite'><i class='fas fa-circle'></a></li>");
 			                			}
 			                			
