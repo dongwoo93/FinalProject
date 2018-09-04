@@ -568,8 +568,8 @@ html,body {
 							      <td>${ i.remainedPublicExposureCount }</td>
 							      <td>
 							      	<c:choose>
-							      		<c:when test="${ i.isAllowed eq 'y' }"><span title='${ i.disposedDate }'>허용됨</span></c:when>
-							      		<c:when test="${ i.isAllowed eq 'n' }"><span title='${ i.disposedDate }'>거부됨</span></c:when>
+							      		<c:when test="${ i.isAllowed eq 'y' }"><span title='${ i.disposedDate }' class='badge badge-pill badge-success'>허용됨</span></c:when>
+							      		<c:when test="${ i.isAllowed eq 'n' }"><span title='${ i.disposedDate }' class='badge badge-pill badge-danger'>거부됨</span></c:when>
 							      	</c:choose>							   
 							      </td>
 							      <td>${ i.rejectedMessage }</td>						      
