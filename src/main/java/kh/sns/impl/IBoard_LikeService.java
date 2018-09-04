@@ -70,4 +70,9 @@ public class IBoard_LikeService implements Board_LikeService {
 	public List<int[]> bestLike(int start, int end) throws Exception {
 		return board_likedao.bestLike(start, end);
 	}
+	
+	@Override
+	public List<Board_LikeDTO> simpleGetLikeStatus(String id) throws Exception {
+		return board_likedao.simpleGetLikeStatus(id);
+	}
 }

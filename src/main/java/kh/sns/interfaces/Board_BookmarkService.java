@@ -13,6 +13,7 @@ public interface Board_BookmarkService {
 	public int deleteBookmark(Board_BookmarkDTO dto) throws Exception;
 	public Board_BookmarkDTO isBookmarked(String id, int board_seq) throws Exception;
 	public List<Integer> searchMark(String id) throws Exception;
+	public List<Board_BookmarkDTO> simpleGetMark(String id) throws Exception;
 	
 
 }

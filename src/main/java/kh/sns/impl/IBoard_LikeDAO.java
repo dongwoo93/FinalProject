@@ -143,4 +143,17 @@ public class IBoard_LikeDAO implements Board_LikeDAO {
 			
 		});
 	}
+	
+	@Override
+	public List<Board_LikeDTO> simpleGetLikeStatus(String id) throws Exception {
+		String sql = "select * from board_like where id=?";
+		return template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+			Board_LikeDTO bl = new Board_LikeDTO();
+			bl.setApply_date(rs.getString("apply_date"));
+			bl.setBoard_seq(rs.getInt("board_seq"));
+			bl.setId(rs.getString("id"));
+			bl.setIs_liked(rs.getString("is_liked"));
+			return bl;
+		});
+	}
 }
