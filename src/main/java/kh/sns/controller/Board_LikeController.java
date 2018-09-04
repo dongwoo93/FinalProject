@@ -92,6 +92,7 @@ public class Board_LikeController {
 		
 			
 			new Gson().toJson(result1,res.getWriter());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

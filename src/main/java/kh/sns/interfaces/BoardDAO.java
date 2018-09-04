@@ -59,4 +59,6 @@ public interface BoardDAO {
 	
 	// 지도
 	public Board_LocationDTO location(int seq)throws Exception;
+	
+	public String getBoardId(int commentSeq) throws Exception;
 }

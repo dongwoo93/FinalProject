@@ -1017,7 +1017,9 @@ $(document).ready(function(){
                                type: "POST",  
                                url: "comment.co",    
                                data: {board_seq:seq, comment_contents : comment_contents},
-                               success : function(comment_seq) {
+                               success : function(resp) {
+                            	   ws.send("comment:"+resp[1]);
+                            	   var comment_seq = resp[0];
                             	   var board_seq = $("#seq").val();
                                 /* $("#comment").val(""); */
                                 $("#comment").html("");

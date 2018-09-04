@@ -5,9 +5,8 @@ $(function () {
 	ws.onopen = function () {
 	};
 	ws.onmessage = function (msg) {
-		    alert(msg.data);  
-		if(msg.data == 'comment'){ 
-			alert("코멘트 달았엉 알림가자~~~");  
+		if(msg.data == '2'){ 
+			$("#totalreadcount2").attr("style",false);
 		} 
 		else if(msg.data == '1'){      
 			$("#totalreadcount2").attr("style",false);  

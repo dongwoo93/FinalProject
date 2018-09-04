@@ -231,4 +231,9 @@ public class IBoardService implements BoardService {
 		return dao.location(seq);
 	}
 
+	@Override
+	public String getBoardId(int commentSeq) throws Exception {
+		return dao.getBoardId(commentSeq);
+	}
+
 }

@@ -312,9 +312,11 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
                   type: "POST",  
                   url: "comment.co",    
                   data: {board_seq : toBoardSeq, comment_contents : text},
-                  success : function(seq) {
+                  success : function(resp) {
+
+                	  ws.send("comment:" + resp[1]);
                 	 
-                	  $(obj).html("");
+                	  $(obj).html("");  
                   /*  $("#comment${tmp.board_seq}").val("");   */  
                   var regex = /(#[^#\s,;<>.]+)/gi;               
                // var newtxt = text.replace(regex, "<a onclick='tag(this)'; cursor: pointer;' class=text-danger>"+"$1"+"</a>");
@@ -323,15 +325,15 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 										"</a><span class=fugue>") + "</span>";
 					newtxt += "<kz></kz>";	            	
                   
-                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
-                		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
-                   $("#ul"+seq).hide().fadeIn(500);  
+                   $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+resp[0]+"' value='"+resp[0]+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+resp[0]+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+resp[0]+"' onclick='delComment(this)' value='"+toBoardSeq+":"+resp[0]+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+resp[0]+"' value='"+resp[0]+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+                		   +"<input type=hidden id='modstate"+resp[0]+"' value='1'>");
+                   $("#ul"+resp[0]).hide().fadeIn(500);  
                    //&nbsp&nbsp모두 commenttmp.value.size()개의 댓글보기
                    /* var commentText = $("#myComment" + seq).text();
                    alert(commentText)
-    */                $("#myComment" + seq).text();
+    */                $("#myComment" + resp[0]).text();
                    
-                   $("#commenttxt" + seq).keyup(function(e){
+                   $("#commenttxt" + resp[0]).keyup(function(e){
                 	   // =================== 복붙 =================== 
                 	   if(e.keyCode === 32){
                 		   if (parseInt($('#caretposition').val()) == 0) {                     	 
@@ -372,7 +374,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
                 	// =================== 복붙 =================== 
                    });
                    
-                   $("#commenttxt" + seq).keypress(function(e){
+                   $("#commenttxt" + resp[0]).keypress(function(e){
 						if(e.keyCode === 13) {
 							 e.preventDefault();
 						modComment(this);
@@ -897,7 +899,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
                   
                   
                      <img class="ml-3 mr-2 pic"
-                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">
+                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:40px; height:40px;">
                    
                   </c:when>
                   <c:otherwise>
@@ -1928,7 +1930,8 @@ $(window).scroll(function(){
 		              type: "POST",  
 		              url: "comment.co",    
 		              data: {board_seq : toBoardSeq, comment_contents : text},
-		              success : function(seq) {       
+		              success : function(resp) { 
+		            	  ws.send("comment:" + resp.bid);
 		            	  $(obj).html("");
 		              /*  $("#comment${tmp.board_seq}").val("");   */  
 		              var regex = /(#[^#\s,;<>.]+)/gi;            
@@ -1939,11 +1942,11 @@ $(window).scroll(function(){
 						newtxt += "<kz></kz>";	            	
 		            
 						console.log($("#comment-contents" + toBoardSeq))  
-		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+seq+"' value='"+seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+seq+"' value='"+seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
-		            		   +"<input type=hidden id='modstate"+seq+"' value='1'>");
-		               $("#ul"+seq).hide().fadeIn(500);  
+		               $("#comment-contents" + toBoardSeq).prepend("<ul class='navbar-nav commentline co" + toBoardSeq + "' id='ul"+resp.seq+"' value='"+resp.seq+"' onmouseover='commentover(this)' onmouseleave='commentleave(this)'><li id='li1' ><a href='board.bo?id=${sessionScope.loginId}'>${sessionScope.loginId}</a></li><li id='li2'><div id='commenttxt"+resp.seq+"' style='word-wrap: break-word; word-break:break-all' class='commenttxt'>"+newtxt+"</div></li><li id='li3'><a id='commentdel"+resp.seq+"' onclick='delComment(this)' value='"+toBoardSeq+":"+resp.seq+"' class='pointer'></a> </li><li id='li4'><a id='commentmod"+resp.seq+"' value='"+resp.seq+"' onclick='modComment(this)'  class='pointer'></a></li></ul>"
+		            		   +"<input type=hidden id='modstate"+resp.seq+"' value='1'>");
+		               $("#ul"+resp.seq).hide().fadeIn(500);  
 		               
-		               $("#commenttxt" + seq).keyup(function(e){
+		               $("#commenttxt" + resp.seq).keyup(function(e){
 		            	   // =================== 복붙 =================== 
 		            	   if(e.keyCode === 32){
 		            		   if (parseInt($('#caretposition').val()) == 0) {                     	 
@@ -1984,7 +1987,7 @@ $(window).scroll(function(){
 		            	// =================== 복붙 =================== 
 		               });
 		               
-		               $("#commenttxt" + seq).keypress(function(e){
+		               $("#commenttxt" + resp.seq).keypress(function(e){
 							if(e.keyCode === 13) {
 								e.preventDefault();      
 							modComment(this);

@@ -273,7 +273,8 @@ function likeit1(e) {
 			is_liked : "y"
 		},
 		success : function(resp) {
-			console.log("들어왔니" +resp);
+			alert(resp[0]+":"+resp[1]);
+			ws.send("like:"+resp[1]);
 			$(e).next().show();
 			$(e).hide(); 
 			/* 좋아요 카운트 */
@@ -305,8 +306,8 @@ function unlikeit1(e) {
 			$(e).prev().show();
 			$(e).hide(); 
 			/* 좋아요 카운트 */
-			if(resp != 0) {    
-				$("#count"+board_seq).text(resp + "명이 좋아합니다");
+			if(resp[0] != 0) {
+				$("#count"+board_seq).text(resp[0] + "명이 좋아합니다");
 			}else {
 				$("#count"+board_seq).text("");
 			}

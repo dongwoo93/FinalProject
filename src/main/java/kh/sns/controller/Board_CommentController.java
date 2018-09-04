@@ -1,11 +1,17 @@
 package kh.sns.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.Board_CommentDTO;
@@ -23,6 +29,8 @@ public class Board_CommentController {
   
    @RequestMapping("/comment.co")
    public void insertComment(Board_CommentDTO dto, HttpSession session, HttpServletResponse response) {
+	   response.setCharacterEncoding("UTF-8");
+	   response.setContentType("application/json");
       System.out.println(dto.getComment_seq());
       String id = (String)session.getAttribute("loginId");
       dto.setId(id);
@@ -39,20 +47,34 @@ public class Board_CommentController {
          int[] hashTagResult = boarddao.insertHashTags(board_dto,commentseq);   
          ////////요기서 태그인설트들어가용
          
-         
+//      JsonObject object = new JsonObject();
+      String bid = boarddao.getBoardId(dto.getComment_seq());
+//      object.addProperty("seq", dto.getComment_seq());
+//      object.addProperty("bid", bid);
+      System.out.println("bid:" + bid);
+      
+      List<Object> result1 = new ArrayList<>();
+		result1.add(dto.getComment_seq());
+		result1.add(bid);
+	
+		
          
          if(result >0) {  
             System.out.println("success");
             System.out.println(dto.getComment_seq()); 
             
-            response.getWriter().print(dto.getComment_seq());
-            response.getWriter().flush();
-            response.getWriter().close();
+//            new Gson().toJson(object, response.getWriter());
          }
          else {  
             System.out.println("failed");  
          }
 
+         
+         
+
+ 		new Gson().toJson(result1,response.getWriter());
+       
+       
       }catch(Exception e) {
          System.out.println("요기는 comment.co입니다");
          e.printStackTrace();

@@ -454,7 +454,7 @@ function likeit(e) {
          is_liked : "y"
       },
       success : function(resp) {    
-           
+           ws.send("like:"+resp[1]);
          $(e).next().show(); 	  
          $(e).hide();
       },
