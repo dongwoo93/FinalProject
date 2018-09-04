@@ -687,6 +687,8 @@
 						<div class="col-12">							
 						    
 						    <div class="form-group">
+						    
+						    
 							  <label class="col-form-label" for="moreInfoWebsite" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
 							  <input type="text" class="form-control" placeholder="http://example.com/?shopid=12" id="moreInfoWebsite">
 							  <small class="form-text text-muted" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>
