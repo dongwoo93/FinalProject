@@ -54,12 +54,12 @@ opacity: 0.7;
 	background: rgba(0, 0, 0, 0.2); /*not in ie */
 	filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000',
 		endColorstr='#20000000'); /* ie */
-}
+}  
 
 .wrap-loading div { /*로딩 이미지*/
 	position: fixed;
 	top: 40%;
-	left: 44.5%;
+	left: 44%;
 	margin-left: -21px;
 	margin-top: -21px;
 }

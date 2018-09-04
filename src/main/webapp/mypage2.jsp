@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
      <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
     <%@ include file="include/top.jsp"%>
+    <%@ include file="include/directMessage.jsp" %>	
     <link rel="stylesheet" type="text/css" href="resources/css/mypage.css">
     <!-- <script src="resources/js/mypage.js"></script> -->
     
@@ -247,7 +248,8 @@
 			<script>alert('회원 정보 변경에 실패했습니다.')</script>
 		</c:otherwise>
 	</c:choose>
-</c:if>    
+</c:if>
+	<div id="allwrapper">
 	<div class="py-5" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 		<div class="container mywrap">
 		<br>         
@@ -486,8 +488,8 @@
 							<h2 class="" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">받아보기:</h2><br>
 							 <div class="form-check" style="font-family: NANUMBARUNPENR !important;font-size: 18px;">
 						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y" 
-									${ profile.is_allow_email eq 'y' ? 'checked' : '' }>
+						          <input class="form-check-input" type="checkbox" name=is_allow_email id=chkAllowEmail value="y"
+						          ${ profile.is_allow_email eq'y' ? 'checked': ''}>
 						           <strong style="font-weight:bold;">뉴스 이메일</strong>
 						        </label>
 						        <br>유용한 최신 정보를 빠짐없이 받아보세요.
@@ -693,7 +695,7 @@
 		</div>
 		<br>
 	</div>
-	
+	</div>
 	
 													<div class="modal" id="buzmodal">
 													  <div class="modal-dialog" role="document">
@@ -785,6 +787,4 @@
 													    </div>
 													  </div>
 													</div>
-													
-													
 	<%@ include file="include/bottom.jsp"%>

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ include file="include/top.jsp"%>
-    <script src="resources/js/top.js"></script>
+   <%@ include file="include/directMessage.jsp" %>
+    
     <link rel="stylesheet" type="text/css" href="resources/css/write.css">
 <script>
         // var filesArr = Array.prototype.slice.call(files);
@@ -516,8 +517,8 @@
 													<input type=hidden id=shifted_exposureCount value="" name="remainedPublicExposureCount">
 													<input type=hidden id=shifted_costPerClick value="" name="costPerClick">
 				</form>
-			</div>
 				
+			</div>
 
 	<!-- form 끝 -->
 
@@ -756,7 +757,7 @@
 	</div>
 	</c:if>
 	<!--        비즈니스설정 Modal 끝-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete" async defer></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAL8NAFJLEweOrUvrwcIiGAHghi6_B9JP0&libraries=places&callback=initAutocomplete" async defer></script>
 
 	<script>
       var map;
@@ -871,4 +872,5 @@
       
 
     </script>
+    
     <%@ include file="include/bottom.jsp"%>
