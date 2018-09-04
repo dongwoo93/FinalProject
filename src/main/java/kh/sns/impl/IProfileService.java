@@ -91,5 +91,10 @@ public class IProfileService implements ProfileService {
 		// TODO Auto-generated method stub
 		return pdao.selectIntro(id);
 	}
+	
+	@Override
+	public int setWidget(String id,String widget1,String widget2) throws Exception {
+		return pdao.setWidget(id,widget1,widget2);
+	}
 
 }

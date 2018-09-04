@@ -36,6 +36,8 @@ public class IProfileDAO implements ProfileDAO {
 			profile.setIs_allow_sms(rs.getString("is_allow_sms"));
 			profile.setIs_allow_status(rs.getString("is_allow_status"));
 			profile.setApply_date(rs.getString("apply_date"));
+			profile.setWidget1(rs.getString("widget1"));
+			profile.setWidget2(rs.getString("widget2"));
 			
 			return profile;			
 		});	
@@ -203,6 +205,12 @@ public class IProfileDAO implements ProfileDAO {
 				return dto;
 			}
 		});
+	}
+	
+	@Override
+	public int setWidget(String id,String widget1,String widget2) throws Exception {
+		String sql = "update profile set widget1 = ?, widget2 = ? where id = ?";
+		return template.update(sql, widget1, widget2, id);
 	}
 	
 }

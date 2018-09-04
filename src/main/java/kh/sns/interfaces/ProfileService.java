@@ -25,5 +25,8 @@ public interface ProfileService {
 	
 	// INTRODUCE(소개)
 	public List<ProfileDTO> selectIntro(String id) throws Exception; 
+	
+	public int setWidget(String id,String widget1,String widget2) throws Exception;
+
 
 }
