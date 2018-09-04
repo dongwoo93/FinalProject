@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import kh.sns.dto.BoardDTO;
 import kh.sns.dto.FollowInfo;
-import kh.sns.dto.Member_BlockDTO;
 import kh.sns.interfaces.Member_FollowDAO;
 
 @Repository
@@ -131,7 +130,16 @@ public class IMember_FollowDAO implements Member_FollowDAO {
 			});
 		}
 	
-	
+	@Override
+	public List<FollowInfo> simpleFollowList(String id) throws Exception{
+		String sql = "select * from member_follow where id=? order by follow_date desc";
+		return template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+				FollowInfo fi = new FollowInfo();
+				fi.setTargetId(rs.getString("target_id"));
+				fi.setFollowDate(rs.getString("follow_date"));
+				return fi;
+			});
+	}
 	
 
 }

@@ -22,4 +22,5 @@ public interface Board_LikeDAO {
 	public Board_LikeDTO isLiked(String id, int board_seq) throws Exception;
 
 	public List<int[]> bestLike(int start, int end) throws Exception;
+	public List<Board_LikeDTO> simpleGetLikeStatus(String id) throws Exception;
 }

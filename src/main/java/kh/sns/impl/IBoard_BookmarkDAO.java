@@ -15,7 +15,7 @@ import kh.sns.interfaces.Board_BookmarkDAO;
 
 @Repository	
 public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
-	
+
 	@Autowired
 	private JdbcTemplate template;
 
@@ -44,37 +44,50 @@ public class IBoard_BookmarkDAO implements Board_BookmarkDAO {
 
 			@Override
 			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
+
 				return rs.getInt("board_seq");
 			}
-	});
+		});
+	}
+
+	@Override
+	public Board_BookmarkDTO isBookmarked(String id, int board_seq) throws Exception {
+
+		Board_BookmarkDTO result = null;
+
+		String sql = "select * from board_bookmark where id=? and board_seq=?";
+		List<Board_BookmarkDTO> an = template.query(sql, new Object[] {id , board_seq}, new RowMapper<Board_BookmarkDTO>() {
+
+			@Override
+			public Board_BookmarkDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				Board_BookmarkDTO isBookmarked= new Board_BookmarkDTO();
+
+				isBookmarked.setBoard_seq(rs.getInt("board_seq"));
+				isBookmarked.setId(rs.getString("id"));
+				isBookmarked.setIs_marked(rs.getString("is_marked"));
+				isBookmarked.setApply_date(rs.getString("apply_date"));
+				return isBookmarked;
+			}} );	
+
+		if(an.size()>0) { 
+			return an.get(0);
+		}
+		return result;
 	}
 	
 	@Override
-	public Board_BookmarkDTO isBookmarked(String id, int board_seq) throws Exception {
-		
-				Board_BookmarkDTO result = null;
+	public List<Board_BookmarkDTO> simpleGetMark(String id) throws Exception {
+		String sql = "select * from board_bookmark where id=? order by apply_date desc";
+		return template.query(sql, new Object[] {id},(rs, rowNum) -> {
+				Board_BookmarkDTO bb = new Board_BookmarkDTO();
+				bb.setApply_date(rs.getString("apply_date"));
+				bb.setBoard_seq(rs.getInt("board_seq"));
+				bb.setIs_marked(rs.getString("is_marked"));
 				
-				String sql = "select * from board_bookmark where id=? and board_seq=?";
-				List<Board_BookmarkDTO> an = template.query(sql, new Object[] {id , board_seq}, new RowMapper<Board_BookmarkDTO>() {
-
-					@Override
-					public Board_BookmarkDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-						// TODO Auto-generated method stub
-						Board_BookmarkDTO isBookmarked= new Board_BookmarkDTO();
-					
-						isBookmarked.setBoard_seq(rs.getInt("board_seq"));
-						isBookmarked.setId(rs.getString("id"));
-						isBookmarked.setIs_marked(rs.getString("is_marked"));
-						isBookmarked.setApply_date(rs.getString("apply_date"));
-						return isBookmarked;
-					}} );	
-				
-				if(an.size()>0) { 
-					return an.get(0);
-				}
-				return result;
-			}
+				return bb;
+		});
 	}
+}
 
 

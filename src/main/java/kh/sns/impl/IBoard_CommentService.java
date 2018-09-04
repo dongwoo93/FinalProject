@@ -61,4 +61,9 @@ public class IBoard_CommentService implements Board_CommentService {
 		return board_commentdao.getBoard_seq(comment_seq);
 	}
 	
+	@Override
+	public List<Board_CommentDTO> simpleGetComments(String id){
+		return board_commentdao.simpleGetComments(id);
+	}
+	
 }
