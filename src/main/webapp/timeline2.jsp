@@ -408,6 +408,21 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
     $(document).ready(function(){
     	AOS.init();
     	
+    	var widget1 = $("#widget1").val();
+    	var widget2 = $("#widget2").val();
+    	
+    	if(widget1 == "memo"){
+    		$("#"+carouselExampleControls).show();
+    		$("#"+widget2).show();
+    	}
+    	else if(widget2 == "memo"){
+    		$("#"+carouselExampleControls).show();
+    		$("#"+widget1).show();
+    	}
+    	else{
+    		$("#"+widget1).show();
+        	$("#"+widget2).show();
+    	}
 //         $("div[id*=comment].insertfield").focus(function() {
 //         	if(globalThisCommentIsFocusedOnFirst){
 //         		$(this).html("");
@@ -872,9 +887,10 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 			<!-- board -->
 
 			<div style="position: fixed; border-radius: 1px;">  
-			 
-					<div class="container float" id=""
-						style="width: 300px; margin-top: 55px; margin-left: 30px;">
+			 		<input type="hidden" value="${widget1 }" id="widget1">
+			 		<input type="hidden" value="${widget2 }" id="widget2">
+					<div class="container float" id="follow"
+						style="width: 300px; margin-top: 55px; margin-left: 30px; display:none;">
 					  
 						
 <!-- 			<hr class="_5mToa"> -->
@@ -926,8 +942,8 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 			 
 			
 			  
-			<div class="container float" id=""    
-						style="width: 300px; margin-top: 20px; margin-left: 30px;">
+			<div class="container float" id="trend"    
+						style="width: 300px; margin-top: 20px; margin-left: 30px;  display:none;">
 					
 <!-- 			<hr class="_5mToa"> -->
 				<br>
@@ -964,7 +980,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 				</c:if><hr class="_5mToa">
 			</div>
 <!-- 			나의지도 -->
-<%-- 			<div id="map" class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;">
+ 			<div id="map" class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;  display:none;">
 	
 			</div>  
 
@@ -1125,12 +1141,12 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 			      
 			</script>
 			<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initMap" async defer></script> --%>
+			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initMap" async defer></script>
 <!-- 나의지도 끝 -->
 
 <!-- 나의 메모 -->  
 
-	<%-- <div id="carouselExampleControls" class="carousel container memowrapper" data-ride="carousel" style="width: 300px; margin-top: 20px; height:300px; margin-left:30px;">
+	 <div id="carouselExampleControls" class="carousel container memowrapper" data-ride="carousel" style="width: 300px; margin-top: 20px; height:300px; margin-left:30px;  display:none;">
 	  <div class="carousel-inner" style="height:100%;">
 		<ul class="memoul">  
 		<i class="fas fa-thumbtack fa-2x mt-2"></i>
@@ -1176,12 +1192,12 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 	    <span class="sr-only">Next</span>
 	  </a>
-	</div> --%>
+	</div> 
 
 <!-- 나의 메모 끝-->
 
 <!-- 나의 달력 -->
-	<div id='calendar' class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;"></div>
+	<div id='calendar' class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;  display:none;"></div>
 	
 	<script>
 $(function() {

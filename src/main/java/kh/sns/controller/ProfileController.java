@@ -8,7 +8,11 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,13 +21,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+
 import kh.sns.beans.SendEmail;
 import kh.sns.dto.MemberBusinessDTO;
 import kh.sns.dto.MemberDTO;
+import kh.sns.dto.MessengerDTO;
 import kh.sns.dto.ProfileDTO;
 import kh.sns.dto.Profile_ImageDTO;
 import kh.sns.interfaces.MemberBusinessService;
@@ -57,7 +65,6 @@ public class ProfileController {
 			} catch(IndexOutOfBoundsException e) {
 				System.err.println("This is not business account!!");
 			}
-			
 			
 			mav.addObject("member", member);
 			mav.addObject("profile", profile);
@@ -291,6 +298,21 @@ public class ProfileController {
 		mav.setViewName("redirect:profile.member?targetTab=bizProfile");
 		mav.addObject("updateBizProfileResult", result);
 		return mav;
+	}
+	
+	@RequestMapping("/setWidget.ajax")
+	public void setWidget(HttpServletResponse response,@RequestParam("widget1") String widget1,@RequestParam("widget2") String widget2, HttpSession session) {
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		String id = session.getAttribute("loginId").toString();
+
+		int widgetresult = 0;
+		try {
+			widgetresult = profileService.setWidget(id,widget1,widget2);
+			new Gson().toJson(widgetresult, response.getWriter());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
