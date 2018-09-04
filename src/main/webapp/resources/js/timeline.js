@@ -69,7 +69,7 @@ function follow(id1, id2, e) {
 	    			reportersComment : comment
 	    		},
 	    		success : function(resp) {
-	    			alert(resp);
+	    			
 	    			$("#changeBoardModal").modal("hide");
 	    		},
 	    		error : function() {
@@ -89,7 +89,7 @@ function follow(id1, id2, e) {
     			target_id : targetId
     		},
     		success : function(resp) {
-    			alert(resp);
+    			
     			$("#changeBoardModal").modal("hide");
     			
     		},

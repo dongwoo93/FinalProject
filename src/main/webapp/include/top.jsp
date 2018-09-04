@@ -33,6 +33,11 @@
 <script>var currentId = "${sessionScope.loginId}";</script>
 <script src="resources/js/top.js"></script>
 <script>
+
+function alerthide() {    
+	$("#totalreadcount2").attr("style","display:none;");
+}
+
 function myarticle(e) {
 	var id = $(e).attr("value");
 	$(location).attr("href", "board.bo?id="+id+"&cat=1");
@@ -251,11 +256,11 @@ $(function() {
                             <li class="nav-item dropdown">
                    
                  <a class="nav-link dropdown-toggle" href="#" id="alerticon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="position:relative;" >
-           <i class="far fa-heart nav-icon"></i>
+           <i class="far fa-heart nav-icon" onclick='alerthide()'></i>
            <!-- 알림 (하트,댓글) -->
-        <span id="totalreadcount2" class="fa-stack" style="display:none;">   
-    <i class="fas fa-comment-alt fa-flip-vertical fa-stack-2x" style="color:red"></i>  
-    <i class="fab fas fa-bell text-white fa-stack-1x fa-inverse mt-1" style="font-size:13px;"><span id="countAlert" class="ml-1"></span></i>
+        <span id="totalreadcount2" class="fa-stack" style="display:none;" onclick='alerthide()'>     
+    <i class="fas fa-comment-alt fa-flip-vertical fa-stack-2x" style="color:red"></i>   
+    <i class="fab fas fa-bell text-white fa-stack-1x fa-inverse mt-1" style="color:white!important;font-size:18px;"><span id="countAlert" class="ml-1">1</span></i>
         
   </span>
         </a>            
@@ -267,19 +272,18 @@ $(function() {
           
                     
                   
-                  
-       <li class="nav-item dropdown">
+    <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
           <i class="far fa-user nav-icon"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-         <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px; width:200px;" href="board.bo?id=${sessionScope.loginId}&cat=1"><i class="fas fa-user mr-1 pr-1 fa-1x"></i>내 계정</a>
+         <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px; width:200px;" href="board.bo?id=${sessionScope.loginId}&cat=1"><i class="fas fa-user mr-1 pr-1 fa-1x"></i>내 계정</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="mymap.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px;" href="mymap.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
         </div>
       </li>
                   

@@ -174,6 +174,7 @@ function likeit(e){
 		data : { board_seq:${b.board_seq} , is_liked : "y" },
 		url : "like.bo",
 		success: function(resp){
+			ws.send("like:"+resp[1]);
 			$("#likecancel").show();
 			$("#likeit").hide();   
 			
@@ -288,9 +289,10 @@ $("#comment").keypress(function(event){
 			$.ajax({
 				type : "post",
 				data : {board_seq : ${b.board_seq}, comment_contents : comment },
-				url : "insertComment.co",
-				success: function(seq){
-					
+				url : "comment.co",
+				success: function(resp){
+					var seq = resp[0];
+					ws.send("comment:"+resp[1]);
 					var regex = /(#[^#\s,;<>.]+)/gi;
 					var newtxt = "<span class=fugue>" + comment.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
                         "</a><span class=fugue>") + "</span>"

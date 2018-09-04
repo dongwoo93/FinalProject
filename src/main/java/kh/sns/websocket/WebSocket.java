@@ -31,21 +31,23 @@ public class WebSocket{
 	@OnMessage 
 	public void handleMessage(String message) throws Exception{
 		System.out.println(message + "!!!!!!!!!!::::::::");   
-		if(!(message.contains("뇽")) && (message.startsWith("comment")) ) {     
+		if( !(message.contains("뇽")) && (message.startsWith("comment:")) ) {     
 			System.out.println("어어어어억ㅋ");
 			
 			String id = message.split(":")[1];   
 			for(String tmp : onlineUser.keySet()) {   
 				if(tmp.equals(id)) {
-					onlineUser.get(tmp).getBasicRemote().sendText("comment");
+					onlineUser.get(tmp).getBasicRemote().sendText("2");
 				}
 			}
 		}  
 		else if(!(message.contains("뇽")) && message.startsWith("like:")) {
-			String id = message.split(":")[1];   
+			String id = message.split(":")[1];  
+			
 			for(String tmp : onlineUser.keySet()) {
 				if(tmp.equals(id)) {
-					onlineUser.get(tmp).getBasicRemote().sendText("like");
+					
+					onlineUser.get(tmp).getBasicRemote().sendText("1");
 				}
 			}
 		}

@@ -5,16 +5,15 @@ $(function () {
 	ws.onopen = function () {
 	};
 	ws.onmessage = function (msg) {
-		    
-		if(msg.data == 'comment'){ 
-			alert("코멘트 달았엉 알림가자~~~");  
-		}else if(msg.data == 'l'){
-			$("#totalreadcount2").attr("style",false);
-			$("#countAlert").html("1");   
+		if(msg.data == '2'){ 
+			$("#totalreadcount2").attr("style",false).hide().fadeIn(2000).fadeOut(3000);
 			
+		} 
+		else if(msg.data == '1'){            
+			$("#totalreadcount2").attr("style",false).hide().fadeIn(2000).fadeOut(3000);
 		}
 		
-		else{  
+		else {  
 		var message = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[0];
 		var sender = msg.data.split("뇽뇽뇽뇽321뇽뇽뇽뇽")[1];
 		var receivernickname = $("#dmnickname").text();
@@ -30,7 +29,7 @@ $(function () {
 			console.log("onmessage else 나옴");
 			$("#alertsender").text(sender);
 			$("#alertmsg").html(message);
-			 
+			  
 			$("#alertmessenger").fadeIn(2000);
 			setTimeout(function(){
 				$("#alertmessenger").fadeOut(2000);
@@ -204,7 +203,7 @@ function markit(e) {
  
 			var board_seq = $(e).attr("value").split(":")[0]; 
 			var comment_seq = $(e).attr("value").split(":")[1];
-			alert(board_seq + " :"  + comment_seq);  
+			 
      	$.ajax({
                type: "POST",  
                url: "commentdel.co",      

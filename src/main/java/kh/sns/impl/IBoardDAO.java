@@ -553,4 +553,17 @@ public class IBoardDAO implements BoardDAO  {
 		return dto = new Board_LocationDTO(0, " ", " ", " ");
 	}
 
+	@Override
+	public String getBoardId(int commentSeq) throws Exception {
+		String sql = "select id from board where board_seq=(select board_seq from board_comment where comment_seq=?)";
+		return template.query(sql, new Object[] {commentSeq}, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
+				return rs.getString("id");
+			}
+		}).get(0);
+	}
+
 }

@@ -116,7 +116,7 @@ public class ProfileController {
 				
 				String to = "82"+phone;
 	            String from="33644643087";
-	            String finalMsg = ( loginId + " 님 저희 Social Wired와 함께 해주셔서 감사합니다.<br>"
+	            String finalMsg = ( loginId + " 님 저희 Social Wired와 함께 해주셔서 감사합니다." 
             			+"더욱 발전하는 서비스가 되도록 노력하겠습니다. 늘 새로운 상생을 꿈꾸는 SocialWired Copyright © SocialWired Corp.");              
 	            
 	            String message = URLEncoder.encode(finalMsg, "UTF-8");
