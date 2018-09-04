@@ -267,19 +267,18 @@ $(function() {
           
                     
                   
-                  
-       <li class="nav-item dropdown">
+    <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
           <i class="far fa-user nav-icon"></i>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-         <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px; width:200px;" href="board.bo?id=${sessionScope.loginId}&cat=1"><i class="fas fa-user mr-1 pr-1 fa-1x"></i>내 계정</a>
+         <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px; width:200px;" href="board.bo?id=${sessionScope.loginId}&cat=1"><i class="fas fa-user mr-1 pr-1 fa-1x"></i>내 계정</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px;" href="profile.member?cat=0"><i class="fas fa-chalkboard-teacher mr-1 pr-1 fa-1x"></i>프로필 편집</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="mymap.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px;" href="mymap.bo"><i class="fas fa-newspaper mr-1 pr-1 fa-1x"></i>나의 게시판</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
+          <a class="dropdown-item" style="font-family: NANUMBARUNPENR !important;color:#212529;font-size: 12px;" href="logout.do"><i class="fas fa-sign-out-alt mr-1 pr-1 fa-1x"></i>로그아웃</a>
         </div>
       </li>
                   

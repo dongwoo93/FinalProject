@@ -571,9 +571,9 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 									</a>
 								</c:when>
 								<c:otherwise>
-									<a class="mt-1 idtxt" id="id"
-										href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;">${tmp.id}<br>${map[status.index].location_name}
-									</a>
+								<a class="mt-1 idtxt" id="id"
+                              href="board.bo?id=${tmp.id}&cat=1" style="color:#12bbad;font-weight:bold;font-size:17px;">${tmp.id}<span style="margin-left:10px;font-size:10px;color: #6c757d;">${map[status.index].location_name}</span>
+                           </a>
 								</c:otherwise>
 							</c:choose>
 							
