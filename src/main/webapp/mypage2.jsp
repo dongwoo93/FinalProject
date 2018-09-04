@@ -11,15 +11,45 @@
     <!-- 스크립트 외부 파일로 빼는건 나중에 고칠 부분이 없을 정도로 완성되었을 때 하는걸로 부탁드립니다. 외부 파일로 빼면 갱신이 너무 느려서요.. -->
     <script>
     $(document).ready(function() {	
-    		
+    		var currentwidget1 = $("#currentwidget1").val();
+    		var currentwidget2 = $("#currentwidget2").val();
     		var originalPrivacyTab = $('#privacyTab').html();
     		var newPrivacyTab = $('#tabthree').html();
     		var newPrivacyTab2 = $('#tabfive').html();
     		
+    		$("#widget1 option[value="+currentwidget1+"]").attr('selected','selected');
+    		$("#widget2 option[value="+currentwidget2+"]").attr('selected','selected');
+
     		// 탭 내용 외부 연결			
     	    $('.nav-item a').filter("[data-target='#${ param.targetTab }']").tab('show');		
     		
     	// 이메일 중복 확인
+    	
+    	$("#widgetbt").click(function(){
+    		var widget1 = $("#widget1 option:selected").val();
+    		var widget2 = $("#widget2 option:selected").val();
+    		
+    		if(widget1 == widget2){
+    			alert("똑같은 위젯을 사용하실 수 없습니다.");
+    		}
+    		
+    		else {
+    			$.ajax({
+        			url : "setWidget.ajax",
+        			type : "get",
+        			data : {widget1:widget1,widget2:widget2}, // 리퀘스트 parameter 보내기 {키값, 변수명(value)}
+        			success : function(response) {
+        				alert("위젯 설정 완료!");
+        			},
+        			error : function() {
+        				console.log("에러 발생");
+        			},
+        			complete : function() {
+        				// console.log("AJAX 종료");
+        			}
+        		})
+    		}
+    	})
 
     	$('#emailField').focusout(function() {
     		var email = $('#emailField').val();
@@ -570,59 +600,33 @@
 						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">SocialWired 앱에서 최근 활동한 시간 정보가 회원님이 팔로우하는 계정 및 메시지를 보낸 모든 사람에게 표시됩니다. 이 설정을 해제하면 다른 계정의 활동 상태를 볼 수 없습니다.</small></p>
 						    </div>
 						    <hr>
-						    <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">스토리 공유: </h3>
-						   <br><div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 18px;">&nbsp;&nbsp;
+						    <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">위젯 설정: </h3>
+						    <br><div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 18px;">&nbsp;&nbsp;
 						        <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" name=is_allow_share value="y" id=chkAllowShare
-						          ${ profile.is_allow_share eq 'y' ? 'checked' : '' }>
-						           <strong style="font-weight:bold;">공유 허용</strong>
+						        	<label class="form-label">위젯 1</label>
+						         	<select class="custom-select edit mb-2" id="widget1">  
+											<option value="follow">추천 follow(기본)</option>
+											<option value="trend">태그 trend</option>
+											<option value="calendar">달력</option>  
+											<option value="map">지도</option>
+											<option value="memo">메모</option>
+									</select>
+									<input type="hidden" value="${profile.widget1 }" id="currentwidget1">
+									<label class="form-label" >위젯 2</label>
+						         	<select class="custom-select edit mb-2" id="widget2">
+											<option value="trend">태그 trend(기본)</option>
+											<option value="follow">추천 follow</option>
+											<option value="calendar">달력</option>  
+											<option value="map">지도</option>
+											<option value="memo">메모</option>
+									</select>
+									<input type="hidden" value="${profile.widget2 }" id="currentwidget2">
+									<div class="text-right">  
+										<button class="btn btn-light text-dark mb-2" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" id="widgetbt">확인</button>
+									</div>
 						        </label>
-						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">사람들이 회원님의 스토리를 메시지로 공유할 수 있습니다.</small></p>
+						        <p id="p"><small style="font-family: NANUMBARUNPENR !important;">SocialWired 앱에서 타임라인에 사용자가 원하는 위젯을 띄울 수 있습니다.</small></p>
 						    </div>
-						    <hr>
-						    <!-- 댓글 설정 -->
-						    <div>
-						    	<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">댓글:</h3>
-						    	<a class="nav-link mp text-muted" href="#" id="editCommentPane" style="font-weight:bold;font-family: NANUMBARUNPENR">댓글 설정 수정</a>
-						    </div>
-						    <!-- -- -->
-						    <hr>
-						     <!-- 내가 나온 사진 -->
-						    <fieldset class="form-group">
-						      <!-- <legend>Radio buttons</legend> -->
-						      <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">내가 나온 사진: </h3>
-						     <br> <div class="form-check"  style="font-weight:bold;font-family: NANUMBARUNPENR !important;">&nbsp;&nbsp;
-						        <label class="form-check-label">
-						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-						          	자동으로 추가
-						        </label>
-						      </div>
-						      <div class="form-check"  style="font-weight:bold;font-family: NANUMBARUNPENR !important;">
-						      <label class="form-check-label">&nbsp;&nbsp;
-						          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
-						          	수동으로 추가
-						        </label>
-						      </div>
-						      
-						    </fieldset>
-						    <!-- -- -->
-						    <hr>
-						      <!-- 계정 데이터 설정 -->
-						    <div>
-						    	<h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정 데이터: </h3>
-						    	<a href="#" class="nav-link mp text-muted" href="#" id="editPersonalLogPane" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">계정 데이터 보기</a>
-						    </div>
-						    <!-- -- -->
-						    <hr>
-						 <h3 style="font-weight:bold;font-family: NANUMBARUNPENR !important;">2단계 인증: </h3>
-						<div class="form-check" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">							
-					        <br><label class="form-check-label">&nbsp;&nbsp;    
-					          <input class="form-check-input" type="checkbox" name=is_allow_login2 value="y" id=chkAllowLogin2
-					          ${ profile.is_allow_login2 eq 'y' ? 'checked' : '' }>
-					           <strong style="font-weight:bold;font-family: NANUMBARUNPENR !important;">보안 코드 필요</strong>
-					        </label>
-					        <p id="p"><small style="font-weight:bold;font-family: NANUMBARUNPENR !important;">이 옵션을 설정하면 회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드가 전송됩니다.</small></p>
-						  </div>
 						 <hr>
 						 
 						</div>

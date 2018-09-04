@@ -74,8 +74,10 @@
 
 	<div id="centerwrapper">
 		<div id="contents" class="container">
-			<div class="mb-2" style="float:right;"><i class="fas fa-share-square fa-2x" style="cursor:pointer; color:#6c757d;" id="sharebt"></i><i class="fas fa-cog fa-2x ml-2" style="cursor:pointer; color:#6c757d;" id="setup"></i></div>
-			<div id="map"></div>  
+			<div class="mb-2" style="float:right;">
+			<i class="fas fa-share-square" style="cursor:pointer; color:#6c757d; font-size:17px;" id="sharebt">지도 공유하기</i> 
+			<i class="fas fa-star ml-3" style="cursor:pointer; color:#6c757d; font-size:17px;" id="setup">지도 설정하기</i></div>
+			<div id="map"></div>    
 			<script>    
 				var pin = [];
 				var mypin = "${mymap.pinimg}";
@@ -247,7 +249,7 @@
 			      </div>
 			      <div class="modal-body" id="modalbody">
 			        <img id="mapimg" src="" style="width:480px; height:500px;">
-			      </div>
+ 			      </div>
 			      <div class="modal-footer">
 			      	 <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" id="shareokbt">공유하기</button>
 			        <button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" data-dismiss="modal">취소</button>
