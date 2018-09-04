@@ -724,8 +724,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 									
 							  var txt = "${tmp.contents}";
 							  var regex = /(#[^#\s,;<>.]+)/gi  ; 
-					          var newtxt = txt.replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>")
-					          .replace("\n", "<br>");          
+					          var newtxt = txt.replace("\n", "<br>").replace(regex, "<a onclick='tag(this)' style='cursor: pointer;' class=text-danger>"+"$1"+"</a>");          
 					          // $("#contdiv").after("</h5><h4 class='m-1 conttext' style=' overflow: hidden;text-overflow: ellipsis;white-space: nowrap; width:60%;height: 20px;'>"+newtxt+"</h4>"+plus);           
 							$("#contdiv${tmp.board_seq}").html(newtxt);   
 							      
