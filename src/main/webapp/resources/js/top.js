@@ -6,10 +6,11 @@ $(function () {
 	};
 	ws.onmessage = function (msg) {
 		if(msg.data == '2'){ 
-			$("#totalreadcount2").attr("style",false);
+			$("#totalreadcount2").attr("style",false).hide().fadeIn(2000).fadeOut(3000);
+			
 		} 
-		else if(msg.data == '1'){      
-			$("#totalreadcount2").attr("style",false);  
+		else if(msg.data == '1'){            
+			$("#totalreadcount2").attr("style",false).hide().fadeIn(2000).fadeOut(3000);
 		}
 		
 		else {  
@@ -28,7 +29,7 @@ $(function () {
 			console.log("onmessage else 나옴");
 			$("#alertsender").text(sender);
 			$("#alertmsg").html(message);
-			 
+			  
 			$("#alertmessenger").fadeIn(2000);
 			setTimeout(function(){
 				$("#alertmessenger").fadeOut(2000);
@@ -202,7 +203,7 @@ function markit(e) {
  
 			var board_seq = $(e).attr("value").split(":")[0]; 
 			var comment_seq = $(e).attr("value").split(":")[1];
-			alert(board_seq + " :"  + comment_seq);  
+			 
      	$.ajax({
                type: "POST",  
                url: "commentdel.co",      

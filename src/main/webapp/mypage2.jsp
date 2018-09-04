@@ -680,7 +680,7 @@
 								
 							<div class="form-group text-center "> 
 								<button type=submit class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">제출</button>
-								<button type=button class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">일반 계정으로 전환</button>
+<!-- 								<button type=button class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;">일반 계정으로 전환</button> -->
 								
 							</div>		
 									

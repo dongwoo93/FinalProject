@@ -369,7 +369,7 @@ public class MemberController {
 			object.addProperty("tags", result2.get(i)[0]);
 			object.addProperty("link", "search.bo?search="+result2.get(i)[0]);
 			object.addProperty("count", result2.get(i)[1]);
-			object.addProperty("img", "resources/images/hashtag.png");
+			object.addProperty("img", "resources/images/DefaultProfile.jpg");
 			object.addProperty("category", "Tag");
 			list.add(object);
 			System.out.println(object);

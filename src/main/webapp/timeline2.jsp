@@ -415,11 +415,11 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
     	var widget2 = $("#widget2").val();
     	
     	if(widget1 == "memo"){
-    		$("#"+carouselExampleControls).show();
+    		$("#carouselExampleControls").show();
     		$("#"+widget2).show();
     	}
     	else if(widget2 == "memo"){
-    		$("#"+carouselExampleControls).show();
+    		$("#carouselExampleControls").show();
     		$("#"+widget1).show();
     	}
     	else{
@@ -1157,7 +1157,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 
 	 <div id="carouselExampleControls" class="carousel container memowrapper" data-ride="carousel" style="width: 300px; margin-top: 20px; height:300px; margin-left:30px;  display:none;">
 	  <div class="carousel-inner" style="height:100%;">
-		<ul class="memoul">  
+		<ul class="memoul pl-0">  
 		<i class="fas fa-thumbtack fa-2x mt-2"></i>
 	  <c:choose>
 	   <c:when test="${memo.size() > 0}">

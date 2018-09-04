@@ -444,7 +444,6 @@ function commentleave2(e) {
 function likeit(e) { 
    var board_seq = $(e).val();            
    var sessionid = $("#sessionid").val();
-   alert(board_seq + " : " +sessionid);
    $.ajax({  
       url : "like.bo",
       type : "get",  

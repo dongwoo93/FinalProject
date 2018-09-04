@@ -24,183 +24,183 @@
 	
 
 	
-	$(document).on("click","a[id*='tourmodal']",function() {
+// 	$(document).on("click","a[id*='tourmodal']",function() {
 
        
-//        var objDiv = document.getElementById("articlecomment");  
-//         objDiv.scrollTop = 0;               
-       var board_seq = $(this).attr('id').replace("tourmodal", "");
-       var prev_seq = $(this).prev().attr("value");
-       var next_seq = $(this).next().attr("value");
-       var isfirst =$(this).prev().attr("name");
-       var islast =$(this).next().attr("name");
-       alert(board_seq + " : " + prev_seq  + " : " + next_seq + " : " + isfirst + " : " + islast);       
+// //        var objDiv = document.getElementById("articlecomment");  
+// //         objDiv.scrollTop = 0;               
+//        var board_seq = $(this).attr('id').replace("tourmodal", "");
+//        var prev_seq = $(this).prev().attr("value");
+//        var next_seq = $(this).next().attr("value");
+//        var isfirst =$(this).prev().attr("name");
+//        var islast =$(this).next().attr("name");
+//        alert(board_seq + " : " + prev_seq  + " : " + next_seq + " : " + isfirst + " : " + islast);       
  
 
-		$("#prev").val(prev_seq);
-		$("#next").val(next_seq);
+// 		$("#prev").val(prev_seq);
+// 		$("#next").val(next_seq);
        
      
-    	  if(isfirst && islast) {
-    	   $("#goPrev").hide();
-           $("#goNext").hide();
-      }
+//     	  if(isfirst && islast) {
+//     	   $("#goPrev").hide();
+//            $("#goNext").hide();
+//       }
     	  
     	  
-      else if(isfirst) {
-           $("#goPrev").hide();
-           $("#goNext").show();
-        }
-            else if(islast){
-               $("#goNext").hide();
-               $("#goPrev").show(); 
-            } 
-            else { 
-               $("#goPrev").show(); 
-               $("#goNext").show();
+//       else if(isfirst) {
+//            $("#goPrev").hide();
+//            $("#goNext").show();
+//         }
+//             else if(islast){
+//                $("#goNext").hide();
+//                $("#goPrev").show(); 
+//             } 
+//             else { 
+//                $("#goPrev").show(); 
+//                $("#goNext").show();
                
-            }
+//             }
           
-       $.ajax({
-           type: "POST",
-           url: "boardView.bo",
-           data: {seq:board_seq},
-           success: function(data)         
-           {      
-        alert(data[5]);  
-              $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
-              $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
-              if(data[1].length == 1) {
-              $("#carousel-prev").hide();
-           $("#carousel-next").hide();  
-              }else {
-                 $("#carousel-prev").show();
-                 $("#carousel-next").show();
-              }
-              $("#modalid1").text(data.id);   
+//        $.ajax({
+//            type: "POST",
+//            url: "boardView.bo",
+//            data: {seq:board_seq},
+//            success: function(data)         
+//            {      
+//         alert(data[5]);  
+//               $(".modalall").attr("style","flex-direction: row; height: auto; width:"+(data[5]+300)+"px;");         
+//               $(".modalmedia").attr("style", "height: auto; width:"+parseInt(data[5])+"px; min-width:400px;");  
+//               if(data[1].length == 1) {
+//               $("#carousel-prev").hide();
+//            $("#carousel-next").hide();  
+//               }else {
+//                  $("#carousel-prev").show();
+//                  $("#carousel-next").show();
+//               }
+//               $("#modalid1").text(data.id);   
               
               
-//                $("#modalcontents").text(data.contents);  
-     var txt = data[0].contents;
-       var regex = /(#[^#\s,;<>. ]+)/gi;
-       var dataContent0 = data[0].contents; 
-       var newtxt = "";  
-       if(txt != " ") {                                  
-           newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
-                 + "$1" + "</a><span class=fugue>") + "</span>";
-           newtxt += "<kz></kz>"
-       }        
+// //                $("#modalcontents").text(data.contents);  
+//      var txt = data[0].contents;
+//        var regex = /(#[^#\s,;<>. ]+)/gi;
+//        var dataContent0 = data[0].contents; 
+//        var newtxt = "";  
+//        if(txt != " ") {                                  
+//            newtxt = "<span class=fugue>" + dataContent0.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+//                  + "$1" + "</a><span class=fugue>") + "</span>";
+//            newtxt += "<kz></kz>"
+//        }        
       
-               $("#modalcontents").html(newtxt);
-          //  $("#modalcontents").html(data[0].contents);
-               $("#seq").val(data[0].board_seq);
-               $("#modalid2").text(data[0].id);
+//                $("#modalcontents").html(newtxt);
+//           //  $("#modalcontents").html(data[0].contents);
+//                $("#seq").val(data[0].board_seq);
+//                $("#modalid2").text(data[0].id);
 
-           $("#modalid2").click(function() {  
-               $(location).attr("href", "board.bo?id="+data[0].id+"&cat=1");
-           });
+//            $("#modalid2").click(function() {  
+//                $(location).attr("href", "board.bo?id="+data[0].id+"&cat=1");
+//            });
          
-               $("#molikeit").val(data[0].board_seq);
-               $("#molikecancel").val(data[0].board_seq); 
-               $("#momark").val(data[0].board_seq);
-               $("#momarkcancel").val(data[0].board_seq);
+//                $("#molikeit").val(data[0].board_seq);
+//                $("#molikecancel").val(data[0].board_seq); 
+//                $("#momark").val(data[0].board_seq);
+//                $("#momarkcancel").val(data[0].board_seq);
        
              
-               $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
-               for(var i = 1; i < data[1].length; i++) {
-                  $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
-                  $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
+//                $("#firstItem").append("<img class='first' src='AttachedMedia/"+data[1][0].system_file_name+"' alt=''>");
+//                for(var i = 1; i < data[1].length; i++) {
+//                   $("#carousel-indicators li:last-child").after("<li class='element' data-target='#demo' data-slide-to="+i+"></li>");
+//                   $("#carousel-inner div:last-child").after("<div class='carousel-item element'><img class='element' src='AttachedMedia/"+data[1][i].system_file_name+"' alt=''></div>");   
                     
-               }
+//                }
                    
-               $(".commentline").remove(); 
-               for(var i =0; i<data[2].length; i++){ 
-                  var txt = data[2][i].comment_contents;   
-                   var regex = /(#[^#\s,;<>. ]+)/gi;           
-                   var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
-                  + "$1" + "</a><span class=fugue>") + "</span>";  
-                 newtxt += "<kz></kz>"
+//                $(".commentline").remove(); 
+//                for(var i =0; i<data[2].length; i++){ 
+//                   var txt = data[2][i].comment_contents;   
+//                    var regex = /(#[^#\s,;<>. ]+)/gi;           
+//                    var newtxt = "<span class=fugue>" + txt.replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" 
+//                   + "$1" + "</a><span class=fugue>") + "</span>";  
+//                  newtxt += "<kz></kz>"
                  
                   
-                  $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='board.bo?id="+data[2][i].id+"&cat=1' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
-                        +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>"
-                        +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
-               }
+//                   $("#articlecomment:last-child").append("<ul id='ul"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' class='commentline navbar-nav' onmouseover = 'commentover(this)' onmouseleave='commentleave(this)'><li id='li1'><a href='board.bo?id="+data[2][i].id+"&cat=1' class='mr-2' id='commentid'>"+data[2][i].id+"</a></li><li id='li2'><div class='commenttxt txt' id='commenttxt"+data[2][i].comment_seq+"' style='word-wrap:break-word'>"+newtxt+"</div></li></ul>"
+//                         +"<ul id='ul2"+data[2][i].comment_seq+"' style='background-color:#E1F5FE; display:none;' class='commentline2 navbar-nav' onmouseover = 'commentover2(this)' onmouseleave='commentleave2(this)'><li id='li3' value='"+data[2][i].board_seq+"'><i class='far fa-trash-alt py-1 pointer' id='del"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='delComment(this)'></i></li><li id='li4' value='"+data[2][i].board_seq+"'><i class='fas fa-pencil-alt py-1 pl-3 pointer' id='mod"+data[2][i].comment_seq+"' value='"+data[2][i].comment_seq+"' onclick='modComment(this)'></i><li></ul>"
+//                         +"<input type=hidden id='modstate"+data[2][i].comment_seq+"' value='1'>");          
+//                }
                         
-//                $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
-               $("div[id*='commenttxt']").keyup(function(e){
-                // =================== 복붙 =================== 
-                  if(e.keyCode === 32){
-                     if (parseInt($('#caretposition').val()) == 0) {                         
-                       } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
-                       } else {
-                           return;
-                       }
+// //                $("div[id*='commenttxt']").on("mousedown mouseup keydown keyup", update);
+//                $("div[id*='commenttxt']").keyup(function(e){
+//                 // =================== 복붙 =================== 
+//                   if(e.keyCode === 32){
+//                      if (parseInt($('#caretposition').val()) == 0) {                         
+//                        } else if (parseInt($('#caretposition').val()) == $(this).text().length) {
+//                        } else {
+//                            return;
+//                        }
 
-                       var regex = /(#[^#\s,;<>. ]+)/gi;
-                       if (regex) {
-                           var newtxt = "<span class=fugue>" + $(this).text()
-                               .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
-                                   "</a><span class=fugue>") + "</span>"
+//                        var regex = /(#[^#\s,;<>. ]+)/gi;
+//                        if (regex) {
+//                            var newtxt = "<span class=fugue>" + $(this).text()
+//                                .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
+//                                    "</a><span class=fugue>") + "</span>"
 
-                           // console.log($('#editorDiv').text().length);   
-                           // console.log(newtxt)   
-                           newtxt += "<kz></kz>"
-                           $(this).html(newtxt)
-                           var el = this;
-                           console.log("childNodes: " + el.childNodes.length);
-                           var range = document.createRange();
-                           var sel = window.getSelection();
-                           range.setStart(el.lastChild, 0);
-                           range.collapse(false);
-                           sel.removeAllRanges();
-                           sel.addRange(range);
+//                            // console.log($('#editorDiv').text().length);   
+//                            // console.log(newtxt)   
+//                            newtxt += "<kz></kz>"
+//                            $(this).html(newtxt)
+//                            var el = this;
+//                            console.log("childNodes: " + el.childNodes.length);
+//                            var range = document.createRange();
+//                            var sel = window.getSelection();
+//                            range.setStart(el.lastChild, 0);
+//                            range.collapse(false);
+//                            sel.removeAllRanges();
+//                            sel.addRange(range);
 
-                           $(this).focusout();
-                           $(this).focus();
-                           if (parseInt($('#caretposition').val()) == $(this).text().length) {
+//                            $(this).focusout();
+//                            $(this).focus();
+//                            if (parseInt($('#caretposition').val()) == $(this).text().length) {
 
-                           }
+//                            }
 
-                       }
-                  }    
+//                        }
+//                   }    
                   
                   
-               // =================== 복붙 =================== 
-               })
+//                // =================== 복붙 =================== 
+//                })
               
            
                
-               $("#molikeit").attr("style", "display:none;");
-               $("#molikecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
-               if(data[3] != null) {   
-                  $("#molikecancel").attr("style", "font-weight: bold; color: red; ");   
-               }else {
-                  $("#molikeit").attr("style", false);
-               }
+//                $("#molikeit").attr("style", "display:none;");
+//                $("#molikecancel").attr("style", "font-weight: bold; color: red; display:none; "); 
+//                if(data[3] != null) {   
+//                   $("#molikecancel").attr("style", "font-weight: bold; color: red; ");   
+//                }else {
+//                   $("#molikeit").attr("style", false);
+//                }
                
                
-               $("#momark").attr("style", "display:none;");
-               $("#momarkcancel").attr("style", "font-weight: bold; color: #00B8D4; display:none; ");   
-               if(data[4] != null) { 
-                  $("#momarkcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
-               }else {
-                  $("#momark").attr("style", false);
-               } 
+//                $("#momark").attr("style", "display:none;");
+//                $("#momarkcancel").attr("style", "font-weight: bold; color: #00B8D4; display:none; ");   
+//                if(data[4] != null) { 
+//                   $("#momarkcancel").attr("style", "font-weight: bold; color: #00B8D4;");   
+//                }else {
+//                   $("#momark").attr("style", false);
+//                } 
                     
-               var width = data[5]+300;  
-               var width1 = parseInt(data[5]);
-//                alert(width + " : " + width1)
-               $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
-              $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
+//                var width = data[5]+300;  
+//                var width1 = parseInt(data[5]);
+// //                alert(width + " : " + width1)
+//                $(".modalmedia").attr("style", "flex-direction: row; height:600px; width:"+width+"px; min-width:600px;");  
+//               $(".modalmedia1").attr("style", "height:600px; width:"+width1+"px;");  
                    
               
-              $(".modalslide").attr("style", " height:590px;");               
-              }    
-         }); 
+//               $(".modalslide").attr("style", " height:590px;");               
+//               }    
+//          }); 
         
-          $("#boardmodal").modal();                      
-    });
+//           $("#boardmodal").modal();                      
+//     });
 
 	
 	
@@ -273,7 +273,7 @@ function likeit1(e) {
 			is_liked : "y"
 		},
 		success : function(resp) {
-			alert(resp[0]+":"+resp[1]);
+			
 			ws.send("like:"+resp[1]);
 			$(e).next().show();
 			$(e).hide(); 
@@ -460,20 +460,7 @@ function unmarkit(e) {
 										id="likecancel" class="fas fa-heart" onclick="unlikeit1(this)">
 									</i>
 									<!-- 좋아요 카운트 -->
-									<c:choose>
-										<c:when test="${result4[tmp.board_seq] != null}">
-											<p id="p">
-												<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
-												<c:out value="${result4[tmp.board_seq]}"/>명이 좋아합니다</i>
-											</p>
-										</c:when>
-											<c:otherwise>
-												<p id="p">
-													<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
-													<c:out value="${result4[tmp.board_seq]}"/></i>
-												</p>
-											</c:otherwise>
-									</c:choose>
+						
 								</c:when>
 									<c:otherwise>   
 										<i value="${tmp.board_seq}" style="cursor: pointer;" 
@@ -484,23 +471,24 @@ function unmarkit(e) {
 			                   				id="likecancel" class="fas fa-heart" 
 			                   				onclick="unlikeit1(this)">
 			                   			</i>
-										<!-- 좋아요 카운트 -->
-										<c:choose>
-											<c:when test="${result4[tmp.board_seq] != null}">
-												<p id="p">
-													<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
-													<c:out value="${result4[tmp.board_seq]}"/>명이 좋아합니다</i>
-												</p>
-											</c:when>
-												<c:otherwise>
-													<p id="p">
-														<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
-														<c:out value="${result4[tmp.board_seq]}"/></i>
-													</p>
-												</c:otherwise>
-										</c:choose>
+								    
 									</c:otherwise>
 							</c:choose>	
+							
+										<c:choose>
+										<c:when test="${result4[tmp.board_seq] != null}">
+											<p id="p">
+												<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
+												<c:out value="${result4[tmp.board_seq]}"/>명이 좋아합니다</i>
+											</p> 
+										</c:when>
+											<c:otherwise>
+												<p id="p">
+													<i value="${tmp.board_seq}" id="count${tmp.board_seq}">
+													<c:out value="${result4[tmp.board_seq]}"/></i>
+												</p>
+											</c:otherwise>
+									</c:choose>
 			 <div class="dropdown-divider"  id="modifydiv"></div>
 				<!-- 태그,글 보이기 -->
 					<div class="hidden" style="padding-left: 5px" id="hidden${tmp.board_seq}">
@@ -517,29 +505,15 @@ function unmarkit(e) {
 								</script>
 					</div>
 			<!-- 이미지 -->
-			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
-		<c:choose>
-								<c:when test="${status.first}">
-								<input type=hidden value='0' name="${status.first}">
-								</c:when>
-								<c:otherwise>
-								<input type=hidden value='${result[status.index-1].board_seq}' name="${status.first}">
-								</c:otherwise>
-								</c:choose>
-									<a id='tourmodal${tmp.board_seq}'><!--src='AttachedMedia/${media.system_file_name}'-->
+			<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">  
+	
+									<a href="oneBoard.do?board_seq=${tmp.board_seq}"><!--src='AttachedMedia/${media.system_file_name}'-->
 										<img class="card-img-top" 
 						id="card" src='AttachedMedia/${media.system_file_name}'
 						alt="해당 게시글로 바로가기">
 									</a>
 									
-										<c:choose>
-								<c:when test="${status.last}">
-								<input type=hidden value='1' name="${status.last}">
-								</c:when>
-								<c:otherwise>
-									<input type=hidden value='${result[status.index+1].board_seq}' name="${status.last}">
-								</c:otherwise>
-								</c:choose>
+									
 								
 			</c:forEach>
 		</div>
@@ -557,29 +531,27 @@ function unmarkit(e) {
 					<div class="card" id="card">   
 					
 					
-						<h4 class="card-title"  id="tourTop">  </h4>
-						
-						
-						
+						<h4 class="card-title" id="tourTop">
+			         </h4>
 							<c:choose>   
-						<c:when test="${profile_pic.containsKey(tmp.id)}">
+						<c:when test="${profile_pic.containsKey(result.id)}">
                   
-                  			<img src="AttachedMedia/<c:out value='${profile_pic[tmp.id]}'/>" alt="Card image cap" width="30" height="30" class="rounded-circle">
+                  			<img src="AttachedMedia/<c:out value='${profile_pic[result.id]}'/>" alt="Card image cap" width="30" height="30" class="rounded-circle">
                    
                    
                   </c:when>        
-                  <c:otherwise>        
+                  <c:otherwise>    
                      	<img src="resources/images/DefaultProfile.jpg" alt="Card image cap" width="30" height="30" class="rounded-circle">
                    
                   </c:otherwise>
 					</c:choose>
-						
-						
-						   
-							
-								<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
-									<!-- 북마크 -->  
-								<c:choose> 
+			
+			       
+			
+	
+					<a id="ids" href="board.bo?id=${result.id}&cat=1">${result.id}</a>
+					<!-- 북마크 -->
+						<c:choose> 
 										<c:when test="${bookmark.containsKey(result.board_seq)}">
 
 												<i value="${result.board_seq}" id="mark"
@@ -602,59 +574,58 @@ function unmarkit(e) {
 
 											</c:otherwise>
 									    </c:choose>   
-									
-									<!-- 좋아요 -->
+						<!-- 좋아요 -->
+							<c:choose>
+								<c:when test="${result3.containsKey(result.board_seq)}">
+									<i value="${result.board_seq}" style="cursor: pointer; display: none;" 
+										id="likeit" class="far fa-heart icon mr-1" onclick="likeit1(this)">
+									</i>
+									<i value="${result.board_seq}" style="color: red; cursor: pointer;" 
+										id="likecancel" class="fas fa-heart" onclick="unlikeit1(this)">
+									</i>
+									<!-- 좋아요 카운트 -->
 									<c:choose>
-										<c:when test="${result3.containsKey(result.board_seq)}">
-											<i value="${result.board_seq}" style="cursor: pointer; display: none;" 
-												id="likeit" class="far fa-heart icon mr-1 lk" onclick="likeit1(this)"></i>
-											<i value="${result.board_seq}" style="color: red; cursor: pointer;" 
-												id="likecancel" class="fas fa-heart lkc" onclick="unlikeit1(this)"></i>
-											<!-- 좋아요 카운트 -->
-											<c:choose>
-												<c:when test="${result4[result.board_seq] != null}">
+										<c:when test="${result4[result.board_seq] != null}">
+											<p id="p">
+												<i value="${result.board_seq}" id="count${result.board_seq}">
+												<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i>
+											</p>
+										</c:when>
+											<c:otherwise>
+												<p id="p">
+													<i value="${result.board_seq}" id="count${result.board_seq}">
+													<c:out value="${result4[result.board_seq]}"/></i>
+												</p>
+											</c:otherwise>
+									</c:choose>
+								</c:when>
+									<c:otherwise>   
+										<i value="${result.board_seq}" style="cursor: pointer;" 
+											id="likeit" class="far fa-heart icon mr-1" 
+											onclick="likeit1(this)">
+										</i>
+			                   			<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" 
+			                   				id="likecancel" class="fas fa-heart" 
+			                   				onclick="unlikeit1(this)">
+			                   			</i>
+										<!-- 좋아요 카운트 -->
+										<c:choose>
+											<c:when test="${result4[result.board_seq] != null}">
+												<p id="p">
+													<i value="${result.board_seq}" id="count${result.board_seq}">
+													<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다</i>
+												</p>
+											</c:when>
+												<c:otherwise>
 													<p id="p">
 														<i value="${result.board_seq}" id="count${result.board_seq}">
-															<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다
-														</i>
+														<c:out value="${result4[result.board_seq]}"/></i>
 													</p>
-												</c:when>
-													<c:otherwise>
-														<p id="p">
-															<i value="${result.board_seq}" id="count${result.board_seq}">
-																<c:out value="${result4[result.board_seq]}"/>
-															</i>
-														</p>
-													</c:otherwise>
-											</c:choose>
-										</c:when>
-											<c:otherwise>   
-												<i value="${result.board_seq}" style="cursor: pointer;" id="likeit" 
-													class="far fa-heart icon mr-1 lk" 
-													onclick="likeit1(this)"></i>
-			                   					<i value="${result.board_seq}" style="color: red; display: none; cursor: pointer;" 
-			                   						id="likecancel" class="fas fa-heart lkc" 
-			                   						onclick="unlikeit1(this)"></i>
-												<!-- 좋아요 카운트 -->
-												<c:choose>
-													<c:when test="${result4[result.board_seq] != null}">
-														<p id="p">
-															<i value="${result.board_seq}" id="count${result.board_seq}">
-																<c:out value="${result4[result.board_seq]}"/>명이 좋아합니다
-															</i>
-														</p>
-													</c:when>
-														<c:otherwise>
-															<p id="p"> 
-																<i value="${result.board_seq}" id="count${result.board_seq}">
-																	<c:out value="${result4[result.board_seq]}"/>
-																</i>
-															</p>
-														</c:otherwise>
-												</c:choose>
-											</c:otherwise>
-									</c:choose>	 
-							 <div class="dropdown-divider"  id="modifydiv"></div>
+												</c:otherwise>
+										</c:choose>
+									</c:otherwise>
+							</c:choose>	
+			 <div class="dropdown-divider"  id="modifydiv"></div>  
 								<!-- 태그,글 보이기 -->
 								<div class="hidden" style="padding-left: 5px" id="hidden${result.board_seq}">
 									<script> $("#myContents${tmp.board_seq}").attr("style","overflow:visible"); </script>
@@ -671,31 +642,13 @@ function unmarkit(e) {
 								</div>
 									<!-- 이미지 -->
 								<c:forEach begin="0" end="0" var="media" items="${result2[status.index]}">
-								<c:choose>
-								<c:when test="${status.first}">    
-								<input type='hidden' value= "0" name="${status.first}">
-								</c:when>
-								<c:otherwise> 
-								<input type=hidden value='${result[status.index-1].board_seq}' name="${status.first}">
-								</c:otherwise>
-								</c:choose>
-									<a id='tourmodal${result.board_seq}'><!--src='AttachedMedia/${media.system_file_name}'-->
-										<img class="card-img-top" 
-						id="card" src='AttachedMedia/${media.system_file_name}'
+						
+									<a href="oneBoard.do?board_seq${result.board_seq}"><!--src='AttachedMedia/${media.system_file_name}'-->
+										<img class="card-img-top"   
+						id="card" src='AttachedMedia/${media.system_file_name}'  
 						alt="해당 게시글로 바로가기">
 									</a>
-									
-										<c:choose>
-								<c:when test="${status.last}">     
-								<input type='hidden' value="1" name="${status.last}">
-								</c:when>
-								<c:otherwise>
-									<input type=hidden value='${result[status.index+1].board_seq}' name="${status.last}">
-								</c:otherwise>
-								</c:choose>
-								
-								
-								
+							
 								
 								
 								

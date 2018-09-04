@@ -23,11 +23,10 @@
 
 document.addEventListener('keydown', function(event) {
 	console.log($( document.activeElement )[0].tagName == "DIV");
-	    if (event.keyCode === 13) {
+	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName == "DIV" $( document.activeElement ).attr('class') == 'modcont') {
 	        event.preventDefault();
 	    }
 	}, true);
-
 
 $(document).on("keypress","div[id*='commenttxt']", function(event){
 	
@@ -41,8 +40,7 @@ $(document).on("keypress","div[id*='commenttxt']", function(event){
         if(comment_contents == ""){
            alert("댓글을 입력해주세요");
         }  
-        else {    
-     	   alert(comment_seq + " : " + comment_contents);    
+        else {       
         	$.ajax({    
                 type: "POST",    
                 url: "commentmod.co",    
@@ -284,7 +282,6 @@ $(document).ready(function(){
       
     $(document).on('click', '.imgdel', function() {
     	var fileName = $(this).attr('id');
-    	alert(fileName);
     	var element = this;
     	$.ajax({ 
 		      url : "deleteImg.profile", 
@@ -952,7 +949,7 @@ $(document).ready(function(){
 						class="mt-2 mx-3">
 
 						<div id="articlecontents" class="mt-2 pb-2 mr-2 ">
-							<div class="bg-black" id="modalcontents" ></div>	<!-- 수정3 -->
+							<div class="bg-black modcont" id="modalcontents" ></div>	<!-- 수정3 -->
 						</div>
 
 					</div>
@@ -1004,10 +1001,13 @@ $(document).ready(function(){
 				
 				  /* ========================= 댓글달기 ========================= */
 				
-                $('#comment').keypress(function(event){    
+                $('#comment').keypress(function(event){ 
+                	
                    var seq = $("#seq").val();
                    /* var comment_contents = $("#comment").val(); */
                    var comment_contents = $("#comment").text();
+                   
+              
                      
                     var keycode = (event.keyCode ? event.keyCode : event.which);
                     if(keycode == '13'){  
