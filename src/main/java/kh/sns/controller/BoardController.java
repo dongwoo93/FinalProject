@@ -1489,7 +1489,9 @@ public class BoardController {
 			ProfileDTO profile = null;
 
 			try {
+				System.out.println("뇽뇽뇽뇨욘욘요뇽뇨요뇽뇨요뇽뇽");
 				profile_image = profileService.getAllProfileImage();
+				System.out.println(profile_image.get(0).getSystem_file_name());
 			} 
 			catch (Exception e1) {
 				e1.printStackTrace();
@@ -1499,19 +1501,28 @@ public class BoardController {
 				System.out.println(board_seq);
 
 				a = boardService.oneBoard(board_seq);
-				a.setContents(a.getContents().replace("\r\n", "\\n\" + \""));
-				media.add(boardService.search2(a.getBoard_seq()));
-				result = board_commentService.getCommentList(Integer.parseInt(board_seq));
 
-				like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
+					a.setContents(a.getContents().replace("\r\n", "\\n\" + \""));
 
-				bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
 				
-				profile = profileService.getOneProfile(id);
 
 			}catch(Exception e) {
 				System.out.println("oneboard.do");
 				e.printStackTrace();
+			}finally {
+				try {
+					media.add(boardService.search2(a.getBoard_seq()));
+					result = board_commentService.getCommentList(Integer.parseInt(board_seq));
+
+					like = board_likeService.isLiked(id,Integer.parseInt(board_seq));
+
+					bookmark =  board_bookmarkService.isBookmarked(id, Integer.parseInt(board_seq));
+					
+					profile = profileService.getOneProfile(id);
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 			}
 			
 			for(Profile_ImageDTO dto : profile_image) {

@@ -983,7 +983,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 				</c:if><hr class="_5mToa">
 			</div>
 <!-- 			나의지도 -->
- 			<div id="map" class="container" style="width: 300px; margin-top: 20px; margin-left: 30px; height:400px;  display:none;">
+ 			<div id="map" class="container" style="width: 300px; margin-top: 30px; margin-left: 30px; height:400px;  display:none;">
 	
 			</div>  
 
@@ -1057,7 +1057,13 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
 					                success: function(response) {
 					                	var content = "<ul class='list-group' style='width:200px; font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 9px;'><li class='list-group-item' style='background-color:#f3f3f3; '>"+pin[i][0]+"</li>";
 					                	for(var k = 0 ; k<response[0].length;k++){
-					                		content  = content + "<a href='oneBoard.do?board_seq="+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list' class='mb-0'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:30px; height:30px; margin-left:100px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
+					                		
+					                		if(typeof response[0][k].contents == "undefined"){
+					                			response[0][k].contents = "내용없음";
+					                		}
+					                		
+					                		content  = content + "<a href='oneBoard.do?board_seq="+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list' class='mb-0'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:30px; height:30px; margin-left:50px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
+					                		
 					                	}
 					                	content = content + "</ul>";  
 					                	infowindow.setContent(content);  

@@ -148,7 +148,10 @@
 					                success: function(response) {
 					                	var content = "<ul class='list-group' style='width:350px; font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;'><li class='list-group-item' style='background-color:#f3f3f3; '>"+pin[i][0]+"</li>";
 					                	for(var k = 0 ; k<response[0].length;k++){
-					                		content  = content + "<a href='oneBoard.do?"+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list' class='mb-0'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:50px; height:50px; margin-left:100px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
+					                		if(typeof response[0][k].contents == "undefined"){
+					                			response[0][k].contents = "내용없음";
+					                		}
+					                		content  = content + "<a href='oneBoard.do?board_seq="+response[0][k].board_seq+"'><li class='list-group-item d-flex justify-content-between align-items-center'><p id='list' class='mb-0'>" + response[0][k].contents+"</p><span class='badge badge-pill'><img src='AttachedMedia/"+response[1][k]+"' style='width:50px; height:50px; margin-left:100px;'></span><div style=''>"+response[0][k].writedate.split(" ")[0]+"</div></li></a>";
 					                	}
 					                	content = content + "</ul>";
 					                	infowindow.setContent(content);
