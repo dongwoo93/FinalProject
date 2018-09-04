@@ -278,7 +278,7 @@ function likeit1(e) {
 			$(e).hide(); 
 			/* 좋아요 카운트 */
 			if(resp != 0) {
-				$("#count"+board_seq).text(resp + "명이 좋아합니다");
+				$("#count"+board_seq).text(resp[0] + "명이 좋아합니다");
 			}else {
 				$("#count"+board_seq).text("");
 			}

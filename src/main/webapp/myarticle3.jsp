@@ -336,7 +336,7 @@ $(document).ready(function(){
 
 
 
-<c:if test="${result.size() > 0}">
+
 	<input type=hidden id='sessionid' value="${sessionScope.loginId}">
 	<script> var list= []; </script>
 	<script>
@@ -345,8 +345,7 @@ $(document).ready(function(){
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#profileimg')
-                    .attr('src', e.target.result);
+                $('#profileimg').attr('src', e.target.result);
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -369,7 +368,6 @@ $(document).ready(function(){
          
          </script>
 	</c:forEach>
-</c:if>
 
 
 
@@ -392,13 +390,11 @@ $(document).ready(function(){
 								<c:choose>
 									<c:when test="${sessionScope.loginId == pageid}">
 										<a data-target="#profileimage" data-toggle="modal"
-											style="cursor: pointer;"> <img
-											src="AttachedMedia/${proimg.system_file_name}" width="152px"
+											style="cursor: pointer;"> <img src="AttachedMedia/${proimg.system_file_name}" width="152px"
 											height="152px" style="object-fit: cover;"></a>
 									</c:when>
 									<c:otherwise>
-										<img src="AttachedMedia/${proimg.system_file_name}"
-											width="152px" height="152px" style="object-fit: cover;">
+										<img src="AttachedMedia/${proimg.system_file_name}" width="152px" height="152px" style="object-fit: cover;">
 									</c:otherwise>
 								</c:choose>
 
@@ -415,9 +411,7 @@ $(document).ready(function(){
 									width="152px" height="152px" style="object-fit: cover;"></a>
 							</c:when>
 							<c:otherwise>
-								<img
-									src="resources/images/DefaultProfile.jpg"
-									width="152px" height="152px" style="object-fit: cover;">
+								<img src="resources/images/DefaultProfile.jpg" width="152px" height="152px" style="object-fit: cover;">
 							</c:otherwise>
 						</c:choose>
 

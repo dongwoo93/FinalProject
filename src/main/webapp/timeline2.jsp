@@ -132,8 +132,9 @@ function likeit(e) {
          id : currentId,
          is_liked : "y"
       },
-      success : function(resp) {  
-    	  ws.send("like:"+resp); 
+      success : function(resp) {
+    
+    	  ws.send("like:"+resp[1]); 
          $(e).next().show();
          $(e).hide();
       },
@@ -896,7 +897,7 @@ $(document).on('keypress',"div[id*='comment'].insertfield",function(event){
                   
                   
                      <img class="ml-3 mr-2 pic"
-                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/> style="width:50px; height:50px;"">
+                        src="AttachedMedia/<c:out value='${profile_pic[followtmp.id]}'/>" style="width:50px; height:50px;">
                    
                   </c:when>
                   <c:otherwise>
