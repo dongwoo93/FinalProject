@@ -122,7 +122,8 @@ public class BoardController {
 		try {
 			/*list = boardService.getFeed(id);*/
 			listAll = boardService.getFeed(id);
-			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);
+			list = boardService.getFeed(id, 1, NAV_COUNT_PER_PAGE);			
+			
 			int pickAdsCount = NAV_COUNT_PER_PAGE / 5;
 			if(list.size() < 5) {
 				adList = bbs.pickAds(1);
@@ -161,9 +162,20 @@ public class BoardController {
 			System.out.println();
 			list.forEach(System.out::println);
 			
+			// 엔터 표시
+			for(int i = 0; i < list.size(); i++) {
+				try {
+					System.out.println(list.get(i).getContents());
+					list.get(i).setContents(list.get(i).getContents().replace("\r\n", "\\n\" + \""));	// 엔터 안깨지게...
+					System.out.println("@After: " + list.get(i).getContents());	
+				} catch(NullPointerException e) {
+					continue;
+				}				
+			}
+			
 			membersNick = new ArrayList<>();
 			for(BoardDTO b : list) {
-				membersNick.add(memService.getOneMember(b.getId()).getNickname());
+				membersNick.add(memService.getOneMember(b.getId()).getNickname());				
 			}
 			membersNick.forEach(System.out::println);
 			// ========================================

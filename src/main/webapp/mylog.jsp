@@ -428,13 +428,13 @@ function cancelNote(e) {
 				<h3>좋아요 로그</h3>
 				<c:forEach var="i" items="${ likeList }" varStatus="st">
 					<a href="oneBoard.do?board_seq=${ i.board_seq }">${ i.board_seq }</a> - ${fn:substring(likeTitles[st.index],0,30)}...
-					<br>${ i.apply_date }<br>
+					<br><small>${ i.apply_date }</small><br>
 				</c:forEach>
 				<hr>
 				<h3>찜콕 로그</h3>
 				<c:forEach var="i" items="${ markList }" varStatus="st">
 					<a href="oneBoard.do?board_seq=${ i.board_seq }">${ i.board_seq }</a> - ${fn:substring(markTitles[st.index],0,30)}...
-					<br>${ i.apply_date }<br>
+					<br><small>${ i.apply_date }</small><br>
 				</c:forEach>
 				
 			</div>
