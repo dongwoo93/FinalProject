@@ -26,7 +26,7 @@
         
         document.addEventListener('keydown', function(event) {
         	console.log($( document.activeElement )[0].tagName);
-        	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName != "DIV") {
+        	    if (event.keyCode === 13) {
         	        event.preventDefault();
         	    }
         	}, true);
@@ -126,7 +126,7 @@
                          
                          if(parseInt($('#caretposition').val()) == 0){
                         	 // alert('뭐?')                        	 
-                         } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 고친 부분 1
+                         } else if (parseInt($('#caretposition').val()) == $(this).text().length){	// 고친 부분 1
                         	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
                          } else {
                         	 // alert('임마?')
@@ -136,7 +136,7 @@
                          
                          var regex = /(#[^#\s,;<>.]+)/gi;  
                              if(regex){      // 고친 부분 2 text() -> innerText
-                            	 var newtxt = "<span class=fugue>" + this.innerText.replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
+                            	 var newtxt = "<span class=fugue>" + $(this).text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
                             	 									  
        							 // console.log($('#editorDiv').text().length);   
                              	// console.log(newtxt)   
