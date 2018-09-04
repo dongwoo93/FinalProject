@@ -11,6 +11,8 @@ public class ProfileDTO {
 	private String is_allow_share;
 	private String is_allow_login2;
 	private String apply_date;
+	private String widget1;
+	private String widget2;
 	
 	
 	
@@ -19,7 +21,7 @@ public class ProfileDTO {
 	}
 
 	public ProfileDTO(String id, String website, String introduce, String is_allow_email, String is_allow_sms,
-			String is_allow_public, String is_allow_status, String is_allow_share, String is_allow_login2, String apply_date) {
+			String is_allow_public, String is_allow_status, String is_allow_share, String is_allow_login2, String apply_date,String widget1,String widget2) {
 		super();
 		this.id = id;
 		this.website = website;
@@ -31,6 +33,8 @@ public class ProfileDTO {
 		this.is_allow_share = is_allow_share;
 		this.is_allow_login2 = is_allow_login2;
 		this.apply_date = apply_date;
+		this.widget1 = widget1;
+		this.widget2 = widget2;
 	}
 
 	public String getId() {
@@ -113,6 +117,22 @@ public class ProfileDTO {
 
 	public void setApply_date(String apply_date) {
 		this.apply_date = apply_date;
+	}
+
+	public String getWidget1() {
+		return widget1;
+	}
+
+	public void setWidget1(String widget1) {
+		this.widget1 = widget1;
+	}
+
+	public String getWidget2() {
+		return widget2;
+	}
+
+	public void setWidget2(String widget2) {
+		this.widget2 = widget2;
 	}
 
 	/* (non-Javadoc)

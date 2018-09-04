@@ -111,6 +111,13 @@ public class BoardController {
 		List<BoardBusinessDTO> adList = new ArrayList<>();
 		List<BoardDTO> adFeedList = new ArrayList<>();
 		List<String> membersNick = new ArrayList<>();
+		ProfileDTO profiledto = new ProfileDTO();
+		
+		try {
+			profiledto = profileService.getOneProfile(id);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		try {
 			follow_list = member_followService.toFeed(id);
@@ -367,6 +374,8 @@ public class BoardController {
 		System.out.println("like 사이즈 : " +  like.size());
 		mav.addObject("maxImgHeight",maxImgHeight);
 		mav.addObject("trend", trend);
+		mav.addObject("widget1",profiledto.getWidget1());
+		mav.addObject("widget2",profiledto.getWidget2());
 		mav.setViewName("timeline2.jsp");
 
 
