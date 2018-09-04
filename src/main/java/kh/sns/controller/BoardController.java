@@ -164,6 +164,7 @@ public class BoardController {
 			membersNick = new ArrayList<>();
 			for(BoardDTO b : list) {
 				membersNick.add(memService.getOneMember(b.getId()).getNickname());
+				b.setContents(b.getContents().replace("\r\n", "\\n\" + \""));	// 엔터 안깨지게...
 			}
 			membersNick.forEach(System.out::println);
 			// ========================================
