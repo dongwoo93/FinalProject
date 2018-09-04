@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://localhost/websocket?loginId="+currentId);         
+var ws = new WebSocket("ws://14.38.139.185:8080/controller/websocket?loginId="+currentId);         
 
 
 $(function () {
