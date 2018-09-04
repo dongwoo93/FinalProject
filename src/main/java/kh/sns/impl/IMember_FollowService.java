@@ -61,6 +61,11 @@ public class IMember_FollowService implements Member_FollowService {
 		// TODO Auto-generated method stub
 		return dao.followList(id);
 	}
+	
+	@Override
+	public List<FollowInfo> simpleFollowList(String id) throws Exception {
+		return dao.simpleFollowList(id);
+	}
 
 
 

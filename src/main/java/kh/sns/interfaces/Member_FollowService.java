@@ -19,6 +19,7 @@ public interface Member_FollowService {
 	public List<FollowInfo> followerList(String id) throws Exception;
 	
 	public List<FollowInfo> followList(String id) throws Exception;
+	public List<FollowInfo> simpleFollowList(String id) throws Exception;
 	
 
 }

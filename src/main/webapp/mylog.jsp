@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/top.jsp"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<script src="resources/js/top.js"></script>
 <link
 	href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"
 	rel="stylesheet" type="text/css">
@@ -21,7 +23,7 @@
 #wrapper {
 	font-family: arial, sans-serif;
 	font-size: 100%;
-	color: #fff;
+	color: black;
 	width: 100%;
 	/* background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('resources/images/memo_background.jpg');
   background-repeat: no-repeat;
@@ -239,9 +241,7 @@ $(document).ready(function() {
 					titleElement.attr('contenteditable', 'false');
 					contentElement.attr('contenteditable', 'false');
 					titleElement.append(myvar);
-					$(e).next().remove();
 					$(e).remove();
-					
 				}else {
 					alert("저장 실패");
 				}
@@ -363,7 +363,7 @@ function cancelNote(e) {
 		}, 500);
 	}
 </script>
-<div id="allwrapper">
+
 <div id="wrapper">
 	<div class="container">
 		<br>
@@ -380,7 +380,7 @@ function cancelNote(e) {
 								<th class="text-center"
 									style="width: 180px; font-family: NANUMBARUNPENR !important; box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
 									class="topA" href="calendar.bo"
-									style="font-family: NANUMBARUNPENR !important; font-size: 14px;">일정</a></th>
+									style="font-family: NANUMBARUNPENR !important; font-size: 14px;">일정</a></th>  <!-- "calendar2.jsp" -->
 								<th class="text-center"
 									style="width: 180px; font-family: NANUMBARUNPENR !important; box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.19);"><a
 									class="topA" href="goNote.memo"
@@ -397,35 +397,71 @@ function cancelNote(e) {
 		</div>
 	</div>
 	<div id="ul-wrapper">
-		4
 		<div style="text-align: center;">
-			<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;" onclick="addNote()">메모
-				추가</button>
-				
+			
+				<div class="jumbotron">
+  <h1 class="display-3">Hello, ${ sessionScope.loginId }!</h1>
+  <p class="lead">이 페이지에서는 당신이 SocialWired에서 활동했던 모든 활동 로그를 볼 수 있어요.</p>
+  <hr class="my-4">
+  <p>The quick brown fox jumps over the lazy dog. </p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">더 자세히 보기</a>
+  </p>
+</div>
 				
 		</div>
-		<ul class="memoul">
-			<c:choose>
-				<c:when test="${result.size() > 0}">
-					<c:forEach var="memo" items="${result}" varStatus="status">
-						<li class="memoli"><a>
-								<h2 onkeyup="check(this, event);" id="title1" class="memotitle">${memo.title}
-									<i class="fas fa-trash"  onclick="deleteNote(this,'${memo.seq}')" style="float: right;"></i>
-									<i class="fas fa-pencil-alt"  onclick="modifyNote(this, '${memo.seq}')" style="float: right; margin-right: 15px;"></i>
-								</h2>
-								<div class="memocontent" onkeyup="check(this, event);">${memo.content}</div>
-						</a></li>
-					</c:forEach>
-				</c:when>
-
-				<c:otherwise>
-
-				</c:otherwise>
-			</c:choose>
-
-		</ul>
+		<div class="row">
+			<div class=col-6>
+				<h3>나의 가입일</h3>
+				${ joinStr }
+				<hr>
+				<h3>로그인</h3>
+				<c:forEach var="i" items="${ logins }">
+					${ i }<br>
+				</c:forEach>
+				<hr>
+				<h3>로그아웃</h3>
+				<c:forEach var="i" items="${ logouts }">
+					${ i }<br>
+				</c:forEach>
+				<hr>
+				<h3>좋아요 로그</h3>
+				<c:forEach var="i" items="${ likeList }" varStatus="st">
+					<a href="oneBoard.do?board_seq=${ i.board_seq }">${ i.board_seq }</a> - ${fn:substring(likeTitles[st.index],0,30)}...
+					<br><small class=text-muted>${ i.apply_date }</small><br>
+				</c:forEach>
+				<hr>
+				<h3>찜콕 로그</h3>
+				<c:forEach var="i" items="${ markList }" varStatus="st">
+					<a href="oneBoard.do?board_seq=${ i.board_seq }">${ i.board_seq }</a> - ${fn:substring(markTitles[st.index],0,30)}...
+					<br><small class=text-muted>${ i.apply_date }</small><br>
+				</c:forEach>
+				
+			</div>
+			<div class=col-6>
+				<h3>검색 로그</h3>
+				<c:forEach var="i" items="${ searches }" varStatus="st">
+					<c:if test="${ (st.index+1) % 2 ne 0 }">
+						${ i }: 
+					</c:if>
+					<c:if test="${ (st.index+1) % 2 eq 0 }">
+						<a class=text-danger href="search.bo?search=${i}">#${ i }</a><br>
+					</c:if>
+				</c:forEach>
+				<hr>
+				<h3>팔로우 로그</h3>
+				<c:forEach var="i" items="${ followList }">
+					<a href="board.bo?id=${ i.targetId }&cat=1">${ i.targetId }</a> - ${ i.followDate }<br>
+				</c:forEach>
+				<hr>
+				<h3>코멘트 로그</h3>
+				<c:forEach var="i" items="${ commentList }">
+					<a href="oneBoard.do?board_seq=${ i.board_seq }">${ i.comment_contents }</a> 
+					- ${ i.writedate }<br>
+				</c:forEach>
+				<hr>
+			</div>
+		</div>
 	</div>
 </div>
-</div>
-<%@ include file="include/directMessage.jsp" %>
 <%@ include file="include/bottom.jsp"%>
