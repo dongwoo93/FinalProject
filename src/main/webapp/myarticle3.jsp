@@ -231,7 +231,7 @@ $(document).ready(function(){
             
             if(parseInt($('#caretposition').val()) == 0){
            	 // alert('뭐?')                  	 
-            } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 엔터 고려하여 고친 부분 1
+            } else if (parseInt($('#caretposition').val()) == $(this).text().length){	// 엔터 고려하여 고친 부분 1
              // alert( parseInt($('#caretposition').val()) + ":" +  $(this).text().length);
             } else {
            	 // 
