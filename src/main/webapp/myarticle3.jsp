@@ -21,7 +21,12 @@
 <script>
 
 
-
+document.addEventListener('keydown', function(event) {
+	console.log($( document.activeElement )[0].tagName == "DIV");
+	    if (event.keyCode === 13) {
+	        event.preventDefault();
+	    }
+	}, true);
 
 
 $(document).on("keypress","div[id*='commenttxt']", function(event){
@@ -226,7 +231,7 @@ $(document).ready(function(){
             
             if(parseInt($('#caretposition').val()) == 0){
            	 // alert('뭐?')                  	 
-            } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 엔터 고려하여 고친 부분 1
+            } else if (parseInt($('#caretposition').val()) == $(this).text().length){	// 엔터 고려하여 고친 부분 1
              // alert( parseInt($('#caretposition').val()) + ":" +  $(this).text().length);
             } else {
            	 // 
@@ -236,7 +241,7 @@ $(document).ready(function(){
 			
             var regex = /(#[^#\s,;<>.]+)/gi;
             if (regex) {
-                var newtxt = "<span class=fugue>" + this.innerText	// 엔터 고려하여 고친 부분 2
+                var newtxt = "<span class=fugue>" + $(this).text()	// 엔터 고려하여 고친 부분 2
                     .replace(regex, "</span><a onclick='tag(this)' style='cursor: pointer;' class=text-danger>" + "$1" +
                         "</a><span class=fugue>") + "</span>"
 
@@ -947,7 +952,7 @@ $(document).ready(function(){
 						class="mt-2 mx-3">
 
 						<div id="articlecontents" class="mt-2 pb-2 mr-2 ">
-							<div class="bg-black" id="modalcontents" style="white-space: pre-line;"></div>	<!-- 수정3 -->
+							<div class="bg-black" id="modalcontents" ></div>	<!-- 수정3 -->
 						</div>
 
 					</div>

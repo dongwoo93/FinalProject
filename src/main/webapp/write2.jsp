@@ -26,7 +26,7 @@
         
         document.addEventListener('keydown', function(event) {
         	console.log($( document.activeElement )[0].tagName);
-        	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName != "DIV") {
+        	    if (event.keyCode === 13) {
         	        event.preventDefault();
         	    }
         	}, true);
@@ -126,7 +126,7 @@
                          
                          if(parseInt($('#caretposition').val()) == 0){
                         	 // alert('뭐?')                        	 
-                         } else if (parseInt($('#caretposition').val()) >= $(this).text().length - 3){	// 고친 부분 1
+                         } else if (parseInt($('#caretposition').val()) == $(this).text().length){	// 고친 부분 1
                         	 // alert( parseInt($('#caretposition').val()) + ":" +  $('#editorDiv').text().length);
                          } else {
                         	 // alert('임마?')
@@ -136,7 +136,7 @@
                          
                          var regex = /(#[^#\s,;<>.]+)/gi;  
                              if(regex){      // 고친 부분 2 text() -> innerText
-                            	 var newtxt = "<span class=fugue>" + this.innerText.replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
+                            	 var newtxt = "<span class=fugue>" + $(this).text().replace(regex, "</span><span class=text-danger>" + "$1" + "</span><span class=fugue>") + "</span>"
                             	 									  
        							 // console.log($('#editorDiv').text().length);   
                              	// console.log(newtxt)   
@@ -687,6 +687,8 @@
 						<div class="col-12">							
 						    
 						    <div class="form-group">
+						    
+						    
 							  <label class="col-form-label" for="moreInfoWebsite" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">더 알아보기(혹은 구매하기) 웹 사이트 주소</label>
 							  <input type="text" class="form-control" placeholder="http://example.com/?shopid=12" id="moreInfoWebsite">
 							  <small class="form-text text-muted" style="font-family: NANUMBARUNPENR !important;font-size: 14px;">주소를 입력하시면 게시물에 링크가 제공됩니다. 원하지 않으실 경우 공란으로 비워주세요.</small>

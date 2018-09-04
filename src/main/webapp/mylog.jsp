@@ -403,10 +403,10 @@ function cancelNote(e) {
   <h1 class="display-3">Hello, ${ sessionScope.loginId }!</h1>
   <p class="lead">이 페이지에서는 당신이 SocialWired에서 활동했던 모든 활동 로그를 볼 수 있어요.</p>
   <hr class="my-4">
-  <p>The quick brown fox jumps over the lazy dog. </p>
-  <p class="lead">
+  <p><i>“One of the best protections against disappointment is to have a lot going on.”</i>  </p>
+  <!-- <p class="lead">
     <a class="btn btn-primary btn-lg" href="#" role="button">더 자세히 보기</a>
-  </p>
+  </p> -->
 </div>
 				
 		</div>
