@@ -41,6 +41,10 @@ public class IBoard_BookmarkService implements Board_BookmarkService {
 		return bookmarkdao.isBookmarked(id, board_seq);
 	}
 	
+	@Override
+	public List<Board_BookmarkDTO> simpleGetMark(String id) throws Exception {
+		return bookmarkdao.simpleGetMark(id);
+	}
 	
 
 }

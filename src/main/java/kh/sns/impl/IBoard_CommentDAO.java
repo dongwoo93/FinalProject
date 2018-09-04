@@ -143,7 +143,20 @@ public class IBoard_CommentDAO implements Board_CommentDAO {
 		}).get(0);
 		}  
 	
-	
+	@Override
+	public List<Board_CommentDTO> simpleGetComments(String id){
+		String sql = "select * from board_comment where id=? order by writedate desc";
+		return template.query(sql, new Object[] {id}, (rs, rowNum) -> {
+			Board_CommentDTO bc = new Board_CommentDTO();
+			bc.setBoard_seq(rs.getInt("board_seq"));
+			bc.setComment_contents(rs.getString("comment_contents"));
+			bc.setComment_seq(rs.getInt("comment_seq"));
+			bc.setId(rs.getString("id"));
+			bc.setWritedate(rs.getString("writedate"));
+			return bc;
+		});
+		
+	}
 	
 }  
 

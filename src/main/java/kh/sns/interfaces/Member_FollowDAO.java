@@ -18,6 +18,7 @@ public interface Member_FollowDAO {
 	public List<FollowInfo> followerList(String id) throws Exception;
 	
 	public List<FollowInfo> followList(String id) throws Exception;
+	public List<FollowInfo> simpleFollowList(String id) throws Exception;
 	
 
 	
