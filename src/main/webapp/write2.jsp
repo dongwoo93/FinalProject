@@ -757,7 +757,7 @@
 	</div>
 	</c:if>
 	<!--        비즈니스설정 Modal 끝-->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3SwWm3c4UTbg1SPZD4hHj4E9tz30W2eY&libraries=places&callback=initAutocomplete" async defer></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAL8NAFJLEweOrUvrwcIiGAHghi6_B9JP0&libraries=places&callback=initAutocomplete" async defer></script>
 
 	<script>
       var map;

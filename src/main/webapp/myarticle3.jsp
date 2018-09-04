@@ -926,7 +926,7 @@ $(document).ready(function(){
 					<br>
 					<div class="profile-image">
 						<c:choose>
-						<c:when test="${myprofile ne null}">
+						<c:when test="${myprofile ne ''}">
                   
 					    
 		
