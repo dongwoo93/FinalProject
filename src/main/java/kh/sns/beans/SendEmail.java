@@ -74,8 +74,7 @@ public class SendEmail {
 	             
 	            // 이메일 제목
 	            msg.setSubject("Social Wired에서 알려드립니다 ", "UTF-8");
-	             
-	            
+	           
 	            if(num==1) {
 	            	msg.setText("아이디: " + id , "UTF-8");
 	            }else if(num==3){
@@ -86,9 +85,9 @@ public class SendEmail {
 	            			+"여러분들과 함께 성장하겠습니다.변화하는 SocialWired 모습을 함께 지켜 봐주시기 바랍니다.감사합니다. <br>"
 	            			+"SocialWired 드림 본 메일은 발신전용입니다. 궁금한 사항을 문의하시려면 SocialWired 서비스 문의를 이용해 주세요. Copyright © SocialWired Corp."
 	            			, "UTF-8");
-	            }  
-	         
-	            else {
+	            }   
+	           
+	            else if(num==0) {
 	            	msg.setText("임시 비밀번호 : " + certification , "UTF-8");
 	            }
 	            // 이메일 헤더
@@ -103,7 +102,7 @@ public class SendEmail {
 	            msg_e.printStackTrace();
 	        }
 	    }
-	 
+	   
 	}
 	 
 	 
