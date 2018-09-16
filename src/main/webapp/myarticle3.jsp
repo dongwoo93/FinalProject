@@ -23,7 +23,7 @@
 
 document.addEventListener('keydown', function(event) {
 	console.log($( document.activeElement )[0].tagName == "DIV");
-	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName == "DIV" $( document.activeElement ).attr('class') == 'modcont') {
+	    if (event.keyCode === 13 && $( document.activeElement )[0].tagName == "DIV" && $( document.activeElement ).attr('class') == 'modcont') {
 	        event.preventDefault();
 	    }
 	}, true);
@@ -235,6 +235,7 @@ $(document).ready(function(){
            	 // 
            	 return;
             }
+            
             
 			
             var regex = /(#[^#\s,;<>.]+)/gi;
@@ -637,9 +638,7 @@ $(document).ready(function(){
 <%-- 				<input type="hidden" id="hiddenwriter${status.index}" value="${tmp.id}"> --%>
 				
 				
-				<div class="col-md-4 divitem pt-4" id="${tmp.board_seq}"
-					value="${tmp.board_seq}" onmouseover="articleover(this)"
-					onmouseleave="articleleave(this)">
+				<div class="col-md-4 divitem pt-4" id="${tmp.board_seq}" value="${tmp.board_seq}" onmouseover="articleover(this)" onmouseleave="articleleave(this)">
 					<img style="display: block;" src="AttachedMedia/${result2[status.index].system_file_name}"
 						class="divimg pointer ${result2[status.index].filterName}">
 

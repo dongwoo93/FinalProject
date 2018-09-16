@@ -357,7 +357,12 @@ public class MemberController {
 			object.addProperty("id", result.get(i).getId());
 			object.addProperty("name", result.get(i).getName());
 			object.addProperty("link", "board.bo?id="+result.get(i).getId()+"&cat=1");
-			object.addProperty("img", "AttachedMedia/"+profileService.selectOneProfileImage(result.get(i).getId()));
+			String profile = profileService.selectOneProfileImage(result.get(i).getId());
+			if(profile != "") {
+				object.addProperty("img", "AttachedMedia/"+profileService.selectOneProfileImage(result.get(i).getId()));
+			}else {
+				object.addProperty("img", "resources/images/DefaultProfile.jpg");
+			}
 			object.addProperty("category", "People");
 			System.out.println(object);
 			list.add(object);

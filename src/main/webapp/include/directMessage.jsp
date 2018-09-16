@@ -165,6 +165,7 @@
 					function openmessage(e){
 						var nickname = $(e).find("#usernickname").val();
 						$("#dmnickname").text(nickname);
+						
 						$("#messagebox *").remove(); 
 						
 						$.ajax({
@@ -174,9 +175,15 @@
 			                success: function(response) {
 			                	$('.chatbox').show();
 			                	$("#userId").val(response[0]);
-			                	$(".chatbox-avatar a img").attr("src","AttachedMedia/"+response[1]);
+			                	if(response[1] != "") {
+			                		$(".chatbox-avatar a img").attr("src","AttachedMedia/"+response[1]);
+			                	}else {
+			                		$(".chatbox-avatar a img").attr("src","resources/images/DefaultProfile.jpg");
+			                	}
+			                	
 			                	setRead(response[0]);
 			                	var receiver = $("#userId").val();
+			                	$('#dmnickname').attr("onclick", "window.location.href='board.bo?id="+receiver+"&cat=1'");
 			                	$.ajax({
 					                url: "selectmessenger.do",
 					                type: "get",
@@ -265,15 +272,15 @@
   <div class="chatbox group-chat" style="display:none;">
     <div class="chatbox-top">
       <div class="chatbox-avatar">
-        <a target="_blank" href=""><img src="루이.jpg" /></a>
+        <a target="_blank"><img src="" /></a>
       </div>
       
-      <div class="chat-group-name" id="dmnickname">
+      <div style="cursor: pointer;" class="chat-group-name" id="dmnickname">
         
       </div>
       <input type="hidden" id="userId">
       <div class="chatbox-icons">
-        <label for="chkSettings"><i class="fa fa-gear"></i></label><input type="checkbox" id="chkSettings" />
+        <!-- <label for="chkSettings"><i class="fa fa-gear"></i></label><input type="checkbox" id="chkSettings" />
         <div class="settings-popup">
           <ul>
             <li><a href="#">Group members</a></li>
@@ -281,7 +288,7 @@
             <li><a href="#">Delete members</a></li>
             <li><a href="#">Leave group</a></li>
           </ul>
-        </div>
+        </div> -->
         <a href="javascript:void(0);"><i class="fa fa-minus"></i></a>
         <a href="javascript:void(0);"><i class="fa fa-close"></i></a>       
       </div>      
