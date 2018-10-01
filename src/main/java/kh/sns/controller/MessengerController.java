@@ -67,7 +67,7 @@ public class MessengerController {
 		                  onlinefriendlist.add(tmp);
 		               }
 		               if(image == ""){
-		                  onlinefriendimg.add("standard.jpg");
+		                  onlinefriendimg.add("DefaultProfile.jpg");
 		               }
 		               else{
 		                  onlinefriendimg.add(image);
@@ -76,7 +76,7 @@ public class MessengerController {
 				else {
 					offlinefriendlist.add(tmp);
 					if(image == ""){
-						offlinefriendimg.add("standard.jpg");
+						offlinefriendimg.add("DefaultProfile.jpg");
 					}
 					else{
 						offlinefriendimg.add(image);

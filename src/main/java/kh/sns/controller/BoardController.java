@@ -1694,14 +1694,15 @@ public class BoardController {
 					tmp[2] = (((int)tmp[2])/1440) +"일";   
 				}
 				
-				tmp[1] = profileService.selectOneProfileImage(sessionid);
+				String name = tmp[3].toString().split(" 님이")[0];
+				tmp[1] = profileService.selectOneProfileImage(name);
 				if((int)tmp[0] == 0) {
 					tmp[4] = "0";
 				}else {    
 				tmp[4] = boardService.search2( (int)tmp[0] ).get(0).getSystem_file_name();
 				}
 				
-				String name = tmp[3].toString().split(" 님이")[0];
+				
 				for(int i = 0; i < follow_list.size(); i++) {
 					if(name.equals(follow_list.get(i).getTargetId())) {
 						tmp[5] = "y";
