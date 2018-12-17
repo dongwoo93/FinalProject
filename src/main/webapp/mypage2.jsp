@@ -284,8 +284,16 @@
 		<div class="container mywrap">
 		<br>         
 			<div class="row">        
-				<div class="col-3">                            
+				<div class="col-3">
+				<c:choose>
+				<c:when test="${profile_pic ne ''}">
 				<img class="rounded-circle" alt='profile' width="40" height="35" src="AttachedMedia/${profile_pic}">
+				</c:when>
+				<c:otherwise>
+				<img class="rounded-circle" alt='profile' width="40" height="35" src="resources/images/DefaultProfile.jpg">
+				</c:otherwise>
+				</c:choose>
+				
 								&nbsp;&nbsp;&nbsp;
 								<span class="profile-user-name " style="font-weight:bold;font-size:18px;">${member.id}</span> 
 								<c:if test="${ memberBiz ne null and memberBiz.id eq sessionScope.loginId }">

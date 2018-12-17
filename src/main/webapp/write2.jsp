@@ -437,7 +437,7 @@
 											<div class="col-md-3 col-6 p-1">
 												<a id="${i}"> <img
 													class="d-block img-fluid ${i}"
-													src="https://pingendo.github.io/templates/sections/assets/gallery_2.jpg" id='filterPreviewImg_${i}'>
+													src="resources/images/filter.jpg" id='filterPreviewImg_${i}'>
 												</a>
 												<p class="text-center">${i}</p>
 											</div>
@@ -641,7 +641,7 @@
 
 				</div>
 				<div class="modal-footer" id="personmodalbt">					
-					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;">태그완료</button>
+					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;font-size: 14px;z-index: 200;">태그완료</button>
 				</div>
 			</div>
 		</div>

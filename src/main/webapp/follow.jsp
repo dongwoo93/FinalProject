@@ -113,8 +113,8 @@ function follow(id1, id2, e) {
 								</c:when>  
 								<c:otherwise>
 									<c:forEach var="follow" items="${result}" varStatus="status">
-										<div onclick="window.location='board.bo?id=${follow.targetId}&cat=1';" style="border-radius:5px;height:240px;background-color:white;border:0px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="col-md-2 mx-3 mb-3">
-											<div class="text-center mt-4" style="cursor:pointer;" onclick="goprofile(this)">
+										<div  style="border-radius:5px;height:240px;background-color:white;border:0px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="col-md-2 mx-3 mb-3">
+											<div class="text-center mt-4" style="cursor:pointer;" onclick="window.location='board.bo?id=${follow.targetId}&cat=1';">
 												  <c:choose>
 										<c:when test="${profile_pic.containsKey(follow.targetId)}">
 										 <img class="" src="AttachedMedia/<c:out value='${profile_pic[follow.targetId]}'/>" style="border-radius:100%; width:120px; height:120px;">
@@ -186,8 +186,8 @@ function follow(id1, id2, e) {
 								<div style="height:500px; width:100%; text-align:center; line-height:400px;">팔로워가 없습니다.</div>							</c:when>   
 							<c:otherwise>
 								<c:forEach var="follower" items="${result1}" varStatus="status">
-									<div onclick="window.location='board.bo?id=${follower.id}&cat=1';" style="border-radius:5px;height:240px; background-color:white; border:0px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="col-md-2 mx-3 mb-3">
-										<div class="text-center mt-3" style="cursor:pointer;" onclick="goprofile(this)">
+									<div  style="border-radius:5px;height:240px; background-color:white; border:0px solid #eff1f4;font-family: NANUMBARUNPENR !important;font-size: 14px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="col-md-2 mx-3 mb-3">
+										<div class="text-center mt-3" style="cursor:pointer;" onclick="window.location='board.bo?id=${follower.id}&cat=1';">
 										<c:choose>
 										<c:when test="${profile_pic.containsKey(follower.id)}">
 										 <img class="" src="AttachedMedia/<c:out value='${profile_pic[follower.id]}'/>" style="border-radius:100%; width:120px; height:120px;">

@@ -364,8 +364,8 @@ function deleteEvent() {
 <style>
 @CHARSET "UTF-8";
 
-@font-face { font-family: 'NANUMBARUNPENR'; src: url("../fonts/NANUMBARUNPENR.TTF") format('truetype'); }
-@font-face { font-family: 'NANUMPEN'; src: url("../fonts/NANUMPEN.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMBARUNPENR'; src: url("resources/fonts/NANUMBARUNPENR.TTF") format('truetype'); }
+@font-face { font-family: 'NANUMPEN'; src: url("resources/fonts/NANUMPEN.TTF") format('truetype'); }
 
 
 
@@ -562,7 +562,7 @@ function deleteEvent() {
 				</div>
 				<div class="modal-footer">
 					
-					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton">Save</button>
+					<button type="submit" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"id="submitButton2">Save</button>
 					<button type="button" class="btn btn-light text-dark" style="font-weight:bold;font-family: NANUMBARUNPENR !important;"
 					data-dismiss="modal">Cancel</button>
 				</div>

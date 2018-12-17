@@ -52,7 +52,7 @@ public class ProfileController {
 		ModelAndView mav = new ModelAndView();
 
 		if(session.getAttribute("loginId") != null) {
-			String memberId = session.getAttribute("loginId").toString();
+			String memberId = (String)session.getAttribute("loginId");
 			System.out.println("currentLoginId: " + memberId);
 			MemberDTO member = memberService.getOneMember(memberId);
 			ProfileDTO profile = profileService.getOneProfile(memberId);
@@ -60,7 +60,7 @@ public class ProfileController {
 			MemberBusinessDTO memberBiz = null;
 			try {
 				
-				myImg = profileService.getPic(memberId);
+				myImg = profileService.selectOneProfileImage(memberId);
 				memberBiz = mBizService.selectAnMemberBiz(memberId);
 			} catch(IndexOutOfBoundsException e) {
 				System.err.println("This is not business account!!");

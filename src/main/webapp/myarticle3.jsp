@@ -1324,7 +1324,7 @@ function myFunction() {
 			              <i class="fas fa-book fa-5x"></i></a>
 			            </div>
 			            <div class="col-8">
-			               <h1 class="mt-3"><a href="calendar2.jsp"><b style=color:#6c757d;>활동 기록</b></a></h1>
+			               <h1 class="mt-3"><a href="my.log"><b style=color:#6c757d;>활동 기록</b></a></h1>
 			              </h5>
 			              <p class="my-1"></p>
 			            </div>
